@@ -1,0 +1,158 @@
+<div class="doom-clocks-content">
+  {{#if isGM}}
+    <button class="add-clock small-btn" title="{{localize 'COGSYNDICATE.AddDoomClock'}}"><i class="fas fa-plus"></i> {{localize "COGSYNDICATE.AddDoomClock"}}</button>
+  {{/if}}
+  <div class="clocks-list">
+    {{#if clocks.length}}
+      {{#each clocks as |clock index|}}
+        <div class="clock-item" data-index="{{index}}">
+          <div class="clock-visual">
+            {{#if (eq clock.max 2)}}
+              <svg class="clock-svg" viewBox="0 0 100 100" width="100" height="100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#666" stroke-width="5"/>
+                {{#if (gte clock.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 50,95 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (eq clock.value 2)}}<path d="M50,50 L50,95 A45,45 0 0,1 50,5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+              </svg>
+            {{else if (eq clock.max 3)}}
+              <svg class="clock-svg" viewBox="0 0 100 100" width="100" height="100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#666" stroke-width="5"/>
+                {{#if (gte clock.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 87.5,72.5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 2)}}<path d="M50,50 L87.5,72.5 A45,45 0 0,1 12.5,72.5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (eq clock.value 3)}}<path d="M50,50 L12.5,72.5 A45,45 0 0,1 50,5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+              </svg>
+            {{else if (eq clock.max 4)}}
+              <svg class="clock-svg" viewBox="0 0 100 100" width="100" height="100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#666" stroke-width="5"/>
+                {{#if (gte clock.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 95,50 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 2)}}<path d="M50,50 L95,50 A45,45 0 0,1 50,95 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 3)}}<path d="M50,50 L50,95 A45,45 0 0,1 5,50 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (eq clock.value 4)}}<path d="M50,50 L5,50 A45,45 0 0,1 50,5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+              </svg>
+            {{else if (eq clock.max 5)}}
+              <svg class="clock-svg" viewBox="0 0 100 100" width="100" height="100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#666" stroke-width="5"/>
+                {{#if (gte clock.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 81.5,18.5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 2)}}<path d="M50,50 L81.5,18.5 A45,45 0 0,1 95,50 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 3)}}<path d="M50,50 L95,50 A45,45 0 0,1 81.5,81.5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 4)}}<path d="M50,50 L81.5,81.5 A45,45 0 0,1 18.5,81.5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (eq clock.value 5)}}<path d="M50,50 L18.5,81.5 A45,45 0 0,1 50,5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+              </svg>
+            {{else if (eq clock.max 6)}}
+              <svg class="clock-svg" viewBox="0 0 100 100" width="100" height="100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#666" stroke-width="5"/>
+                {{#if (gte clock.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 87.5,27.5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 2)}}<path d="M50,50 L87.5,27.5 A45,45 0 0,1 87.5,72.5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 3)}}<path d="M50,50 L87.5,72.5 A45,45 0 0,1 50,95 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 4)}}<path d="M50,50 L50,95 A45,45 0 0,1 12.5,72.5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 5)}}<path d="M50,50 L12.5,72.5 A45,45 0 0,1 12.5,27.5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (eq clock.value 6)}}<path d="M50,50 L12.5,27.5 A45,45 0 0,1 50,5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+              </svg>
+            {{else if (eq clock.max 7)}}
+              <svg class="clock-svg" viewBox="0 0 100 100" width="100" height="100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#666" stroke-width="5"/>
+                {{#if (gte clock.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 77.27,17.27 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 2)}}<path d="M50,50 L77.27,17.27 A45,45 0 0,1 93.54,45 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 3)}}<path d="M50,50 L93.54,45 A45,45 0 0,1 85.86,77.86 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 4)}}<path d="M50,50 L85.86,77.86 A45,45 0 0,1 50,95 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 5)}}<path d="M50,50 L50,95 A45,45 0 0,1 14.14,77.86 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 6)}}<path d="M50,50 L14.14,77.86 A45,45 0 0,1 6.46,45 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (eq clock.value 7)}}<path d="M50,50 L6.46,45 A45,45 0 0,1 50,5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+              </svg>
+            {{else if (eq clock.max 8)}}
+              <svg class="clock-svg" viewBox="0 0 100 100" width="100" height="100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#666" stroke-width="5"/>
+                {{#if (gte clock.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 81.82,18.18 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 2)}}<path d="M50,50 L81.82,18.18 A45,45 0 0,1 95,50 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 3)}}<path d="M50,50 L95,50 A45,45 0 0,1 81.82,81.82 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 4)}}<path d="M50,50 L81.82,81.82 A45,45 0 0,1 50,95 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 5)}}<path d="M50,50 L50,95 A45,45 0 0,1 18.18,81.82 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 6)}}<path d="M50,50 L18.18,81.82 A45,45 0 0,1 5,50 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 7)}}<path d="M50,50 L5,50 A45,45 0 0,1 18.18,18.18 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (eq clock.value 8)}}<path d="M50,50 L18.18,18.18 A45,45 0 0,1 50,5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+              </svg>
+            {{else if (eq clock.max 9)}}
+              <svg class="clock-svg" viewBox="0 0 100 100" width="100" height="100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#666" stroke-width="5"/>
+                {{#if (gte clock.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 74.13,14.13 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 2)}}<path d="M50,50 L74.13,14.13 A45,45 0 0,1 90.54,35.46 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 3)}}<path d="M50,50 L90.54,35.46 A45,45 0 0,1 90.54,64.54 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 4)}}<path d="M50,50 L90.54,64.54 A45,45 0 0,1 74.13,85.87 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 5)}}<path d="M50,50 L74.13,85.87 A45,45 0 0,1 50,95 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 6)}}<path d="M50,50 L50,95 A45,45 0 0,1 25.87,85.87 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 7)}}<path d="M50,50 L25.87,85.87 A45,45 0 0,1 9.46,64.54 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 8)}}<path d="M50,50 L9.46,64.54 A45,45 0 0,1 9.46,35.46 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (eq clock.value 9)}}<path d="M50,50 L9.46,35.46 A45,45 0 0,1 50,5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+              </svg>
+            {{else if (eq clock.max 10)}}
+              <svg class="clock-svg" viewBox="0 0 100 100" width="100" height="100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#666" stroke-width="5"/>
+                {{#if (gte clock.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 72.45,12.06 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 2)}}<path d="M50,50 L72.45,12.06 A45,45 0 0,1 87.94,27.55 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 3)}}<path d="M50,50 L87.94,27.55 A45,45 0 0,1 95,50 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 4)}}<path d="M50,50 L95,50 A45,45 0 0,1 87.94,72.45 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 5)}}<path d="M50,50 L87.94,72.45 A45,45 0 0,1 72.45,87.94 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 6)}}<path d="M50,50 L72.45,87.94 A45,45 0 0,1 50,95 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 7)}}<path d="M50,50 L50,95 A45,45 0 0,1 27.55,87.94 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 8)}}<path d="M50,50 L27.55,87.94 A45,45 0 0,1 12.06,72.45 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 9)}}<path d="M50,50 L12.06,72.45 A45,45 0 0,1 5,50 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (eq clock.value 10)}}<path d="M50,50 L5,50 A45,45 0 0,1 50,5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+              </svg>
+            {{else if (eq clock.max 11)}}
+              <svg class="clock-svg" viewBox="0 0 100 100" width="100" height="100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#666" stroke-width="5"/>
+                {{#if (gte clock.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 72.14,11.79 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 2)}}<path d="M50,50 L72.14,11.79 A45,45 0 0,1 88.66,27.18 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 3)}}<path d="M50,50 L88.66,27.18 A45,45 0 0,1 94.86,45 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 4)}}<path d="M50,50 L94.86,45 A45,45 0 0,1 88.66,62.82 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 5)}}<path d="M50,50 L88.66,62.82 A45,45 0 0,1 72.14,78.21 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 6)}}<path d="M50,50 L72.14,78.21 A45,45 0 0,1 50,95 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 7)}}<path d="M50,50 L50,95 A45,45 0 0,1 27.86,78.21 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 8)}}<path d="M50,50 L27.86,78.21 A45,45 0 0,1 11.34,62.82 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 9)}}<path d="M50,50 L11.34,62.82 A45,45 0 0,1 5.14,45 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (eq clock.value 10)}}<path d="M50,50 L5.14,45 A45,45 0 0,1 11.34,27.18 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (eq clock.value 11)}}<path d="M50,50 L11.34,27.18 A45,45 0 0,1 50,5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+              </svg>
+            {{else if (eq clock.max 12)}}
+              <svg class="clock-svg" viewBox="0 0 100 100" width="100" height="100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#666" stroke-width="5"/>
+                {{#if (gte clock.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 72.5,11.23 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 2)}}<path d="M50,50 L72.5,11.23 A45,45 0 0,1 88.77,27.5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 3)}}<path d="M50,50 L88.77,27.5 A45,45 0 0,1 95,50 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 4)}}<path d="M50,50 L95,50 A45,45 0 0,1 88.77,72.5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 5)}}<path d="M50,50 L88.77,72.5 A45,45 0 0,1 72.5,88.77 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 6)}}<path d="M50,50 L72.5,88.77 A45,45 0 0,1 50,95 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 7)}}<path d="M50,50 L50,95 A45,45 0 0,1 27.5,88.77 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 8)}}<path d="M50,50 L27.5,88.77 A45,45 0 0,1 11.23,72.5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 9)}}<path d="M50,50 L11.23,72.5 A45,45 0 0,1 5,50 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 10)}}<path d="M50,50 L5,50 A45,45 0 0,1 11.23,27.5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (gte clock.value 11)}}<path d="M50,50 L11.23,27.5 A45,45 0 0,1 27.5,11.23 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+                {{#if (eq clock.value 12)}}<path d="M50,50 L27.5,11.23 A45,45 0 0,1 50,5 Z" fill="#ff0000" stroke="#ffffff" stroke-width="2"/></path>{{/if}}
+              </svg>
+            {{else}}
+              <!-- Domyślny SVG dla nieobsługiwanych wartości max -->
+              <svg class="clock-svg" viewBox="0 0 100 100" width="100" height="100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#666" stroke-width="5"/>
+                <text x="50" y="55" font-size="20" text-anchor="middle" fill="#e0e0e0">{{clock.value}}/{{clock.max}}</text>
+              </svg>
+            {{/if}}
+          </div>
+          <div class="clock-details">
+            <div class="clock-header">
+              <span class="clock-name">{{clock.name}}</span>
+              <span class="clock-progress">{{clock.value}} / {{clock.max}}</span>
+            </div>
+            <div class="clock-description">{{clock.description}}</div>
+            <div class="clock-actions">
+              <button class="decrement-clock small-btn" title="{{localize 'COGSYNDICATE.DecrementClock'}}"><i class="fas fa-minus"></i></button>
+              <button class="increment-clock small-btn" title="{{localize 'COGSYNDICATE.IncrementClock'}}"><i class="fas fa-plus"></i></button>
+              <button class="edit-clock small-btn" title="{{localize 'COGSYNDICATE.EditDoomClock'}}"><i class="fas fa-edit"></i></button>
+              <button class="delete-clock small-btn" title="{{localize 'COGSYNDICATE.DeleteDoomClock'}}"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    {{else}}
+      <div class="no-clocks-placeholder">{{localize "COGSYNDICATE.NoClocksPlaceholder"}}</div>
+    {{/if}}
+  </div>
+</div>

@@ -1,0 +1,190 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{localize 'COGSYNDICATE.EditImage'}}" />
+    <h1><input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'COGSYNDICATE.HQName'}}" class="centered" /></h1>
+  </header>
+
+  <section class="sheet-body">
+    <!-- Nawigacja zakładek -->
+    <nav class="sheet-tabs tabs" data-group="primary">
+      <a class="item active" data-tab="primary-locations">{{localize "COGSYNDICATE.PrimaryLocationsTab"}}</a>
+      <a class="item" data-tab="additional-locations">{{localize "COGSYNDICATE.AdditionalLocationsTab"}}</a>
+      <a class="item" data-tab="expansion">{{localize "COGSYNDICATE.ExpansionProjectsTab"}}</a>
+    </nav>
+
+    <!-- Zawartość zakładek -->
+    <section class="sheet-content">
+      <!-- Zakładka Lokacje Podstawowe -->
+      <div class="tab primary-locations active" data-group="primary" data-tab="primary-locations">
+        <div class="primary-locations-section">
+          <h3 class="centered">{{localize "COGSYNDICATE.PrimaryLocationsTab"}}</h3>
+
+          <!-- Sekcja: Ambulatorium -->
+          <div class="section-item infirmary {{#if system.primarySections.infirmary.isDestroyed}}disabled{{/if}}">
+            <div class="section-header">
+              <span class="section-name">{{localize "COGSYNDICATE.Infirmary"}}</span>
+            </div>
+            <div class="section-levels">
+              <button type="button" class="level-btn decrease-level" data-section="infirmary" title="{{localize 'COGSYNDICATE.DecreaseLevel'}}" {{#if system.primarySections.infirmary.isDestroyed}}disabled{{/if}}><i class="fas fa-minus"></i></button>
+              <span class="level-label">{{localize "COGSYNDICATE.LevelLabel"}}</span>
+              <span class="level-value">{{system.primarySections.infirmary.level}}</span>
+              <button type="button" class="level-btn increase-level" data-section="infirmary" title="{{localize 'COGSYNDICATE.IncreaseLevel'}}" {{#if system.primarySections.infirmary.isDestroyed}}disabled{{/if}}><i class="fas fa-plus"></i></button>
+              <span class="level-description {{#if (eq system.primarySections.infirmary.level 0)}}active{{/if}}">{{localize "COGSYNDICATE.InfirmaryLevel0"}}</span>
+              <span class="level-description {{#if (eq system.primarySections.infirmary.level 1)}}active{{/if}}">{{localize "COGSYNDICATE.InfirmaryLevel1"}}</span>
+              <span class="level-description {{#if (eq system.primarySections.infirmary.level 2)}}active{{/if}}">{{localize "COGSYNDICATE.InfirmaryLevel2"}}</span>
+              <span class="level-description {{#if (eq system.primarySections.infirmary.level 3)}}active{{/if}}">{{localize "COGSYNDICATE.InfirmaryLevel3"}}</span>
+            </div>
+            <div class="section-checkbox">
+              <label><input type="checkbox" class="destroyed-checkbox" data-section="infirmary" {{#if system.primarySections.infirmary.isDestroyed}}checked{{/if}} /> {{localize "COGSYNDICATE.LocationDestroyed"}}</label>
+            </div>
+          </div>
+          <hr class="section-separator">
+
+          <!-- Sekcja: Kwatery Załogi -->
+          <div class="section-item crew-quarters {{#if system.primarySections.crewQuarters.isDestroyed}}disabled{{/if}}">
+            <div class="section-header">
+              <span class="section-name">{{localize "COGSYNDICATE.CrewQuarters"}}</span>
+            </div>
+            <div class="section-levels">
+              <button type="button" class="level-btn decrease-level" data-section="crewQuarters" title="{{localize 'COGSYNDICATE.DecreaseLevel'}}" {{#if system.primarySections.crewQuarters.isDestroyed}}disabled{{/if}}><i class="fas fa-minus"></i></button>
+              <span class="level-label">{{localize "COGSYNDICATE.LevelLabel"}}</span>
+              <span class="level-value">{{system.primarySections.crewQuarters.level}}</span>
+              <button type="button" class="level-btn increase-level" data-section="crewQuarters" title="{{localize 'COGSYNDICATE.IncreaseLevel'}}" {{#if system.primarySections.crewQuarters.isDestroyed}}disabled{{/if}}><i class="fas fa-plus"></i></button>
+              <span class="level-description {{#if (eq system.primarySections.crewQuarters.level 0)}}active{{/if}}">{{localize "COGSYNDICATE.CrewQuartersLevel0"}}</span>
+              <span class="level-description {{#if (eq system.primarySections.crewQuarters.level 1)}}active{{/if}}">{{localize "COGSYNDICATE.CrewQuartersLevel1"}}</span>
+              <span class="level-description {{#if (eq system.primarySections.crewQuarters.level 2)}}active{{/if}}">{{localize "COGSYNDICATE.CrewQuartersLevel2"}}</span>
+              <span class="level-description {{#if (eq system.primarySections.crewQuarters.level 3)}}active{{/if}}">{{localize "COGSYNDICATE.CrewQuartersLevel3"}}</span>
+            </div>
+            <div class="section-checkbox">
+              <label><input type="checkbox" class="destroyed-checkbox" data-section="crewQuarters" {{#if system.primarySections.crewQuarters.isDestroyed}}checked{{/if}} /> {{localize "COGSYNDICATE.LocationDestroyed"}}</label>
+            </div>
+          </div>
+          <hr class="section-separator">
+
+          <!-- Sekcja: Sale treningowe -->
+          <div class="section-item training-halls {{#if system.primarySections.trainingHalls.isDestroyed}}disabled{{/if}}">
+            <div class="section-header">
+              <span class="section-name">{{localize "COGSYNDICATE.TrainingHalls"}}</span>
+            </div>
+            <div class="section-levels">
+              <button type="button" class="level-btn decrease-level" data-section="trainingHalls" title="{{localize 'COGSYNDICATE.DecreaseLevel'}}" {{#if system.primarySections.trainingHalls.isDestroyed}}disabled{{/if}}><i class="fas fa-minus"></i></button>
+              <span class="level-label">{{localize "COGSYNDICATE.LevelLabel"}}</span>
+              <span class="level-value">{{system.primarySections.trainingHalls.level}}</span>
+              <button type="button" class="level-btn increase-level" data-section="trainingHalls" title="{{localize 'COGSYNDICATE.IncreaseLevel'}}" {{#if system.primarySections.trainingHalls.isDestroyed}}disabled{{/if}}><i class="fas fa-plus"></i></button>
+              <span class="level-description {{#if (eq system.primarySections.trainingHalls.level 0)}}active{{/if}}">{{localize "COGSYNDICATE.TrainingHallsLevel0"}}</span>
+              <span class="level-description {{#if (eq system.primarySections.trainingHalls.level 1)}}active{{/if}}">{{localize "COGSYNDICATE.TrainingHallsLevel1"}}</span>
+              <span class="level-description {{#if (eq system.primarySections.trainingHalls.level 2)}}active{{/if}}">{{localize "COGSYNDICATE.TrainingHallsLevel2"}}</span>
+              <span class="level-description {{#if (eq system.primarySections.trainingHalls.level 3)}}active{{/if}}">{{localize "COGSYNDICATE.TrainingHallsLevel3"}}</span>
+            </div>
+            <div class="section-checkbox">
+              <label><input type="checkbox" class="destroyed-checkbox" data-section="trainingHalls" {{#if system.primarySections.trainingHalls.isDestroyed}}checked{{/if}} /> {{localize "COGSYNDICATE.LocationDestroyed"}}</label>
+            </div>
+          </div>
+          <hr class="section-separator">
+
+          <!-- Sekcja: Warsztat -->
+          <div class="section-item workshop {{#if system.primarySections.workshop.isDestroyed}}disabled{{/if}}">
+            <div class="section-header">
+              <span class="section-name">{{localize "COGSYNDICATE.Workshop"}}</span>
+            </div>
+            <div class="section-levels">
+              <button type="button" class="level-btn decrease-level" data-section="workshop" title="{{localize 'COGSYNDICATE.DecreaseLevel'}}" {{#if system.primarySections.workshop.isDestroyed}}disabled{{/if}}><i class="fas fa-minus"></i></button>
+              <span class="level-label">{{localize "COGSYNDICATE.LevelLabel"}}</span>
+              <span class="level-value">{{system.primarySections.workshop.level}}</span>
+              <button type="button" class="level-btn increase-level" data-section="workshop" title="{{localize 'COGSYNDICATE.IncreaseLevel'}}" {{#if system.primarySections.workshop.isDestroyed}}disabled{{/if}}><i class="fas fa-plus"></i></button>
+              <span class="level-description {{#if (eq system.primarySections.workshop.level 0)}}active{{/if}}">{{localize "COGSYNDICATE.WorkshopLevel0"}}</span>
+              <span class="level-description {{#if (eq system.primarySections.workshop.level 1)}}active{{/if}}">{{localize "COGSYNDICATE.WorkshopLevel1"}}</span>
+              <span class="level-description {{#if (eq system.primarySections.workshop.level 2)}}active{{/if}}">{{localize "COGSYNDICATE.WorkshopLevel2"}}</span>
+              <span class="level-description {{#if (eq system.primarySections.workshop.level 3)}}active{{/if}}">{{localize "COGSYNDICATE.WorkshopLevel3"}}</span>
+            </div>
+            <div class="section-checkbox">
+              <label><input type="checkbox" class="destroyed-checkbox" data-section="workshop" {{#if system.primarySections.workshop.isDestroyed}}checked{{/if}} /> {{localize "COGSYNDICATE.LocationDestroyed"}}</label>
+            </div>
+          </div>
+          <hr class="section-separator">
+
+          <!-- Lista Lokacji Podstawowych -->
+          <div class="locations-list">
+            {{#each system.locationsPrimary as |location index|}}
+              <div class="location-item" data-index="{{index}}">
+                <div class="location-header">
+                  <span class="location-name">{{location.name}}</span>
+                </div>
+                <div class="location-details">
+                  <span class="location-description">{{location.description}}</span>
+                  <span class="location-effect">{{location.effect}}</span>
+                </div>
+                <div class="location-actions">
+                  <button type="button" class="edit-location location-action-btn" title="{{localize 'COGSYNDICATE.EditLocation'}}"><i class="fas fa-edit"></i></button>
+                  <button type="button" class="delete-location location-action-btn" title="{{localize 'COGSYNDICATE.DeleteLocation'}}"><i class="fas fa-trash"></i></button>
+                </div>
+              </div>
+            {{/each}}
+            {{#unless system.locationsPrimary.length}}
+              <p>{{localize "COGSYNDICATE.LocationsPlaceholder"}}</p>
+            {{/unless}}
+          </div>
+        </div>
+      </div>
+
+      <!-- Zakładka Lokacje Dodatkowe -->
+      <div class="tab additional-locations" data-group="primary" data-tab="additional-locations">
+        <div class="additional-locations-section">
+          <h3 class="centered">{{localize "COGSYNDICATE.AdditionalLocationsTab"}}</h3>
+          <button type="button" class="add-location-btn" title="{{localize 'COGSYNDICATE.AddLocation'}}">{{localize "COGSYNDICATE.AddLocation"}}</button>
+          <div class="locations-list">
+            {{#each system.locationsAdditional as |location index|}}
+              <div class="location-item" data-index="{{index}}">
+                <div class="location-header">
+                  <span class="location-name">{{location.name}}</span>
+                </div>
+                <div class="location-details">
+                  <span class="location-description">{{location.description}}</span>
+                  <span class="location-effect">{{location.effect}}</span>
+                </div>
+                <div class="location-actions">
+                  <button type="button" class="edit-location location-action-btn" title="{{localize 'COGSYNDICATE.EditLocation'}}"><i class="fas fa-edit"></i></button>
+                  <button type="button" class="delete-location location-action-btn" title="{{localize 'COGSYNDICATE.DeleteLocation'}}"><i class="fas fa-trash"></i></button>
+                </div>
+              </div>
+            {{/each}}
+            {{#unless system.locationsAdditional.length}}
+              <p>{{localize "COGSYNDICATE.LocationsPlaceholder"}}</p>
+            {{/unless}}
+          </div>
+        </div>
+      </div>
+
+      <!-- Zakładka Rozbudowa Bazy -->
+      <div class="tab expansion" data-group="primary" data-tab="expansion">
+        <div class="expansion-projects-section">
+          <h3 class="centered">{{localize "COGSYNDICATE.ExpansionProjectsTab"}}</h3>
+          <button type="button" class="add-project-btn" title="{{localize 'COGSYNDICATE.AddExpansionProject'}}">{{localize "COGSYNDICATE.AddExpansionProject"}}</button>
+          <div class="projects-list">
+            {{#each system.expansionProjects as |project index|}}
+              <div class="project-item" data-index="{{index}}">
+                <div class="project-header">
+                  <span class="project-name">{{project.name}}</span>
+                </div>
+                <div class="project-details">
+                  <span class="project-description">{{project.description}}</span>
+                  <span class="project-effect">{{project.effect}}</span>
+                </div>
+                <div class="project-actions">
+                  <button type="button" class="edit-project project-action-btn" title="{{localize 'COGSYNDICATE.EditExpansionProject'}}"><i class="fas fa-edit"></i></button>
+                  <button type="button" class="delete-project project-action-btn" title="{{localize 'COGSYNDICATE.DeleteExpansionProject'}}"><i class="fas fa-trash"></i></button>
+                </div>
+              </div>
+            {{/each}}
+            {{#unless system.expansionProjects.length}}
+              <p>{{localize "COGSYNDICATE.ProjectsPlaceholder"}}</p>
+            {{/unless}}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Separator -->
+    <hr class="section-separator">
+  </section>
+</form>

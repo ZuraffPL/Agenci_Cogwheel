@@ -1,0 +1,279 @@
+.cogwheel.sheet.actor.hq {
+  font-family: Arial, sans-serif;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+.cogwheel.sheet.actor.hq .sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.cogwheel.sheet.actor.hq .profile-img {
+  width: 100px;
+  height: 100px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.cogwheel.sheet.actor.hq .sheet-header h1 {
+  text-align: center;
+}
+
+.cogwheel.sheet.actor.hq .centered {
+  text-align: center;
+}
+
+.cogwheel.sheet.actor.hq .sheet-body {
+  padding: 10px;
+}
+
+.cogwheel.sheet.actor.hq .primary-locations-section,
+.cogwheel.sheet.actor.hq .additional-locations-section,
+.cogwheel.sheet.actor.hq .expansion-projects-section {
+  margin-bottom: 20px;
+}
+
+.cogwheel.sheet.actor.hq .locations-list,
+.cogwheel.sheet.actor.hq .projects-list {
+  margin-top: 10px;
+}
+
+.cogwheel.sheet.actor.hq .location-item,
+.cogwheel.sheet.actor.hq .project-item {
+  border: 1px solid #666;
+  border-radius: 4px;
+  padding: 5px;
+  margin-bottom: 5px;
+  background-color: #666666;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cogwheel.sheet.actor.hq .location-header,
+.cogwheel.sheet.actor.hq .project-header {
+  font-weight: bold;
+  font-size: 1.1em;
+  border-bottom: 1px dashed #555;
+  padding-bottom: 2px;
+}
+
+.cogwheel.sheet.actor.hq .location-details,
+.cogwheel.sheet.actor.hq .project-details {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.cogwheel.sheet.actor.hq .location-name,
+.cogwheel.sheet.actor.hq .project-name {
+  color: #e0e0e0;
+}
+
+.cogwheel.sheet.actor.hq .location-description,
+.cogwheel.sheet.actor.hq .project-description {
+  flex: 2;
+  color: #c0c0c0;
+  word-wrap: break-word;
+}
+
+.cogwheel.sheet.actor.hq .location-effect,
+.cogwheel.sheet.actor.hq .project-effect {
+  flex: 1;
+  color: #aaccff;
+  word-wrap: break-word;
+}
+
+.cogwheel.sheet.actor.hq .location-actions,
+.cogwheel.sheet.actor.hq .project-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.cogwheel.sheet.actor.hq .location-action-btn,
+.cogwheel.sheet.actor.hq .project-action-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  font-size: 12px;
+  line-height: 24px;
+  text-align: center;
+  background-color: #444;
+  border: 1px solid #666;
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.cogwheel.sheet.actor.hq .location-action-btn:hover,
+.cogwheel.sheet.actor.hq .project-action-btn:hover {
+  background-color: #555;
+}
+
+.cogwheel.sheet.actor.hq .add-location-btn,
+.cogwheel.sheet.actor.hq .add-project-btn {
+  background-color: #444;
+  border: 1px solid #666;
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.cogwheel.sheet.actor.hq .add-location-btn:hover,
+.cogwheel.sheet.actor.hq .add-project-btn:hover {
+  background-color: #555;
+}
+
+.cogwheel.sheet.actor.hq .sheet-tabs.tabs {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 1px solid #ccc;
+  margin-top: 20px;
+}
+
+.cogwheel.sheet.actor.hq .sheet-tabs.tabs .item {
+  flex: 1;
+  text-align: center;
+  padding: 5px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 0.3s ease;
+}
+
+.cogwheel.sheet.actor.hq .sheet-tabs.tabs .item.active {
+  border-bottom: 2px solid #000;
+  font-weight: bold;
+}
+
+.cogwheel.sheet.actor.hq .sheet-tabs.tabs .item:hover {
+  background-color: #f0f0f0;
+}
+
+.cogwheel.sheet.actor.hq .tab {
+  display: none;
+}
+
+.cogwheel.sheet.actor.hq .tab.active {
+  display: block;
+}
+
+.cogwheel.sheet.actor.hq .section-item {
+  border: 1px solid #666;
+  border-radius: 4px;
+  padding: 5px;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cogwheel.sheet.actor.hq .section-item.infirmary {
+  background-color: #28a745;
+}
+
+.cogwheel.sheet.actor.hq .section-item.crew-quarters {
+  background-color: #007bff;
+}
+
+.cogwheel.sheet.actor.hq .section-item.training-halls {
+  background-color: #d39e00;
+}
+
+.cogwheel.sheet.actor.hq .section-item.workshop {
+  background-color: #6f42c1;
+}
+
+.cogwheel.sheet.actor.hq .section-header {
+  font-weight: bold;
+  font-size: 1.1em;
+  border-bottom: 1px dashed #555;
+  padding-bottom: 2px;
+  text-align: center;
+}
+
+.cogwheel.sheet.actor.hq .section-name {
+  color: #e0e0e0;
+}
+
+.cogwheel.sheet.actor.hq .section-levels {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cogwheel.sheet.actor.hq .level-btn {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  font-size: 12px;
+  line-height: 24px;
+  text-align: center;
+  background-color: #444;
+  border: 1px solid #666;
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.cogwheel.sheet.actor.hq .level-btn:hover {
+  background-color: #555;
+}
+
+.cogwheel.sheet.actor.hq .level-btn:disabled {
+  background-color: #333;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.cogwheel.sheet.actor.hq .level-label {
+  color: #e0e0e0;
+  font-weight: bold;
+}
+
+.cogwheel.sheet.actor.hq .level-value {
+  font-weight: bold;
+  color: #e0e0e0;
+  width: 20px;
+  text-align: center;
+}
+
+.cogwheel.sheet.actor.hq .level-description {
+  color: #c0c0c0;
+  display: none;
+}
+
+.cogwheel.sheet.actor.hq .level-description.active {
+  display: inline;
+  color: #000000;
+  font-weight: bold;
+}
+
+.cogwheel.sheet.actor.hq .section-checkbox {
+  margin-top: 5px;
+}
+
+.cogwheel.sheet.actor.hq .section-checkbox label {
+  color: #e0e0e0;
+}
+
+.cogwheel.sheet.actor.hq .section-item.disabled {
+  filter: brightness(0.6);
+}
+
+.cogwheel.sheet.actor.hq .section-item.disabled .section-name,
+.cogwheel.sheet.actor.hq .section-item.disabled .level-label,
+.cogwheel.sheet.actor.hq .section-item.disabled .level-value,
+.cogwheel.sheet.actor.hq .section-item.disabled .level-description.active {
+  color: #999;
+}

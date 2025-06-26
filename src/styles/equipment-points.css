@@ -1,0 +1,33 @@
+/* systems/cogwheel-syndicate/src/styles/equipment-points.css */
+
+.equipment-points {
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  text-align: center;
+  font-weight: bold;
+}
+
+.equipment-points-label {
+  color: #000;
+  margin-right: 5px;
+}
+
+.equipment-points-value {
+  color: #28a745;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.equipment-points-max {
+  color: #666;
+  font-weight: normal;
+}
+
+/* Styl dla niskich punktów ekwipunku */
+.equipment-points-value.low {
+  color: #dc3545;
+}
+
+.equipment-points-value.medium {
+  color: #ffc107;
+}

@@ -1,0 +1,21 @@
+<div class="trauma-dialog">
+  <div class="form-group">
+    <label for="name">{{localize "COGSYNDICATE.LocationName"}}</label>
+    <div class="input-container">
+      <input type="text" name="name" value="{{location.name}}" placeholder="{{localize 'COGSYNDICATE.LocationNamePlaceholder'}}" />
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="description">{{localize "COGSYNDICATE.LocationDescription"}}</label>
+    <div class="input-container">
+      <textarea name="description" placeholder="{{localize 'COGSYNDICATE.LocationDescriptionPlaceholder'}}">{{location.description}}</textarea>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="effect">{{localize "COGSYNDICATE.LocationEffect"}}</label>
+    <div class="input-container">
+      <textarea name="effect" placeholder="{{localize 'COGSYNDICATE.LocationEffectPlaceholder'}}">{{location.effect}}</textarea>
+    </div>
+  </div>
+  <div class="error-message">{{localize "COGSYNDICATE.LocationValidationError"}}</div>
+</div>

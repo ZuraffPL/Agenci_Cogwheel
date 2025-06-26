@@ -1,0 +1,150 @@
+/* Style dla głównego okna Zegary Postępu */
+.doom-clocks .doom-clocks-content {
+  padding: 10px;
+  min-width: 400px; /* Minimalna szerokość okna */
+}
+
+/* Styl dla przycisku "Dodaj Zegar Postępu" */
+.doom-clocks .add-clock {
+  white-space: nowrap; /* Zapobiega zawijaniu tekstu */
+  min-width: 150px; /* Minimalna szerokość, aby pomieścić tekst */
+  padding: 5px 10px; /* Większy padding dla lepszej czytelności */
+  display: inline-flex; /* Użyj flex, aby ikona i tekst były w jednej linii */
+  align-items: center; /* Wyrównanie w pionie */
+  gap: 5px; /* Odstęp między ikoną a tekstem */
+  background-color: #444;
+  border: 1px solid #666;
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.doom-clocks .add-clock:hover {
+  background-color: #555;
+}
+
+.doom-clocks .clocks-list {
+  margin-top: 10px;
+}
+
+.doom-clocks .clock-item {
+  display: flex;
+  align-items: center;
+  border: 1px solid #666;
+  border-radius: 4px;
+  padding: 5px;
+  margin-bottom: 5px;
+  min-height: 60px; /* Minimalna wysokość wiersza */
+}
+
+/* Cykliczne kolory tła dla elementów clock-item */
+.doom-clocks .clock-item:nth-child(8n+1) {
+  background-color: #4a5d6b; /* Stonowany niebiesko-szary */
+}
+.doom-clocks .clock-item:nth-child(8n+2) {
+  background-color: #5a4a5d; /* Stonowany fioletowo-szary */
+}
+.doom-clocks .clock-item:nth-child(8n+3) {
+  background-color: #4a5d4a; /* Stonowany zielono-szary */
+}
+.doom-clocks .clock-item:nth-child(8n+4) {
+  background-color: #5d5a4a; /* Stonowany brązowo-szary */
+}
+.doom-clocks .clock-item:nth-child(8n+5) {
+  background-color: #4a4a5d; /* Stonowany granatowy */
+}
+.doom-clocks .clock-item:nth-child(8n+6) {
+  background-color: #5d4a4a; /* Stonowany czerwono-szary */
+}
+.doom-clocks .clock-item:nth-child(8n+7) {
+  background-color: #4a5d5d; /* Stonowany morski */
+}
+.doom-clocks .clock-item:nth-child(8n+8) {
+  background-color: #5d5d4a; /* Stonowany oliwkowy */
+}
+
+.doom-clocks .clock-visual {
+  margin-right: 10px;
+  flex-shrink: 0; /* Zapobiega zmniejszaniu SVG */
+}
+
+.doom-clocks .clock-svg {
+  width: 100px;
+  height: 100px;
+}
+
+.doom-clocks .clock-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.doom-clocks .clock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.doom-clocks .clock-name {
+  color: #e0e0e0;
+  max-width: 200px; /* Ograniczenie szerokości nazwy */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Skracanie nazwy z "..." */
+}
+
+.doom-clocks .clock-progress {
+  color: #aaccff;
+  white-space: nowrap;
+}
+
+.doom-clocks .clock-description {
+  color: #c0c0c0;
+  font-size: 0.9em;
+  max-width: 100%; /* Ograniczenie szerokości opisu */
+  word-wrap: break-word; /* Zawijanie tekstu */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Skracanie opisu z "..." */
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Maksymalnie 2 linie */
+  -webkit-box-orient: vertical;
+}
+
+.doom-clocks .clock-actions {
+  display: flex;
+  gap: 5px;
+  margin-top: 5px;
+  justify-content: flex-end; /* Wyrównanie przycisków do prawej */
+}
+
+.doom-clocks .no-clocks-placeholder {
+  text-align: center;
+  color: #c0c0c0;
+  font-style: italic;
+  padding: 10px;
+}
+
+/* Style dla dialogu dodawania/edytowania zegara */
+.clock-dialog .clock-form-group {
+  margin-bottom: 10px;
+}
+
+.clock-dialog .clock-form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #e0e0e0;
+}
+
+.clock-dialog .clock-form-group input[type="text"],
+.clock-dialog .clock-form-group textarea,
+.clock-dialog .clock-form-group select {
+  width: 100%;
+  padding: 5px;
+  background-color: #3a3a3a;
+  border: 1px solid #555;
+  border-radius: 3px;
+  color: #ddd;
+}

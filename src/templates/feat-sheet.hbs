@@ -1,0 +1,30 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="sheet-header flexrow">
+    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" alt="{{item.name}}" />
+    <h1 class="centered"><input name="name" type="text" value="{{item.name}}" placeholder="Nazwa Atutu" /></h1>
+  </header>
+
+  <section class="sheet-body">
+    <div class="form-group">
+      <label>Typ:</label>
+      <div class="input-container">
+        <select name="system.type">
+          <option value="initial" {{#if (eq system.type "initial")}}selected{{/if}}>{{localize "COGSYNDICATE.FeatInitial"}}</option>
+          <option value="development" {{#if (eq system.type "development")}}selected{{/if}}>{{localize "COGSYNDICATE.FeatAdvanced"}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Opis:</label>
+      <div class="input-container">
+        <textarea name="system.effect" rows="4">{{system.effect}}</textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>{{localize "COGSYNDICATE.NarrativeEffect"}}:</label>
+      <div class="input-container">
+        <textarea name="system.narrativeEffect" rows="4" placeholder="{{localize "COGSYNDICATE.NarrativeEffectPlaceholder"}}">{{system.narrativeEffect}}</textarea>
+      </div>
+    </div>
+  </section>
+</form>

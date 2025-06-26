@@ -1,0 +1,47 @@
+{
+  "id": "cogwheel-syndicate",
+  "title": "Agenci Cogwheel",
+  "description": "Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysłowej",
+  "version": "0.5.6",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12.331"
+  },
+  "scripts": [],
+  "esmodules": [
+    "src/scripts/actor-sheet.js",
+    "src/scripts/hq-sheet.js",
+    "src/scripts/nemesis-sheet.js",
+    "src/scripts/item-sheet.js",
+    "src/scripts/roll-mechanics.js",
+    "src/scripts/init.js",
+    "src/scripts/clocks.mjs",
+    "src/scripts/handlebars.mjs"
+  ],
+  "styles": [
+    "src/styles/cogwheel.css",
+    "src/styles/hq.css",
+    "src/styles/nemesis.css",
+    "src/styles/clocks.css",
+    "src/styles/equipment.css",
+    "src/styles/equipment-points.css",
+    "src/styles/notes.css",
+    "src/styles/trauma-types.css",
+    "src/styles/sidebars-controls.css",
+    "src/styles/spend-gear.css",
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+  ],
+  "socket": true,
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "pl",
+      "name": "Polski",
+      "path": "lang/pl.json"
+    }
+  ]
+}

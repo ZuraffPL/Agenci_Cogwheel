@@ -1,0 +1,94 @@
+/* Style dla sekcji wydawania sprzętu */
+.gear-spend-section {
+  margin-top: 8px;
+  text-align: center;
+}
+
+.spend-gear-btn {
+  background-color: #4a6741;
+  border: 1px solid #5a7751;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+  width: auto;
+  min-width: 100px;
+}
+
+.spend-gear-btn:hover {
+  background-color: #5a7751;
+}
+
+.spend-gear-btn:active {
+  background-color: #3a5631;
+}
+
+/* Style dla okna dialogowego wydawania sprzętu */
+.spend-gear-dialog {
+  font-family: Arial, sans-serif;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+.spend-gear-content {
+  padding: 15px;
+}
+
+.spend-gear-content h3 {
+  margin: 0 0 15px 0;
+  text-align: center;
+  color: #e0e0e0;
+  font-size: 1.2em;
+}
+
+.gear-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.gear-option {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background-color: #3a3a3a;
+  transition: background-color 0.2s ease;
+}
+
+.gear-option:hover {
+  background-color: #444;
+}
+
+.gear-option input[type="radio"] {
+  margin-right: 10px;
+  accent-color: #4a6741;
+}
+
+.gear-option label {
+  flex: 1;
+  cursor: pointer;
+  color: #e0e0e0;
+  font-size: 14px;
+}
+
+.gear-option input[type="radio"]:checked + label {
+  font-weight: bold;
+  color: #fff;
+}
+
+.error-message {
+  font-size: 13px;
+  font-weight: bold;
+  margin-top: 10px;
+  padding: 5px;
+  border-radius: 3px;
+  background-color: #4a2222;
+  border: 1px solid #aa4444;
+  text-align: center;
+}

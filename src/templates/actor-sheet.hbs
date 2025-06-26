@@ -1,0 +1,303 @@
+﻿<form class="{{cssClass}}" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{localize 'COGSYNDICATE.EditImage'}}" />
+    <h1><input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'COGSYNDICATE.CharacterName'}}" class="centered" /></h1>
+  </header>
+
+  <section class="sheet-body">
+    <!-- Nawigacja tabów -->
+    <nav class="sheet-tabs tabs" data-group="primary">
+      <a class="item active" data-tab="core">{{localize "COGSYNDICATE.CoreTab"}}</a>
+      <a class="item" data-tab="equipment">{{localize "COGSYNDICATE.EquipmentTab"}}</a>
+      <a class="item" data-tab="traumas">{{localize "COGSYNDICATE.TraumasTab"}}</a>
+      <a class="item" data-tab="notes">{{localize "COGSYNDICATE.NotesTab"}}</a>
+    </nav>
+
+    <!-- Zawartość tabów -->
+    <section class="sheet-content">
+      <!-- Zakładka Core (domyślna) -->
+      <div class="tab core active" data-group="primary" data-tab="core">
+        <!-- Archetyp -->
+        <div class="archetype-section">
+          <h3 class="centered">{{localize "COGSYNDICATE.Archetype"}}</h3>
+          <div class="archetype-drop flexrow" data-type="archetype">
+            {{#if system.archetype.name}}
+              <span class="archetype-name">{{system.archetype.name}}</span>
+              <button type="button" class="remove-archetype" title="{{localize 'COGSYNDICATE.RemoveArchetype'}}"><i class="fas fa-trash"></i></button>
+            {{else}}
+              <span>{{localize "COGSYNDICATE.ArchetypeDrop"}}</span>
+            {{/if}}
+          </div>
+        </div>
+
+        <!-- Atrybuty Główne -->
+        <div class="main-attributes columns">
+          <h3 class="centered">{{localize "COGSYNDICATE.MainAttributes"}}</h3>
+          <div class="attributes-container">
+            <div class="attribute">
+              <label>{{localize "COGSYNDICATE.Machine"}}</label>
+              <div class="attribute-content">
+                <input type="number" class="base-value" name="system.attributes.machine.base" value="{{system.attributes.machine.base}}" min="1" max="6" step="1" {{#unless editable}}disabled{{/unless}} title="{{localize 'COGSYNDICATE.BaseValueTooltip'}}" />
+                <input type="number" class="effective-value" name="system.attributes.machine.value" value="{{effectiveAttributes.machine}}" min="1" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
+                <button type="button" class="roll-attribute roll-btn" data-attribute="machine" title="{{localize 'COGSYNDICATE.Roll2d12'}}"><i class="fas fa-dice-d12"></i></button>
+              </div>
+            </div>
+            <div class="attribute">
+              <label>{{localize "COGSYNDICATE.Engineering"}}</label>
+              <div class="attribute-content">
+                <input type="number" class="base-value" name="system.attributes.engineering.base" value="{{system.attributes.engineering.base}}" min="1" max="6" step="1" {{#unless editable}}disabled{{/unless}} title="{{localize 'COGSYNDICATE.BaseValueTooltip'}}" />
+                <input type="number" class="effective-value" name="system.attributes.engineering.value" value="{{effectiveAttributes.engineering}}" min="1" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
+                <button type="button" class="roll-attribute roll-btn" data-attribute="engineering" title="{{localize 'COGSYNDICATE.Roll2d12'}}"><i class="fas fa-dice-d12"></i></button>
+              </div>
+            </div>
+            <div class="attribute">
+              <label>{{localize "COGSYNDICATE.Intrigue"}}</label>
+              <div class="attribute-content">
+                <input type="number" class="base-value" name="system.attributes.intrigue.base" value="{{system.attributes.intrigue.base}}" min="1" max="6" step="1" {{#unless editable}}disabled{{/unless}} title="{{localize 'COGSYNDICATE.BaseValueTooltip'}}" />
+                <input type="number" class="effective-value" name="system.attributes.intrigue.value" value="{{effectiveAttributes.intrigue}}" min="1" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
+                <button type="button" class="roll-attribute roll-btn" data-attribute="intrigue" title="{{localize 'COGSYNDICATE.Roll2d12'}}"><i class="fas fa-dice-d12"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Atrybuty Pochodne -->
+        <div class="secondary-attributes columns">
+          <h3 class="centered">{{localize "COGSYNDICATE.SecondaryAttributes"}}</h3>
+          <div class="attributes-container">
+            <div class="attribute">
+             <label>{{localize "COGSYNDICATE.Endurance"}}</label>
+              <div class="radio-group horizontal">
+                <div class="radio-item">
+                  <input type="radio" id="endurance-0" name="system.secondaryAttributes.endurance.value" value="0" {{#if (eq system.secondaryAttributes.endurance.value "0")}}checked{{/if}}>
+                  <label for="endurance-0">0</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="endurance-1" name="system.secondaryAttributes.endurance.value" value="-1" {{#if (eq system.secondaryAttributes.endurance.value "-1")}}checked{{/if}}>
+                  <label for="endurance-1">-1</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="endurance-2" name="system.secondaryAttributes.endurance.value" value="-2" {{#if (eq system.secondaryAttributes.endurance.value "-2")}}checked{{/if}}>
+                 <label for="endurance-2">-2</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="endurance-3" name="system.secondaryAttributes.endurance.value" value="-3" {{#if (eq system.secondaryAttributes.endurance.value "-3")}}checked{{/if}}>
+                  <label for="endurance-3">-3</label>
+                </div>
+              </div>
+            </div>
+            <div class="attribute">
+              <label>{{localize "COGSYNDICATE.Control"}}</label>
+              <div class="radio-group horizontal">
+                <div class="radio-item">
+                  <input type="radio" id="control-0" name="system.secondaryAttributes.control.value" value="0" {{#if (eq system.secondaryAttributes.control.value "0")}}checked{{/if}}>
+                  <label for="control-0">0</label>
+                </div>
+                <div class="radio-item">
+                 <input type="radio" id="control-1" name="system.secondaryAttributes.control.value" value="-1" {{#if (eq system.secondaryAttributes.control.value "-1")}}checked{{/if}}>
+                  <label for="control-1">-1</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="control-2" name="system.secondaryAttributes.control.value" value="-2" {{#if (eq system.secondaryAttributes.control.value "-2")}}checked{{/if}}>
+                  <label for="control-2">-2</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="control-3" name="system.secondaryAttributes.control.value" value="-3" {{#if (eq system.secondaryAttributes.control.value "-3")}}checked{{/if}}>
+                  <label for="control-3">-3</label>
+                </div>
+              </div>
+            </div>
+            <div class="attribute">
+              <label>{{localize "COGSYNDICATE.Determination"}}</label>
+              <div class="radio-group horizontal">
+                <div class="radio-item">
+                  <input type="radio" id="determination-0" name="system.secondaryAttributes.determination.value" value="0" {{#if (eq system.secondaryAttributes.determination.value "0")}}checked{{/if}}>
+                  <label for="determination-0">0</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="determination-1" name="system.secondaryAttributes.determination.value" value="-1" {{#if (eq system.secondaryAttributes.determination.value "-1")}}checked{{/if}}>
+                  <label for="determination-1">-1</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="determination-2" name="system.secondaryAttributes.determination.value" value="-2" {{#if (eq system.secondaryAttributes.determination.value "-2")}}checked{{/if}}>
+                  <label for="determination-2">-2</label>
+                </div>
+                <div class="radio-item">
+                  <input type="radio" id="determination-3" name="system.secondaryAttributes.determination.value" value="-3" {{#if (eq system.secondaryAttributes.determination.value "-3")}}checked{{/if}}>
+                  <label for="determination-3">-3</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Zasoby Agenta -->
+        <div class="agent-resources columns">
+          <h3 class="centered">{{localize "COGSYNDICATE.AgentResources"}}</h3>
+          <div class="resources-container">
+            <div class="resource gear">
+              <label>{{localize "COGSYNDICATE.Gear"}}</label>
+              <div class="resource-content">
+                <button type="button" class="decrement small-btn" data-resource="gear">-</button>
+               <input type="number" class="gear-value" name="system.resources.gear.value" value="{{system.resources.gear.value}}" min="0" max="{{system.resources.gear.max}}" data-dtype="Number" title="{{localize 'COGSYNDICATE.GearTooltip' max=system.resources.gear.max}}" />
+                <span>/ {{system.resources.gear.max}}</span>
+               <button type="button" class="increment small-btn" data-resource="gear">+</button>
+              </div>
+              <div class="gear-basis">
+                <label>{{localize "COGSYNDICATE.GearBasis"}}</label>
+                <select name="system.resources.gear.basis" class="gear-basis-select">
+                  <option value="machine" {{#if (eq system.resources.gear.basis "machine")}}selected{{/if}}>{{localize "COGSYNDICATE.Machine"}}</option>
+                  <option value="engineering" {{#if (eq system.resources.gear.basis "engineering")}}selected{{/if}}>{{localize "COGSYNDICATE.Engineering"}}</option>
+                </select>
+              </div>
+              <div class="gear-spend-section">
+                <button type="button" class="spend-gear-btn">{{localize "COGSYNDICATE.SpendGear"}}</button>
+              </div>
+            </div>
+            <div class="resource trauma">
+              <label>{{localize "COGSYNDICATE.Trauma"}}</label>
+              <div class="resource-content">
+                <button type="button" class="decrement small-btn" data-resource="trauma">-</button>
+                <input type="number" class="trauma-value" name="system.resources.trauma.value" value="{{system.resources.trauma.value}}" min="0" max="{{system.resources.trauma.max}}" data-dtype="Number" title="{{localize 'COGSYNDICATE.TraumaTooltip' max=system.resources.trauma.max}}" />
+                <span>/ {{system.resources.trauma.max}}</span>
+                <button type="button" class="increment small-btn" data-resource="trauma">+</button>
+              </div>
+            </div>
+            <div class="resource stress">
+             <label>{{localize "COGSYNDICATE.Stress"}}</label>
+              <div class="resource-content">
+                <button type="button" class="decrement small-btn" data-resource="stress">-</button>
+                <input type="number" class="stress-value" name="system.resources.stress.value" value="{{system.resources.stress.value}}" min="0" max="{{system.resources.stress.max}}" data-dtype="Number" title="{{localize 'COGSYNDICATE.StressTooltip' max=system.resources.stress.max}}" />
+                <span>/ {{system.resources.stress.max}}</span>
+                <button type="button" class="increment small-btn" data-resource="stress">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rozwój -->
+        <div class="development-section">
+          <h3 class="centered">{{localize "COGSYNDICATE.Development"}}</h3>
+          <div class="resources-container">
+            <div class="resource development">
+              <label>{{localize "COGSYNDICATE.DevelopmentPoints"}}</label>
+              <div class="resource-content">
+                <button type="button" class="decrement small-btn" data-resource="development">-</button>
+                <input type="number" class="development-value" name="system.resources.development.value" value="{{system.resources.development.value}}" min="0" max="12" data-dtype="Number" title="{{localize 'COGSYNDICATE.DevelopmentPointsTooltip' max=system.resources.development.max}}" />
+                <span>/ {{system.resources.development.max}}</span>
+                <button type="button" class="increment small-btn" data-resource="development">+</button>
+              </div>
+            </div>
+         </div>
+        </div>
+
+        <!-- Atuty -->
+        <div class="feats-section">
+          <h3 class="centered">{{localize "COGSYNDICATE.FeatsTab"}}</h3>
+          <div class="feats-drop" data-type="feat">
+            {{#if (gt feats.length 0)}}
+              {{#each feats as |feat|}}
+                <div class="feat-item" data-item-id="{{feat._id}}">
+                  <div class="feat-header">
+                    <span class="feat-name">{{feat.name}}</span>
+                    <span class="feat-type">{{#if (eq feat.system.type "initial")}}{{localize "COGSYNDICATE.FeatInitial"}}{{else}}{{localize "COGSYNDICATE.FeatAdvanced"}}{{/if}}</span>
+                    <button type="button" class="delete-feat" data-item-id="{{feat._id}}" title="{{localize 'COGSYNDICATE.DeleteFeat'}}"><i class="fas fa-trash"></i></button>
+                  </div>
+                  <div class="feat-effect">{{feat.system.effect}}</div>
+                </div>
+              {{/each}}
+            {{else}}
+             <span>{{localize "COGSYNDICATE.FeatDrop"}}</span>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+
+<div class="tab equipment" data-tab="equipment">
+  <section class="equipment-section">
+    <h2>{{localize "COGSYNDICATE.EquipmentTab"}}</h2>
+    
+    <!-- Licznik Punktów Ekwipunku -->
+    <div class="equipment-points">
+      <span class="equipment-points-label">{{localize "COGSYNDICATE.EquipmentPoints"}}:</span>
+      <span class="equipment-points-value">{{system.equipmentPoints.value}}</span>
+      <span class="equipment-points-max">/ {{system.equipmentPoints.max}}</span>
+    </div>
+    
+    <button class="add-equipment-btn">{{localize "COGSYNDICATE.AddEquipment"}}</button>
+      {{#each system.equipments as |equipment index|}}
+        <div class="equipment-item {{#if (or equipment.used equipment.droppedDamaged equipment.destroyed)}}disabled{{/if}}" data-index="{{index}}">
+          <div class="equipment-header">
+            {{equipment.name}} ({{localize (concat 'COGSYNDICATE.EquipmentType' (capitalize equipment.type))}})
+          </div>
+          <div class="equipment-details">
+            <div>
+              {{localize "COGSYNDICATE.EquipmentCost"}}: {{equipment.cost}}
+              <br>
+              {{localize "COGSYNDICATE.EquipmentAction"}}: {{equipment.action}}
+              <br>
+              {{localize "COGSYNDICATE.EquipmentUsage"}}: {{localize (concat 'COGSYNDICATE.EquipmentUsage' (capitalize equipment.usage))}}
+            </div>
+            <div class="equipment-actions">
+              <a class="edit-equipment"><i class="fas fa-edit"></i></a>
+              <a class="delete-equipment"><i class="fas fa-trash"></i></a>
+            </div>
+          </div>
+          <div class="equipment-status">
+            <label><input type="checkbox" class="equipment-status-checkbox" data-index="{{index}}" data-status="used" {{#if equipment.used}}checked{{/if}} /> {{localize "COGSYNDICATE.EquipmentUsed"}}</label>
+            <label><input type="checkbox" class="equipment-status-checkbox" data-index="{{index}}" data-status="droppedDamaged" {{#if equipment.droppedDamaged}}checked{{/if}} /> {{localize "COGSYNDICATE.EquipmentDroppedDamaged"}}</label>
+            <label><input type="checkbox" class="equipment-status-checkbox" data-index="{{index}}" data-status="destroyed" {{#if equipment.destroyed}}checked{{/if}} /> {{localize "COGSYNDICATE.EquipmentDestroyed"}}</label>
+          </div>
+        </div>
+    {{/each}}
+    {{#unless system.equipments.length}}
+      {{localize "COGSYNDICATE.NoEquipmentToAdd"}}
+    {{/unless}}
+  </section>
+</div>
+
+      <!-- Zakładka Traumy -->
+      <div class="tab traumas" data-group="primary" data-tab="traumas">
+        <div class="traumas-section">
+          <h3 class="centered">{{localize "COGSYNDICATE.TraumasTab"}}</h3>
+          <button type="button" class="add-trauma-btn" title="{{localize 'COGSYNDICATE.AddTrauma'}}">{{localize "COGSYNDICATE.AddTrauma"}}</button>
+          <div class="traumas-list">
+            {{#each system.traumas as |trauma index|}}
+              <div class="trauma-item trauma-type-{{trauma.type}}" data-index="{{index}}">
+               <div class="trauma-header">
+                  <span class="trauma-name">{{trauma.name}}</span>
+                  <span class="trauma-level">{{localize "COGSYNDICATE.TraumaLevel"}} {{inc index}}</span>
+                  <span class="trauma-type-label">{{localize (concat "COGSYNDICATE.TraumaType" (capitalize trauma.type))}}</span>
+                </div>
+                <div class="trauma-details">
+                 <span class="trauma-description">{{trauma.description}}</span>
+                  <span class="trauma-effect">{{trauma.effect}}</span>
+                </div>
+                <div class="trauma-actions">
+                  <button type="button" class="edit-trauma trauma-action-btn" title="{{localize 'COGSYNDICATE.EditTrauma'}}"><i class="fas fa-edit"></i></button>
+                  <button type="button" class="delete-trauma trauma-action-btn" title="{{localize 'COGSYNDICATE.DeleteTrauma'}}"><i class="fas fa-trash"></i></button>
+                </div>
+              </div>
+            {{/each}}
+            {{#unless system.traumas.length}}
+              <p>{{localize "COGSYNDICATE.TraumasPlaceholder"}}</p>
+            {{/unless}}
+         </div>
+        </div>
+      </div>
+
+      <!-- Zakładka Notatki -->
+      <div class="tab notes" data-group="primary" data-tab="notes">
+        <div class="notes-section">
+          <h3 class="centered">{{localize "COGSYNDICATE.NotesTab"}}</h3>
+          <div class="notes-content">
+            <textarea name="system.notes" class="notes-textarea" placeholder="{{localize 'COGSYNDICATE.NotesPlaceholder'}}">{{system.notes}}</textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Separator -->
+    <hr class="section-separator">
+ </section>
+</form>

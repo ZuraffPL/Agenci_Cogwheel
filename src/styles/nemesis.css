@@ -1,0 +1,303 @@
+.cogwheel.sheet.actor.nemesis {
+  font-family: Arial, sans-serif;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+.cogwheel.sheet.actor.nemesis .sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.cogwheel.sheet.actor.nemesis .profile-img {
+  width: 100px;
+  height: 100px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.cogwheel.sheet.actor.nemesis .sheet-header h1 {
+  text-align: center;
+}
+
+.cogwheel.sheet.actor.nemesis .centered {
+  text-align: center;
+}
+
+.cogwheel.sheet.actor.nemesis .sheet-body {
+  padding: 10px;
+}
+
+.cogwheel.sheet.actor.nemesis .nemesis-info-section {
+  margin-bottom: 20px;
+}
+
+.cogwheel.sheet.actor.nemesis .form-group {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.cogwheel.sheet.actor.nemesis .form-group label {
+  width: 180px;
+  color: #333333;
+  flex-shrink: 0;
+  font-weight: bold;
+  padding-top: 5px;
+}
+
+.cogwheel.sheet.actor.nemesis .form-group input,
+.cogwheel.sheet.actor.nemesis .form-group select,
+.cogwheel.sheet.actor.nemesis .form-group textarea {
+  flex: 3;
+  textarea: center;
+  text-align: center;
+  background-color: #3a3a3a;
+  border: 1px solid #555;
+  border-radius: 3px;
+  color: #ddd;
+  padding: 5px;
+  width: auto; /* Dodałem tę linię */
+  max-width: calc(100% - 190px); /* Dodałem tę linię - uwzględnia szerokość label + gap */
+}
+
+.cogwheel.sheet.actor.nemesis .minions-count-display {
+  background-color: #4a4a4a;
+  border: 1px solid #666;
+  border-radius: 3px;
+  padding: 5px 10px;
+  color: #ffcc00;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.cogwheel.sheet.actor.nemesis .nemesis-clocks-section {
+  margin-bottom: 20px;
+}
+
+.cogwheel.sheet.actor.nemesis .nemesis-clock-item {
+  display: flex;
+  align-items: flex-start;
+  border: 1px solid #666;
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: #3a3a3a;
+  gap: 15px;
+}
+
+.cogwheel.sheet.actor.nemesis .clock-visual {
+  flex-shrink: 0;
+}
+
+.cogwheel.sheet.actor.nemesis .nemesis-clock-svg {
+  width: 100px;
+  height: 100px;
+}
+
+.cogwheel.sheet.actor.nemesis .clock-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.cogwheel.sheet.actor.nemesis .clock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.cogwheel.sheet.actor.nemesis .clock-name {
+  color: #e0e0e0;
+  font-size: 1.1em;
+}
+
+.cogwheel.sheet.actor.nemesis .clock-progress {
+  color: #8B5CF6;
+  font-weight: bold;
+}
+
+.cogwheel.sheet.actor.nemesis .clock-goal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cogwheel.sheet.actor.nemesis .clock-goal-form label {
+  color: #333333;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.cogwheel.sheet.actor.nemesis .clock-goal-form textarea {
+  width: 100%;
+  background-color: #3a3a3a;
+  border: 1px solid #555;
+  border-radius: 3px;
+  color: #ddd;
+  padding: 8px;
+  resize: vertical;
+  min-height: 50px;
+}
+
+.cogwheel.sheet.actor.nemesis .clock-actions {
+  display: flex;
+  gap: 5px;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+.cogwheel.sheet.actor.nemesis .minions-section {
+  margin-bottom: 20px;
+}
+
+.cogwheel.sheet.actor.nemesis .add-minion-btn {
+  background-color: #444;
+  border: 1px solid #666;
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+  padding: 8px 15px;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.cogwheel.sheet.actor.nemesis .add-minion-btn:hover {
+  background-color: #555;
+}
+
+.cogwheel.sheet.actor.nemesis .minions-list {
+  margin-top: 10px;
+}
+
+.cogwheel.sheet.actor.nemesis .minion-item {
+  border: 1px solid #666;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #3a3a3a;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cogwheel.sheet.actor.nemesis .minion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  border-bottom: 1px dashed #555;
+  padding-bottom: 5px;
+}
+
+.cogwheel.sheet.actor.nemesis .minion-name {
+  color: #e0e0e0;
+  font-size: 1.1em;
+}
+
+.cogwheel.sheet.actor.nemesis .minion-role {
+  color: #8B5CF6;
+  font-style: italic;
+}
+
+.cogwheel.sheet.actor.nemesis .minion-description {
+  color: #c0c0c0;
+  margin: 5px 0;
+}
+
+.cogwheel.sheet.actor.nemesis .minion-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.cogwheel.sheet.actor.nemesis .notes-section {
+  margin-bottom: 20px;
+}
+
+.cogwheel.sheet.actor.nemesis .notes-section textarea {
+  width: 100%;
+  background-color: #3a3a3a;
+  border: 1px solid #555;
+  border-radius: 3px;
+  color: #ddd;
+  padding: 10px;
+  resize: vertical;
+}
+
+.cogwheel.sheet.actor.nemesis .sheet-tabs.tabs {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.cogwheel.sheet.actor.nemesis .sheet-tabs.tabs .item {
+  flex: 1;
+  text-align: center;
+  padding: 8px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 0.3s ease;
+}
+
+.cogwheel.sheet.actor.nemesis .sheet-tabs.tabs .item.active {
+  border-bottom: 2px solid #8B5CF6;
+  font-weight: bold;
+  color: #8B5CF6;
+}
+
+.cogwheel.sheet.actor.nemesis .sheet-tabs.tabs .item:hover {
+  background-color: #4a4a4a;
+}
+
+.cogwheel.sheet.actor.nemesis .tab {
+  display: none;
+}
+
+.cogwheel.sheet.actor.nemesis .tab.active {
+  display: block;
+}
+
+.cogwheel.sheet.actor.nemesis .section-separator {
+  border: none;
+  border-top: 1px solid #666;
+  margin: 20px 0;
+}
+
+/* Dialog dla przybocznych */
+.minion-dialog .form-group {
+  margin-bottom: 15px;
+}
+
+.minion-dialog .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333333;
+  font-weight: bold;
+}
+
+.minion-dialog .form-group input,
+.minion-dialog .form-group textarea {
+  width: 100%;
+  background-color: #3a3a3a;
+  border: 1px solid #555;
+  border-radius: 3px;
+  color: #ddd;
+  padding: 8px;
+}
+
+.minion-dialog .form-group textarea {
+  resize: vertical;
+  min-height: 60px;
+}

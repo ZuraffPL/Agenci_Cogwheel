@@ -1,0 +1,760 @@
+.cogwheel.sheet.actor {
+  font-family: Arial, sans-serif;
+  background-color: #2a2a2a; /* Rozjaśnienie ogólnego tła */
+  color: #e0e0e0;
+}
+
+/* Specyficzne style dla okna Atut */
+.cogwheel.sheet.item.feat {
+  font-family: Arial, sans-serif;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  min-width: 400px;
+}
+
+.cogwheel.sheet.item.feat .sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.cogwheel.sheet.item.feat .sheet-header.flexrow {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.cogwheel.sheet.item.feat .sheet-header .profile-img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.cogwheel.sheet.item.feat .sheet-header .centered {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.cogwheel.sheet.item.feat .sheet-body {
+  padding: 10px;
+}
+
+.cogwheel.sheet.item.feat .form-group {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start; /* Etykiety i pola wyrównane do lewej */
+  margin: 10px 0;
+}
+
+.cogwheel.sheet.item.feat .form-group label {
+  width: 100px;
+  text-align: left; /* Etykiety wyrównane do lewej */
+  margin-right: 10px;
+}
+
+.cogwheel.sheet.item.feat .form-group .input-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.cogwheel.sheet.item.feat .form-group select,
+.cogwheel.sheet.item.feat .form-group textarea {
+  width: 250px; /* Stała szerokość pól, aby nie rozciągały się na całą szerokość */
+  background-color: #3a3a3a;
+  border: 1px solid #555;
+  border-radius: 3px;
+  color: #ddd;
+  padding: 5px;
+  resize: vertical;
+}
+
+/* Nagłówek z ikoną awatara */
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.profile-img {
+  width: 100px;
+  height: 100px;
+  border: 2px solid #ccc;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.sheet-header h1 {
+  text-align: center;
+}
+
+.centered {
+  text-align: center;
+}
+
+.sheet-body {
+  padding: 10px;
+}
+
+.archetype-section, .main-attributes, .secondary-attributes, .agent-resources, .feats-section, .traumas-section {
+  margin-bottom: 20px;
+}
+
+.archetype-drop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  border: 1px dashed #ccc;
+}
+
+.remove-archetype {
+  width: 16px; /* Zmniejszamy z 20px */
+  height: 16px; /* Zmniejszamy z 20px */
+  font-size: 10px; /* Zmniejszamy ikonę kosza */
+  padding: 0;
+  margin-left: 5px;
+  line-height: 16px; /* Dopasowujemy linię do wysokości */
+  text-align: center;
+}
+
+.attributes-container, .resources-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.attribute, .resource {
+  flex: 1;
+  margin: 0 5px;
+  text-align: center;
+}
+
+.attribute-content, .resource-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.attribute-content input, .resource-content input {
+  width: 50px;
+  margin-right: 5px;
+}
+
+/* Styl dla wartości bazowej */
+.cogwheel.sheet.actor .attribute-content input.base-value {
+  width: 30px !important;
+  height: 20px !important;
+  font-size: 0.8em !important;
+  color: #444 !important;
+  border: 1px solid #ccc !important;
+  background-color: #fff !important;
+  border-radius: 3px !important;
+}
+
+/* Styl dla wartości efektywnej */
+.cogwheel.sheet.actor .attribute-content input.effective-value {
+  width: 70px !important;
+  height: 40px !important;
+  font-size: 1.4em !important;
+  font-weight: bold !important;
+  color: #000 !important;
+  border: 3px solid #000 !important;
+  background-color: #fff !important;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) !important;
+  border-radius: 5px !important;
+  cursor: default !important;
+}
+
+/* Wspólna klasa dla małych przycisków */
+.small-btn {
+  background-color: #444; /* Rozjaśnienie tła przycisków */
+  border: 1px solid #666; /* Jaśniejsza ramka */
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+  width: 25px; /* Domyślna szerokość */
+  height: 25px; /* Domyślna wysokość */
+  padding: 0; /* Usunięto padding */
+  font-size: 14px; /* Zwiększono rozmiar ikon */
+  line-height: 25px; /* Wyrównanie ikon w pionie */
+  text-align: center; /* Wyrównanie ikon w poziomie */
+}
+
+.small-btn:hover {
+  background-color: #555; /* Nieco jaśniejszy hover */
+}
+
+/* Specyficzne style dla przycisków rzutu w zakładce Core */
+.roll-btn {
+  width: 30px !important;
+  height: 30px !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+  line-height: 30px !important;
+  text-align: center !important;
+}
+
+/* Specyficzne style dla przycisków w zakładce Traumy */
+.trauma-action-btn {
+  width: 24px !important;
+  height: 24px !important;
+  padding: 0 !important;
+  font-size: 12px !important;
+  line-height: 24px !important;
+  text-align: center !important;
+}
+
+/* Styl dla nawigacji zakładek */
+.sheet-tabs.tabs {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 1px solid #ccc;
+  margin-top: 20px; /* Dodatkowy odstęp na dole */
+}
+
+.sheet-tabs.tabs .item {
+  flex: 1;
+  text-align: center;
+  padding: 5px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: border-bottom 0.3s ease;
+}
+
+.sheet-tabs.tabs .item.active {
+  border-bottom: 2px solid #000;
+  font-weight: bold;
+}
+
+.sheet-tabs.tabs .item:hover {
+  background-color: #f0f0f0;
+}
+
+/* Ukrywanie nieaktywnych zakładek */
+.tab {
+  display: none;
+}
+
+.tab.active {
+  display: block;
+}
+
+/* Styl dla sekcji Traum */
+.traumas-section {
+  text-align: center;
+  padding: 10px;
+}
+
+.traumas-list {
+  margin-top: 10px;
+}
+
+.trauma-item {
+  border: 1px solid #666;
+  border-radius: 4px;
+  padding: 5px;
+  margin-bottom: 5px;
+  background-color: #666666; /* Ciemnosrebrny kolor tła */
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.trauma-header {
+  font-weight: bold;
+  font-size: 1.1em;
+  border-bottom: 1px dashed #555; /* Nieco jaśniejsza linia */
+  padding-bottom: 2px;
+}
+
+.trauma-details {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.trauma-name {
+  color: #e0e0e0; /* Nieco jaśniejszy kolor tekstu */
+}
+
+.trauma-description {
+  flex: 2;
+  color: #c0c0c0; /* Nieco jaśniejszy kolor */
+  word-wrap: break-word;
+}
+
+.trauma-effect {
+  flex: 1;
+  color: #aaccff; /* Nieco jaśniejszy niebieski */
+  word-wrap: break-word;
+}
+
+.trauma-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-top: 2px;
+}
+
+/* Styl dla komunikatu czatu */
+.chat-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.chat-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  object-fit: cover;
+}
+
+.chat-header h3 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+/* Pozostała część CSS pozostaje bez zmian */
+.radio-group.horizontal {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.radio-item {
+  margin: 0 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.radio-item input[type="radio"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  background: #fff;
+}
+
+.radio-item input[type="radio"]:checked::before {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  background: #000 !important;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.radio-item label {
+  margin-top: 2px;
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.feats-drop {
+  border: 1px solid #ccc;
+  padding: 5px;
+}
+
+.feat-item {
+  margin: 5px 0;
+}
+
+.feat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.feat-name {
+  flex: 2;
+}
+
+.feat-type {
+  flex: 1;
+  text-align: center;
+}
+
+.delete-feat {
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  padding: 0;
+  margin-left: 5px;
+}
+
+.feat-effect {
+  margin-top: 5px;
+  font-style: italic;
+}
+
+.meta-currency {
+  text-align: center;
+}
+
+/* Style dla okna metawalut */
+.meta-currency-content {
+  padding: 10px;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.meta-controls {
+  display: flex;
+  align-items: center;
+}
+
+.meta-controls button {
+  width: 25px;
+  height: 25px;
+  margin: 0 5px;
+}
+
+.meta-value {
+  width: 30px;
+  text-align: center;
+  color: #000000; /* Czarny kolor dla wartości */
+  font-weight: bold; /* Pogrubienie dla widoczności */
+}
+
+/* Nadpisanie koloru dla etykiet w meta-row */
+.meta-row > span {
+  color: #000000; /* Czarny kolor dla etykiet */
+  font-weight: bold; /* Pogrubienie dla widoczności */
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.form-group label {
+  width: 100px;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+  flex: 1;
+}
+
+.meta-currency-btn {
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.meta-currency-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.roll-message {
+  font-size: 1.2em;
+  line-height: 1.3;
+}
+
+.roll-message hr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 5px 0;
+}
+
+.roll-dialog {
+  font-size: 1.2em;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  min-width: 400px;
+}
+
+.roll-dialog .form-group {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.roll-dialog .attribute-name {
+  color: blue;
+}
+
+.roll-dialog .attribute-value {
+  color: darkgreen;
+}
+
+.roll-dialog .secondary-name {
+  color: black;
+}
+
+.roll-dialog .secondary-value {
+  color: red;
+}
+
+.roll-dialog .position-group {
+  display: flex;
+  flex-wrap: nowrap;
+  margin-top: 10px;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.roll-dialog .position-label {
+  color: brown;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.roll-dialog .position-group select {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Poprawka dla checkboxa stresu - wyrównanie do lewej */
+.roll-dialog .stress-die-group {
+  display: flex;
+  align-items: left;
+  flex-wrap: nowrap;
+  margin-top: 10px;
+  justify-content: flex-start;
+}
+
+.roll-dialog .stress-die-group label {
+  display: flex;
+  align-items: left;
+  white-space: nowrap;
+}
+
+.roll-dialog .stress-die-group input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+/* Styl dla checkboxa traumy - identyczny z stress-die-group */
+.roll-dialog .trauma-group {
+  display: flex;
+  align-items: left;
+  flex-wrap: nowrap;
+  margin-top: 10px;
+  justify-content: flex-start;
+}
+
+.roll-dialog .trauma-group label {
+  display: flex;
+  align-items: left;
+  white-space: nowrap;
+}
+
+.roll-dialog .trauma-group input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+/* Styl dla wartości Gear, Trauma i Stress */
+.cogwheel.sheet.actor .resource-content input.gear-value,
+.cogwheel.sheet.actor .resource-content input.trauma-value,
+.cogwheel.sheet.actor .resource-content input.stress-value {
+  width: 50px !important;
+  height: 30px !important;
+  font-size: 1.1em !important;
+  color: #000 !important;
+  border: 2px solid #555 !important;
+  background-color: #f9f9f9 !important;
+  border-radius: 4px !important;
+  text-align: center !important;
+  margin: 0 5px !important;
+}
+
+/* Wyróżnienie dla wartości Gear */
+.cogwheel.sheet.actor .resource.gear .resource-content input.gear-value {
+  border-color: #006400 !important;
+  background-color: #e6f3e6 !important;
+}
+
+/* Wyróżnienie dla wartości Trauma */
+.cogwheel.sheet.actor .resource.trauma .resource-content input.trauma-value {
+  border-color: #4B0082 !important;
+  background-color: #f2e6ff !important;
+}
+
+/* Wyróżnienie dla wartości Stress */
+.cogwheel.sheet.actor .resource.stress .resource-content input.stress-value {
+  border-color: #8B0000 !important;
+  background-color: #ffe6e6 !important;
+}
+
+/* Styl dla maksymalnej wartości (span) */
+.cogwheel.sheet.actor .resource-content span {
+  font-size: 1em !important;
+  color: #666 !important;
+  margin: 0 5px !important;
+}
+
+/* Dostosowanie przycisków increment/decrement */
+.cogwheel.sheet.actor .resource-content .small-btn {
+  width: 30px !important;
+  height: 30px !important;
+  font-size: 14px !important;
+  padding: 0 !important;
+  margin: 0 2px !important;
+}
+
+/* Style dla okna dialogowego traumy */
+.trauma-dialog .form-group {
+  margin-bottom: 10px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important; /* Wyrównanie do lewej dla całego kontenera */
+}
+
+.trauma-dialog .form-group .input-container {
+  display: flex;
+  flex: 1;
+  justify-content: center !important; /* Wyśrodkowanie pól tekstowych */
+}
+
+.trauma-dialog label {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 120px !important; /* Stała szerokość etykiet */
+  margin-right: 10px !important;
+  color: #000000 !important; /* Czarny kolor etykiet */
+  text-align: left !important; /* Wyrównanie etykiet do lewej */
+}
+
+.trauma-dialog input[type="text"],
+.trauma-dialog textarea {
+  width: 250px !important; /* Stała szerokość dla lepszego wyśrodkowania */
+  padding: 5px !important;
+  background-color: #3a3a3a !important; /* Rozjaśnienie tła pól */
+  border: 1px solid #555 !important; /* Jaśniejsza ramka */
+  border-radius: 3px !important;
+  color: #ddd !important;
+  box-sizing: border-box !important;
+  resize: vertical !important; /* Rozciągliwe w pionie */
+  min-height: 30px !important; /* Minimalna wysokość */
+}
+
+.trauma-dialog textarea {
+  min-height: 60px !important; /* Domyślna wysokość dla textarea */
+}
+
+.trauma-dialog .error-message {
+  display: none !important;
+  color: #ff6666 !important; /* Nieco jaśniejszy czerwony */
+  font-size: 0.9em !important;
+  text-align: center !important;
+}
+
+.trauma-dialog .error-message.show {
+  display: block !important;
+}
+
+/* Styl dla checkboxa Steam Points - identyczny z stress-die-group */
+.roll-dialog .steam-die-group {
+  display: flex;
+  align-items: left;
+  flex-wrap: nowrap;
+  margin-top: 10px;
+  justify-content: flex-start;
+}
+
+.roll-dialog .steam-die-group label {
+  display: flex;
+  align-items: left;
+  white-space: nowrap;
+}
+
+.roll-dialog .steam-die-group input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+/* Styl dla nagłówka z ikoną */
+.sheet-header.flexrow {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.sheet-header .profile-img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.sheet-header .centered {
+  flex-grow: 1;
+  text-align: center;
+}
+
+/* Styl dla siatki atrybutów */
+.attributes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* Trzy równe kolumny */
+  gap: 10px; /* Odstęp między kolumnami */
+  padding: 10px;
+}
+
+.attribute-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.attribute-column label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.attribute-column input[type="number"] {
+  width: 50px;
+  text-align: center;
+}
+
+/* Styl dla ikony archetypu na karcie postaci */
+.archetype-drop.flexrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px;
+  border: 1px dashed #ccc;
+}
+
+.archetype-img {
+  width: 16px; /* Zmniejszamy z 24px */
+  height: 16px; /* Zmniejszamy z 24px */
+  margin-right: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  object-fit: cover;
+}

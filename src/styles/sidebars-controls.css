@@ -1,0 +1,31 @@
+/* Style dla przycisków w sidebarze */
+.cogwheel-sidebar-btn {
+  background-color: #444;
+  border: 1px solid #666;
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+  padding: 5px 8px;
+  margin: 2px;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.cogwheel-sidebar-btn:hover {
+  background-color: #555;
+}
+
+.cogwheel-sidebar-btn i {
+  margin-right: 4px;
+}
+
+/* Style dla kontrolek w pasku narzędzi */
+.control-tool[data-tool="doom-clocks"],
+.control-tool[data-tool="meta-currency"] {
+  background-color: var(--color-border-dark);
+}
+
+.control-tool[data-tool="doom-clocks"]:hover,
+.control-tool[data-tool="meta-currency"]:hover {
+  background-color: var(--color-border-highlight);
+}

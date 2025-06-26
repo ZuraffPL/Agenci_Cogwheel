@@ -1,0 +1,158 @@
+{
+  "Actor": {
+    "types": ["agent", "HQ", "nemesis"],
+    "templates": {
+      "base": {
+        "name": {
+          "value": ""
+        },
+        "archetype": {
+          "id": null,
+          "name": ""
+        },
+        "attributes": {
+          "machine": {
+            "value": 1
+          },
+          "engineering": {
+            "value": 1
+          },
+          "intrigue": {
+            "value": 1
+          }
+        },
+        "secondaryAttributes": {
+          "endurance": {
+            "value": 0
+          },
+          "control": {
+            "value": 0
+          },
+          "determination": {
+            "value": 0
+          }
+        },
+        "resources": {
+          "gear": {
+            "value": 0,
+            "max": 4,
+            "basis": "machine"
+          },
+          "stress": {
+            "value": 0,
+            "max": 4
+          },
+          "trauma": {
+            "value": 0,
+            "max": 4
+          },
+          "development": {
+            "value": 0,
+            "max": 12
+          }
+        },
+        "equipmentPoints": {
+          "value": 6,
+          "max": 6
+        },
+        "traumas": [],
+        "equipments": [],
+        "notes": ""
+      },
+      "hqBase": {
+        "name": {
+          "value": ""
+        },
+        "locationsPrimary": [],
+        "locationsAdditional": [],
+        "expansionProjects": [],
+        "primarySections": {
+          "infirmary": {
+            "level": 0,
+            "isDestroyed": false
+          },
+          "crewQuarters": {
+            "level": 0,
+            "isDestroyed": false
+          },
+          "trainingHalls": {
+            "level": 0,
+            "isDestroyed": false
+          },
+          "workshop": {
+            "level": 0,
+            "isDestroyed": false
+          }
+        }
+      },
+      "nemesisBase": {
+        "name": {
+          "value": ""
+        },
+        "influenceRange": "Lokalny",
+        "organizationType": "",
+        "leaderDescription": "",
+        "organizationGoal": "",
+        "clocks": {
+          "goal": {
+            "value": 0,
+            "max": 8,
+            "description": ""
+          },
+          "weakening": {
+            "value": 0,
+            "max": 4
+          },
+          "revenge": {
+            "value": 0,
+            "max": 6
+          }
+        },
+        "minions": [],
+        "notes": ""
+      }
+    },
+    "agent": {
+      "templates": ["base"]
+    },
+    "HQ": {
+      "templates": ["hqBase"]
+    },
+    "nemesis": {
+      "templates": ["nemesisBase"]
+    }
+  },
+  "Item": {
+    "types": ["archetype", "feat", "equipment"],
+    "templates": {
+      "base": {
+        "name": "",
+        "description": ""
+      }
+    },
+    "archetype": {
+      "templates": ["base"],
+      "attributes": {
+        "machine": 1,
+        "engineering": 1,
+        "intrigue": 1
+      }
+    },
+    "feat": {
+      "templates": ["base"],
+      "type": "initial",
+      "effect": ""
+    },
+    "equipment": {
+      "templates": ["base"],
+      "type": "weapon",
+      "effect": "",
+      "cost": 1,
+      "usage": "Single",
+      "action": "",
+      "used": false,
+      "droppedDamaged": false,
+      "destroyed": false
+    }
+  }
+}

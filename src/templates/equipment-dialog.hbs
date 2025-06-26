@@ -1,0 +1,47 @@
+<form class="equipment-dialog">
+  <div class="form-group">
+    <label>{{localize "COGSYNDICATE.EquipmentName"}}</label>
+    <div class="input-container">
+      <input type="text" name="name" value="{{equipment.name}}" placeholder="{{localize 'COGSYNDICATE.EquipmentNamePlaceholder'}}" />
+    </div>
+  </div>
+  <div class="form-group">
+    <label>{{localize "COGSYNDICATE.EquipmentType"}}</label>
+    <div class="input-container">
+      <select name="type">
+        <option value="weapon" {{#if (eq equipment.type "weapon")}}selected{{/if}}>{{localize "COGSYNDICATE.EquipmentTypeWeapon"}}</option>
+        <option value="armor" {{#if (eq equipment.type "armor")}}selected{{/if}}>{{localize "COGSYNDICATE.EquipmentTypeArmor"}}</option>
+        <option value="tool" {{#if (eq equipment.type "tool")}}selected{{/if}}>{{localize "COGSYNDICATE.EquipmentTypeTool"}}</option>
+        <option value="gadget" {{#if (eq equipment.type "gadget")}}selected{{/if}}>{{localize "COGSYNDICATE.EquipmentTypeGadget"}}</option>
+        <option value="other" {{#if (eq equipment.type "other")}}selected{{/if}}>{{localize "COGSYNDICATE.EquipmentTypeOther"}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label>{{localize "COGSYNDICATE.EquipmentCost"}}</label>
+    <div class="input-container">
+      <select name="cost">
+        <option value="1" {{#if (eq equipment.cost "1")}}selected{{/if}}>1</option>
+        <option value="2" {{#if (eq equipment.cost "2")}}selected{{/if}}>2</option>
+        <option value="3" {{#if (eq equipment.cost "3")}}selected{{/if}}>3</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label>{{localize "COGSYNDICATE.EquipmentUsage"}}</label>
+    <div class="input-container">
+      <select name="usage">
+        <option value="Single" {{#if (eq equipment.usage "Single")}}selected{{/if}}>{{localize "COGSYNDICATE.EquipmentUsageSingle"}}</option>
+        <option value="Scene" {{#if (eq equipment.usage "Scene")}}selected{{/if}}>{{localize "COGSYNDICATE.EquipmentUsageScene"}}</option>
+        <option value="Mission" {{#if (eq equipment.usage "Mission")}}selected{{/if}}>{{localize "COGSYNDICATE.EquipmentUsageMission"}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label>{{localize "COGSYNDICATE.EquipmentAction"}}</label>
+    <div class="input-container">
+      <textarea name="action" placeholder="{{localize 'COGSYNDICATE.EquipmentActionPlaceholder'}}">{{equipment.action}}</textarea>
+    </div>
+  </div>
+  <div class="error-message"></div>
+</form>

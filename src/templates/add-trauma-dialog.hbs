@@ -1,0 +1,31 @@
+<form class="trauma-dialog">
+  <div class="form-group">
+    <label>{{localize "COGSYNDICATE.TraumaName"}}</label>
+    <div class="input-container">
+      <input type="text" name="name" value="{{trauma.name}}" placeholder="{{localize 'COGSYNDICATE.TraumaNamePlaceholder'}}" />
+    </div>
+  </div>
+  <div class="form-group">
+    <label>{{localize "COGSYNDICATE.TraumaType"}}</label>
+    <div class="input-container">
+      <select name="type">
+        <option value="physical" {{#if (eq trauma.type "physical")}}selected{{/if}}>{{localize "COGSYNDICATE.TraumaTypePhysical"}}</option>
+        <option value="mental" {{#if (eq trauma.type "mental")}}selected{{/if}}>{{localize "COGSYNDICATE.TraumaTypeMental"}}</option>
+        <option value="psychological" {{#if (eq trauma.type "psychological")}}selected{{/if}}>{{localize "COGSYNDICATE.TraumaTypePsychological"}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label>{{localize "COGSYNDICATE.TraumaDescription"}}</label>
+    <div class="input-container">
+      <textarea name="description" placeholder="{{localize 'COGSYNDICATE.TraumaDescriptionPlaceholder'}}">{{trauma.description}}</textarea>
+    </div>
+  </div>
+  <div class="form-group">
+    <label>{{localize "COGSYNDICATE.TraumaEffect"}}</label>
+    <div class="input-container">
+      <input type="text" name="effect" value="{{trauma.effect}}" placeholder="{{localize 'COGSYNDICATE.TraumaEffectPlaceholder'}}" />
+    </div>
+  </div>
+  <div class="error-message"></div>
+</form>

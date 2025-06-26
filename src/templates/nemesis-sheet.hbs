@@ -1,0 +1,245 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{localize 'COGSYNDICATE.EditImage'}}" />
+    <h1><input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'COGSYNDICATE.NemesisName'}}" class="centered" /></h1>
+  </header>
+
+  <section class="sheet-body">
+    <!-- Nawigacja zakładek -->
+    <nav class="sheet-tabs tabs" data-group="primary">
+      <a class="item active" data-tab="main">Główne</a>
+      <a class="item" data-tab="minions">{{localize "COGSYNDICATE.MinionsTab"}}</a>
+      <a class="item" data-tab="notes">{{localize "COGSYNDICATE.NotesTab"}}</a>
+    </nav>
+
+    <!-- Zawartość zakładek -->
+    <section class="sheet-content">
+      <!-- Zakładka Główne -->
+      <div class="tab main active" data-group="primary" data-tab="main">
+        <!-- Podstawowe informacje -->
+        <div class="nemesis-info-section">
+          <div class="form-group">
+            <label>{{localize "COGSYNDICATE.InfluenceRange"}}:</label>
+            <select class="influence-range-select" name="system.influenceRange">
+              {{#each influenceOptions as |option|}}
+                <option value="{{option.value}}" {{#if (eq ../system.influenceRange option.value)}}selected{{/if}}>{{option.label}}</option>
+              {{/each}}
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>{{localize "COGSYNDICATE.MinionsCount"}}:</label>
+            <span class="minions-count-display">{{minionsCount}}</span>
+          </div>
+
+          <div class="form-group">
+            <label>{{localize "COGSYNDICATE.OrganizationType"}}:</label>
+            <input type="text" name="system.organizationType" value="{{system.organizationType}}" />
+          </div>
+
+          <div class="form-group">
+            <label>{{localize "COGSYNDICATE.LeaderDescription"}}:</label>
+            <input type="text" name="system.leaderDescription" value="{{system.leaderDescription}}" />
+          </div>
+
+          <div class="form-group">
+            <label>{{localize "COGSYNDICATE.OrganizationGoal"}}:</label>
+            <textarea name="system.organizationGoal" rows="3">{{system.organizationGoal}}</textarea>
+          </div>
+        </div>
+
+        <hr class="section-separator">
+
+        <!-- Zegary Nemezis -->
+        <div class="nemesis-clocks-section">
+          <h3 class="centered">{{localize "COGSYNDICATE.NemesisClocks"}}</h3>
+
+          <!-- Zegar Celu Nemezis -->
+          <div class="nemesis-clock-item">
+            <div class="clock-visual">
+              <svg class="nemesis-clock-svg" viewBox="0 0 100 100" width="100" height="100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#666" stroke-width="5"/>
+                {{#if (eq system.clocks.goal.max 8)}}
+                  {{#if (gte system.clocks.goal.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 82,18 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 2)}}<path d="M50,50 L82,18 A45,45 0 0,1 95,50 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 3)}}<path d="M50,50 L95,50 A45,45 0 0,1 82,82 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 4)}}<path d="M50,50 L82,82 A45,45 0 0,1 50,95 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 5)}}<path d="M50,50 L50,95 A45,45 0 0,1 18,82 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 6)}}<path d="M50,50 L18,82 A45,45 0 0,1 5,50 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 7)}}<path d="M50,50 L5,50 A45,45 0 0,1 18,18 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 8)}}<path d="M50,50 L18,18 A45,45 0 0,1 50,5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                {{else if (eq system.clocks.goal.max 10)}}
+                  {{#if (gte system.clocks.goal.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 74,14 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 2)}}<path d="M50,50 L74,14 A45,45 0 0,1 90,36 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 3)}}<path d="M50,50 L90,36 A45,45 0 0,1 90,64 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 4)}}<path d="M50,50 L90,64 A45,45 0 0,1 74,86 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 5)}}<path d="M50,50 L74,86 A45,45 0 0,1 50,95 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 6)}}<path d="M50,50 L50,95 A45,45 0 0,1 26,86 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 7)}}<path d="M50,50 L26,86 A45,45 0 0,1 10,64 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 8)}}<path d="M50,50 L10,64 A45,45 0 0,1 10,36 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 9)}}<path d="M50,50 L10,36 A45,45 0 0,1 26,14 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 10)}}<path d="M50,50 L26,14 A45,45 0 0,1 50,5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                {{else if (eq system.clocks.goal.max 12)}}
+                  {{#if (gte system.clocks.goal.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 72.5,12.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 2)}}<path d="M50,50 L72.5,12.5 A45,45 0 0,1 87.5,27.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 3)}}<path d="M50,50 L87.5,27.5 A45,45 0 0,1 95,50 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 4)}}<path d="M50,50 L95,50 A45,45 0 0,1 87.5,72.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 5)}}<path d="M50,50 L87.5,72.5 A45,45 0 0,1 72.5,87.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 6)}}<path d="M50,50 L72.5,87.5 A45,45 0 0,1 50,95 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 7)}}<path d="M50,50 L50,95 A45,45 0 0,1 27.5,87.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 8)}}<path d="M50,50 L27.5,87.5 A45,45 0 0,1 12.5,72.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 9)}}<path d="M50,50 L12.5,72.5 A45,45 0 0,1 5,50 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 10)}}<path d="M50,50 L5,50 A45,45 0 0,1 12.5,27.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 11)}}<path d="M50,50 L12.5,27.5 A45,45 0 0,1 27.5,12.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.goal.value 12)}}<path d="M50,50 L27.5,12.5 A45,45 0 0,1 50,5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                {{/if}}
+              </svg>
+            </div>
+            <div class="clock-details">
+              <div class="clock-header">
+                <span class="clock-name">{{localize "COGSYNDICATE.GoalClock"}}</span>
+                <span class="clock-progress">{{system.clocks.goal.value}} / {{system.clocks.goal.max}}</span>
+              </div>
+              <div class="clock-goal-form">
+                <label>{{localize "COGSYNDICATE.GoalClockDescription"}}:</label>
+                <textarea name="system.clocks.goal.description" rows="2">{{system.clocks.goal.description}}</textarea>
+              </div>
+              <div class="clock-actions">
+                <button type="button" class="decrement-nemesis-clock small-btn" data-clock="goal" title="Zmniejsz"><i class="fas fa-minus"></i></button>
+                <button type="button" class="increment-nemesis-clock small-btn" data-clock="goal" title="Zwiększ"><i class="fas fa-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Zegar Osłabienia -->
+          <div class="nemesis-clock-item">
+            <div class="clock-visual">
+              <svg class="nemesis-clock-svg" viewBox="0 0 100 100" width="100" height="100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#666" stroke-width="5"/>
+                {{#if (eq system.clocks.weakening.max 4)}}
+                  {{#if (gte system.clocks.weakening.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 95,50 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 2)}}<path d="M50,50 L95,50 A45,45 0 0,1 50,95 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 3)}}<path d="M50,50 L50,95 A45,45 0 0,1 5,50 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 4)}}<path d="M50,50 L5,50 A45,45 0 0,1 50,5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                {{else if (eq system.clocks.weakening.max 8)}}
+                  {{#if (gte system.clocks.weakening.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 82,18 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 2)}}<path d="M50,50 L82,18 A45,45 0 0,1 95,50 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 3)}}<path d="M50,50 L95,50 A45,45 0 0,1 82,82 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 4)}}<path d="M50,50 L82,82 A45,45 0 0,1 50,95 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 5)}}<path d="M50,50 L50,95 A45,45 0 0,1 18,82 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 6)}}<path d="M50,50 L18,82 A45,45 0 0,1 5,50 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 7)}}<path d="M50,50 L5,50 A45,45 0 0,1 18,18 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 8)}}<path d="M50,50 L18,18 A45,45 0 0,1 50,5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                {{else if (eq system.clocks.weakening.max 12)}}
+                  {{#if (gte system.clocks.weakening.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 72.5,12.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 2)}}<path d="M50,50 L72.5,12.5 A45,45 0 0,1 87.5,27.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 3)}}<path d="M50,50 L87.5,27.5 A45,45 0 0,1 95,50 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 4)}}<path d="M50,50 L95,50 A45,45 0 0,1 87.5,72.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 5)}}<path d="M50,50 L87.5,72.5 A45,45 0 0,1 72.5,87.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 6)}}<path d="M50,50 L72.5,87.5 A45,45 0 0,1 50,95 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 7)}}<path d="M50,50 L50,95 A45,45 0 0,1 27.5,87.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 8)}}<path d="M50,50 L27.5,87.5 A45,45 0 0,1 12.5,72.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 9)}}<path d="M50,50 L12.5,72.5 A45,45 0 0,1 5,50 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 10)}}<path d="M50,50 L5,50 A45,45 0 0,1 12.5,27.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 11)}}<path d="M50,50 L12.5,27.5 A45,45 0 0,1 27.5,12.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.weakening.value 12)}}<path d="M50,50 L27.5,12.5 A45,45 0 0,1 50,5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                {{/if}}
+              </svg>
+            </div>
+            <div class="clock-details">
+              <div class="clock-header">
+                <span class="clock-name">{{localize "COGSYNDICATE.WeakeningClock"}}</span>
+                <span class="clock-progress">{{system.clocks.weakening.value}} / {{system.clocks.weakening.max}}</span>
+              </div>
+              <div class="clock-actions">
+                <button type="button" class="decrement-nemesis-clock small-btn" data-clock="weakening" title="Zmniejsz"><i class="fas fa-minus"></i></button>
+                <button type="button" class="increment-nemesis-clock small-btn" data-clock="weakening" title="Zwiększ"><i class="fas fa-plus"></i></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Zegar Odwetu -->
+          <div class="nemesis-clock-item">
+            <div class="clock-visual">
+              <svg class="nemesis-clock-svg" viewBox="0 0 100 100" width="100" height="100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#666" stroke-width="5"/>
+                {{#if (eq system.clocks.revenge.max 6)}}
+                  {{#if (gte system.clocks.revenge.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 87.5,27.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 2)}}<path d="M50,50 L87.5,27.5 A45,45 0 0,1 87.5,72.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 3)}}<path d="M50,50 L87.5,72.5 A45,45 0 0,1 50,95 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 4)}}<path d="M50,50 L50,95 A45,45 0 0,1 12.5,72.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 5)}}<path d="M50,50 L12.5,72.5 A45,45 0 0,1 12.5,27.5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 6)}}<path d="M50,50 L12.5,27.5 A45,45 0 0,1 50,5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                {{else if (eq system.clocks.revenge.max 8)}}
+                  {{#if (gte system.clocks.revenge.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 82,18 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 2)}}<path d="M50,50 L82,18 A45,45 0 0,1 95,50 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 3)}}<path d="M50,50 L95,50 A45,45 0 0,1 82,82 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 4)}}<path d="M50,50 L82,82 A45,45 0 0,1 50,95 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 5)}}<path d="M50,50 L50,95 A45,45 0 0,1 18,82 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 6)}}<path d="M50,50 L18,82 A45,45 0 0,1 5,50 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 7)}}<path d="M50,50 L5,50 A45,45 0 0,1 18,18 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 8)}}<path d="M50,50 L18,18 A45,45 0 0,1 50,5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                {{else if (eq system.clocks.revenge.max 10)}}
+                  {{#if (gte system.clocks.revenge.value 1)}}<path d="M50,50 L50,5 A45,45 0 0,1 74,14 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 2)}}<path d="M50,50 L74,14 A45,45 0 0,1 90,36 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 3)}}<path d="M50,50 L90,36 A45,45 0 0,1 90,64 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 4)}}<path d="M50,50 L90,64 A45,45 0 0,1 74,86 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 5)}}<path d="M50,50 L74,86 A45,45 0 0,1 50,95 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 6)}}<path d="M50,50 L50,95 A45,45 0 0,1 26,86 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 7)}}<path d="M50,50 L26,86 A45,45 0 0,1 10,64 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 8)}}<path d="M50,50 L10,64 A45,45 0 0,1 10,36 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 9)}}<path d="M50,50 L10,36 A45,45 0 0,1 26,14 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                  {{#if (gte system.clocks.revenge.value 10)}}<path d="M50,50 L26,14 A45,45 0 0,1 50,5 Z" fill="#8B5CF6" stroke="#ffffff" stroke-width="2"/>{{/if}}
+                {{/if}}
+              </svg>
+            </div>
+            <div class="clock-details">
+              <div class="clock-header">
+                <span class="clock-name">{{localize "COGSYNDICATE.RevengeClock"}}</span>
+                <span class="clock-progress">{{system.clocks.revenge.value}} / {{system.clocks.revenge.max}}</span>
+              </div>
+              <div class="clock-actions">
+                <button type="button" class="decrement-nemesis-clock small-btn" data-clock="revenge" title="Zmniejsz"><i class="fas fa-minus"></i></button>
+                <button type="button" class="increment-nemesis-clock small-btn" data-clock="revenge" title="Zwiększ"><i class="fas fa-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Zakładka Przyboczni -->
+      <div class="tab minions" data-group="primary" data-tab="minions">
+        <div class="minions-section">
+          <h3 class="centered">{{localize "COGSYNDICATE.MinionsTab"}}</h3>
+          <button type="button" class="add-minion-btn" title="{{localize 'COGSYNDICATE.AddMinion'}}">{{localize "COGSYNDICATE.AddMinion"}}</button>
+          <div class="minions-list">
+            {{#each system.minions as |minion index|}}
+              <div class="minion-item" data-index="{{index}}">
+                <div class="minion-header">
+                  <span class="minion-name">{{minion.name}}</span>
+                  <span class="minion-role">{{minion.role}}</span>
+                </div>
+                <div class="minion-description">{{minion.description}}</div>
+                <div class="minion-actions">
+                  <button type="button" class="edit-minion small-btn" title="{{localize 'COGSYNDICATE.EditMinion'}}"><i class="fas fa-edit"></i></button>
+                  <button type="button" class="delete-minion small-btn" title="{{localize 'COGSYNDICATE.DeleteMinion'}}"><i class="fas fa-trash"></i></button>
+                </div>
+              </div>
+            {{/each}}
+            {{#unless system.minions.length}}
+              <p>Brak przybocznych.</p>
+            {{/unless}}
+          </div>
+        </div>
+      </div>
+
+      <!-- Zakładka Notatki -->
+      <div class="tab notes" data-group="primary" data-tab="notes">
+        <div class="notes-section">
+          <h3 class="centered">{{localize "COGSYNDICATE.NotesTab"}}</h3>
+          <textarea name="system.notes" rows="20" placeholder="Wpisz swoje notatki tutaj...">{{system.notes}}</textarea>
+        </div>
+      </div>
+    </section>
+  </section>
+</form>

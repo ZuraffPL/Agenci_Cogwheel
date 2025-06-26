@@ -1,0 +1,142 @@
+/* systems/cogwheel-syndicate/src/styles/equipment.css */
+
+/* Styl dla sekcji ekwipunku */
+.equipment-section {
+  text-align: justify;
+  padding: 10px;
+}
+
+/* Definicje pastelowych kolorów tła */
+.pastel-pink { background-color: #FFD1DC; }
+.pastel-blue { background-color: #B3E5FC; }
+.pastel-green { background-color: #C8E6C9; }
+.pastel-yellow { background-color: #FFF9C4; }
+.pastel-purple { background-color: #E1BEE7; }
+.pastel-orange { background-color: #FFE0B2; }
+
+/* Styl dla elementu ekwipunku */
+.equipment-item {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  /* color ustawiony w JS */
+  color: #000;
+}
+
+/* Styl dla dezaktywowanego elementu */
+.equipment-item.disabled {
+  opacity: 0.5;
+  /* Usuwamy pointer-events: none, aby umożliwić interakcje z przyciskami akcji */
+}
+
+/* Umożliwiamy interakcje z przyciskami akcji w dezaktywowanym elemencie */
+.equipment-item.disabled .equipment-actions a {
+  pointer-events: auto;
+  opacity: 1;
+  cursor: pointer;
+}
+
+/* Styl nagłówka ekwipunku */
+.equipment-header {
+  font-weight: bold;
+  font-size: 1.1em;
+  border-bottom: 1px dashed #555;
+  padding-bottom: 2px;
+}
+
+/* Styl szczegółów ekwipunku */
+.equipment-details {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  word-break: break-word;
+}
+
+/* Styl akcji ekwipunku */
+.equipment-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+/* Styl dla sekcji statusu ekwipunku */
+.equipment-status {
+  display: flex;
+  justify-content: flex-start;
+  gap: 15px;
+  margin-top: 5px;
+}
+
+.equipment-status .label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9em;
+}
+
+.equipment-status input[type="checkbox"] {
+  margin: 0;
+}
+
+/* Styl dla okna dialogowego ekwipunku */
+.cogsyndicate .dialog .equipment-dialog .form-group {
+  margin-bottom: 15px !important;
+  display: flex !important;
+  !flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+
+}
+
+.cogsyndicate .dialog .equipment-dialog .form-group .input-container {
+  display: flex;
+  flex: 1;
+  justify-content: center !important;
+
+}
+
+.cogsyndicate .dialog .equipment-dialog .label {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: !important;
+  width: 120px !important;
+  margin-right: 10px !important;
+  color: #000000 !important;
+  text-align: left !important;
+
+}
+
+.cogsyndicate .dialog .equipment-dialog input[type="text"],
+              .cogsyndicate .dialog .equipment-dialog textarea {
+                width: auto !important;
+                padding: 5px !important;
+                background-color: #3a3a3a !important;
+                border: 1px solid #555 !important;
+                border-radius: 3px !important;
+                color: !important;ddd;
+                box-sizing: border-box;
+                resize: vertical !important;
+                min-height: 30px !important;
+              }
+
+.cogsyndicate .dialog .equipment-dialog textarea {
+                min-height: 60px !important;
+
+              }
+
+.cogsyndicate .dialog .equipment-dialog .error-message {
+                display: none !important;
+                color: #ff6666 !important;
+                font-size: 0.9em !important;
+                text-align: center !important;
+                margin-top: 10px !important;
+              }
+
+.cogsyndicate .dialog .equipment-dialog .error-message.show {
+                display: block !important;
+              }
