@@ -247,8 +247,9 @@
   "COGSYNDICATE.ErrorInsufficientSteam": "Insufficient steam points!<br><br>Required: <strong>{required}</strong><br>Available in pool: <strong>{available}</strong>",
   "COGSYNDICATE.ErrorGeneral": "An error occurred while spending gear!<br><br><small>{error}</small>",
   "COGSYNDICATE.UpgradeSuccessButton": "Upgrade success level for 2SP",
-  "COGSYNDICATE.UpgradeSuccessConfirm": "Agent {agentName} upgraded success level from {fromLevel} to {toLevel}",
+  "COGSYNDICATE.UpgradeSuccessConfirm": "Agent {agentName} upgraded success level from {fromLevel} to {toLevel} in {testedAttribute} test",
   "COGSYNDICATE.InsufficientSteamPoints": "Insufficient Steam Points in Pool",
   "COGSYNDICATE.SpentSteamPoints": "Spent 2 Steam Points from pool",
+  "COGSYNDICATE.UpgradeButtonOutdated": "This button is outdated - can only upgrade success level for the latest roll with upgrade possibility",
   "COGSYNDICATE.CompendiumArchetypes": "Agent Archetypes"
 }

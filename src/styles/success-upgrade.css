@@ -35,6 +35,42 @@
   box-shadow: none;
 }
 
+/* Success Upgrade Button - Used State */
+.success-upgrade-button-used {
+  background: linear-gradient(135deg, #4CAF50, #66BB6A);
+  color: black;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 12px;
+  cursor: not-allowed;
+  margin-top: 10px;
+  text-shadow: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  text-align: center;
+  opacity: 0.8;
+}
+
+/* Success Upgrade Button - Outdated State */
+.success-upgrade-button-outdated {
+  background: linear-gradient(135deg, #9E9E9E, #BDBDBD);
+  color: #424242;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: normal;
+  font-size: 12px;
+  cursor: not-allowed;
+  margin-top: 10px;
+  text-shadow: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  text-align: center;
+  opacity: 0.6;
+}
+
 .roll-message {
   position: relative;
 }

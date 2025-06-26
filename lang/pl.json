@@ -247,8 +247,9 @@
   "COGSYNDICATE.ErrorInsufficientSteam": "Niewystarczająca liczba punktów pary!<br><br>Potrzebujesz: <strong>{required}</strong><br>Masz w puli: <strong>{available}</strong>",
   "COGSYNDICATE.ErrorGeneral": "Wystąpił błąd podczas wydawania sprzętu!<br><br><small>{error}</small>",
   "COGSYNDICATE.UpgradeSuccessButton": "Podnieś poziom sukcesu za 2PP",
-  "COGSYNDICATE.UpgradeSuccessConfirm": "Agent {agentName} podniósł poziom sukcesu z {fromLevel} na {toLevel}",
+  "COGSYNDICATE.UpgradeSuccessConfirm": "Agent {agentName} podniósł poziom sukcesu z {fromLevel} na {toLevel} w teście {testedAttribute}",
   "COGSYNDICATE.InsufficientSteamPoints": "Za mało Punktów Pary w Puli",
   "COGSYNDICATE.SpentSteamPoints": "Wydano 2 Punkty Pary z puli",
+  "COGSYNDICATE.UpgradeButtonOutdated": "Ten przycisk jest nieaktualny - można podnieść poziom sukcesu tylko dla ostatniego rzutu z możliwością podniesienia",
   "COGSYNDICATE.CompendiumArchetypes": "Archetypy Agentów"
 }

@@ -1,5 +1,24 @@
+// System śledzenia aktualnych przycisków podnoszenia sukcesu dla każdego agenta
+window.cogwheelSyndicate = window.cogwheelSyndicate || {};
+window.cogwheelSyndicate.currentUpgradeButtons = window.cogwheelSyndicate.currentUpgradeButtons || {};
+window.cogwheelSyndicate.lastRollTimestamp = window.cogwheelSyndicate.lastRollTimestamp || {};
+
+// Funkcja do wyłączania wszystkich starszych przycisków dla danego agenta
+function disableAllUpgradeButtonsForActor(actorId) {
+  // Znajdź wszystkie przyciski podnoszenia sukcesu dla tego agenta i wyłącz je
+  $('.success-upgrade-button').each(function() {
+    const button = $(this);
+    const buttonActorId = button.data('actor-id');
+    if (buttonActorId === actorId) {
+      button.prop('disabled', true);
+      button.removeClass('success-upgrade-button').addClass('success-upgrade-button-outdated');
+      button.text(game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton") + " (Przestarzałe)");
+    }
+  });
+}
+
 // Funkcja pomocnicza do podnoszenia poziomu sukcesu
-async function upgradeSuccessLevel(actor, currentResult) {
+async function upgradeSuccessLevel(actor, currentResult, testedAttribute) {
   const currentSteamPoints = game.cogwheelSyndicate.steamPoints || 0;
   
   if (currentSteamPoints < 2) {
@@ -40,10 +59,20 @@ async function upgradeSuccessLevel(actor, currentResult) {
   const fromLevelText = `<span style='color: ${colorMap[currentResult]}; font-weight: bold'>${game.i18n.localize(`COGSYNDICATE.${currentResult}`)}</span>`;
   const toLevelText = `<span style='color: ${colorMap[newResult]}; font-weight: bold'>${game.i18n.localize(`COGSYNDICATE.${newResult}`)}</span>`;
   
+  // Określenie nazwy atrybutu z odpowiednim formatowaniem
+  const attrLabel = {
+    machine: game.i18n.localize("COGSYNDICATE.Machine"),
+    engineering: game.i18n.localize("COGSYNDICATE.Engineering"),
+    intrigue: game.i18n.localize("COGSYNDICATE.Intrigue")
+  }[testedAttribute] || testedAttribute;
+  
+  const testedAttributeText = `<span style='color: purple; font-weight: bold'>${attrLabel}</span>`;
+  
   const upgradeMessage = game.i18n.format("COGSYNDICATE.UpgradeSuccessConfirm", {
     agentName: actor.name,
     fromLevel: fromLevelText,
-    toLevel: toLevelText
+    toLevel: toLevelText,
+    testedAttribute: testedAttributeText
   });
 
   const upgradeContent = `
@@ -350,14 +379,29 @@ export async function performAttributeRoll(actor, attribute) {
               Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
             }
 
+            // Wyłączenie wszystkich starszych przycisków dla tego agenta przy każdym nowym rzucie
+            disableAllUpgradeButtonsForActor(actor.id);
+            
+            // Rejestracja timestamp tego rzutu
+            const currentRollTimestamp = Date.now();
+            window.cogwheelSyndicate.lastRollTimestamp[actor.id] = currentRollTimestamp;
+
             // Generowanie przycisku podnoszenia sukcesu jeśli to konieczne
             let upgradeButton = "";
             if (resultType === "FailureWithConsequence" || resultType === "SuccessWithCost") {
-              const buttonId = `upgrade-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+              const buttonId = `upgrade-${currentRollTimestamp}-${Math.random().toString(36).substr(2, 9)}`;
+              
+              // Rejestracja nowego przycisku jako aktualnego dla tego agenta
+              window.cogwheelSyndicate.currentUpgradeButtons[actor.id] = {
+                buttonId: buttonId,
+                timestamp: currentRollTimestamp
+              };
+              
               upgradeButton = `
                 <button class="success-upgrade-button" id="${buttonId}" 
                         data-actor-id="${actor.id}" 
-                        data-result-type="${resultType}">
+                        data-result-type="${resultType}"
+                        data-tested-attribute="${attribute}">
                   ${game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton")}
                 </button>
               `;
@@ -411,8 +455,10 @@ Hooks.on("renderChatMessage", (message, html, data) => {
     event.preventDefault();
     
     const button = $(this);
+    const buttonId = button.attr('id');
     const actorId = button.data('actor-id');
     const resultType = button.data('result-type');
+    const testedAttribute = button.data('tested-attribute');
     
     const actor = game.actors.get(actorId);
     if (!actor) {
@@ -420,11 +466,30 @@ Hooks.on("renderChatMessage", (message, html, data) => {
       return;
     }
     
-    // Wywołanie funkcji podnoszenia sukcesu
-    await upgradeSuccessLevel(actor, resultType);
+    // Sprawdzenie czy przycisk jest aktualny dla tego agenta
+    const currentButtonData = window.cogwheelSyndicate.currentUpgradeButtons[actorId];
+    const lastRollTimestamp = window.cogwheelSyndicate.lastRollTimestamp[actorId];
     
-    // Wyłączenie przycisku po użyciu
+    // Sprawdzenie czy przycisk istnieje w rejestrze i czy jego timestamp odpowiada ostatniemu rzutowi
+    if (!currentButtonData || 
+        buttonId !== currentButtonData.buttonId || 
+        currentButtonData.timestamp !== lastRollTimestamp) {
+      ui.notifications.warn("Ten przycisk jest nieaktualny. Można podnieść poziom sukcesu tylko dla ostatniego rzutu z możliwością podniesienia.");
+      button.prop('disabled', true);
+      button.removeClass('success-upgrade-button').addClass('success-upgrade-button-outdated');
+      button.text(game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton") + " (Przestarzałe)");
+      return;
+    }
+    
+    // Wywołanie funkcji podnoszenia sukcesu z informacją o testowanym atrybucie
+    await upgradeSuccessLevel(actor, resultType, testedAttribute);
+    
+    // Wyłączenie przycisku po użyciu i usunięcie z rejestru aktualnych przycisków
     button.prop('disabled', true);
+    button.removeClass('success-upgrade-button').addClass('success-upgrade-button-used');
     button.text(game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton") + " (Użyte)");
+    
+    // Usunięcie z rejestru aktualnych przycisków
+    delete window.cogwheelSyndicate.currentUpgradeButtons[actorId];
   });
 });
