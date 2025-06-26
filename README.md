@@ -1,6 +1,6 @@
 # Agenci Cogwheel - Foundry VTT System
 
-A Foundry Virtual Tabletop system for **Cogwheel Syndicate** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
+A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
 ## Description
 
