@@ -46,15 +46,26 @@ jobs:
         VERSION="${{ steps.get_version.outputs.VERSION }}"
         
         # Read changelog and extract current version section
-        awk "/^## \[$VERSION\]/{flag=1; next} /^## \[/{flag=0} flag" CHANGELOG.md > current_changelog.md
+        # Start from the line with current version, stop at next version or end of file
+        sed -n "/^## \[$VERSION\]/,/^## \[/p" CHANGELOG.md | sed '$d' | tail -n +2 > current_changelog.md
         
-        # If changelog is empty, create a default one
+        # If that didn't work, try alternative approach
+        if [ ! -s current_changelog.md ]; then
+          awk "/^## \[$VERSION\]/{flag=1; next} /^## \[/{flag=0} flag" CHANGELOG.md > current_changelog.md
+        fi
+        
+        # If still empty, create a default one
         if [ ! -s current_changelog.md ]; then
           echo "### Changes" > current_changelog.md
           echo "- Version $VERSION release" >> current_changelog.md
         fi
         
-        # Set output (escape newlines)
+        # Debug: show what we extracted
+        echo "=== Extracted changelog ==="
+        cat current_changelog.md
+        echo "=== End changelog ==="
+        
+        # Set output using proper delimiter
         {
           echo 'CHANGELOG<<EOF'
           cat current_changelog.md

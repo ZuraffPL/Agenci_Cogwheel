@@ -1,0 +1,117 @@
+name: Create Release Manual
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (leave empty for auto-detect)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'ZuraffPL'
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract version
+      id: get_version
+      run: |
+        if [ -n "${{ github.event.inputs.version }}" ]; then
+          VERSION="${{ github.event.inputs.version }}"
+        else
+          VERSION=$(node -p "require('./system.json').version")
+        fi
+        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
+        echo "TITLE=$(node -p "require('./system.json').title")" >> $GITHUB_OUTPUT
+        echo "Using version: $VERSION"
+
+    - name: Check if tag exists
+      id: check_tag
+      run: |
+        if git rev-parse "v${{ steps.get_version.outputs.VERSION }}" >/dev/null 2>&1; then
+          echo "TAG_EXISTS=true" >> $GITHUB_OUTPUT
+          echo "Tag v${{ steps.get_version.outputs.VERSION }} already exists, skipping release"
+        else
+          echo "TAG_EXISTS=false" >> $GITHUB_OUTPUT
+          echo "Creating new release for v${{ steps.get_version.outputs.VERSION }}"
+        fi
+
+    - name: Extract Changelog
+      id: changelog
+      if: steps.check_tag.outputs.TAG_EXISTS == 'false'
+      run: |
+        VERSION="${{ steps.get_version.outputs.VERSION }}"
+        
+        # Create changelog file
+        echo "Extracting changelog for version $VERSION"
+        
+        # Find the section for this version
+        # Method 1: Using sed to extract between version headers
+        sed -n "/^## \[$VERSION\]/,/^## \[/p" CHANGELOG.md | head -n -1 | tail -n +2 > release_notes.md
+        
+        # If that's empty, try method 2
+        if [ ! -s release_notes.md ]; then
+          awk -v version="$VERSION" '
+            $0 ~ "^## \\[" version "\\]" { found=1; next }
+            found && $0 ~ "^## \\[" { exit }
+            found { print }
+          ' CHANGELOG.md > release_notes.md
+        fi
+        
+        # If still empty, create default
+        if [ ! -s release_notes.md ]; then
+          echo "### Changes" > release_notes.md
+          echo "- Release version $VERSION" >> release_notes.md
+        fi
+        
+        # Remove empty lines at the beginning and end
+        sed -i '/./,$!d' release_notes.md
+        sed -i -e :a -e '/^\s*$/N;ba' -e 's/\n*$//' release_notes.md
+        
+        echo "=== Extracted Release Notes ==="
+        cat release_notes.md
+        echo "=== End Release Notes ==="
+
+    - name: Create zip file
+      if: steps.check_tag.outputs.TAG_EXISTS == 'false'
+      run: |
+        # Create a zip file with the system files
+        zip -r cogwheel-syndicate.zip . \
+          -x "*.git*" "node_modules/*" "*.github*" "*.gitignore" "README.md" "INSTALL.md" "LICENSE"
+        
+        # Also create a versioned zip
+        cp cogwheel-syndicate.zip cogwheel-syndicate-${{ steps.get_version.outputs.VERSION }}.zip
+        
+        # Verify files were created
+        ls -la *.zip
+        ls -la system.json
+
+    - name: Create Release with GitHub CLI
+      if: steps.check_tag.outputs.TAG_EXISTS == 'false'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        VERSION="${{ steps.get_version.outputs.VERSION }}"
+        TITLE="${{ steps.get_version.outputs.TITLE }}"
+        
+        # Create the release
+        gh release create "v$VERSION" \
+          --title "v$VERSION - $TITLE" \
+          --notes-file release_notes.md \
+          --verify-tag \
+          cogwheel-syndicate.zip \
+          cogwheel-syndicate-$VERSION.zip \
+          system.json
+        
+        echo "Release v$VERSION created successfully!"
