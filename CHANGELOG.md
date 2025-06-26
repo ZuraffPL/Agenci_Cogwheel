@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.9] - 2025-06-26
+
+### Fixed
+- **GitHub Actions Workflow**: Naprawiono parsowanie changelog'a w automatycznych release'ach
+  - Poprawiono ekstrakcję release notes z CHANGELOG.md
+  - Dodano lepszy debug output
+  - Naprawiono problem z wyświetlaniem zmiennych w opisie release'a
+
+### Added
+- **Manual Release Workflow**: Dodano alternatywny workflow do ręcznego tworzenia release'ów
+  - Możliwość uruchomienia z GitHub Actions UI
+  - Używa GitHub CLI dla lepszej niezawodności
+  - Opcjonalne podanie wersji lub auto-detect z system.json
+
 ## [0.5.8] - 2025-06-26
 
 ### Added
