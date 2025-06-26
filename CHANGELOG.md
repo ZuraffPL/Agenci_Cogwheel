@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.8] - 2025-06-26
+
+### Added
+- **Automated Release System**: GitHub Actions workflow dla automatycznych release'ów
+  - Automatyczne wykrywanie zmian wersji w system.json
+  - Tworzenie release'ów z odpowiednimi tagami
+  - Automatyczne generowanie zip'ów z systemem
+  - Wyciąganie informacji z CHANGELOG.md
+  - Dodawanie assets (zip, system.json) do release'a
+
+### Technical
+- Dodano `.github/workflows/release.yml` dla automatyzacji deploymentu
+- Workflow uruchamia się tylko przy zmianie pliku system.json na branchu main
+- Zabezpieczenie przed duplikacją release'ów (sprawdzanie czy tag już istnieje)
+
 ## [0.5.7] - 2025-06-26
 
 ### Added
