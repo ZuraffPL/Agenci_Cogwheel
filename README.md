@@ -90,10 +90,10 @@ If you encounter any issues or have questions about this system, please:
 
 ## Changelog
 
-### Version 0.5.9
-- **GitHub Actions Workflow**: Naprawiono parsowanie changelog'a w automatycznych release'ach
-- **Manual Release Workflow**: Dodano alternatywny workflow do ręcznego tworzenia release'ów
-- **Success Level Upgrade System**: Nowa funkcjonalność pozwalająca na podnoszenie poziomu sukcesu za punkty pary
+### Version 0.6.0
+- **Automatic README Updates**: Workflow automatycznie aktualizuje README.md z najnowszymi zmianami
+- **Manifest URL**: Dodano poprawny manifest URL do README.md dla łatwej instalacji
+- Rozszerzono GitHub Actions workflow o automatyczną aktualizację dokumentacji
 
 ---
 
