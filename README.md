@@ -90,10 +90,8 @@ If you encounter any issues or have questions about this system, please:
 
 ## Changelog
 
-### Version 0.6.0
-- **Automatic README Updates**: Workflow automatycznie aktualizuje README.md z najnowszymi zmianami
-- **Manifest URL**: Dodano poprawny manifest URL do README.md dla łatwej instalacji
-- Rozszerzono GitHub Actions workflow o automatyczną aktualizację dokumentacji
+### Version 0.6.1
+- **Compendium Pack dla Archetypów**: Automatyczne dostarczanie gotowych archetypów po instalacji systemu
 
 ---
 
