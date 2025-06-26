@@ -249,5 +249,6 @@
   "COGSYNDICATE.UpgradeSuccessButton": "Upgrade success level for 2SP",
   "COGSYNDICATE.UpgradeSuccessConfirm": "Agent {agentName} upgraded success level from {fromLevel} to {toLevel}",
   "COGSYNDICATE.InsufficientSteamPoints": "Insufficient Steam Points in Pool",
-  "COGSYNDICATE.SpentSteamPoints": "Spent 2 Steam Points from pool"
+  "COGSYNDICATE.SpentSteamPoints": "Spent 2 Steam Points from pool",
+  "COGSYNDICATE.CompendiumArchetypes": "Agent Archetypes"
 }

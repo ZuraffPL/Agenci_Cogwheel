@@ -249,5 +249,6 @@
   "COGSYNDICATE.UpgradeSuccessButton": "Podnieś poziom sukcesu za 2PP",
   "COGSYNDICATE.UpgradeSuccessConfirm": "Agent {agentName} podniósł poziom sukcesu z {fromLevel} na {toLevel}",
   "COGSYNDICATE.InsufficientSteamPoints": "Za mało Punktów Pary w Puli",
-  "COGSYNDICATE.SpentSteamPoints": "Wydano 2 Punkty Pary z puli"
+  "COGSYNDICATE.SpentSteamPoints": "Wydano 2 Punkty Pary z puli",
+  "COGSYNDICATE.CompendiumArchetypes": "Archetypy Agentów"
 }

@@ -2,7 +2,7 @@
   "id": "cogwheel-syndicate",
   "title": "Agenci Cogwheel",
   "description": "Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysłowej",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "compatibility": {
     "minimum": "12",
     "verified": "12.331"
@@ -33,6 +33,18 @@
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
   ],
   "socket": true,
+  "packs": [
+    {
+      "name": "archetypes",
+      "label": "COGSYNDICATE.CompendiumArchetypes",
+      "path": "packs/archetypes.db",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    }
+  ],
   "languages": [
     {
       "lang": "en",

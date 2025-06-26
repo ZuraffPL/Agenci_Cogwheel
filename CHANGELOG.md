@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.1] - 2025-06-26
+
+### Added
+- **Compendium Pack dla Archetypów**: Automatyczne dostarczanie gotowych archetypów po instalacji systemu
+  - Archetypy są teraz dostępne w zakładce Compendium Packs w Foundry VTT
+  - Użytkownicy mogą przeciągać archetypy bezpośrednio z pakietu do aktorów
+  - Dostępne archetypy: Mechanik, Inżynier, Szpieg
+  - Wielojęzyczne etykiety dla compendium pack (PL/EN)
+
+### Technical
+- Dodano konfigurację `packs` do system.json
+- Dodano tłumaczenia dla nazwy compendium pack
+- Skonfigurowano uprawnienia dostępu do pakietu (PLAYER: OBSERVER, ASSISTANT: OWNER)
+
 ## [0.6.0] - 2025-06-26
 
 ### Added
