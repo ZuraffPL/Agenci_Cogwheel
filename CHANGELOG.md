@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.4] - 2025-06-26
+
+### Added
+- **Przycisk "Wydaj Stres"**: Nowa funkcjonalność wydawania punktów stresu
+  - Dodano przycisk w sekcji zasobów agenta pod zasobem stresu
+  - **Sekcja 1 Punkt Stresu**: Obniż/odrzuć konsekwencję w pozycji kontrolowanej
+  - **Sekcja 2 Punkty Stresu**: 
+    - Obniż/odrzuć konsekwencję w pozycji ryzykownej
+    - Dodaj 1 Punkt Pary do Puli Drużyny (+2 PS agenta + 1 PP do puli)
+    - Pomoc innemu Agentowi
+  - **Sekcja 3 Punkty Stresu**: Obniż/odrzuć konsekwencję w pozycji desperackiej
+  - **Obsługa traumy**: Gdy wydanie stresu spowodowałoby przekroczenie maksimum, wyświetlane jest ostrzeżenie o traumie
+  - **Automatyczna trauma**: Po potwierdzeniu agent otrzymuje traumę, stres resetuje się do nadmiarowej wartości
+  - **Komunikaty na czat**: Każda akcja generuje odpowiedni komunikat z informacją o traumie (jeśli wystąpiła)
+
+### Enhanced
+- **Integracja z systemem metawalut**: Opcja "Dodaj do Puli Drużyny 1 Punkt Pary" automatycznie synchronizuje punkty pary
+- **Logika traumy**: Spójny system obsługi traumy podobny do mechaniki rzutów z kością stresu
+- **Stylizacja**: Nowe style CSS w osobnym pliku `spend-stress.css` z kolorystyką dopasowaną do stresu
+- **Tłumaczenia**: Pełne wsparcie dla języka polskiego i angielskiego
+
+### Technical
+- Dodano szablon `spend-stress-dialog.hbs` dla okna dialogowego
+- Dodano style `spend-stress.css` zintegrowane w `system.json`
+- Rozszerzono funkcjonalność `actor-sheet.js` o funkcję `_onSpendStress()`
+- Dodano funkcję `executeStressAction()` z obsługą traumy i komunikatów
+- Dodano tłumaczenia do plików `pl.json` i `en.json`
+
 ## [0.6.3] - 2025-06-26
 
 ### Added

@@ -255,5 +255,22 @@
   "COGSYNDICATE.RerollTestConfirm": "Agent {agentName} przerzucił test {testedAttribute} za 3 Punkty Pary",
   "COGSYNDICATE.InsufficientSteamPointsReroll": "Za mało Punktów Pary w Puli (potrzeba 3PP)",
   "COGSYNDICATE.SpentSteamPointsReroll": "Wydano 3 Punkty Pary z puli na przerzut",
-  "COGSYNDICATE.FreeBonus": "za darmo"
+  "COGSYNDICATE.FreeBonus": "za darmo",
+  "COGSYNDICATE.SpendStress": "Wydaj Stres",
+  "COGSYNDICATE.SpendStressTitle": "Wydaj Punkty Stresu",
+  "COGSYNDICATE.SpendStress1Point": "Wydaj 1 Punkt Stresu na:",
+  "COGSYNDICATE.SpendStress2Points": "Wydaj 2 Punkty Stresu na:",
+  "COGSYNDICATE.SpendStress3Points": "Wydaj 3 Punkty Stresu na:",
+  "COGSYNDICATE.StressControlledConsequence": "Obniż/odrzuć 1 wybraną konsekwencję porażki/sukcesu z kosztem w pozycji kontrolowanej",
+  "COGSYNDICATE.StressRiskyConsequence": "Obniż/odrzuć 1 wybraną konsekwencję porażki/sukcesu z kosztem w pozycji ryzykownej",
+  "COGSYNDICATE.StressDesperateConsequence": "Obniż/odrzuć 1 wybraną konsekwencję porażki/sukcesu z kosztem w pozycji desperackiej",
+  "COGSYNDICATE.StressSteamAdd": "Dodaj do Puli Drużyny 1 Punkt Pary",
+  "COGSYNDICATE.StressHelpAgent": "Pomoc innemu Agentowi",
+  "COGSYNDICATE.ErrorNoStressSelected": "Musisz wybrać akcję wydania stresu!",
+  "COGSYNDICATE.ErrorInsufficientStress": "Niewystarczająca liczba punktów stresu!<br><br>Potrzebujesz: <strong>{required}</strong><br>Masz: <strong>{available}</strong>",
+  "COGSYNDICATE.StressSpentControlled": "Agent {agentName} wydał 1 Punkt Stresu na obniżenie/odrzucenie konsekwencji w pozycji kontrolowanej",
+  "COGSYNDICATE.StressSpentRisky": "Agent {agentName} wydał 2 Punkty Stresu na obniżenie/odrzucenie konsekwencji w pozycji ryzykownej",
+  "COGSYNDICATE.StressSpentDesperate": "Agent {agentName} wydał 3 Punkty Stresu na obniżenie/odrzucenie konsekwencji w pozycji desperackiej",
+  "COGSYNDICATE.StressSpentSteam": "Agent {agentName} wydał 2 Punkty Stresu i dodał 1 Punkt Pary do puli drużyny",
+  "COGSYNDICATE.StressSpentHelp": "Agent {agentName} wydał 2 Punkty Stresu na pomoc innemu Agentowi"
 }

@@ -2,7 +2,7 @@
   "id": "cogwheel-syndicate",
   "title": "Agenci Cogwheel",
   "description": "Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysłowej",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "compatibility": {
     "minimum": "12",
     "verified": "12.331"
@@ -29,6 +29,7 @@
     "src/styles/trauma-types.css",
     "src/styles/sidebars-controls.css",
     "src/styles/spend-gear.css",
+    "src/styles/spend-stress.css",
     "src/styles/success-upgrade.css",
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
   ],

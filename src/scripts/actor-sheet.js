@@ -87,6 +87,7 @@ class CogwheelActorSheet extends ActorSheet {
     html.find('.edit-trauma').click(this._onEditTrauma.bind(this));
     html.find('.delete-trauma').click(this._onDeleteTrauma.bind(this));
     html.find('.spend-gear-btn').click(this._onSpendGear.bind(this));
+    html.find('.spend-stress-btn').click(this._onSpendStress.bind(this));
     this._assignRandomBackgrounds(html);
     this._updateEquipmentPointsDisplay(html);
   }
@@ -890,6 +891,232 @@ class CogwheelActorSheet extends ActorSheet {
       default: "confirm",
       width: 400,
       classes: ["cogsyndicate", "dialog", "spend-gear-dialog"],
+      close: () => {
+        console.log("Dialog zamknięty");
+      }
+    });
+
+    dialog.render(true);
+  }
+
+  async _onSpendStress(event) {
+    event.preventDefault();
+    console.log("=== SPEND STRESS DEBUG START ===");
+
+    const templateData = {
+      currentStress: this.actor.system.resources.stress.value || 0,
+      maxStress: this.actor.system.resources.stress.max || 12,
+      currentSteam: game.cogwheelSyndicate?.steamPoints || 0
+    };
+
+    const dialogContent = await renderTemplate("systems/cogwheel-syndicate/src/templates/spend-stress-dialog.hbs", templateData);
+
+    // Zachowaj referencję do this dla użycia w callback
+    const actorRef = this.actor;
+    const sheetRef = this;
+
+    const dialog = new Dialog({
+      title: game.i18n.localize("COGSYNDICATE.SpendStressTitle"),
+      content: dialogContent,
+      buttons: {
+        cancel: {
+          label: game.i18n.localize("COGSYNDICATE.Cancel"),
+          callback: () => {
+            console.log("Dialog anulowany");
+          }
+        },
+        confirm: {
+          label: game.i18n.localize("COGSYNDICATE.Confirm"),
+          callback: async (html) => {
+            console.log("Callback confirm uruchomiony");
+            
+            const selectedOption = html.find('input[name="stressAction"]:checked');
+            const errorMessage = html.find('.error-message');
+
+            console.log("Wybrane opcje:", selectedOption.length);
+            
+            if (selectedOption.length === 0) {
+              console.log("Brak wybranej opcji");
+              new Dialog({
+                title: game.i18n.localize("COGSYNDICATE.Error"),
+                content: `<p style="color: red; font-weight: bold; text-align: center; font-size: 16px;">${game.i18n.localize("COGSYNDICATE.ErrorNoStressSelected")}</p>`,
+                buttons: {
+                  ok: {
+                    label: game.i18n.localize("COGSYNDICATE.Confirm"),
+                    callback: () => {}
+                  }
+                },
+                default: "ok"
+              }).render(true);
+              return false;
+            }
+
+            const stressAction = selectedOption.val();
+            const stressCost = parseInt(selectedOption.data('cost'), 10);
+            const steamBonus = parseInt(selectedOption.data('steam') || 0, 10);
+            
+            const currentStress = actorRef.system.resources.stress.value || 0;
+            const maxStress = actorRef.system.resources.stress.max || 12;
+            const currentSteam = game.cogwheelSyndicate?.steamPoints || 0;
+
+            console.log("Dane stresu:", { stressAction, stressCost, steamBonus, currentStress, maxStress, currentSteam });
+
+            // Funkcja wykonania akcji stresu
+            const executeStressAction = async (withTrauma = false) => {
+              try {
+                console.log("Rozpoczynam aktualizację...");
+                
+                let finalStressValue;
+                let traumaOccurred = false;
+                
+                if (withTrauma) {
+                  // Jeśli z traumą, oblicz końcową wartość stresu
+                  const excessStress = (currentStress + stressCost) - maxStress;
+                  finalStressValue = excessStress;
+                  traumaOccurred = true;
+                  
+                  // Zwiększ traumę
+                  const traumaValue = actorRef.system.resources.trauma.value || 0;
+                  const newTraumaValue = Math.min(traumaValue + 1, actorRef.system.resources.trauma.max);
+                  
+                  await actorRef.update({
+                    "system.resources.stress.value": finalStressValue,
+                    "system.resources.trauma.value": newTraumaValue
+                  });
+                  
+                  console.log("Agent doznał traumy, nowy stres:", finalStressValue, "trauma:", newTraumaValue);
+                } else {
+                  // Normalne wydanie stresu bez traumy
+                  finalStressValue = currentStress + stressCost;
+                  await actorRef.update({
+                    "system.resources.stress.value": finalStressValue
+                  });
+                  console.log("Zaktualizowano punkty stresu:", finalStressValue);
+                }
+
+                // Aktualizuj punkty pary (jeśli potrzebne)
+                if (steamBonus > 0) {
+                  const newSteamValue = currentSteam + steamBonus;
+                  game.cogwheelSyndicate.steamPoints = newSteamValue;
+                  
+                  // Synchronizacja przez socket
+                  game.socket.emit("system.cogwheel-syndicate", {
+                    type: "updateMetaCurrencies",
+                    nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
+                    steamPoints: game.cogwheelSyndicate.steamPoints
+                  });
+                  
+                  Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
+                  console.log("Zaktualizowano punkty pary:", newSteamValue);
+                }
+
+                // Przygotuj komunikat na czat
+                const agentName = actorRef.name;
+                let message;
+                
+                switch(stressAction) {
+                  case 'controlled':
+                    message = game.i18n.format("COGSYNDICATE.StressSpentControlled", {agentName});
+                    break;
+                  case 'risky':
+                    message = game.i18n.format("COGSYNDICATE.StressSpentRisky", {agentName});
+                    break;
+                  case 'desperate':
+                    message = game.i18n.format("COGSYNDICATE.StressSpentDesperate", {agentName});
+                    break;
+                  case 'steam':
+                    message = game.i18n.format("COGSYNDICATE.StressSpentSteam", {agentName});
+                    break;
+                  case 'help':
+                    message = game.i18n.format("COGSYNDICATE.StressSpentHelp", {agentName});
+                    break;
+                  default:
+                    message = `Agent ${agentName} wydał ${stressCost} punktów stresu.`;
+                }
+
+                // Dodaj informację o traumie do komunikatu jeśli wystąpiła
+                if (traumaOccurred) {
+                  message += `<br><strong>${game.i18n.localize("COGSYNDICATE.TraumaReceived")}</strong>`;
+                }
+
+                console.log("Przygotowany komunikat:", message);
+
+                // Wyślij komunikat na czat
+                const chatMessage = await ChatMessage.create({
+                  content: `<p>${message}</p>`,
+                  speaker: { actor: actorRef.id },
+                  style: CONST.CHAT_MESSAGE_STYLES.OTHER
+                });
+
+                console.log("ChatMessage utworzony:", chatMessage);
+                sheetRef.render();
+                
+                return true;
+              } catch (error) {
+                console.error("Błąd podczas wydawania stresu:", error);
+                new Dialog({
+                  title: game.i18n.localize("COGSYNDICATE.Error"),
+                  content: `<p style="color: red; font-weight: bold; text-align: center; font-size: 16px;">Wystąpił błąd podczas wydawania stresu!<br><br><small>${error.message}</small></p>`,
+                  buttons: {
+                    ok: {
+                      label: game.i18n.localize("COGSYNDICATE.Confirm"),
+                      callback: () => {}
+                    }
+                  },
+                  default: "ok"
+                }).render(true);
+                return false;
+              }
+            };
+
+            // Sprawdź czy agent przekroczy maksymalny poziom stresu
+            const newStressValue = currentStress + stressCost;
+            const willCauseTrauma = newStressValue > maxStress;
+            
+            if (willCauseTrauma) {
+              console.log("Wydanie stresu spowoduje traumę");
+              
+              // Pokaż ostrzeżenie o traumie i pozwól na potwierdzenie
+              const traumaWarningDialog = new Dialog({
+                title: game.i18n.localize("COGSYNDICATE.TraumaWarning"),
+                content: `<p style="text-align: center; font-size: 16px; margin-bottom: 15px;">${game.i18n.format("COGSYNDICATE.TraumaMessage", {agentName: actorRef.name})}</p>`,
+                buttons: {
+                  cancel: {
+                    label: game.i18n.localize("COGSYNDICATE.Cancel"),
+                    callback: () => {
+                      console.log("Anulowano wydanie stresu z traumą");
+                      return false;
+                    }
+                  },
+                  confirm: {
+                    label: game.i18n.localize("COGSYNDICATE.Confirm"),
+                    callback: async () => {
+                      console.log("Potwierdzono wydanie stresu z traumą");
+                      
+                      // Wykonaj akcję z traumą
+                      await executeStressAction(true);
+                      dialog.close();
+                      return true;
+                    }
+                  }
+                },
+                default: "confirm"
+              });
+              
+              traumaWarningDialog.render(true);
+              return false; // Zatrzymaj pierwotny dialog
+            }
+
+            // Wykonaj akcję normalnie (bez traumy)
+            await executeStressAction(false);
+            dialog.close();
+            return true;
+          }
+        }
+      },
+      default: "confirm",
+      width: 450,
+      classes: ["cogsyndicate", "dialog", "spend-stress-dialog"],
       close: () => {
         console.log("Dialog zamknięty");
       }

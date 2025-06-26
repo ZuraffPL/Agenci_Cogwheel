@@ -255,5 +255,22 @@
   "COGSYNDICATE.RerollTestConfirm": "Agent {agentName} rerolled {testedAttribute} test for 3 Steam Points",
   "COGSYNDICATE.InsufficientSteamPointsReroll": "Insufficient Steam Points in Pool (need 3SP)",
   "COGSYNDICATE.SpentSteamPointsReroll": "Spent 3 Steam Points from pool for reroll",
-  "COGSYNDICATE.FreeBonus": "for free"
+  "COGSYNDICATE.FreeBonus": "for free",
+  "COGSYNDICATE.SpendStress": "Spend Stress",
+  "COGSYNDICATE.SpendStressTitle": "Spend Stress Points",
+  "COGSYNDICATE.SpendStress1Point": "Spend 1 Stress Point on:",
+  "COGSYNDICATE.SpendStress2Points": "Spend 2 Stress Points on:",
+  "COGSYNDICATE.SpendStress3Points": "Spend 3 Stress Points on:",
+  "COGSYNDICATE.StressControlledConsequence": "Reduce/negate 1 selected failure/success with cost consequence in controlled position",
+  "COGSYNDICATE.StressRiskyConsequence": "Reduce/negate 1 selected failure/success with cost consequence in risky position",
+  "COGSYNDICATE.StressDesperateConsequence": "Reduce/negate 1 selected failure/success with cost consequence in desperate position",
+  "COGSYNDICATE.StressSteamAdd": "Add 1 Steam Point to Team Pool",
+  "COGSYNDICATE.StressHelpAgent": "Help another Agent",
+  "COGSYNDICATE.ErrorNoStressSelected": "You must choose a stress action!",
+  "COGSYNDICATE.ErrorInsufficientStress": "Insufficient stress points!<br><br>Required: <strong>{required}</strong><br>Available: <strong>{available}</strong>",
+  "COGSYNDICATE.StressSpentControlled": "Agent {agentName} spent 1 Stress Point to reduce/negate consequence in controlled position",
+  "COGSYNDICATE.StressSpentRisky": "Agent {agentName} spent 2 Stress Points to reduce/negate consequence in risky position",
+  "COGSYNDICATE.StressSpentDesperate": "Agent {agentName} spent 3 Stress Points to reduce/negate consequence in desperate position",
+  "COGSYNDICATE.StressSpentSteam": "Agent {agentName} spent 2 Stress Points and added 1 Steam Point to team pool",
+  "COGSYNDICATE.StressSpentHelp": "Agent {agentName} spent 2 Stress Points to help another Agent"
 }

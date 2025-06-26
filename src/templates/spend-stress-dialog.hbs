@@ -1,0 +1,46 @@
+<div class="spend-stress-content">
+  <h3>{{localize "COGSYNDICATE.SpendStressTitle"}}</h3>
+  
+  <!-- Sekcja 1 Punkt Stresu -->
+  <div class="stress-section">
+    <h4>{{localize "COGSYNDICATE.SpendStress1Point"}}</h4>
+    <div class="stress-options">
+      <div class="stress-option">
+        <input type="radio" id="stress-1-controlled" name="stressAction" value="controlled" data-cost="1">
+        <label for="stress-1-controlled">{{localize "COGSYNDICATE.StressControlledConsequence"}}</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sekcja 2 Punkty Stresu -->
+  <div class="stress-section">
+    <h4>{{localize "COGSYNDICATE.SpendStress2Points"}}</h4>
+    <div class="stress-options">
+      <div class="stress-option">
+        <input type="radio" id="stress-2-risky" name="stressAction" value="risky" data-cost="2">
+        <label for="stress-2-risky">{{localize "COGSYNDICATE.StressRiskyConsequence"}}</label>
+      </div>
+      <div class="stress-option">
+        <input type="radio" id="stress-2-steam" name="stressAction" value="steam" data-cost="2" data-steam="1">
+        <label for="stress-2-steam">{{localize "COGSYNDICATE.StressSteamAdd"}}</label>
+      </div>
+      <div class="stress-option">
+        <input type="radio" id="stress-2-help" name="stressAction" value="help" data-cost="2">
+        <label for="stress-2-help">{{localize "COGSYNDICATE.StressHelpAgent"}}</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sekcja 3 Punkty Stresu -->
+  <div class="stress-section">
+    <h4>{{localize "COGSYNDICATE.SpendStress3Points"}}</h4>
+    <div class="stress-options">
+      <div class="stress-option">
+        <input type="radio" id="stress-3-desperate" name="stressAction" value="desperate" data-cost="3">
+        <label for="stress-3-desperate">{{localize "COGSYNDICATE.StressDesperateConsequence"}}</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="error-message" style="display: none; color: red; text-align: center; margin-top: 10px;"></div>
+</div>
