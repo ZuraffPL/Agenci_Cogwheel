@@ -90,8 +90,9 @@ If you encounter any issues or have questions about this system, please:
 
 ## Changelog
 
-### Version 0.6.1
-- **Compendium Pack dla Archetypów**: Automatyczne dostarczanie gotowych archetypów po instalacji systemu
+### Version 0.6.2
+- **Ulepszenia funkcji podnoszenia sukcesu**: Poprawiono logikę aktywności przycisków podnoszenia sukcesu
+- **Komunikat podniesienia sukcesu**: Dodano informację o testowanym atrybucie
 
 ---
 
