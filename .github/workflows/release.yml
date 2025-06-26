@@ -72,6 +72,75 @@ jobs:
           echo EOF
         } >> $GITHUB_OUTPUT
 
+    - name: Update README.md
+      if: steps.check_tag.outputs.TAG_EXISTS == 'false'
+      run: |
+        VERSION="${{ steps.get_version.outputs.VERSION }}"
+        
+        # Create a summary of the current changelog entry for README
+        echo "Updating README.md with version $VERSION"
+        
+        # Extract key changes for README (first few bullet points)
+        head -n 10 current_changelog.md | grep "^-" | head -n 5 > readme_changes.txt
+        
+        # If no bullet points found, try with different format
+        if [ ! -s readme_changes.txt ]; then
+          head -n 10 current_changelog.md | grep "^  -" | head -n 5 > readme_changes.txt
+        fi
+        
+        # If still empty, use the whole changelog section
+        if [ ! -s readme_changes.txt ]; then
+          head -n 8 current_changelog.md > readme_changes.txt
+        fi
+        
+        # Update README.md changelog section
+        # Find the line with "### Version" and replace the section
+        awk -v version="$VERSION" -v file="readme_changes.txt" '
+        BEGIN {
+          while ((getline line < file) > 0) {
+            changes = changes line "\n"
+          }
+          close(file)
+        }
+        /^### Version/ {
+          print "### Version " version
+          print changes
+          # Skip until next section or end
+          while (getline > 0 && !/^---/ && !/^##/) {
+            continue
+          }
+          if (/^---/) print $0
+          next
+        }
+        { print }
+        ' README.md > README_new.md
+        
+        # Replace original file
+        mv README_new.md README.md
+        
+        echo "README.md updated with version $VERSION"
+        
+        # Show what changed
+        echo "=== README Changelog Section ==="
+        grep -A 10 "^### Version" README.md || echo "Section not found"
+        echo "=== End README Section ==="
+
+    - name: Commit README update
+      if: steps.check_tag.outputs.TAG_EXISTS == 'false'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        
+        # Check if README was actually changed
+        if git diff --quiet README.md; then
+          echo "No changes to README.md"
+        else
+          git add README.md
+          git commit -m "Update README.md changelog for v${{ steps.get_version.outputs.VERSION }}"
+          git push origin main
+          echo "README.md updated and pushed"
+        fi
+
     - name: Create zip file
       if: steps.check_tag.outputs.TAG_EXISTS == 'false'
       run: |

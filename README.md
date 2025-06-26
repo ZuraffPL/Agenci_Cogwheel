@@ -26,7 +26,7 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 1. Open Foundry VTT
 2. Go to "Game Systems" tab
 3. Click "Install System"
-4. Paste the manifest URL: `[MANIFEST_URL_HERE]`
+4. Paste the manifest URL: `https://github.com/ZuraffPL/Agenci_Cogwheel/releases/latest/download/system.json`
 5. Click "Install"
 
 ### Method 2: Manual Installation
@@ -90,9 +90,10 @@ If you encounter any issues or have questions about this system, please:
 
 ## Changelog
 
-### Version 0.5.6
-- Current development version
-- [Add changelog details here]
+### Version 0.5.9
+- **GitHub Actions Workflow**: Naprawiono parsowanie changelog'a w automatycznych release'ach
+- **Manual Release Workflow**: Dodano alternatywny workflow do ręcznego tworzenia release'ów
+- **Success Level Upgrade System**: Nowa funkcjonalność pozwalająca na podnoszenie poziomu sukcesu za punkty pary
 
 ---
 
