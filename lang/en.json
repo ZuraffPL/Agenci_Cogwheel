@@ -245,5 +245,9 @@
   "COGSYNDICATE.ErrorNoGearSelected": "You must select a gear type!",
   "COGSYNDICATE.ErrorInsufficientGear": "Insufficient gear points!<br><br>Required: <strong>{required}</strong><br>Available: <strong>{available}</strong>",
   "COGSYNDICATE.ErrorInsufficientSteam": "Insufficient steam points!<br><br>Required: <strong>{required}</strong><br>Available in pool: <strong>{available}</strong>",
-  "COGSYNDICATE.ErrorGeneral": "An error occurred while spending gear!<br><br><small>{error}</small>"
+  "COGSYNDICATE.ErrorGeneral": "An error occurred while spending gear!<br><br><small>{error}</small>",
+  "COGSYNDICATE.UpgradeSuccessButton": "Upgrade success level for 2SP",
+  "COGSYNDICATE.UpgradeSuccessConfirm": "Agent {agentName} upgraded success level from {fromLevel} to {toLevel}",
+  "COGSYNDICATE.InsufficientSteamPoints": "Insufficient Steam Points in Pool",
+  "COGSYNDICATE.SpentSteamPoints": "Spent 2 Steam Points from pool"
 }

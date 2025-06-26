@@ -1,0 +1,40 @@
+/* Success Upgrade Button Styles */
+.success-upgrade-button {
+  background: linear-gradient(135deg, #ff7b00, #ff9500);
+  color: black;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 12px;
+  cursor: pointer;
+  margin-top: 10px;
+  text-shadow: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.success-upgrade-button:hover {
+  background: linear-gradient(135deg, #ff8500, #ffaa00);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+.success-upgrade-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.success-upgrade-button:disabled {
+  background: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+}
+
+.roll-message {
+  position: relative;
+}

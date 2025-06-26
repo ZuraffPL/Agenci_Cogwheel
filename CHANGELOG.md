@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.7] - 2025-06-26
+
+### Added
+- **Success Level Upgrade System**: Nowa funkcjonalność pozwalająca na podnoszenie poziomu sukcesu za punkty pary
+  - Przycisk "Podnieś poziom sukcesu za 2PP" pojawia się przy wynikach "Porażka z konsekwencją" i "Sukces z kosztem"
+  - Automatyczne sprawdzanie dostępności punktów pary w puli (wymaga minimum 2 punktów)
+  - Podnoszenie poziomu: Porażka z konsekwencją → Sukces z kosztem, Sukces z kosztem → Pełny sukces
+  - Kolorowe komunikaty zgodne z systemem kolorów wyników rzutów
+  - Wyświetlanie komunikatu o błędzie gdy brakuje punktów pary
+  - Przycisk automatycznie się dezaktywuje po użyciu
+
+### Changed
+- Ulepszone wyświetlanie komunikatów o rzutach z możliwością interakcji
+- Dodano nowe tłumaczenia dla funkcjonalności podnoszenia sukcesu (PL/EN)
+
+### Technical
+- Dodano nowy plik CSS `success-upgrade.css` dla stylizacji przycisków
+- Nowe hooki obsługujące kliknięcia przycisków w wiadomościach czatu
+- Rozszerzona funkcja `performAttributeRoll` o obsługę przycisków upgradu
+- Nowa funkcja pomocnicza `upgradeSuccessLevel` do zarządzania podnoszeniem sukcesu
+
 ## [0.5.6] - 2025-06-26
 
 ### Added

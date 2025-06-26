@@ -1,3 +1,69 @@
+// Funkcja pomocnicza do podnoszenia poziomu sukcesu
+async function upgradeSuccessLevel(actor, currentResult) {
+  const currentSteamPoints = game.cogwheelSyndicate.steamPoints || 0;
+  
+  if (currentSteamPoints < 2) {
+    // Wyświetlenie komunikatu o braku punktów pary
+    const errorMessage = `<p><strong style="color: red; font-weight: bold;">${game.i18n.localize("COGSYNDICATE.InsufficientSteamPoints")}</strong></p>`;
+    await ChatMessage.create({
+      content: errorMessage,
+      speaker: { actor: actor.id }
+    });
+    return;
+  }
+
+  // Określenie nowego poziomu sukcesu
+  let newResult;
+  if (currentResult === "FailureWithConsequence") {
+    newResult = "SuccessWithCost";
+  } else if (currentResult === "SuccessWithCost") {
+    newResult = "FullSuccess";
+  }
+
+  // Wydanie punktów pary
+  game.cogwheelSyndicate.steamPoints = Math.max(currentSteamPoints - 2, 0);
+  game.socket.emit("system.cogwheel-syndicate", {
+    type: "updateMetaCurrencies",
+    nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
+    steamPoints: game.cogwheelSyndicate.steamPoints
+  });
+  Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
+
+  // Określenie kolorów dla poziomów sukcesu
+  const colorMap = {
+    "FailureWithConsequence": "red",
+    "SuccessWithCost": "blue", 
+    "FullSuccess": "green"
+  };
+
+  // Utworzenie komunikatu o podniesieniu sukcesu z odpowiednimi kolorami
+  const fromLevelText = `<span style='color: ${colorMap[currentResult]}; font-weight: bold'>${game.i18n.localize(`COGSYNDICATE.${currentResult}`)}</span>`;
+  const toLevelText = `<span style='color: ${colorMap[newResult]}; font-weight: bold'>${game.i18n.localize(`COGSYNDICATE.${newResult}`)}</span>`;
+  
+  const upgradeMessage = game.i18n.format("COGSYNDICATE.UpgradeSuccessConfirm", {
+    agentName: actor.name,
+    fromLevel: fromLevelText,
+    toLevel: toLevelText
+  });
+
+  const upgradeContent = `
+    <div class="roll-message">
+      <div class="chat-header">
+        <img src="${actor.img}" alt="${actor.name}" class="chat-avatar" />
+        <h3>${game.i18n.format("COGSYNDICATE.Agent", { agentName: actor.name })}</h3>
+      </div>
+      <hr>
+      <p><strong style='color: black;'>${upgradeMessage}</strong></p>
+      <p><span style='color: orange; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.SpentSteamPoints")}</span></p>
+    </div>
+  `;
+
+  await ChatMessage.create({
+    content: upgradeContent,
+    speaker: { actor: actor.id }
+  });
+}
+
 export async function performAttributeRoll(actor, attribute) {
   const attrValue = actor.system.attributes[attribute].value;
   const secondaryMap = {
@@ -231,15 +297,18 @@ export async function performAttributeRoll(actor, attribute) {
             let nemesisPoints = 0;
             let steamPoints = 0;
             let result;
+            let resultType = ""; // Dodana zmienna do śledzenia typu wyniku
 
             const counts = {};
             diceResults.forEach(die => counts[die] = (counts[die] || 0) + 1);
 
             if (counts[11] >= 2) {
               result = `<span style='color: red; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.AutoCriticalFailure")}</span>`;
+              resultType = "AutoCriticalFailure";
               nemesisPoints += Math.min(counts[11], 4); // Naliczamy punkty proporcjonalnie do liczby 11 (max 4)
             } else if (counts[12] >= 2) {
               result = `<span style='color: green; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.AutoCriticalSuccess")}</span>`;
+              resultType = "AutoCriticalSuccess";
               steamPoints += Math.min(counts[12], 4); // Naliczamy punkty proporcjonalnie do liczby 12 (max 4)
             } else {
               diceResults.forEach(die => {
@@ -249,11 +318,14 @@ export async function performAttributeRoll(actor, attribute) {
 
               if (total <= 12) {
                 result = `<span style='color: red; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.FailureWithConsequence")}</span>`;
+                resultType = "FailureWithConsequence";
                 nemesisPoints += 1; // Dodajemy 1 Punkt Nemezis za porażkę z konsekwencją
               } else if (total <= 18) {
                 result = `<span style='color: blue; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.SuccessWithCost")}</span>`;
+                resultType = "SuccessWithCost";
               } else {
                 result = `<span style='color: green; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.FullSuccess")}</span>`;
+                resultType = "FullSuccess";
                 steamPoints += 1; // Dodajemy 1 Punkt Pary za pełny sukces
               }
             }
@@ -278,6 +350,19 @@ export async function performAttributeRoll(actor, attribute) {
               Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
             }
 
+            // Generowanie przycisku podnoszenia sukcesu jeśli to konieczne
+            let upgradeButton = "";
+            if (resultType === "FailureWithConsequence" || resultType === "SuccessWithCost") {
+              const buttonId = `upgrade-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+              upgradeButton = `
+                <button class="success-upgrade-button" id="${buttonId}" 
+                        data-actor-id="${actor.id}" 
+                        data-result-type="${resultType}">
+                  ${game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton")}
+                </button>
+              `;
+            }
+
             let chatContent = `
               <div class="roll-message">
                 <div class="chat-header">
@@ -298,6 +383,7 @@ export async function performAttributeRoll(actor, attribute) {
                 ${steamPoints > 0 ? `<p><span style='color: orange; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedSteamPoint", { amount: steamPoints })}</span></p>` : ""}
                 <hr>
                 <p>${game.i18n.localize("COGSYNDICATE.Roll")}: ${diceCount}d12 (${die1}+${die2}${useStressDie ? `+${stressDie}` : ""}${useSteamDie ? `+${steamDie}` : ""}) + ${effectiveAttrValue} (${attrLabel})${traumaModifier !== 0 ? ` ${traumaModifier} (${game.i18n.localize("COGSYNDICATE.Trauma")})` : ""} + ${positionModifier} (${game.i18n.localize("COGSYNDICATE.Position")})${rollModifier !== 0 ? ` ${rollModifier > 0 ? '+' : ''}${rollModifier} (${game.i18n.localize("COGSYNDICATE.RollModifier")})` : ""}</p>
+                ${upgradeButton}
               </div>
             `;
 
@@ -318,3 +404,27 @@ export async function performAttributeRoll(actor, attribute) {
     }).render(true);
   });
 }
+
+// Hook do obsługi kliknięć przycisków podnoszenia sukcesu
+Hooks.on("renderChatMessage", (message, html, data) => {
+  html.find('.success-upgrade-button').click(async function(event) {
+    event.preventDefault();
+    
+    const button = $(this);
+    const actorId = button.data('actor-id');
+    const resultType = button.data('result-type');
+    
+    const actor = game.actors.get(actorId);
+    if (!actor) {
+      ui.notifications.error("Actor nie został znaleziony");
+      return;
+    }
+    
+    // Wywołanie funkcji podnoszenia sukcesu
+    await upgradeSuccessLevel(actor, resultType);
+    
+    // Wyłączenie przycisku po użyciu
+    button.prop('disabled', true);
+    button.text(game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton") + " (Użyte)");
+  });
+});
