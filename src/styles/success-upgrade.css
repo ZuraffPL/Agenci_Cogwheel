@@ -3,7 +3,7 @@
   background: linear-gradient(135deg, #ff7b00, #ff9500);
   color: black;
   border: none;
-  padding: 8px 16px;
+  padding: 3px 6px;
   border-radius: 6px;
   font-weight: bold;
   font-size: 12px;
@@ -40,7 +40,7 @@
   background: linear-gradient(135deg, #4CAF50, #66BB6A);
   color: black;
   border: none;
-  padding: 8px 16px;
+  padding: 3px 6px;
   border-radius: 6px;
   font-weight: bold;
   font-size: 12px;
@@ -58,12 +58,85 @@
   background: linear-gradient(135deg, #9E9E9E, #BDBDBD);
   color: #424242;
   border: none;
-  padding: 8px 16px;
+  padding: 3px 6px;
   border-radius: 6px;
   font-weight: normal;
   font-size: 12px;
   cursor: not-allowed;
   margin-top: 10px;
+  text-shadow: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  text-align: center;
+  opacity: 0.6;
+}
+
+/* Test Reroll Button Styles */
+.test-reroll-button {
+  background: linear-gradient(135deg, #2196F3, #42A5F5);
+  color: black;
+  border: none;
+  padding: 3px 6px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 12px;
+  cursor: pointer;
+  margin-top: 5px;
+  text-shadow: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: center;
+}
+
+.test-reroll-button:hover {
+  background: linear-gradient(135deg, #1976D2, #2196F3);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+.test-reroll-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.test-reroll-button:disabled {
+  background: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Test Reroll Button - Used State */
+.test-reroll-button-used {
+  background: linear-gradient(135deg, #607D8B, #78909C);
+  color: black;
+  border: none;
+  padding: 3px 6px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 12px;
+  cursor: not-allowed;
+  margin-top: 5px;
+  text-shadow: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  text-align: center;
+  opacity: 0.8;
+}
+
+/* Test Reroll Button - Outdated State */
+.test-reroll-button-outdated {
+  background: linear-gradient(135deg, #9E9E9E, #BDBDBD);
+  color: #424242;
+  border: none;
+  padding: 3px 6px;
+  border-radius: 6px;
+  font-weight: normal;
+  font-size: 12px;
+  cursor: not-allowed;
+  margin-top: 5px;
   text-shadow: none;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   width: 100%;

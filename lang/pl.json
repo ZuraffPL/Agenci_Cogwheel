@@ -251,5 +251,9 @@
   "COGSYNDICATE.InsufficientSteamPoints": "Za mało Punktów Pary w Puli",
   "COGSYNDICATE.SpentSteamPoints": "Wydano 2 Punkty Pary z puli",
   "COGSYNDICATE.UpgradeButtonOutdated": "Ten przycisk jest nieaktualny - można podnieść poziom sukcesu tylko dla ostatniego rzutu z możliwością podniesienia",
-  "COGSYNDICATE.CompendiumArchetypes": "Archetypy Agentów"
+  "COGSYNDICATE.RerollTestButton": "Przerzuć test za 3PP",
+  "COGSYNDICATE.RerollTestConfirm": "Agent {agentName} przerzucił test {testedAttribute} za 3 Punkty Pary",
+  "COGSYNDICATE.InsufficientSteamPointsReroll": "Za mało Punktów Pary w Puli (potrzeba 3PP)",
+  "COGSYNDICATE.SpentSteamPointsReroll": "Wydano 3 Punkty Pary z puli na przerzut",
+  "COGSYNDICATE.FreeBonus": "za darmo"
 }

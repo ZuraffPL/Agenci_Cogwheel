@@ -1,7 +1,9 @@
-// System śledzenia aktualnych przycisków podnoszenia sukcesu dla każdego agenta
+// System śledzenia aktualnych przycisków podnoszenia sukcesu i przerzutu dla każdego agenta
 window.cogwheelSyndicate = window.cogwheelSyndicate || {};
 window.cogwheelSyndicate.currentUpgradeButtons = window.cogwheelSyndicate.currentUpgradeButtons || {};
+window.cogwheelSyndicate.currentRerollButtons = window.cogwheelSyndicate.currentRerollButtons || {};
 window.cogwheelSyndicate.lastRollTimestamp = window.cogwheelSyndicate.lastRollTimestamp || {};
+window.cogwheelSyndicate.rollData = window.cogwheelSyndicate.rollData || {};
 
 // Funkcja do wyłączania wszystkich starszych przycisków dla danego agenta
 function disableAllUpgradeButtonsForActor(actorId) {
@@ -13,6 +15,17 @@ function disableAllUpgradeButtonsForActor(actorId) {
       button.prop('disabled', true);
       button.removeClass('success-upgrade-button').addClass('success-upgrade-button-outdated');
       button.text(game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton") + " (Przestarzałe)");
+    }
+  });
+
+  // Znajdź wszystkie przyciski przerzutu dla tego agenta i wyłącz je
+  $('.test-reroll-button').each(function() {
+    const button = $(this);
+    const buttonActorId = button.data('actor-id');
+    if (buttonActorId === actorId) {
+      button.prop('disabled', true);
+      button.removeClass('test-reroll-button').addClass('test-reroll-button-outdated');
+      button.text(game.i18n.localize("COGSYNDICATE.RerollTestButton") + " (Przestarzałe)");
     }
   });
 }
@@ -386,6 +399,19 @@ export async function performAttributeRoll(actor, attribute) {
             const currentRollTimestamp = Date.now();
             window.cogwheelSyndicate.lastRollTimestamp[actor.id] = currentRollTimestamp;
 
+            // Zapisanie danych rzutu dla możliwego reroll
+            const rollDataKey = `${actor.id}-${currentRollTimestamp}`;
+            window.cogwheelSyndicate.rollData[rollDataKey] = {
+              attribute,
+              position,
+              useStressDie,
+              useSteamDie,
+              applyTrauma,
+              rollModifier,
+              baseEffectiveAttrValue,
+              traumaValue
+            };
+
             // Generowanie przycisku podnoszenia sukcesu jeśli to konieczne
             let upgradeButton = "";
             if (resultType === "FailureWithConsequence" || resultType === "SuccessWithCost") {
@@ -406,6 +432,23 @@ export async function performAttributeRoll(actor, attribute) {
                 </button>
               `;
             }
+
+            // Przycisk reroll dla wszystkich testów
+            const rerollButtonId = `reroll-${currentRollTimestamp}-${Math.random().toString(36).substr(2, 9)}`;
+            
+            // Rejestracja nowego przycisku reroll jako aktualnego dla tego agenta
+            window.cogwheelSyndicate.currentRerollButtons[actor.id] = {
+              buttonId: rerollButtonId,
+              timestamp: currentRollTimestamp
+            };
+            
+            const rerollButton = `
+              <button class="test-reroll-button" id="${rerollButtonId}" 
+                      data-actor-id="${actor.id}" 
+                      data-roll-data-key="${rollDataKey}">
+                ${game.i18n.localize("COGSYNDICATE.RerollTestButton")}
+              </button>
+            `;
 
             let chatContent = `
               <div class="roll-message">
@@ -428,6 +471,7 @@ export async function performAttributeRoll(actor, attribute) {
                 <hr>
                 <p>${game.i18n.localize("COGSYNDICATE.Roll")}: ${diceCount}d12 (${die1}+${die2}${useStressDie ? `+${stressDie}` : ""}${useSteamDie ? `+${steamDie}` : ""}) + ${effectiveAttrValue} (${attrLabel})${traumaModifier !== 0 ? ` ${traumaModifier} (${game.i18n.localize("COGSYNDICATE.Trauma")})` : ""} + ${positionModifier} (${game.i18n.localize("COGSYNDICATE.Position")})${rollModifier !== 0 ? ` ${rollModifier > 0 ? '+' : ''}${rollModifier} (${game.i18n.localize("COGSYNDICATE.RollModifier")})` : ""}</p>
                 ${upgradeButton}
+                ${rerollButton}
               </div>
             `;
 
@@ -449,8 +493,403 @@ export async function performAttributeRoll(actor, attribute) {
   });
 }
 
-// Hook do obsługi kliknięć przycisków podnoszenia sukcesu
+// Funkcja pomocnicza do przerzucania testu za 3PP
+async function rerollTest(actor, rollDataKey) {
+  const currentSteamPoints = game.cogwheelSyndicate.steamPoints || 0;
+  
+  if (currentSteamPoints < 3) {
+    // Wyświetlenie komunikatu o braku punktów pary
+    const errorMessage = `<p><strong style="color: red; font-weight: bold;">${game.i18n.localize("COGSYNDICATE.InsufficientSteamPointsReroll")}</strong></p>`;
+    await ChatMessage.create({
+      content: errorMessage,
+      speaker: { actor: actor.id }
+    });
+    return;
+  }
+
+  // Pobranie danych oryginalnego rzutu
+  const rollData = window.cogwheelSyndicate.rollData[rollDataKey];
+  if (!rollData) {
+    ui.notifications.error("Nie można znaleźć danych oryginalnego rzutu");
+    return;
+  }
+
+  // Wydanie punktów pary
+  game.cogwheelSyndicate.steamPoints = Math.max(currentSteamPoints - 3, 0);
+  game.socket.emit("system.cogwheel-syndicate", {
+    type: "updateMetaCurrencies",
+    nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
+    steamPoints: game.cogwheelSyndicate.steamPoints
+  });
+  Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
+
+  // Wykonanie nowego rzutu z identycznymi parametrami ale bez dodatkowych kosztów
+  await executeRollWithData(actor, rollData, true);
+  
+  // Komunikat o przerzucie
+  const attrLabel = {
+    machine: game.i18n.localize("COGSYNDICATE.Machine"),
+    engineering: game.i18n.localize("COGSYNDICATE.Engineering"),
+    intrigue: game.i18n.localize("COGSYNDICATE.Intrigue")
+  }[rollData.attribute] || rollData.attribute;
+  
+  const testedAttributeText = `<span style='color: purple; font-weight: bold'>${attrLabel}</span>`;
+  
+  const rerollMessage = game.i18n.format("COGSYNDICATE.RerollTestConfirm", {
+    agentName: actor.name,
+    testedAttribute: testedAttributeText
+  });
+
+  const rerollContent = `
+    <div class="roll-message">
+      <div class="chat-header">
+        <img src="${actor.img}" alt="${actor.name}" class="chat-avatar" />
+        <h3>${game.i18n.format("COGSYNDICATE.Agent", { agentName: actor.name })}</h3>
+      </div>
+      <hr>
+      <p><strong style='color: black;'>${rerollMessage}</strong></p>
+      <p><span style='color: orange; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.SpentSteamPointsReroll")}</span></p>
+    </div>
+  `;
+
+  await ChatMessage.create({
+    content: rerollContent,
+    speaker: { actor: actor.id }
+  });
+}
+
+// Funkcja wykonująca rzut z podanymi parametrami
+async function executeRollWithData(actor, data, isReroll = false) {
+  const {
+    attribute,
+    position,
+    useStressDie,
+    useSteamDie,
+    applyTrauma,
+    rollModifier,
+    baseEffectiveAttrValue,
+    traumaValue
+  } = data;
+
+  const positionModifiers = { desperate: -3, risky: 0, controlled: 3 };
+  const positionModifier = positionModifiers[position];
+  const positionLabel = {
+    desperate: game.i18n.localize("COGSYNDICATE.PositionDesperate"),
+    risky: game.i18n.localize("COGSYNDICATE.PositionRisky"),
+    controlled: game.i18n.localize("COGSYNDICATE.PositionControlled")
+  }[position];
+
+  const attrLabel = {
+    machine: game.i18n.localize("COGSYNDICATE.Machine"),
+    engineering: game.i18n.localize("COGSYNDICATE.Engineering"),
+    intrigue: game.i18n.localize("COGSYNDICATE.Intrigue")
+  }[attribute];
+
+  let effectiveAttrValue = baseEffectiveAttrValue;
+  let traumaModifier = 0;
+  if (applyTrauma && traumaValue > 0) {
+    traumaModifier = -traumaValue;
+    effectiveAttrValue = baseEffectiveAttrValue + traumaModifier;
+  }
+
+  let stressIncrease = 0;
+  let steamIncrease = 0;
+  let traumaMessageFromDialog = "";
+  let resetStress = false;
+  let steamDialogMessage = "";
+  let stressDieMessage = "";
+
+  // W przypadku reroll, kości stresu i pary są dołączone za darmo
+  if (!isReroll) {
+    // Normalna logika zarządzania stresem i punktami pary
+    if (useStressDie) {
+      const currentStress = actor.system.resources.stress.value || 0;
+      const maxStress = actor.system.resources.stress.max || 4;
+      stressIncrease = 2;
+
+      if (currentStress + stressIncrease >= maxStress) {
+        const traumaDialog = await new Promise((traumaResolve) => {
+          new Dialog({
+            title: game.i18n.localize("COGSYNDICATE.TraumaWarning"),
+            content: `<p>${game.i18n.format("COGSYNDICATE.TraumaMessage", { agentName: actor.name })}</p>`,
+            buttons: {
+              cancel: {
+                label: game.i18n.localize("COGSYNDICATE.Cancel"),
+                callback: () => traumaResolve(false)
+              },
+              confirm: {
+                label: game.i18n.localize("COGSYNDICATE.Confirm"),
+                callback: () => traumaResolve(true)
+              }
+            },
+            default: "confirm"
+          }).render(true);
+        });
+
+        if (!traumaDialog) {
+          return;
+        }
+        traumaMessageFromDialog = `<p>${game.i18n.localize("COGSYNDICATE.TraumaReceived")}</p>`;
+        const currentTrauma = actor.system.resources.trauma.value || 0;
+        const newTrauma = Math.min(currentTrauma + 1, 4);
+        await actor.update({
+          "system.resources.stress.value": 0,
+          "system.resources.trauma.value": newTrauma
+        });
+
+        if (newTrauma === 4) {
+          const maxTraumaMessage = game.i18n.localize("COGSYNDICATE.MaxTraumaReached");
+          await ChatMessage.create({
+            content: `<p>${maxTraumaMessage}</p>`,
+            speaker: { actor: actor.id }
+          });
+          new Dialog({
+            title: "Maximum Trauma",
+            content: `<p>${maxTraumaMessage}</p>`,
+            buttons: {
+              ok: { label: "OK" }
+            }
+          }).render(true);
+        }
+        resetStress = true;
+      } else {
+        await actor.update({
+          "system.resources.stress.value": Math.min(currentStress + stressIncrease, maxStress)
+        });
+      }
+      stressDieMessage = `<p>${game.i18n.format("COGSYNDICATE.StressDieUsed", { agentName: actor.name })}</p>`;
+    }
+
+    if (useSteamDie) {
+      const steamDialog = await new Promise((steamResolve) => {
+        new Dialog({
+          title: game.i18n.localize("COGSYNDICATE.SteamDieConfirmTitle"),
+          content: `<p>${game.i18n.localize("COGSYNDICATE.SteamDieLabel")}</p>`,
+          buttons: {
+            cancel: {
+              label: game.i18n.localize("COGSYNDICATE.Cancel"),
+              callback: () => steamResolve(false)
+            },
+            confirm: {
+              label: game.i18n.localize("COGSYNDICATE.Confirm"),
+              callback: () => steamResolve(true)
+            }
+          },
+          default: "confirm"
+        }).render(true);
+      });
+
+      if (!steamDialog) {
+        return;
+      }
+
+      const currentSteamPoints = game.cogwheelSyndicate.steamPoints || 0;
+      if (currentSteamPoints < 2) {
+        await new Dialog({
+          title: game.i18n.localize("COGSYNDICATE.SteamDieInsufficientTitle"),
+          content: `<p><strong style="color: red; font-size: 1.2em;">${game.i18n.localize("COGSYNDICATE.SteamDieInsufficient")}</strong></p>`,
+          buttons: {
+            ok: { label: "OK" }
+          }
+        }).render(true);
+        return;
+      }
+
+      steamIncrease = 2;
+      game.cogwheelSyndicate.steamPoints = Math.max(currentSteamPoints - steamIncrease, 0);
+      game.socket.emit("system.cogwheel-syndicate", {
+        type: "updateMetaCurrencies",
+        nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
+        steamPoints: game.cogwheelSyndicate.steamPoints
+      });
+      Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
+      steamDialogMessage = `<p>${game.i18n.format("COGSYNDICATE.SteamDieUsed", { agentName: actor.name })}</p>`;
+    }
+  } else {
+    // W przypadku reroll, komunikaty o użyciu kości bez kosztów
+    if (useStressDie) {
+      stressDieMessage = `<p>${game.i18n.format("COGSYNDICATE.StressDieUsed", { agentName: actor.name })} (${game.i18n.localize("COGSYNDICATE.FreeBonus")})</p>`;
+    }
+    if (useSteamDie) {
+      steamDialogMessage = `<p>${game.i18n.format("COGSYNDICATE.SteamDieUsed", { agentName: actor.name })} (${game.i18n.localize("COGSYNDICATE.FreeBonus")})</p>`;
+    }
+  }
+
+  let diceCount = 2;
+  if (useStressDie) diceCount += 1;
+  if (useSteamDie) diceCount += 1;
+
+  const rollFormula = `${diceCount}d12 + @attrMod + @positionMod + @rollMod`;
+  const roll = new Roll(rollFormula, {
+    attrMod: effectiveAttrValue,
+    positionMod: positionModifier,
+    rollMod: rollModifier
+  });
+  await roll.evaluate();
+
+  const diceResults = roll.terms[0].results.map(r => r.result);
+  const [die1, die2, stressDie, steamDie] = diceCount === 4 ? diceResults : 
+    diceCount === 3 ? (useStressDie ? [diceResults[0], diceResults[1], diceResults[2], null] : [diceResults[0], diceResults[1], null, diceResults[2]]) : 
+    [diceResults[0], diceResults[1], null, null];
+  let total = roll.total;
+  let nemesisPoints = 0;
+  let steamPoints = 0;
+  let result;
+  let resultType = "";
+
+  const counts = {};
+  diceResults.forEach(die => counts[die] = (counts[die] || 0) + 1);
+
+  if (counts[11] >= 2) {
+    result = `<span style='color: red; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.AutoCriticalFailure")}</span>`;
+    resultType = "AutoCriticalFailure";
+    nemesisPoints += Math.min(counts[11], 4);
+  } else if (counts[12] >= 2) {
+    result = `<span style='color: green; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.AutoCriticalSuccess")}</span>`;
+    resultType = "AutoCriticalSuccess";
+    steamPoints += Math.min(counts[12], 4);
+  } else {
+    diceResults.forEach(die => {
+      if (die === 11) nemesisPoints += 1;
+      if (die === 12) steamPoints += 1;
+    });
+
+    if (total <= 12) {
+      result = `<span style='color: red; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.FailureWithConsequence")}</span>`;
+      resultType = "FailureWithConsequence";
+      nemesisPoints += 1;
+    } else if (total <= 18) {
+      result = `<span style='color: blue; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.SuccessWithCost")}</span>`;
+      resultType = "SuccessWithCost";
+    } else {
+      result = `<span style='color: green; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.FullSuccess")}</span>`;
+      resultType = "FullSuccess";
+      steamPoints += 1;
+    }
+  }
+
+  if (nemesisPoints > 0 || steamPoints > 0) {
+    game.cogwheelSyndicate.nemesisPoints = game.cogwheelSyndicate.nemesisPoints || 0;
+    game.cogwheelSyndicate.steamPoints = game.cogwheelSyndicate.steamPoints || 0;
+
+    if (nemesisPoints > 0) {
+      game.cogwheelSyndicate.nemesisPoints = Math.clamp(game.cogwheelSyndicate.nemesisPoints + nemesisPoints, 0, 100);
+    }
+    if (steamPoints > 0) {
+      game.cogwheelSyndicate.steamPoints = Math.clamp(game.cogwheelSyndicate.steamPoints + steamPoints, 0, 100);
+    }
+
+    game.socket.emit("system.cogwheel-syndicate", {
+      type: "updateMetaCurrencies",
+      nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
+      steamPoints: game.cogwheelSyndicate.steamPoints
+    });
+
+    Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
+  }
+
+  // Wyłączenie wszystkich starszych przycisków dla tego agenta przy każdym nowym rzucie
+  disableAllUpgradeButtonsForActor(actor.id);
+  
+  // Rejestracja timestamp tego rzutu
+  const currentRollTimestamp = Date.now();
+  window.cogwheelSyndicate.lastRollTimestamp[actor.id] = currentRollTimestamp;
+
+  // Zapisanie danych rzutu dla możliwego reroll (tylko przy oryginalnym rzucie)
+  let rollDataKey = null;
+  if (!isReroll) {
+    rollDataKey = `${actor.id}-${currentRollTimestamp}`;
+    window.cogwheelSyndicate.rollData[rollDataKey] = {
+      attribute,
+      position,
+      useStressDie,
+      useSteamDie,
+      applyTrauma,
+      rollModifier,
+      baseEffectiveAttrValue,
+      traumaValue
+    };
+  }
+
+  // Generowanie przycisków
+  let upgradeButton = "";
+  let rerollButton = "";
+  
+  if (resultType === "FailureWithConsequence" || resultType === "SuccessWithCost") {
+    const buttonId = `upgrade-${currentRollTimestamp}-${Math.random().toString(36).substr(2, 9)}`;
+    
+    // Rejestracja nowego przycisku jako aktualnego dla tego agenta
+    window.cogwheelSyndicate.currentUpgradeButtons[actor.id] = {
+      buttonId: buttonId,
+      timestamp: currentRollTimestamp
+    };
+    
+    upgradeButton = `
+      <button class="success-upgrade-button" id="${buttonId}" 
+              data-actor-id="${actor.id}" 
+              data-result-type="${resultType}"
+              data-tested-attribute="${attribute}">
+        ${game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton")}
+      </button>
+    `;
+  }
+
+  // Przycisk reroll tylko dla oryginalnych testów (nie dla rerollów)
+  if (!isReroll && rollDataKey) {
+    const rerollButtonId = `reroll-${currentRollTimestamp}-${Math.random().toString(36).substr(2, 9)}`;
+    
+    // Rejestracja nowego przycisku reroll jako aktualnego dla tego agenta
+    window.cogwheelSyndicate.currentRerollButtons[actor.id] = {
+      buttonId: rerollButtonId,
+      timestamp: currentRollTimestamp
+    };
+    
+    rerollButton = `
+      <button class="test-reroll-button" id="${rerollButtonId}" 
+              data-actor-id="${actor.id}" 
+              data-roll-data-key="${rollDataKey}">
+        ${game.i18n.localize("COGSYNDICATE.RerollTestButton")}
+      </button>
+    `;
+  }
+
+  let chatContent = `
+    <div class="roll-message">
+      <div class="chat-header">
+        <img src="${actor.img}" alt="${actor.name}" class="chat-avatar" />
+        <h3>${game.i18n.format("COGSYNDICATE.Agent", { agentName: actor.name })}</h3>
+      </div>
+      <hr>
+      <p><strong style='color: brown;'>${game.i18n.localize("COGSYNDICATE.Position")}: ${positionLabel}</strong></p>
+      <hr>
+      <p><strong style='color: black;'>${game.i18n.format("COGSYNDICATE.RolledOn", { attrLabel, total })}</strong></p>
+      <hr>
+      <p>${result}</p>
+      ${useStressDie ? stressDieMessage : ""}
+      ${useSteamDie ? steamDialogMessage : ""}
+      ${traumaMessageFromDialog}
+      ${applyTrauma && traumaModifier !== 0 ? `<p>${game.i18n.format("COGSYNDICATE.TraumaApplied", { traumaValue: Math.abs(traumaModifier) })}</p>` : ""}
+      ${nemesisPoints > 0 ? `<p><span style='color: purple; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedNemesisPoint", { amount: nemesisPoints })}</span></p>` : ""}
+      ${steamPoints > 0 ? `<p><span style='color: orange; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedSteamPoint", { amount: steamPoints })}</span></p>` : ""}
+      <hr>
+      <p>${game.i18n.localize("COGSYNDICATE.Roll")}: ${diceCount}d12 (${die1}+${die2}${useStressDie ? `+${stressDie}` : ""}${useSteamDie ? `+${steamDie}` : ""}) + ${effectiveAttrValue} (${attrLabel})${traumaModifier !== 0 ? ` ${traumaModifier} (${game.i18n.localize("COGSYNDICATE.Trauma")})` : ""} + ${positionModifier} (${game.i18n.localize("COGSYNDICATE.Position")})${rollModifier !== 0 ? ` ${rollModifier > 0 ? '+' : ''}${rollModifier} (${game.i18n.localize("COGSYNDICATE.RollModifier")})` : ""}</p>
+      ${upgradeButton}
+      ${rerollButton}
+    </div>
+  `;
+
+  await ChatMessage.create({
+    content: chatContent,
+    speaker: { actor: actor.id },
+    rolls: [roll],
+    flavor: game.i18n.localize("COGSYNDICATE.Roll3D"),
+    rollMode: "publicroll"
+  });
+}
+
+// Hook do obsługi kliknięć przycisków podnoszenia sukcesu i przerzutu testu
 Hooks.on("renderChatMessage", (message, html, data) => {
+  // Obsługa przycisków podnoszenia sukcesu
   html.find('.success-upgrade-button').click(async function(event) {
     event.preventDefault();
     
@@ -491,5 +930,47 @@ Hooks.on("renderChatMessage", (message, html, data) => {
     
     // Usunięcie z rejestru aktualnych przycisków
     delete window.cogwheelSyndicate.currentUpgradeButtons[actorId];
+  });
+
+  // Obsługa przycisków przerzutu testu
+  html.find('.test-reroll-button').click(async function(event) {
+    event.preventDefault();
+    
+    const button = $(this);
+    const buttonId = button.attr('id');
+    const actorId = button.data('actor-id');
+    const rollDataKey = button.data('roll-data-key');
+    
+    const actor = game.actors.get(actorId);
+    if (!actor) {
+      ui.notifications.error("Actor nie został znaleziony");
+      return;
+    }
+    
+    // Sprawdzenie czy przycisk jest aktualny dla tego agenta
+    const currentRerollButtonData = window.cogwheelSyndicate.currentRerollButtons[actorId];
+    const lastRollTimestamp = window.cogwheelSyndicate.lastRollTimestamp[actorId];
+    
+    // Sprawdzenie czy przycisk istnieje w rejestrze i czy jego timestamp odpowiada ostatniemu rzutowi
+    if (!currentRerollButtonData || 
+        buttonId !== currentRerollButtonData.buttonId || 
+        currentRerollButtonData.timestamp !== lastRollTimestamp) {
+      ui.notifications.warn("Ten przycisk jest nieaktualny. Można przerzucić test tylko dla ostatniego rzutu.");
+      button.prop('disabled', true);
+      button.removeClass('test-reroll-button').addClass('test-reroll-button-outdated');
+      button.text(game.i18n.localize("COGSYNDICATE.RerollTestButton") + " (Przestarzałe)");
+      return;
+    }
+    
+    // Wywołanie funkcji przerzutu testu
+    await rerollTest(actor, rollDataKey);
+    
+    // Wyłączenie przycisku po użyciu i usunięcie z rejestru aktualnych przycisków
+    button.prop('disabled', true);
+    button.removeClass('test-reroll-button').addClass('test-reroll-button-used');
+    button.text(game.i18n.localize("COGSYNDICATE.RerollTestButton") + " (Użyte)");
+    
+    // Usunięcie z rejestru aktualnych przycisków
+    delete window.cogwheelSyndicate.currentRerollButtons[actorId];
   });
 });

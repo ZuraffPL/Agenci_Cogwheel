@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.3] - 2025-06-26
+
+### Added
+- **Przycisk "Przerzuć test za 3PP"**: Nowa funkcjonalność przerzucania testów
+  - Nowy niebieski przycisk pod przyciskiem podnoszenia sukcesu
+  - Koszt: 3 Punkty Pary z puli metawalut
+  - Wykonuje ponowny rzut z identycznymi parametrami jak oryginalny test
+  - Kości stresu/pary z oryginalnego testu są dołączone za darmo (bez dodatkowych kosztów)
+  - Przycisk aktywny tylko dla ostatniego rzutu danego agenta
+  - Komunikaty wyraźnie oznaczają darmowe kości: "za darmo" / "for free"
+  - System automatycznie wyłącza stare przyciski przy nowych rzutach
+
+### Enhanced
+- **Kompaktowe przyciski**: Zmniejszono wysokość wszystkich przycisków (padding: 3px 6px)
+- **Spójność kolorystyczna**: Wszystkie przyciski używają czarnego tekstu dla lepszej czytelności
+- **Logika aktywności przycisków**: Oba przyciski (upgrade i reroll) działają tylko dla ostatniego rzutu
+- **Stany wizualne przycisków**: Aktywny, użyte, przestarzałe - z odpowiednimi kolorami i komunikatami
+
 ## [0.6.2] - 2025-06-26
 
 ### Fixed

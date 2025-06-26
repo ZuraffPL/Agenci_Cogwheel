@@ -251,5 +251,9 @@
   "COGSYNDICATE.InsufficientSteamPoints": "Insufficient Steam Points in Pool",
   "COGSYNDICATE.SpentSteamPoints": "Spent 2 Steam Points from pool",
   "COGSYNDICATE.UpgradeButtonOutdated": "This button is outdated - can only upgrade success level for the latest roll with upgrade possibility",
-  "COGSYNDICATE.CompendiumArchetypes": "Agent Archetypes"
+  "COGSYNDICATE.RerollTestButton": "Reroll test for 3SP",
+  "COGSYNDICATE.RerollTestConfirm": "Agent {agentName} rerolled {testedAttribute} test for 3 Steam Points",
+  "COGSYNDICATE.InsufficientSteamPointsReroll": "Insufficient Steam Points in Pool (need 3SP)",
+  "COGSYNDICATE.SpentSteamPointsReroll": "Spent 3 Steam Points from pool for reroll",
+  "COGSYNDICATE.FreeBonus": "for free"
 }

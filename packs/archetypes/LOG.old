@@ -1,3 +1,4 @@
-2025/03/07-21:43:33.031 30e0 Recovering log #104
-2025/03/07-21:43:33.040 30e0 Delete type=0 #104
-2025/03/07-21:43:33.040 30e0 Delete type=3 #102
+2025/06/26-13:15:19.334 878 Log #113: 0 ops saved to Table #114 OK
+2025/06/26-13:15:19.335 878 Archiving D:\Foundry\Data\systems\cogwheel-syndicate\packs\archetypes/000113.log: OK
+2025/06/26-13:15:19.339 878 Archiving D:\Foundry\Data\systems\cogwheel-syndicate\packs\archetypes/MANIFEST-000111: OK
+2025/06/26-13:15:19.344 878 **** Repaired leveldb D:\Foundry\Data\systems\cogwheel-syndicate\packs\archetypes; recovered 0 files; 0 bytes. Some data may have been lost. ****
