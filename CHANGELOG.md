@@ -11,8 +11,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Compendium Pack dla Archetypów**: Automatyczne dostarczanie gotowych archetypów po instalacji systemu
   - Archetypy są teraz dostępne w zakładce Compendium Packs w Foundry VTT
   - Użytkownicy mogą przeciągać archetypy bezpośrednio z pakietu do aktorów
-  - Dostępne archetypy: Mechanik, Inżynier, Szpieg
+  - **Nowe archetypy**: Parowy Komandos, Geniusz Techniki, Płaszcz Cienia, Agent Pary
+  - Zbalansowane atrybuty główne dla każdego archetypu
   - Wielojęzyczne etykiety dla compendium pack (PL/EN)
+
+### Changed
+- **Zaktualizowane archetypy**: Zastąpiono stare archetypy (Mechanik, Inżynier, Szpieg) nowymi, bardziej zbalansowanymi
+  - **Parowy Komandos**: Maszyna: 5, Inżynieria: 1, Intryga: 3 (specjalista walki z technologią parową)
+  - **Geniusz Techniki**: Maszyna: 3, Inżynieria: 5, Intryga: 1 (mistrz wynalazków i konstrukcji)
+  - **Płaszcz Cienia**: Maszyna: 1, Inżynieria: 3, Intryga: 5 (ekspert szpiegowstwa i manipulacji)
+  - **Agent Pary**: Maszyna: 3, Inżynieria: 3, Intryga: 3 (wszechstronny agent)
 
 ### Technical
 - Dodano konfigurację `packs` do system.json

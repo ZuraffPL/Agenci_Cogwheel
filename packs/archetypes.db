@@ -1,3 +1,4 @@
-{"_id":"mechanik","name":"Mechanik","type":"archetype","data":{"description":"Specjalista od maszyn i technologii.","attributes":{"machine":3,"engineering":2,"intrigue":1}}}
-{"_id":"inzynier","name":"Inżynier","type":"archetype","data":{"description":"Mistrz konstrukcji i napraw.","attributes":{"machine":1,"engineering":3,"intrigue":2}}}
-{"_id":"szpieg","name":"Szpieg","type":"archetype","data":{"description":"Ekspert w intrygach i manipulacji.","attributes":{"machine":1,"engineering":1,"intrigue":3}}}
+{"_id":"parowy-komandos","name":"Parowy Komandos","type":"archetype","data":{"description":"Mistrz walki i mechanicznych urządzeń bojowych. Specjalizuje się w bezpośredniej konfrontacji przy użyciu parowych technologii.","attributes":{"machine":5,"engineering":1,"intrigue":3}}}
+{"_id":"geniusz-techniki","name":"Geniusz Techniki","type":"archetype","data":{"description":"Nieprzeciętny wynalazca i konstruktor. Potrafi tworzyć i naprawiać najbardziej skomplikowane mechanizmy.","attributes":{"machine":3,"engineering":5,"intrigue":1}}}
+{"_id":"plaszcz-cienia","name":"Płaszcz Cienia","type":"archetype","data":{"description":"Mistrz ukrywania się, szpiegowania i manipulacji. Porusza się w ciemnościach jak duch.","attributes":{"machine":1,"engineering":3,"intrigue":5}}}
+{"_id":"agent-pary","name":"Agent Pary","type":"archetype","data":{"description":"Wszechstronny agent o zrównoważonych umiejętnościach. Doskonale radzi sobie w każdej sytuacji.","attributes":{"machine":3,"engineering":3,"intrigue":3}}}
