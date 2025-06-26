@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2025-06-26
+
+### Added
+- **Automatic README Updates**: Workflow automatycznie aktualizuje README.md z najnowszymi zmianami
+  - Automatyczne wyciąganie kluczowych zmian z CHANGELOG.md
+  - Commitowanie i pushowanie zmian przed tworzeniem release'a
+  - Aktualizacja sekcji changelog w README.md
+- **Manifest URL**: Dodano poprawny manifest URL do README.md dla łatwej instalacji
+
+### Technical
+- Rozszerzono GitHub Actions workflow o automatyczną aktualizację dokumentacji
+- README.md jest teraz automatycznie synchronizowany z changelog'iem
+
 ## [0.5.9] - 2025-06-26
 
 ### Fixed
