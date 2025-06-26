@@ -1,9 +1,12 @@
-name: Create Release
+name: Create Release (Alternative)
 
 on:
-  push:
-    branches: [ main ]
-    paths: [ 'system.json' ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (optional, will auto-detect from system.json)'
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -19,12 +22,16 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Extract version
       id: get_version
       run: |
-        echo "VERSION=$(node -p "require('./system.json').version")" >> $GITHUB_OUTPUT
+        if [ -n "${{ github.event.inputs.version }}" ]; then
+          VERSION="${{ github.event.inputs.version }}"
+        else
+          VERSION=$(node -p "require('./system.json').version")
+        fi
+        echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
         echo "TITLE=$(node -p "require('./system.json').title")" >> $GITHUB_OUTPUT
 
     - name: Check if tag exists
@@ -53,13 +60,6 @@ jobs:
           echo "### Changes" > current_changelog.md
           echo "- Version $VERSION release" >> current_changelog.md
         fi
-        
-        # Set output (escape newlines)
-        {
-          echo 'CHANGELOG<<EOF'
-          cat current_changelog.md
-          echo EOF
-        } >> $GITHUB_OUTPUT
 
     - name: Create zip file
       if: steps.check_tag.outputs.TAG_EXISTS == 'false'
@@ -71,35 +71,39 @@ jobs:
         # Also create a versioned zip
         cp cogwheel-syndicate.zip cogwheel-syndicate-${{ steps.get_version.outputs.VERSION }}.zip
 
-    - name: Create Release
+    - name: Create Release with GitHub CLI
       if: steps.check_tag.outputs.TAG_EXISTS == 'false'
-      uses: softprops/action-gh-release@v2
-      with:
-        tag_name: v${{ steps.get_version.outputs.VERSION }}
-        name: v${{ steps.get_version.outputs.VERSION }} - ${{ steps.get_version.outputs.TITLE }}
-        body: |
-          # ${{ steps.get_version.outputs.TITLE }} v${{ steps.get_version.outputs.VERSION }}
-          
-          ${{ steps.changelog.outputs.CHANGELOG }}
-          
-          ## Installation
-          
-          **Manifest URL for Foundry VTT:**
-          ```
-          https://github.com/ZuraffPL/Agenci_Cogwheel/releases/latest/download/system.json
-          ```
-          
-          **Manual Installation:**
-          Download the `cogwheel-syndicate.zip` file and extract it to your Foundry VTT systems folder.
-          
-          ## Compatibility
-          - Foundry VTT v12+
-          - Verified with Foundry VTT v12.331
-        files: |
-          cogwheel-syndicate.zip
-          cogwheel-syndicate-${{ steps.get_version.outputs.VERSION }}.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        VERSION="${{ steps.get_version.outputs.VERSION }}"
+        TITLE="${{ steps.get_version.outputs.TITLE }}"
+        
+        # Create release notes
+        cat > release_notes.md << 'EOF'
+        # $TITLE v$VERSION
+        
+        $(cat current_changelog.md)
+        
+        ## Installation
+        
+        **Manifest URL for Foundry VTT:**
+        ```
+        https://github.com/ZuraffPL/Agenci_Cogwheel/releases/latest/download/system.json
+        ```
+        
+        **Manual Installation:**
+        Download the `cogwheel-syndicate.zip` file and extract it to your Foundry VTT systems folder.
+        
+        ## Compatibility
+        - Foundry VTT v12+
+        - Verified with Foundry VTT v12.331
+        EOF
+        
+        # Create release
+        gh release create "v$VERSION" \
+          --title "v$VERSION - $TITLE" \
+          --notes-file release_notes.md \
+          cogwheel-syndicate.zip \
+          cogwheel-syndicate-$VERSION.zip \
           system.json
-        draft: false
-        prerelease: false
-        generate_release_notes: false
-        make_latest: true
