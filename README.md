@@ -90,8 +90,8 @@ If you encounter any issues or have questions about this system, please:
 
 ## Changelog
 
-### Version 0.6.1
-- **Compendium Pack dla Archetypów**: Automatyczne dostarczanie gotowych archetypów po instalacji systemu
+### Version 0.6.4
+- **Przycisk "Wydaj Stres"**: Nowa funkcjonalność wydawania punktów stresu
 
 ---
 
