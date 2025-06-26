@@ -1,0 +1,100 @@
+name: Create Release
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'system.json' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.repository_owner == 'ZuraffPL'
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Extract version
+      id: get_version
+      run: |
+        echo "VERSION=$(node -p "require('./system.json').version")" >> $GITHUB_OUTPUT
+        echo "TITLE=$(node -p "require('./system.json').title")" >> $GITHUB_OUTPUT
+
+    - name: Check if tag exists
+      id: check_tag
+      run: |
+        if git rev-parse "v${{ steps.get_version.outputs.VERSION }}" >/dev/null 2>&1; then
+          echo "TAG_EXISTS=true" >> $GITHUB_OUTPUT
+          echo "Tag v${{ steps.get_version.outputs.VERSION }} already exists, skipping release"
+        else
+          echo "TAG_EXISTS=false" >> $GITHUB_OUTPUT
+          echo "Creating new release for v${{ steps.get_version.outputs.VERSION }}"
+        fi
+
+    - name: Get Changelog Entry
+      id: changelog
+      if: steps.check_tag.outputs.TAG_EXISTS == 'false'
+      run: |
+        # Extract changelog entry for current version
+        VERSION="${{ steps.get_version.outputs.VERSION }}"
+        
+        # Read changelog and extract current version section
+        awk "/^## \[$VERSION\]/{flag=1; next} /^## \[/{flag=0} flag" CHANGELOG.md > current_changelog.md
+        
+        # If changelog is empty, create a default one
+        if [ ! -s current_changelog.md ]; then
+          echo "### Changes" > current_changelog.md
+          echo "- Version $VERSION release" >> current_changelog.md
+        fi
+        
+        # Set output (escape newlines)
+        {
+          echo 'CHANGELOG<<EOF'
+          cat current_changelog.md
+          echo EOF
+        } >> $GITHUB_OUTPUT
+
+    - name: Create zip file
+      if: steps.check_tag.outputs.TAG_EXISTS == 'false'
+      run: |
+        # Create a zip file with the system files
+        zip -r cogwheel-syndicate.zip . \
+          -x "*.git*" "node_modules/*" "*.github*" "*.gitignore" "README.md" "INSTALL.md" "LICENSE"
+        
+        # Also create a versioned zip
+        cp cogwheel-syndicate.zip cogwheel-syndicate-${{ steps.get_version.outputs.VERSION }}.zip
+
+    - name: Create Release
+      if: steps.check_tag.outputs.TAG_EXISTS == 'false'
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.get_version.outputs.VERSION }}
+        name: v${{ steps.get_version.outputs.VERSION }} - ${{ steps.get_version.outputs.TITLE }}
+        body: |
+          # ${{ steps.get_version.outputs.TITLE }} v${{ steps.get_version.outputs.VERSION }}
+          
+          ${{ steps.changelog.outputs.CHANGELOG }}
+          
+          ## Installation
+          
+          **Manifest URL for Foundry VTT:**
+          ```
+          https://github.com/ZuraffPL/Agenci_Cogwheel/releases/latest/download/system.json
+          ```
+          
+          **Manual Installation:**
+          Download the `cogwheel-syndicate.zip` file and extract it to your Foundry VTT systems folder.
+          
+          ## Compatibility
+          - Foundry VTT v12+
+          - Verified with Foundry VTT v12.331
+        files: |
+          cogwheel-syndicate.zip
+          cogwheel-syndicate-${{ steps.get_version.outputs.VERSION }}.zip
+          system.json
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
