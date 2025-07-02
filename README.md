@@ -2,6 +2,8 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
+**Current System Version: 0.6.8**
+
 ## Description
 
 Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysłowej.
@@ -14,11 +16,13 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 - **Character Sheets**: Complete actor sheets for players and NPCs
 - **Headquarters Management**: HQ sheets for managing your base of operations
 - **Nemesis System**: Special sheets for tracking antagonists
+- **Nemesis Clocks Tab**: Dedicated tab for Nemesis clocks (goal, weakening, revenge) with visual progress and chat notifications
 - **Clock System**: Built-in progress clocks for tracking missions and events
 - **Equipment Management**: Comprehensive gear and equipment tracking
 - **Trauma System**: Detailed trauma tracking mechanics
 - **Roll Mechanics**: Integrated dice rolling system
-- **Meta Currency**: Special currency management system
+- **Meta Currency**: Special currency management system with real-time synchronization for all users
+- **Improved Translations**: Full support for Polish and English, including dynamic UI elements
 
 ## Installation
 
@@ -65,6 +69,7 @@ This system is built using:
 - **JavaScript ES6 Modules**
 - **Handlebars Templates**
 - **CSS3**
+- **PowerShell 7+** (recommended for development on Windows)
 
 ### Local Development Setup
 
@@ -89,6 +94,12 @@ If you encounter any issues or have questions about this system, please:
 3. Provide detailed information about your setup and the issue
 
 ## Changelog
+
+### Version 0.6.3
+- **Synchronizacja metawalut**: Zmiany metawalut i liczników stresu są natychmiast widoczne dla wszystkich użytkowników (nie tylko GM)
+- **Refaktoryzacja UI**: Sekcja zegarów Nemezis przeniesiona do osobnej zakładki z dedykowaną nawigacją
+- **Poprawki tłumaczeń**: Uzupełniono i poprawiono tłumaczenia atrybutów i UI
+- **Wsparcie PowerShell 7**: Zalecane środowisko terminalowe dla deweloperów na Windows
 
 ### Version 0.6.1
 - **Compendium Pack dla Archetypów**: Automatyczne dostarczanie gotowych archetypów po instalacji systemu
