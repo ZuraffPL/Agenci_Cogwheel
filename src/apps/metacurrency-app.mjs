@@ -46,6 +46,10 @@ class MetaCurrencyApp extends Application {
     html.find('.spend-np-btn').click(this._onSpendNP.bind(this));
     html.find('.spend-sp-btn').click(this._onSpendSP.bind(this));
     html.find('.reset-stress-uses-btn').click(this._onResetStressUses.bind(this));
+    
+    // Obsługa bezpośredniej edycji wartości metawalut
+    html.find('.meta-value-input').on('change blur', this._onValueChange.bind(this));
+    html.find('.meta-value-input').on('keydown', this._onValueKeydown.bind(this));
   }
 
   async _onIncrement(event) {
@@ -532,6 +536,84 @@ class MetaCurrencyApp extends Application {
     });
     
     this.render(false);
+  }
+
+  async _onValueChange(event) {
+    const key = event.currentTarget.dataset.key;
+    const newValue = parseInt(event.currentTarget.value) || 0;
+    const maxValue = 100;
+    
+    // Walidacja wartości
+    const validValue = Math.max(0, Math.min(maxValue, newValue));
+    
+    if (validValue !== newValue) {
+      event.currentTarget.value = validValue;
+    }
+    
+    const oldValue = game.cogwheelSyndicate[key] || 0;
+    
+    if (validValue !== oldValue) {
+      // Aktualizuj globalną wartość
+      game.cogwheelSyndicate[key] = validValue;
+      
+      // Synchronizuj przez socket dla GM
+      if (game.user.isGM) {
+        game.socket.emit("system.cogwheel-syndicate", {
+          type: "updateMetaCurrencies",
+          nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
+          steamPoints: game.cogwheelSyndicate.steamPoints
+        });
+      }
+      
+      // Wyślij komunikat na czat
+      const resourceName = key === 'steamPoints' ? 
+        game.i18n.localize("COGSYNDICATE.SteamPoint") : 
+        game.i18n.localize("COGSYNDICATE.NemesisPoint");
+      
+      const diff = validValue - oldValue;
+      const bgColor = key === 'steamPoints' ? 'background-color: #e6f3ff;' : 'background-color: #ffe6e6;';
+      
+      if (diff > 0) {
+        const message = game.i18n.format("COGSYNDICATE.ResourceAdded", {
+          actorName: game.user.name,
+          resource: `${diff} ${resourceName}`
+        });
+        
+        ChatMessage.create({
+          content: `<div style="padding: 8px; border-radius: 4px; ${bgColor}"><p style="margin: 0;">${message}</p></div>`,
+          speaker: { alias: game.user.name }
+        });
+      } else if (diff < 0) {
+        const message = game.i18n.format("COGSYNDICATE.ResourceSpent", {
+          actorName: game.user.name,
+          resource: `${Math.abs(diff)} ${resourceName}`
+        });
+        
+        ChatMessage.create({
+          content: `<div style="padding: 8px; border-radius: 4px; ${bgColor}"><p style="margin: 0;">${message}</p></div>`,
+          speaker: { alias: game.user.name }
+        });
+      }
+      
+      // Odśwież aplikację
+      this.render(false);
+      Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
+    }
+  }
+
+  _onValueKeydown(event) {
+    // Pozwól na Enter, aby zatwierdzić zmiany
+    if (event.key === 'Enter') {
+      event.currentTarget.blur(); // To wywoła zdarzenie change
+    }
+    
+    // Pozwól na Escape, aby anulować zmiany
+    if (event.key === 'Escape') {
+      const key = event.currentTarget.dataset.key;
+      const currentValue = game.cogwheelSyndicate[key] || 0;
+      event.currentTarget.value = currentValue;
+      event.currentTarget.blur();
+    }
   }
 }
 
