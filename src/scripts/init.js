@@ -73,6 +73,25 @@ Hooks.once("ready", async () => {
   // Automatyczne otwieranie aplikacji przy starcie
   openDoomClocks(); // Otwiera "Zegary Potępu" przy starcie
   MetaCurrencyApp.showApp(); // Otwiera okno metawalut przy starcie
+
+  // --- AUTOMATYCZNE DODANIE PODRĘCZNIKA PDF DO DZIENNIKA ---
+  if (game.user.isGM) {
+    const journalName = game.i18n.localize("COGSYNDICATE.JournalManualTitle");
+    const journalExists = game.journal.find(j => j.name === journalName);
+    if (!journalExists) {
+      // Ścieżka do PDF względem katalogu systemu
+      const pdfPath = "systems/cogwheel-syndicate/podrecznik.pdf";
+      // Treść wpisu z linkiem do PDF
+      const content = `<p><a href=\"${pdfPath}\" target=\"_blank\">${game.i18n.localize("COGSYNDICATE.JournalManualLink")}</a></p>`;
+      await JournalEntry.create({
+        name: journalName,
+        content,
+        folder: null,
+        permission: { default: (CONST?.DOCUMENT_PERMISSION_LEVELS?.OBSERVER ?? 2) }
+      });
+      ui.notifications.info(game.i18n.localize("COGSYNDICATE.JournalManualCreated"));
+    }
+  }
 });
 
 // Dodaj przyciski do sidebaru w zakładce Actors
