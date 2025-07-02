@@ -1,0 +1,131 @@
+/* Spend Points Dialog Styles */
+
+/* Foundry Dialog overrides for proper flex layout */
+.dialog.spend-points-dialog .window-content {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.dialog.spend-points-dialog .dialog-content {
+  height: auto !important;
+  overflow: visible !important;
+}
+
+.spend-points-dialog {
+  padding: 20px;
+  min-width: 500px;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
+
+.spend-points-dialog .dialog-content {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 15px;
+}
+
+.action-section {
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 15px;
+  background: #f9f9f9;
+  flex-shrink: 0;
+}
+
+.action-section:last-child {
+  margin-bottom: 0;
+}
+
+.action-section h3 {
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  border-bottom: 2px solid #d32f2f;
+  padding-bottom: 8px;
+}
+
+.action-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.action-option {
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.action-option:hover {
+  background-color: #ffe6e6;
+}
+
+.action-option input[type="radio"] {
+  margin-right: 10px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.action-option span {
+  line-height: 1.4;
+  font-size: 14px;
+}
+
+.action-option input[type="radio"]:checked + span {
+  font-weight: bold;
+  color: #d32f2f;
+}
+
+.spend-points-dialog .dialog-content p {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* Foundry standard button styling for spend points dialogs */
+.spend-points-dialog .dialog-buttons {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.spend-points-dialog .dialog-buttons button {
+  flex: 1;
+  margin: 0 !important;
+}
+
+/* Ensure cancel button is on the left, spend button on the right */
+.spend-points-dialog .dialog-buttons button[data-button="cancel"] {
+  order: 1;
+}
+
+.spend-points-dialog .dialog-buttons button[data-button="spend"] {
+  order: 2;
+}
+
+/* Specific styles for SP (Steam Points) dialog */
+.spend-sp-dialog .action-section h3 {
+  border-bottom: 2px solid #2196f3; /* Blue color for Steam Points */
+}
+
+.spend-sp-dialog .action-option:hover {
+  background-color: #e6f3ff; /* Light blue hover for Steam Points */
+}
+
+.spend-sp-dialog .action-option input[type="radio"]:checked + span {
+  color: #2196f3; /* Blue color for selected Steam Points actions */
+}

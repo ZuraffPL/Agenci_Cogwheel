@@ -5,6 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [0.6.5] - 2025-07-02
+
+### Added
+- **Kompletny system wydawania punktów Nemezis (PN)**:
+  - Okno dialogowe "Wydaj PN" z trzema sekcjami: "Akcje za 1 PN", "Akcje za 2 PN", "Akcje za 3 PN"
+  - 10 różnych akcji do wyboru z radiobuttonami zgodnie z mechaniką gry
+  - Automatyczne sprawdzanie stanu puli PN przed wydatkowaniem
+  - Dialog błędu "Za mało Punktów Nemezis w Puli" z czerwonym, pogrubionym tekstem
+  - Automatyczne odejmowanie punktów z puli po wykonaniu akcji
+  - Komunikaty na czacie z nazwą użytkownika, ilością wydanych punktów i opisem akcji (z pogrubieniami i kolorami)
+
+- **Przyciski wydawania metawalut w oknie metawalut**: 
+  - Dodano przycisk "Wydaj PN" (Punkty Nemezis) - dostępny tylko dla GM i Assistant GM
+  - Dodano przycisk "Wydaj PP" (Punkty Pary) - dostępny dla wszystkich użytkowników
+  - **Kontrola uprawnień**: Przycisk "Wydaj PN" automatycznie wyłączany dla użytkowników bez odpowiednich uprawnień
+
+- **Automatyczne dostosowanie rozmiarów okien**:
+  - Okna dialogowe używają flexbox dla płynnego dopasowania do zawartości
+  - Usunięto niepotrzebne paski przewijania
+  - Przyciski "Anuluj" i "Wydaj punkty" umieszczone obok siebie (Anuluj po lewej)
+
+### Fixed
+- **Poprawiona matematyka pul metawalut**: Zmieniono `||` na `??` w getData() aby wartości mogły zejść do 0
+- **Działające przyciski "Anuluj"**: Przeszło na standardowe przyciski Foundry VTT zamiast niestandardowych
+- **Lokalizacja komunikatów**: Zastąpiono hardcoded teksty polskie kluczami tłumaczeń
+
+### Enhanced
+- **Stylizacja okien dialogowych**: 
+  - Dedykowane style CSS dla różnych typów punktów (czerwone dla PN, niebieskie dla PP)
+  - Usunięto zbędne odstępy między sekcjami a przyciskami
+  - Lepsze wizualne oddzielenie sekcji akcji
+- **Tłumaczenia**: Kompletne tłumaczenia PL/EN wszystkich nowych elementów i komunikatów
+
+### Technical
+- Dodano szablony `spend-np-dialog.hbs` i `spend-sp-dialog.hbs` 
+- Rozszerzono `MetaCurrencyApp` o pełną obsługę wydawania PN
+- Dodano nowe pliki CSS: `meta-currency.css` i `spend-points-dialog.css`
+- Zoptymalizowano strukturę flexbox dla lepszej responsywności okien
+
 ## [0.6.4] - 2025-06-26
 
 ### Added

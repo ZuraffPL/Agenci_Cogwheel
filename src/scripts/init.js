@@ -1,6 +1,7 @@
 // src/scripts/init.js
 import { registerHandlebarsHelpers } from "./handlebars.mjs";
 import { openDoomClocks } from "./clocks.mjs"; // Import funkcji otwierającej zegary
+import { MetaCurrencyApp } from "../apps/metacurrency-app.mjs";
 
 Hooks.once("init", () => {
   // Inicjalizacja globalnego obiektu przy ładowaniu systemu
@@ -53,9 +54,9 @@ Hooks.once("ready", async () => {
     Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
   }
 
-  // Automatyczne otwieranie dialogu metawalut i zegarów dla wszystkich
-  new MetaCurrencyDialog().render(true);
+  // Automatyczne otwieranie aplikacji przy starcie
   openDoomClocks(); // Otwiera "Zegary Potępu" przy starcie
+  MetaCurrencyApp.showApp(); // Otwiera okno metawalut przy starcie
 });
 
 // Dodaj przyciski do sidebaru w zakładce Actors
@@ -78,7 +79,7 @@ Hooks.on("renderSidebarTab", (app, html) => {
   }
 
   metaButton.click(() => {
-    new MetaCurrencyDialog().render(true);
+    MetaCurrencyApp.showApp();
   });
   clockButton.click(() => {
     openDoomClocks();
@@ -129,7 +130,9 @@ Hooks.on("getSceneControlButtons", (controls) => {
       icon: "fas fa-coins",
       button: true,
       visible: true,
-      onClick: () => new MetaCurrencyDialog().render(true)
+      onClick: () => {
+        MetaCurrencyApp.showApp();
+      }
     });
   }
   
@@ -137,95 +140,14 @@ Hooks.on("getSceneControlButtons", (controls) => {
   return controls;
 });
 
-// Klasa okna dialogowego dla metawalut
-class MetaCurrencyDialog extends Dialog {
-  constructor() {
-    super({
-      title: game.i18n.localize("COGSYNDICATE.metacurrency.title"),
-      content: "",
-      buttons: {},
-      default: null
-    });
-  }
-
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      width: 300,
-      height: "auto",
-      resizable: true,
-      classes: ["cogwheel", "meta-currency-dialog"]
-    });
-  }
-
-  async getData() {
-    return {
-      nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
-      steamPoints: game.cogwheelSyndicate.steamPoints
-    };
-  }
-
-  async _renderInner(data) {
-    const html = await renderTemplate(
-      "systems/cogwheel-syndicate/src/templates/meta-currency-dialog.hbs",
-      data
-    );
-    return $(html);
-  }
-
-  activateListeners(html) {
-    super.activateListeners(html);
-
-    html.find(".nemesis-minus").click(() => this._updateMetaCurrency("nemesisPoints", -1));
-    html.find(".nemesis-plus").click(() => this._updateMetaCurrency("nemesisPoints", 1));
-    html.find(".steam-minus").click(() => this._updateMetaCurrency("steamPoints", -1));
-    html.find(".steam-plus").click(() => this._updateMetaCurrency("steamPoints", 1));
-  }
-
-  async _updateMetaCurrency(currency, change) {
-    const currentValue = game.cogwheelSyndicate[currency];
-    const newValue = Math.clamp(currentValue + change, 0, 100);
-
-    // Określ nazwę metawaluty dla komunikatu (z i18n)
-    const currencyNameKey = currency === "nemesisPoints" ? "COGSYNDICATE.NemesisPoints" : "COGSYNDICATE.SteamPoints";
-    const currencyName = game.i18n.localize(currencyNameKey);
-
-    // Przygotuj komunikat na czat
-    let messageKey = change < 0 ? "COGSYNDICATE.SpentMetaCurrency" : "COGSYNDICATE.AddedMetaCurrency";
-    const message = game.i18n.format(messageKey, {
-      user: game.user.name,
-      currency: currencyName
-    });
-
-    // Wyślij komunikat na czat
-    await ChatMessage.create({
-      content: `<p>${message}</p>`,
-      speaker: { alias: "Metawaluty" }
-    });
-
-    // Zaktualizuj wartość metawaluty
-    game.cogwheelSyndicate[currency] = newValue;
-
-    // Synchronizacja przez socket
-    game.socket.emit("system.cogwheel-syndicate", {
-      type: "updateMetaCurrencies",
-      nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
-      steamPoints: game.cogwheelSyndicate.steamPoints
-    });
-
-    Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
-
-    this.render(true);
-  }
-}
-
 // Hook do odświeżania metawalut
 Hooks.on("cogwheelSyndicateMetaCurrenciesUpdated", () => {
   console.log("Hook triggered: cogwheelSyndicateMetaCurrenciesUpdated");
   for (let appId in ui.windows) {
     const window = ui.windows[appId];
-    if (window instanceof MetaCurrencyDialog) {
-      console.log(`Odświeżanie okna MetaCurrencyDialog o ID: ${appId}`);
-      window.render(true);
+    if (window instanceof MetaCurrencyApp) {
+      console.log(`Odświeżanie okna MetaCurrencyApp o ID: ${appId}`);
+      window.render(false);
     }
   }
 });

@@ -1,0 +1,91 @@
+/* Meta Currency Dialog Styles */
+.meta-currency-content {
+  padding: 10px;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.meta-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.meta-value {
+  min-width: 30px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Meta Currency Dialog specific button styles */
+.meta-currency-content .small-btn {
+  width: 25px;
+  height: 25px;
+  border: 1px solid #333;
+  background: #333;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 3px;
+  font-weight: bold;
+}
+
+.meta-currency-content .small-btn:hover {
+  background: #444;
+  border-color: #444;
+}
+
+.meta-buttons-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  gap: 10px;
+}
+
+.meta-spend-btn {
+  flex: 1;
+  padding: 8px 16px;
+  border: 1px solid #666;
+  background: linear-gradient(to bottom, #f8f8f8, #e8e8e8);
+  cursor: pointer;
+  font-size: 13px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.meta-spend-btn:hover:not(:disabled) {
+  background: linear-gradient(to bottom, #e8e8e8, #d8d8d8);
+  border-color: #555;
+}
+
+.meta-spend-btn:disabled {
+  background: #f0f0f0;
+  color: #999;
+  cursor: not-allowed;
+  border-color: #ccc;
+}
+
+.spend-np-btn {
+  background: linear-gradient(to bottom, #ffe6e6, #ffcccc);
+  border-color: #cc6666;
+}
+
+.spend-np-btn:hover:not(:disabled) {
+  background: linear-gradient(to bottom, #ffcccc, #ffb3b3);
+  border-color: #bb5555;
+}
+
+.spend-sp-btn {
+  background: linear-gradient(to bottom, #e6f3ff, #ccddff);
+  border-color: #6699cc;
+}
+
+.spend-sp-btn:hover:not(:disabled) {
+  background: linear-gradient(to bottom, #ccddff, #b3ccff);
+  border-color: #5588bb;
+}

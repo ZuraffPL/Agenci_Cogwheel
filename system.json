@@ -2,7 +2,7 @@
   "id": "cogwheel-syndicate",
   "title": "Agenci Cogwheel",
   "description": "Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysłowej",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "compatibility": {
     "minimum": "12",
     "verified": "12.331"
@@ -16,7 +16,8 @@
     "src/scripts/roll-mechanics.js",
     "src/scripts/init.js",
     "src/scripts/clocks.mjs",
-    "src/scripts/handlebars.mjs"
+    "src/scripts/handlebars.mjs",
+    "src/apps/metacurrency-app.mjs"
   ],
   "styles": [
     "src/styles/cogwheel.css",
@@ -31,6 +32,8 @@
     "src/styles/spend-gear.css",
     "src/styles/spend-stress.css",
     "src/styles/success-upgrade.css",
+    "src/styles/meta-currency.css",
+    "src/styles/spend-points-dialog.css",
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
   ],
   "socket": true,
