@@ -323,5 +323,10 @@
   "COGSYNDICATE.StressSpentDesperate": "Agent {agentName} spent 3 Stress Points to reduce/negate consequence in desperate position",
   "COGSYNDICATE.StressSpentSteam": "Agent {agentName} spent 2 Stress Points and added 1 Steam Point to team pool",
   "COGSYNDICATE.StressSpentHelp": "Agent {agentName} spent 2 Stress Points to help another Agent",
-  "COGSYNDICATE.Description": "Description"
+  "COGSYNDICATE.Description": "Description",
+  "COGSYNDICATE.JournalManualTitle": "Manual: Cogwheel Agents",
+  "COGSYNDICATE.JournalManualLink": "Open Manual (PDF)",
+  "COGSYNDICATE.JournalManualCreated": "Journal entry added: Manual (PDF)",
+  "pdfjs-editor-highlight-button": "Highlighter",
+  "pdfjs-editor-highlight-button-label": "Highlight text with color"
 }

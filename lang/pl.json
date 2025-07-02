@@ -322,5 +322,10 @@
   "COGSYNDICATE.StressSpentDesperate": "Agent {agentName} wydał 3 Punkty Stresu na obniżenie/odrzucenie konsekwencji w pozycji desperackiej",
   "COGSYNDICATE.StressSpentSteam": "Agent {agentName} wydał 2 Punkty Stresu i dodał 1 Punkt Pary do puli drużyny",
   "COGSYNDICATE.StressSpentHelp": "Agent {agentName} wydał 2 Punkty Stresu na pomoc innemu Agentowi",
-  "COGSYNDICATE.Description": "Opis"
+  "COGSYNDICATE.Description": "Opis",
+  "COGSYNDICATE.JournalManualTitle": "Podręcznik: Agenci Cogwheel",
+  "COGSYNDICATE.JournalManualLink": "Otwórz podręcznik (PDF)",
+  "COGSYNDICATE.JournalManualCreated": "Dodano wpis do dziennika: Podręcznik (PDF)",
+  "pdfjs-editor-highlight-button": "Zakreślacz",
+  "pdfjs-editor-highlight-button-label": "Zaznacz tekst kolorem"
 }
