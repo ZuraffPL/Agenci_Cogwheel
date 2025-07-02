@@ -1,4 +1,9 @@
-/* Meta Currency Dialog Styles */
+/* Me.meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}ency Dialog Styles */
 .meta-currency-content {
   padding: 10px;
 }
@@ -22,9 +27,48 @@
   font-weight: bold;
 }
 
+.meta-value-input {
+  min-width: 30px;
+  width: 30px !important;
+  max-width: 30px;
+  text-align: center !important;
+  font-weight: bold;
+  border: none;
+  background: transparent;
+  font-size: inherit;
+  font-family: inherit;
+  color: inherit;
+  padding: 2px;
+  border-radius: 3px;
+  transition: background-color 0.2s ease, border 0.2s ease;
+  appearance: textfield; /* Standard property */
+  -moz-appearance: textfield; /* Firefox - usuwa spinners */
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+/* Usuń spinners w Webkit browsers (Chrome, Safari) */
+.meta-value-input::-webkit-outer-spin-button,
+.meta-value-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.meta-value-input:hover {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+.meta-value-input:focus {
+  outline: none;
+  background-color: #fff;
+  border: 1px solid #007acc;
+  box-shadow: 0 0 0 1px rgba(0, 122, 204, 0.3);
+}
+
 /* Meta Currency Dialog specific button styles */
 .meta-currency-content .small-btn {
-  width: 25px;
+  width: 30px;
   height: 25px;
   border: 1px solid #333;
   background: #333;
@@ -33,6 +77,8 @@
   font-size: 14px;
   border-radius: 3px;
   font-weight: bold;
+  flex-shrink: 0;
+  flex-grow: 0;
 }
 
 .meta-currency-content .small-btn:hover {
