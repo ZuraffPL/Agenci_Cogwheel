@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.6] - 2025-07-02
+
+### Added
+- **Ograniczenie aktywności przycisków czatu tylko dla autora rzutu i GM**:
+  - Przyciski "Podnieś poziom sukcesu za 2PP" i "Przerzuć test za 3PP" są teraz aktywne tylko dla autora rzutu i mistrza gry
+  - Wizualne wskazania dla nieuprawnionych użytkowników - przyciski są wyłączone z tooltipem informującym o braku uprawnień
+  - Nowy styl CSS `.disabled-for-user` dla przycisków wyłączonych z powodu uprawnień
+  - Sprawdzanie uprawnień na poziomie obsługi kliknięć z komunikatami błędów
+  - Automatyczne dodawanie ID użytkownika do przycisków czatu (`data-user-id`)
+
+### Improved
+- **Optymalizacja hookups renderowania czatu**: Połączono dwa hooki `renderChatMessage` w jeden dla lepszej wydajności
+- **Tłumaczenia**: Dodano komunikaty PL/EN dla nowych funkcji uprawnień (`COGSYNDICATE.UpgradeButtonNoPermission`, `COGSYNDICATE.RerollButtonNoPermission`)
+
+### Technical
+- Funkcja `canUserInteractWithButton(authorUserId)` sprawdzająca uprawnienia użytkowników
+- Rozszerzenie wszystkich przycisków czatu o atrybut `data-user-id`
+- Automatyczne wyłączanie przycisków podczas renderowania dla nieuprawniony użytkowników
+
 ## [0.6.5] - 2025-07-02
 
 ### Added

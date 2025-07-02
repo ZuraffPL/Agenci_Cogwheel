@@ -24,4 +24,12 @@
       {{localize "COGSYNDICATE.metacurrency.spendSP"}}
     </button>
   </div>
+  
+  {{#if canSpendNP}}
+  <div class="meta-gm-controls">
+    <button type="button" class="reset-stress-uses-btn gm-control-btn">
+      {{localize "COGSYNDICATE.metacurrency.resetStressUses"}} ({{stressUsesLeft}}/3)
+    </button>
+  </div>
+  {{/if}}
 </div>

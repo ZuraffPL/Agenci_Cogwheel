@@ -144,6 +144,25 @@
   opacity: 0.6;
 }
 
+/* Button Disabled for User - Special styling for buttons disabled due to permissions */
+.success-upgrade-button.disabled-for-user,
+.test-reroll-button.disabled-for-user {
+  background: linear-gradient(135deg, #999, #777) !important;
+  color: #444 !important;
+  cursor: not-allowed !important;
+  opacity: 0.4 !important;
+  border: 1px dashed #555 !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.success-upgrade-button.disabled-for-user:hover,
+.test-reroll-button.disabled-for-user:hover {
+  background: linear-gradient(135deg, #999, #777) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
 .roll-message {
   position: relative;
 }

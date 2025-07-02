@@ -129,3 +129,148 @@
 .spend-sp-dialog .action-option input[type="radio"]:checked + span {
   color: #2196f3; /* Blue color for selected Steam Points actions */
 }
+
+/* SP Dialog specific styles */
+.spend-points-dialog.sp-dialog {
+  background-color: #f8fbff;
+  border: 2px solid #1976d2;
+}
+
+.spend-points-dialog.sp-dialog h3 {
+  color: #1976d2;
+  border-bottom: 2px solid #1976d2;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+}
+
+.spend-points-dialog.sp-dialog .section-group {
+  border: 1px solid #bbdefb;
+  border-radius: 6px;
+  background-color: #ffffff;
+  margin-bottom: 15px;
+  padding: 15px;
+}
+
+.spend-points-dialog.sp-dialog .section-group h4 {
+  color: #1565c0;
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-weight: bold;
+  border-bottom: 1px solid #e3f2fd;
+  padding-bottom: 5px;
+}
+
+.spend-points-dialog.sp-dialog .cost-section h5 {
+  color: #1976d2;
+  background-color: #e3f2fd;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin: 0 0 10px 0;
+  font-size: 14px;
+}
+
+/* Additional layout improvements for SP dialog */
+.spend-points-dialog.sp-dialog .section-group .cost-section {
+  margin-bottom: 15px;
+}
+
+.spend-points-dialog.sp-dialog .section-group:last-child {
+  margin-bottom: 0;
+}
+
+/* Ensure consistent spacing between action items */
+.spend-points-dialog.sp-dialog .action-list .action-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Better mobile responsiveness */
+@media (max-width: 768px) {
+  .spend-points-dialog.sp-dialog {
+    min-width: auto;
+    width: 95vw;
+    max-width: 500px;
+  }
+  
+  .spend-points-dialog.sp-dialog .action-item {
+    padding: 8px;
+  }
+  
+  .spend-points-dialog.sp-dialog .action-item span {
+    font-size: 13px;
+  }
+}
+
+/* SP Dialog action items layout */
+.spend-points-dialog.sp-dialog .action-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.spend-points-dialog.sp-dialog .action-item {
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  border: 1px solid #e3f2fd;
+  background-color: #fafafa;
+}
+
+.spend-points-dialog.sp-dialog .action-item:hover:not(.disabled) {
+  background-color: #e3f2fd;
+  border-color: #1976d2;
+}
+
+.spend-points-dialog.sp-dialog .action-item input[type="radio"] {
+  margin-right: 12px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.spend-points-dialog.sp-dialog .action-item span {
+  line-height: 1.5;
+  font-size: 14px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.spend-points-dialog.sp-dialog .action-item input[type="radio"]:checked + span {
+  font-weight: bold;
+  color: #1976d2;
+}
+
+/* Disabled action items */
+.spend-points-dialog.sp-dialog .action-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #f5f5f5;
+  border-color: #ddd;
+}
+
+.spend-points-dialog.sp-dialog .action-item.disabled input,
+.spend-points-dialog.sp-dialog .action-item.disabled span {
+  cursor: not-allowed;
+}
+
+.spend-points-dialog.sp-dialog .action-item.disabled span {
+  color: #999;
+}
+
+/* Uses indicators */
+.spend-points-dialog.sp-dialog .uses-indicator {
+  font-size: 12px;
+  color: #1976d2;
+  font-weight: normal;
+  margin-left: 10px;
+}
+
+.spend-points-dialog.sp-dialog .uses-exhausted {
+  font-size: 12px;
+  color: #d32f2f;
+  font-weight: bold;
+  margin-left: 10px;
+}

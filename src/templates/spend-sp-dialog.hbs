@@ -1,6 +1,74 @@
-<div class="spend-points-dialog">
+<div class="spend-points-dialog sp-dialog">
   <div class="dialog-content">
-    <p>{{localize "COGSYNDICATE.metacurrency.spendSPDialog"}}</p>
-    <!-- Tutaj będzie funkcjonalność wydawania punktów -->
+    <h3>{{localize "COGSYNDICATE.metacurrency.spendSPDialog"}}</h3>
+    
+    <!-- Sekcja: Przed rzutem -->
+    <div class="section-group">
+      <h4>{{localize "COGSYNDICATE.spendSP.beforeRoll"}}</h4>
+      
+      <!-- Akcje za 1 PP -->
+      <div class="cost-section">
+        <h5>{{localize "COGSYNDICATE.spendSP.actions1PP"}}</h5>
+        <div class="action-list">
+          <label class="action-item">
+            <input type="radio" name="spAction" value="boost-position" data-cost="1">
+            <span>{{localize "COGSYNDICATE.spendSP.boostPosition"}}</span>
+          </label>
+          <label class="action-item">
+            <input type="radio" name="spAction" value="help-agent" data-cost="1">
+            <span>{{localize "COGSYNDICATE.spendSP.helpAgent"}}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sekcja: Po rzucie -->
+    <div class="section-group">
+      <h4>{{localize "COGSYNDICATE.spendSP.afterRoll"}}</h4>
+      
+      <!-- Akcje za 3 PP -->
+      <div class="cost-section">
+        <h5>{{localize "COGSYNDICATE.spendSP.actions3PP"}}</h5>
+        <div class="action-list">
+          <label class="action-item">
+            <input type="radio" name="spAction" value="ignore-critical-failure" data-cost="3">
+            <span>{{localize "COGSYNDICATE.spendSP.ignoreCriticalFailure"}}</span>
+          </label>
+          <label class="action-item">
+            <input type="radio" name="spAction" value="ignore-trauma" data-cost="3">
+            <span>{{localize "COGSYNDICATE.spendSP.ignoreTrauma"}}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sekcja: W każdym momencie -->
+    <div class="section-group">
+      <h4>{{localize "COGSYNDICATE.spendSP.anytime"}}</h4>
+      
+      <!-- Akcje za 1 PP -->
+      <div class="cost-section">
+        <h5>{{localize "COGSYNDICATE.spendSP.actions1PP"}}</h5>
+        <div class="action-list">
+          <label class="action-item {{#unless stressUsesLeft}}disabled{{/unless}}">
+            <input type="radio" name="spAction" value="reduce-stress" data-cost="1" {{#unless stressUsesLeft}}disabled{{/unless}}>
+            <span>{{localize "COGSYNDICATE.spendSP.reduceStress"}}</span>
+            {{#if stressUsesLeft}}
+              <span class="uses-indicator">({{stressUsesLeft}}/3 {{localize "COGSYNDICATE.spendSP.usesLeft"}})</span>
+            {{else}}
+              <span class="uses-exhausted">({{localize "COGSYNDICATE.spendSP.usesExhausted"}})</span>
+            {{/if}}
+          </label>
+          <label class="action-item">
+            <input type="radio" name="spAction" value="reduce-threat-clock" data-cost="1">
+            <span>{{localize "COGSYNDICATE.spendSP.reduceThreatClock"}}</span>
+          </label>
+          <label class="action-item">
+            <input type="radio" name="spAction" value="advance-progress-clock" data-cost="1">
+            <span>{{localize "COGSYNDICATE.spendSP.advanceProgressClock"}}</span>
+          </label>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

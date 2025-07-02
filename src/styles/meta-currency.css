@@ -89,3 +89,25 @@
   background: linear-gradient(to bottom, #ccddff, #b3ccff);
   border-color: #5588bb;
 }
+
+/* GM Controls */
+.meta-gm-controls {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.gm-control-btn {
+  background-color: #673ab7;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  width: 100%;
+}
+
+.gm-control-btn:hover {
+  background-color: #5e35b1;
+}

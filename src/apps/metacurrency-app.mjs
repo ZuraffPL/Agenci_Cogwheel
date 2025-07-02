@@ -13,7 +13,6 @@ class MetaCurrencyApp extends Application {
       popOut: true,
       resizable: true,
       width: 300,
-      height: 200,
       classes: ["cogwheel", "metacurrency-app"],
     });
   }
@@ -34,6 +33,9 @@ class MetaCurrencyApp extends Application {
     // Sprawdź uprawnienia użytkownika - tylko GM i Assistant GM mogą wydawać punkty Nemezis
     data.canSpendNP = game.user.isGM || game.user.role >= CONST.USER_ROLES.ASSISTANT;
     
+    // Dodaj informacje o użyciach redukcji stresu
+    data.stressUsesLeft = this._getStressUsesLeft();
+    
     return data;
   }
 
@@ -43,6 +45,7 @@ class MetaCurrencyApp extends Application {
     html.find('.metacurrency-decrement').click(this._onDecrement.bind(this));
     html.find('.spend-np-btn').click(this._onSpendNP.bind(this));
     html.find('.spend-sp-btn').click(this._onSpendSP.bind(this));
+    html.find('.reset-stress-uses-btn').click(this._onResetStressUses.bind(this));
   }
 
   async _onIncrement(event) {
@@ -248,10 +251,15 @@ class MetaCurrencyApp extends Application {
   }
 
   async _onSpendSP(event) {
+    // Pobierz dane o użyciach redukcji stresu
+    const stressUsesLeft = this._getStressUsesLeft();
+    
     // Utwórz dialog wydawania punktów Pary
     new Dialog({
       title: game.i18n.localize("COGSYNDICATE.metacurrency.spendSPDialog"),
-      content: await renderTemplate("systems/cogwheel-syndicate/src/templates/spend-sp-dialog.hbs", {}),
+      content: await renderTemplate("systems/cogwheel-syndicate/src/templates/spend-sp-dialog.hbs", {
+        stressUsesLeft: stressUsesLeft
+      }),
       buttons: {
         cancel: {
           label: game.i18n.localize("COGSYNDICATE.Cancel"),
@@ -262,8 +270,7 @@ class MetaCurrencyApp extends Application {
         spend: {
           label: game.i18n.localize("COGSYNDICATE.metacurrency.spendPoints"),
           callback: (html) => {
-            // Tutaj będzie logika wydawania punktów
-            ui.notifications.info("Funkcjonalność wydawania punktów Pary będzie dodana później.");
+            this._handleSPSpend(html);
           }
         }
       },
@@ -273,6 +280,202 @@ class MetaCurrencyApp extends Application {
       width: 600,
       resizable: true
     }).render(true);
+  }
+
+  _getStressUsesLeft() {
+    const usedThisSession = game.cogwheelSyndicate.stressReduceUsesThisSession || 0;
+    return Math.max(0, 3 - usedThisSession);
+  }
+
+  async _handleSPSpend(html) {
+    const selectedAction = html.find('input[name="spAction"]:checked');
+    
+    if (!selectedAction.length) {
+      ui.notifications.warn(game.i18n.localize("COGSYNDICATE.metacurrency.selectAction"));
+      return;
+    }
+
+    const actionValue = selectedAction.val();
+    const cost = parseInt(selectedAction.data('cost'));
+    const currentSP = game.cogwheelSyndicate.steamPoints || 0;
+
+    // Sprawdź czy jest wystarczająco punktów
+    if (currentSP < cost) {
+      new Dialog({
+        title: game.i18n.localize("COGSYNDICATE.spendSP.insufficientSP"),
+        content: `<div style="text-align: center; padding: 20px;">
+          <p style="font-weight: bold; color: #1976d2; font-size: 16px;">
+            ${game.i18n.localize("COGSYNDICATE.spendSP.insufficientSP")}
+          </p>
+        </div>`,
+        buttons: {
+          ok: {
+            label: "OK",
+            callback: () => {}
+          }
+        }
+      }).render(true);
+      return;
+    }
+
+    // Specjalna logika dla redukcji stresu
+    if (actionValue === 'reduce-stress') {
+      const stressUsesLeft = this._getStressUsesLeft();
+      if (stressUsesLeft <= 0) {
+        ui.notifications.warn(game.i18n.localize("COGSYNDICATE.spendSP.usesExhausted"));
+        return;
+      }
+      
+      // Wykonaj redukcję stresu
+      const stressReduced = await this._executeStressReduction();
+      if (!stressReduced) {
+        return; // Jeśli nie udało się zmniejszyć stresu, przerwij
+      }
+      
+      // Zapisz użycie
+      game.cogwheelSyndicate.stressReduceUsesThisSession = (game.cogwheelSyndicate.stressReduceUsesThisSession || 0) + 1;
+      
+      // Synchronizuj przez socket dla innych graczy
+      if (game.user.isGM) {
+        game.socket.emit("system.cogwheel-syndicate", {
+          type: "updateStressUses",
+          stressReduceUsesThisSession: game.cogwheelSyndicate.stressReduceUsesThisSession
+        });
+      }
+    }
+
+    // Odejmij punkty z puli
+    game.cogwheelSyndicate.steamPoints = currentSP - cost;
+
+    // Synchronizuj przez socket dla GM
+    if (game.user.isGM) {
+      game.socket.emit("system.cogwheel-syndicate", {
+        type: "updateMetaCurrencies",
+        nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
+        steamPoints: game.cogwheelSyndicate.steamPoints
+      });
+    }
+
+    // Uzyskaj tłumaczenie akcji
+    let actionKey;
+    switch(actionValue) {
+      case 'boost-position':
+        actionKey = 'COGSYNDICATE.spendSP.boostPosition';
+        break;
+      case 'help-agent':
+        actionKey = 'COGSYNDICATE.spendSP.helpAgent';
+        break;
+      case 'ignore-critical-failure':
+        actionKey = 'COGSYNDICATE.spendSP.ignoreCriticalFailure';
+        break;
+      case 'ignore-trauma':
+        actionKey = 'COGSYNDICATE.spendSP.ignoreTrauma';
+        break;
+      case 'reduce-stress':
+        actionKey = 'COGSYNDICATE.spendSP.reduceStress';
+        break;
+      case 'reduce-threat-clock':
+        actionKey = 'COGSYNDICATE.spendSP.reduceThreatClock';
+        break;
+      case 'advance-progress-clock':
+        actionKey = 'COGSYNDICATE.spendSP.advanceProgressClock';
+        break;
+      default:
+        actionKey = 'COGSYNDICATE.spendSP.unknownAction';
+    }
+    
+    const actionText = game.i18n.localize(actionKey);
+    
+    // Wyślij komunikat na czat
+    const message = game.i18n.format("COGSYNDICATE.spendSP.spentSP", {
+      userName: game.user.name,
+      amount: cost,
+      action: actionText
+    });
+
+    ChatMessage.create({
+      content: `<div style="padding: 8px; border-radius: 4px; background-color: #e6f3ff;">
+        <p style="margin: 0;">
+          <strong>${game.user.name}</strong> wydał 
+          <strong style="color: #1976d2;">${cost} Punktów Pary</strong> na 
+          <strong>${actionText}</strong>
+        </p>
+      </div>`,
+      speaker: { alias: game.user.name }
+    });
+
+    // Odśwież aplikację
+    this.render(false);
+    Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
+  }
+
+  async _executeStressReduction() {
+    // Znajdź aktora gracza - najpierw sprawdź przypisanego aktora, potem kontrolowanych tokenów
+    let actor = null;
+    
+    // 1. Sprawdź czy gracz ma przypisanego aktora
+    if (game.user.character) {
+      actor = game.user.character;
+    } else {
+      // 2. Sprawdź kontrolowane tokeny
+      const controlledActors = canvas.tokens.controlled.map(token => token.actor).filter(actor => actor?.type === 'character');
+      if (controlledActors.length > 0) {
+        actor = controlledActors[0];
+      }
+    }
+    
+    if (!actor) {
+      ui.notifications.warn("Musisz mieć przypisanego aktora lub wybrać token aktora, aby zmniejszyć jego stres.");
+      return false;
+    }
+
+    const currentStress = actor.system.resources.stress.value || 0;
+    const stressReduction = Math.min(2, currentStress); // Maksymalnie 2, ale nie mniej niż 0
+    const newStress = Math.max(0, currentStress - stressReduction);
+
+    // Aktualizuj stres aktora
+    await actor.update({
+      "system.resources.stress.value": newStress
+    });
+
+    // Wyślij komunikat o redukcji stresu
+    ChatMessage.create({
+      content: `<div style="padding: 8px; border-radius: 4px; background-color: #e6f3ff;">
+        <p style="margin: 0;">
+          Agent <strong>${actor.name}</strong> wydał 
+          <strong style="color: #1976d2;">1 Punkt Pary</strong> żeby zmniejszyć 
+          <strong style="color: #d32f2f;">Stres</strong> o 
+          <strong>${stressReduction}</strong> punktów
+        </p>
+      </div>`,
+      speaker: { alias: game.user.name }
+    });
+    
+    return true; // Zwróć true jeśli operacja się powiodła
+  }
+
+  async _onResetStressUses(event) {
+    game.cogwheelSyndicate.stressReduceUsesThisSession = 0;
+    
+    // Synchronizuj przez socket dla innych graczy
+    if (game.user.isGM) {
+      game.socket.emit("system.cogwheel-syndicate", {
+        type: "updateStressUses",
+        stressReduceUsesThisSession: 0
+      });
+    }
+    
+    // Wyślij komunikat na czat
+    ChatMessage.create({
+      content: `<div style="padding: 8px; border-radius: 4px; background-color: #f3e5f5;">
+        <p style="margin: 0;">
+          <strong>GM</strong> zresetował licznik użyć redukcji stresu
+        </p>
+      </div>`,
+      speaker: { alias: "System" }
+    });
+    
+    this.render(false);
   }
 }
 

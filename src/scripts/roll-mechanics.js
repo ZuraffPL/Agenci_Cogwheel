@@ -5,6 +5,24 @@ window.cogwheelSyndicate.currentRerollButtons = window.cogwheelSyndicate.current
 window.cogwheelSyndicate.lastRollTimestamp = window.cogwheelSyndicate.lastRollTimestamp || {};
 window.cogwheelSyndicate.rollData = window.cogwheelSyndicate.rollData || {};
 
+// Funkcja sprawdzająca czy użytkownik ma uprawnienia do kliknięcia przycisku czatu
+function canUserInteractWithButton(authorUserId) {
+  const currentUser = game.user;
+  
+  // GM zawsze może kliknąć
+  if (currentUser.isGM) {
+    return true;
+  }
+  
+  // Autor rzutu może kliknąć swój przycisk
+  if (currentUser.id === authorUserId) {
+    return true;
+  }
+  
+  // Inni użytkownicy nie mogą
+  return false;
+}
+
 // Funkcja do wyłączania wszystkich starszych przycisków dla danego agenta
 function disableAllUpgradeButtonsForActor(actorId) {
   // Znajdź wszystkie przyciski podnoszenia sukcesu dla tego agenta i wyłącz je
@@ -427,7 +445,8 @@ export async function performAttributeRoll(actor, attribute) {
                 <button class="success-upgrade-button" id="${buttonId}" 
                         data-actor-id="${actor.id}" 
                         data-result-type="${resultType}"
-                        data-tested-attribute="${attribute}">
+                        data-tested-attribute="${attribute}"
+                        data-user-id="${game.user.id}">
                   ${game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton")}
                 </button>
               `;
@@ -445,7 +464,8 @@ export async function performAttributeRoll(actor, attribute) {
             const rerollButton = `
               <button class="test-reroll-button" id="${rerollButtonId}" 
                       data-actor-id="${actor.id}" 
-                      data-roll-data-key="${rollDataKey}">
+                      data-roll-data-key="${rollDataKey}"
+                      data-user-id="${game.user.id}">
                 ${game.i18n.localize("COGSYNDICATE.RerollTestButton")}
               </button>
             `;
@@ -828,7 +848,8 @@ async function executeRollWithData(actor, data, isReroll = false) {
       <button class="success-upgrade-button" id="${buttonId}" 
               data-actor-id="${actor.id}" 
               data-result-type="${resultType}"
-              data-tested-attribute="${attribute}">
+              data-tested-attribute="${attribute}"
+              data-user-id="${game.user.id}">
         ${game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton")}
       </button>
     `;
@@ -847,7 +868,8 @@ async function executeRollWithData(actor, data, isReroll = false) {
     rerollButton = `
       <button class="test-reroll-button" id="${rerollButtonId}" 
               data-actor-id="${actor.id}" 
-              data-roll-data-key="${rollDataKey}">
+              data-roll-data-key="${rollDataKey}"
+              data-user-id="${game.user.id}">
         ${game.i18n.localize("COGSYNDICATE.RerollTestButton")}
       </button>
     `;
@@ -887,8 +909,32 @@ async function executeRollWithData(actor, data, isReroll = false) {
   });
 }
 
-// Hook do obsługi kliknięć przycisków podnoszenia sukcesu i przerzutu testu
+// Hook do obsługi renderowania wiadomości czatu i kliknięć przycisków
 Hooks.on("renderChatMessage", (message, html, data) => {
+  // Sprawdzenie uprawnień dla przycisków podnoszenia sukcesu
+  html.find('.success-upgrade-button').each(function() {
+    const button = $(this);
+    const authorUserId = button.data('user-id');
+    
+    if (!canUserInteractWithButton(authorUserId)) {
+      button.prop('disabled', true);
+      button.addClass('disabled-for-user');
+      button.attr('title', game.i18n.localize("COGSYNDICATE.UpgradeButtonNoPermission"));
+    }
+  });
+  
+  // Sprawdzenie uprawnień dla przycisków przerzutu
+  html.find('.test-reroll-button').each(function() {
+    const button = $(this);
+    const authorUserId = button.data('user-id');
+    
+    if (!canUserInteractWithButton(authorUserId)) {
+      button.prop('disabled', true);
+      button.addClass('disabled-for-user');
+      button.attr('title', game.i18n.localize("COGSYNDICATE.RerollButtonNoPermission"));
+    }
+  });
+
   // Obsługa przycisków podnoszenia sukcesu
   html.find('.success-upgrade-button').click(async function(event) {
     event.preventDefault();
@@ -898,6 +944,13 @@ Hooks.on("renderChatMessage", (message, html, data) => {
     const actorId = button.data('actor-id');
     const resultType = button.data('result-type');
     const testedAttribute = button.data('tested-attribute');
+    const authorUserId = button.data('user-id');
+    
+    // Sprawdzenie uprawnień użytkownika
+    if (!canUserInteractWithButton(authorUserId)) {
+      ui.notifications.warn(game.i18n.localize("COGSYNDICATE.UpgradeButtonNoPermission"));
+      return;
+    }
     
     const actor = game.actors.get(actorId);
     if (!actor) {
@@ -940,6 +993,13 @@ Hooks.on("renderChatMessage", (message, html, data) => {
     const buttonId = button.attr('id');
     const actorId = button.data('actor-id');
     const rollDataKey = button.data('roll-data-key');
+    const authorUserId = button.data('user-id');
+    
+    // Sprawdzenie uprawnień użytkownika
+    if (!canUserInteractWithButton(authorUserId)) {
+      ui.notifications.warn(game.i18n.localize("COGSYNDICATE.RerollButtonNoPermission"));
+      return;
+    }
     
     const actor = game.actors.get(actorId);
     if (!actor) {
