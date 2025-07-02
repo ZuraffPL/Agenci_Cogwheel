@@ -206,7 +206,16 @@
                     <span class="feat-type">{{#if (eq feat.system.type "initial")}}{{localize "COGSYNDICATE.FeatInitial"}}{{else}}{{localize "COGSYNDICATE.FeatAdvanced"}}{{/if}}</span>
                     <button type="button" class="delete-feat" data-item-id="{{feat._id}}" title="{{localize 'COGSYNDICATE.DeleteFeat'}}"><i class="fas fa-trash"></i></button>
                   </div>
-                  <div class="feat-effect">{{feat.system.effect}}</div>
+                  {{#if feat.system.effect}}
+                    <div class="feat-effect">
+                      <strong>{{localize "COGSYNDICATE.Effect"}}:</strong> {{feat.system.effect}}
+                    </div>
+                  {{/if}}
+                  {{#if feat.system.narrativeEffect}}
+                    <div class="feat-narrative">
+                      <strong>{{localize "COGSYNDICATE.NarrativeEffect"}}:</strong> {{feat.system.narrativeEffect}}
+                    </div>
+                  {{/if}}
                 </div>
               {{/each}}
             {{else}}

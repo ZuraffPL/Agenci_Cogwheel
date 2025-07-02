@@ -1,0 +1,189 @@
+/* Feats Styles */
+
+/* Specyficzne style dla okna Atut */
+.cogwheel.sheet.item.feat {
+  font-family: Arial, sans-serif;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  min-width: 400px;
+}
+
+.cogwheel.sheet.item.feat .sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.cogwheel.sheet.item.feat .sheet-header.flexrow {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+}
+
+.cogwheel.sheet.item.feat .sheet-header .profile-img {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.cogwheel.sheet.item.feat .sheet-header .centered {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.cogwheel.sheet.item.feat .sheet-body {
+  padding: 10px;
+}
+
+.cogwheel.sheet.item.feat .form-group {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start; /* Etykiety i pola wyrównane do lewej */
+  margin: 10px 0;
+}
+
+.cogwheel.sheet.item.feat .form-group label {
+  width: 100px;
+  text-align: left; /* Etykiety wyrównane do lewej */
+  margin-right: 10px;
+}
+
+.cogwheel.sheet.item.feat .form-group .input-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.cogwheel.sheet.item.feat .form-group select,
+.cogwheel.sheet.item.feat .form-group textarea {
+  width: 250px; /* Stała szerokość pól, aby nie rozciągały się na całą szerokość */
+  background-color: #3a3a3a;
+  border: 1px solid #555;
+  border-radius: 3px;
+  color: #ddd;
+  padding: 5px;
+  resize: vertical;
+}
+
+.cogwheel.sheet.item.feat .form-group select:focus,
+.cogwheel.sheet.item.feat .form-group textarea:focus {
+  border-color: #007acc;
+  box-shadow: 0 0 5px rgba(0, 122, 204, 0.5);
+  outline: none;
+}
+
+/* Style dla atutów na karcie agenta */
+.feats-drop {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+.feat-item {
+  margin: 10px 0;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+}
+
+.feat-item:hover {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.feat-item:last-child {
+  margin-bottom: 0;
+}
+
+.feat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.feat-name {
+  flex: 2;
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+.feat-type {
+  flex: 1;
+  text-align: center;
+  background-color: #e8f4fd;
+  color: #1976d2;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.delete-feat {
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  padding: 0;
+  margin-left: 8px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.delete-feat:hover {
+  background-color: #c82333;
+}
+
+.feat-effect {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  border-left: 4px solid #007acc;
+  border-radius: 0 4px 4px 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.feat-effect strong {
+  color: #007acc;
+}
+
+.feat-narrative {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background-color: #fff3cd;
+  border-left: 4px solid #ffc107;
+  border-radius: 0 4px 4px 0;
+  font-size: 14px;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+.feat-narrative strong {
+  color: #856404;
+  font-style: normal;
+}
+
+/* Gdy atut ma tylko jeden typ efektu */
+.feat-item .feat-effect:only-of-type {
+  margin-top: 8px;
+}
+
+.feat-item .feat-narrative:only-of-type {
+  margin-top: 8px;
+}

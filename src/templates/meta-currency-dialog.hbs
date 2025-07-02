@@ -3,7 +3,7 @@
     <span>{{localize "COGSYNDICATE.metacurrency.nemesisPoints"}}</span>
     <div class="meta-controls">
       <button type="button" class="metacurrency-decrement small-btn" data-key="nemesisPoints">-</button>
-      <span class="meta-value">{{metacurrencies.nemesisPoints.value}}</span>
+      <input type="number" class="meta-value-input" data-key="nemesisPoints" value="{{metacurrencies.nemesisPoints.value}}" min="0" max="100">
       <button type="button" class="metacurrency-increment small-btn" data-key="nemesisPoints">+</button>
     </div>
   </div>
@@ -11,7 +11,7 @@
     <span>{{localize "COGSYNDICATE.metacurrency.steamPoints"}}</span>
     <div class="meta-controls">
       <button type="button" class="metacurrency-decrement small-btn" data-key="steamPoints">-</button>
-      <span class="meta-value">{{metacurrencies.steamPoints.value}}</span>
+      <input type="number" class="meta-value-input" data-key="steamPoints" value="{{metacurrencies.steamPoints.value}}" min="0" max="100">
       <button type="button" class="metacurrency-increment small-btn" data-key="steamPoints">+</button>
     </div>
   </div>
