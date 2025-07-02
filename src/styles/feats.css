@@ -83,6 +83,15 @@
   padding: 10px;
   border-radius: 4px;
   background-color: #f9f9f9;
+  width: 100%;
+  min-height: 60px;
+  box-sizing: border-box;
+  display: block;
+}
+
+.feats-section {
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .feat-item {
@@ -93,6 +102,10 @@
   background-color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.2s ease;
+}
+
+.feat-item-alt {
+  background-color: #f0f4fa;
 }
 
 .feat-item:hover {
@@ -106,35 +119,62 @@
 .feat-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 8px;
   margin-bottom: 8px;
   padding-bottom: 8px;
   border-bottom: 1px solid #e0e0e0;
 }
 
-.feat-name {
-  flex: 2;
+.feat-header-grid {
+  display: grid;
+  grid-template-columns: 1fr 120px 40px;
+  align-items: center;
+  gap: 0 8px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+  width: 100%;
+}
+
+.feat-col-name {
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.feat-col-type {
+  text-align: center;
+}
+
+.feat-col-delete {
+  text-align: right;
+}
+
+.feat-header-grid .feat-name {
   font-weight: bold;
   font-size: 16px;
   color: #333;
 }
 
-.feat-type {
-  flex: 1;
-  text-align: center;
+.feat-header-grid .feat-type {
+  font-weight: bold;
+  font-size: 14px;
   background-color: #e8f4fd;
   color: #1976d2;
   padding: 4px 8px;
   border-radius: 12px;
-  font-size: 12px;
-  font-weight: bold;
   text-transform: uppercase;
+  display: inline-block;
 }
 
 .delete-feat {
-  width: 24px;
-  height: 24px;
-  font-size: 12px;
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  max-width: 28px;
+  flex: none;
+  font-size: 14px;
   padding: 0;
   margin-left: 8px;
   background-color: #dc3545;
@@ -143,10 +183,42 @@
   border-radius: 50%;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  line-height: 1;
+  text-align: center;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .delete-feat:hover {
   background-color: #c82333;
+}
+
+.feat-actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+  gap: 4px;
+}
+
+.delete-feat.small-btn {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  max-width: 22px;
+  font-size: 12px;
+  margin-left: 0;
+  padding: 0;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-feat.small-btn i {
+  font-size: 12px;
 }
 
 .feat-effect {
@@ -177,6 +249,20 @@
 .feat-narrative strong {
   color: #856404;
   font-style: normal;
+}
+
+.feat-description {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background-color: #e8f5e9;
+  border-left: 4px solid #4caf50;
+  border-radius: 0 4px 4px 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.feat-description strong {
+  color: #388e3c;
 }
 
 /* Gdy atut ma tylko jeden typ efektu */

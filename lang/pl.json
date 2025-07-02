@@ -321,5 +321,6 @@
   "COGSYNDICATE.StressSpentRisky": "Agent {agentName} wydał 2 Punkty Stresu na obniżenie/odrzucenie konsekwencji w pozycji ryzykownej",
   "COGSYNDICATE.StressSpentDesperate": "Agent {agentName} wydał 3 Punkty Stresu na obniżenie/odrzucenie konsekwencji w pozycji desperackiej",
   "COGSYNDICATE.StressSpentSteam": "Agent {agentName} wydał 2 Punkty Stresu i dodał 1 Punkt Pary do puli drużyny",
-  "COGSYNDICATE.StressSpentHelp": "Agent {agentName} wydał 2 Punkty Stresu na pomoc innemu Agentowi"
+  "COGSYNDICATE.StressSpentHelp": "Agent {agentName} wydał 2 Punkty Stresu na pomoc innemu Agentowi",
+  "COGSYNDICATE.Description": "Opis"
 }

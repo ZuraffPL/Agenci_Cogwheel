@@ -6,7 +6,6 @@ class CogwheelActorSheet extends ActorSheet {
       template: "systems/cogwheel-syndicate/src/templates/actor-sheet.hbs",
       classes: ["cogwheel", "sheet", "actor"],
       width: 750,
-      height: 850,
       submitOnChange: true,
       dragDrop: [{ dropSelector: ".archetype-drop, .feats-drop" }],
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-content", initial: "core" }]
@@ -16,7 +15,14 @@ class CogwheelActorSheet extends ActorSheet {
   getData() {
     const data = super.getData();
     data.system = data.actor.system;
-    data.feats = data.actor.items.filter(item => item.type === "feat");
+
+    // FEATS: Use reference IDs for live sync
+    // Store feat IDs in system.feats (array of strings)
+    // At render, resolve to actual items from game.items
+    const featIds = data.system.feats || [];
+    data.feats = featIds
+      .map(id => game.items.get(id))
+      .filter(item => item && item.type === "feat");
 
     if (!data.actor.img || data.actor.img === "") {
       data.actor.img = "icons/svg/mystery-man.svg";
@@ -205,38 +211,45 @@ class CogwheelActorSheet extends ActorSheet {
 
   async _onDrop(event) {
     if (!(event instanceof DragEvent)) {
-      console.warn("Zdarzenie nie jest DragEvent:", event);
+      console.warn("_onDrop: Event is not a DragEvent.");
       return;
     }
 
     let data;
     try {
-      data = TextEditor.getDragEventData(event);
+      data = JSON.parse(event.dataTransfer.getData("text/plain"));
+      console.log("_onDrop: Received data:", data);
     } catch (err) {
-      console.error("Błąd podczas pobierania danych przeciągania:", err);
+      console.error("_onDrop: Failed to parse drop data.", err);
       return;
     }
 
-    if (data.type !== "Item") return;
+    if (data.type !== "Item") {
+      console.warn("_onDrop: Dropped data is not of type 'Item'.");
+      return;
+    }
+
     const item = await Item.fromDropData(data);
+    console.log("_onDrop: Created item from data:", item);
+
     const target = event.currentTarget.classList.contains('archetype-drop') ? 'archetype' : 'feat';
+    console.log("_onDrop: Drop target:", target);
 
     if (target === 'archetype' && item.type === "archetype") {
-      if (this.actor.system.archetype.id) {
-        await this.actor.deleteEmbeddedDocuments("Item", [this.actor.system.archetype.id]);
-      }
-      const newArchetype = await this.actor.createEmbeddedDocuments("Item", [item.toObject()]);
-      const baseAttributes = {
-        "system.attributes.machine.base": item.system.attributes.machine,
-        "system.attributes.engineering.base": item.system.attributes.engineering,
-        "system.attributes.intrigue.base": item.system.attributes.intrigue,
-        "system.archetype.id": newArchetype[0]._id,
-        "system.archetype.name": newArchetype[0].name,
-        "system.archetype.img": item.img
-      };
-      await this.actor.update(baseAttributes);
-    } else if (target === 'feat' && item.type === "feat") {
+      console.log("_onDrop: Adding archetype to actor.");
       await this.actor.createEmbeddedDocuments("Item", [item.toObject()]);
+    } else if (target === 'feat' && item.type === "feat") {
+      // FEATS: Only store reference to item ID for live sync
+      const featIds = Array.isArray(this.actor.system.feats) ? [...this.actor.system.feats] : [];
+      if (!featIds.includes(item.id)) {
+        featIds.push(item.id);
+        await this.actor.update({ "system.feats": featIds });
+      } else {
+        // Already present, check for sync (force re-render)
+        this.render();
+      }
+    } else {
+      console.warn("_onDrop: Item type does not match drop target.");
     }
   }
 
@@ -249,7 +262,14 @@ class CogwheelActorSheet extends ActorSheet {
 
   async _onDeleteFeat(event) {
     const itemId = event.currentTarget.closest('.feat-item').dataset.itemId;
-    await this.actor.deleteEmbeddedDocuments("Item", [itemId]);
+    // Remove feat ID from system.feats
+    const featIds = Array.isArray(this.actor.system.feats) ? [...this.actor.system.feats] : [];
+    const idx = featIds.indexOf(itemId);
+    if (idx !== -1) {
+      featIds.splice(idx, 1);
+      await this.actor.update({ "system.feats": featIds });
+    }
+    this.render();
   }
 
   async _onRemoveArchetype(event) {

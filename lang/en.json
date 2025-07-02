@@ -322,5 +322,6 @@
   "COGSYNDICATE.StressSpentRisky": "Agent {agentName} spent 2 Stress Points to reduce/negate consequence in risky position",
   "COGSYNDICATE.StressSpentDesperate": "Agent {agentName} spent 3 Stress Points to reduce/negate consequence in desperate position",
   "COGSYNDICATE.StressSpentSteam": "Agent {agentName} spent 2 Stress Points and added 1 Steam Point to team pool",
-  "COGSYNDICATE.StressSpentHelp": "Agent {agentName} spent 2 Stress Points to help another Agent"
+  "COGSYNDICATE.StressSpentHelp": "Agent {agentName} spent 2 Stress Points to help another Agent",
+  "COGSYNDICATE.Description": "Description"
 }

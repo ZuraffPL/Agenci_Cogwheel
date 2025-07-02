@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.8] - 2025-07-02
+
+### Improved
+- **Sekcja Atutów na karcie aktora**:
+  - Atuty są teraz wyświetlane w osobnej zakładce między "Podstawowe" a "Wyposażenie"
+  - Przejrzysty układ w siatce 3-kolumnowej z naprzemiennymi tłem dla lepszej widoczności
+  - Nazwa atutu (po lewej, pogrubiona), typ (na środku) oraz mały, wyrównany do prawej przycisk usuwania
+  - Opis i Efekt narracyjny są wyświetlane poniżej każdego atutu, jeśli są obecne
+  - Obsługa przeciągnij-i-upuść z katalogu przedmiotów dla atutów
+  - Atuty są teraz przechowywane jako odniesienia (ID) w `system.feats` i zawsze odzwierciedlają aktualne dane z odpowiadającego przedmiotu (na żywo)
+  - Wizualne i funkcjonalne ulepszenia obszaru przeciągania i upuszczania
+  - Wysokość karty automatycznie dopasowuje się do zawartości; brak niepotrzebnych pasków przewijania
+  - Pełne tłumaczenie dla nowych elementów interfejsu w języku polskim i angielskim
+
+### Technical
+- Refaktoryzacja `actor-sheet.hbs`, `actor-sheet.js`, oraz dodane/zaktualizowane style w `feats.css` i `cogwheel.css`
+- Zaktualizowana logika dodawania/usuwania atutów, przeciągania i upuszczania oraz synchronizacji danych na żywo
+- Zaktualizowany `system.json` dla wersji 0.6.8
+
 ## [0.6.7] - 2025-07-02
 
 ### Added

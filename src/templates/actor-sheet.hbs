@@ -8,6 +8,7 @@
     <!-- Nawigacja tabów -->
     <nav class="sheet-tabs tabs" data-group="primary">
       <a class="item active" data-tab="core">{{localize "COGSYNDICATE.CoreTab"}}</a>
+      <a class="item" data-tab="feats">{{localize "COGSYNDICATE.FeatsTab"}}</a>
       <a class="item" data-tab="equipment">{{localize "COGSYNDICATE.EquipmentTab"}}</a>
       <a class="item" data-tab="traumas">{{localize "COGSYNDICATE.TraumasTab"}}</a>
       <a class="item" data-tab="notes">{{localize "COGSYNDICATE.NotesTab"}}</a>
@@ -193,22 +194,24 @@
             </div>
          </div>
         </div>
+      </div>
 
-        <!-- Atuty -->
+      <!-- Zakładka Atuty -->
+      <div class="tab feats" data-group="primary" data-tab="feats">
         <div class="feats-section">
           <h3 class="centered">{{localize "COGSYNDICATE.FeatsTab"}}</h3>
           <div class="feats-drop" data-type="feat">
             {{#if (gt feats.length 0)}}
               {{#each feats as |feat|}}
-                <div class="feat-item" data-item-id="{{feat._id}}">
-                  <div class="feat-header">
-                    <span class="feat-name">{{feat.name}}</span>
-                    <span class="feat-type">{{#if (eq feat.system.type "initial")}}{{localize "COGSYNDICATE.FeatInitial"}}{{else}}{{localize "COGSYNDICATE.FeatAdvanced"}}{{/if}}</span>
-                    <button type="button" class="delete-feat" data-item-id="{{feat._id}}" title="{{localize 'COGSYNDICATE.DeleteFeat'}}"><i class="fas fa-trash"></i></button>
+                <div class="feat-item {{#if @odd}}feat-item-alt{{/if}}" data-item-id="{{feat.id}}">
+                  <div class="feat-header-grid">
+                    <div class="feat-col-name"><span class="feat-name">{{feat.name}}</span></div>
+                    <div class="feat-col-type"><span class="feat-type">{{#if (eq feat.system.type "initial")}}{{localize "COGSYNDICATE.FeatInitial"}}{{else}}{{localize "COGSYNDICATE.FeatAdvanced"}}{{/if}}</span></div>
+                    <div class="feat-col-delete"><button type="button" class="delete-feat small-btn" data-item-id="{{feat.id}}" title="{{localize 'COGSYNDICATE.DeleteFeat'}}"><i class="fas fa-trash"></i></button></div>
                   </div>
                   {{#if feat.system.effect}}
-                    <div class="feat-effect">
-                      <strong>{{localize "COGSYNDICATE.Effect"}}:</strong> {{feat.system.effect}}
+                    <div class="feat-description">
+                      <strong>{{localize "COGSYNDICATE.Description"}}:</strong> {{feat.system.effect}}
                     </div>
                   {{/if}}
                   {{#if feat.system.narrativeEffect}}
