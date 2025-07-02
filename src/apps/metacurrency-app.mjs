@@ -61,14 +61,12 @@ class MetaCurrencyApp extends Application {
       // Aktualizuj globalną wartość
       game.cogwheelSyndicate[key] = currentValue + 1;
       
-      // Synchronizuj przez socket dla GM
-      if (game.user.isGM) {
-        game.socket.emit("system.cogwheel-syndicate", {
-          type: "updateMetaCurrencies",
-          nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
-          steamPoints: game.cogwheelSyndicate.steamPoints
-        });
-      }
+      // Synchronizuj przez socket (wszyscy użytkownicy, nie tylko GM)
+      game.socket.emit("system.cogwheel-syndicate", {
+        type: "updateMetaCurrencies",
+        nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
+        steamPoints: game.cogwheelSyndicate.steamPoints
+      });
       
       // Wyślij komunikat na czat używając istniejących tłumaczeń
       const resourceName = key === 'steamPoints' ? 
@@ -102,14 +100,12 @@ class MetaCurrencyApp extends Application {
       // Aktualizuj globalną wartość
       game.cogwheelSyndicate[key] = currentValue - 1;
       
-      // Synchronizuj przez socket dla GM
-      if (game.user.isGM) {
-        game.socket.emit("system.cogwheel-syndicate", {
-          type: "updateMetaCurrencies",
-          nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
-          steamPoints: game.cogwheelSyndicate.steamPoints
-        });
-      }
+      // Synchronizuj przez socket (wszyscy użytkownicy, nie tylko GM)
+      game.socket.emit("system.cogwheel-syndicate", {
+        type: "updateMetaCurrencies",
+        nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
+        steamPoints: game.cogwheelSyndicate.steamPoints
+      });
       
       // Wyślij komunikat na czat używając istniejących tłumaczeń
       const resourceName = key === 'steamPoints' ? 
@@ -252,14 +248,12 @@ class MetaCurrencyApp extends Application {
     // Odejmij punkty z puli
     game.cogwheelSyndicate.nemesisPoints = currentNP - cost;
 
-    // Synchronizuj przez socket dla GM
-    if (game.user.isGM) {
-      game.socket.emit("system.cogwheel-syndicate", {
-        type: "updateMetaCurrencies",
-        nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
-        steamPoints: game.cogwheelSyndicate.steamPoints
-      });
-    }
+    // Synchronizuj przez socket (wszyscy użytkownicy, nie tylko GM)
+    game.socket.emit("system.cogwheel-syndicate", {
+      type: "updateMetaCurrencies",
+      nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
+      steamPoints: game.cogwheelSyndicate.steamPoints
+    });
 
     // Uzyskaj tłumaczenie akcji i utwórz komunikat
     let actionText, message;
@@ -396,25 +390,21 @@ class MetaCurrencyApp extends Application {
       game.cogwheelSyndicate.stressReduceUsesThisSession = (game.cogwheelSyndicate.stressReduceUsesThisSession || 0) + 1;
       
       // Synchronizuj przez socket dla innych graczy
-      if (game.user.isGM) {
-        game.socket.emit("system.cogwheel-syndicate", {
-          type: "updateStressUses",
-          stressReduceUsesThisSession: game.cogwheelSyndicate.stressReduceUsesThisSession
-        });
-      }
+      game.socket.emit("system.cogwheel-syndicate", {
+        type: "updateStressUses",
+        stressReduceUsesThisSession: game.cogwheelSyndicate.stressReduceUsesThisSession
+      });
     }
 
     // Odejmij punkty z puli
     game.cogwheelSyndicate.steamPoints = currentSP - cost;
 
-    // Synchronizuj przez socket dla GM
-    if (game.user.isGM) {
-      game.socket.emit("system.cogwheel-syndicate", {
-        type: "updateMetaCurrencies",
-        nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
-        steamPoints: game.cogwheelSyndicate.steamPoints
-      });
-    }
+    // Synchronizuj przez socket (wszyscy użytkownicy, nie tylko GM)
+    game.socket.emit("system.cogwheel-syndicate", {
+      type: "updateMetaCurrencies",
+      nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
+      steamPoints: game.cogwheelSyndicate.steamPoints
+    });
 
     // Uzyskaj tłumaczenie akcji
     let actionKey;
@@ -518,12 +508,10 @@ class MetaCurrencyApp extends Application {
     game.cogwheelSyndicate.stressReduceUsesThisSession = 0;
     
     // Synchronizuj przez socket dla innych graczy
-    if (game.user.isGM) {
-      game.socket.emit("system.cogwheel-syndicate", {
-        type: "updateStressUses",
-        stressReduceUsesThisSession: 0
-      });
-    }
+    game.socket.emit("system.cogwheel-syndicate", {
+      type: "updateStressUses",
+      stressReduceUsesThisSession: game.cogwheelSyndicate.stressReduceUsesThisSession
+    });
     
     // Wyślij komunikat na czat
     ChatMessage.create({
@@ -556,14 +544,12 @@ class MetaCurrencyApp extends Application {
       // Aktualizuj globalną wartość
       game.cogwheelSyndicate[key] = validValue;
       
-      // Synchronizuj przez socket dla GM
-      if (game.user.isGM) {
-        game.socket.emit("system.cogwheel-syndicate", {
-          type: "updateMetaCurrencies",
-          nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
-          steamPoints: game.cogwheelSyndicate.steamPoints
-        });
-      }
+      // Synchronizuj przez socket (wszyscy użytkownicy, nie tylko GM)
+      game.socket.emit("system.cogwheel-syndicate", {
+        type: "updateMetaCurrencies",
+        nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
+        steamPoints: game.cogwheelSyndicate.steamPoints
+      });
       
       // Wyślij komunikat na czat
       const resourceName = key === 'steamPoints' ? 
@@ -615,6 +601,22 @@ class MetaCurrencyApp extends Application {
       event.currentTarget.blur();
     }
   }
+}
+
+// --- OBSŁUGA SOCKETÓW: synchronizacja metawalut u wszystkich graczy ---
+if (game.socket) {
+  game.socket.on("system.cogwheel-syndicate", (data) => {
+    if (data?.type === "updateMetaCurrencies") {
+      // Zaktualizuj wartości globalne
+      if (typeof data.nemesisPoints === "number") game.cogwheelSyndicate.nemesisPoints = data.nemesisPoints;
+      if (typeof data.steamPoints === "number") game.cogwheelSyndicate.steamPoints = data.steamPoints;
+      Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
+    }
+    if (data?.type === "updateStressUses") {
+      if (typeof data.stressReduceUsesThisSession === "number") game.cogwheelSyndicate.stressReduceUsesThisSession = data.stressReduceUsesThisSession;
+      Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
+    }
+  });
 }
 
 export { MetaCurrencyApp };
