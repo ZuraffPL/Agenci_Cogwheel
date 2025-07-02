@@ -95,6 +95,13 @@ If you encounter any issues or have questions about this system, please:
 
 ## Changelog
 
+### Version 0.6.8
+- **Nowa funkcja**: Możliwość przenoszenia i edycji zegarów Nemezis w dedykowanej zakładce
+- **Poprawki synchronizacji**: Ulepszona synchronizacja metawalut i liczników stresu dla wszystkich użytkowników
+- **Usprawnienia UI**: Refaktoryzacja szablonów, lepsza nawigacja i czytelność kart aktorów
+- **Drobne poprawki tłumaczeń**: Uzupełnienia i korekty w plikach językowych
+- **Stabilność**: Poprawki błędów zgłaszanych przez użytkowników
+
 ### Version 0.6.3
 - **Synchronizacja metawalut**: Zmiany metawalut i liczników stresu są natychmiast widoczne dla wszystkich użytkowników (nie tylko GM)
 - **Refaktoryzacja UI**: Sekcja zegarów Nemezis przeniesiona do osobnej zakładki z dedykowaną nawigacją
