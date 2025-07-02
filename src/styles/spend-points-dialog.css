@@ -13,7 +13,7 @@
 }
 
 .spend-points-dialog {
-  padding: 20px;
+  padding: 16px; /* Zmniejszono z 20px na 16px */
   min-width: 500px;
   max-width: 700px;
   display: flex;
@@ -26,14 +26,14 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 15px;
+  gap: 10px; /* Zmniejszono z 15px na 10px */
 }
 
 .action-section {
-  margin-bottom: 10px;
+  margin-bottom: 8px; /* Zmniejszono z 10px na 8px */
   border: 1px solid #ccc;
   border-radius: 6px;
-  padding: 15px;
+  padding: 12px; /* Zmniejszono z 15px na 12px */
   background: #f9f9f9;
   flex-shrink: 0;
 }
@@ -43,7 +43,7 @@
 }
 
 .action-section h3 {
-  margin: 0 0 15px 0;
+  margin: 0 0 10px 0; /* Zmniejszono z 15px na 10px */
   font-size: 16px;
   font-weight: bold;
   color: #333;
@@ -54,14 +54,14 @@
 .action-options {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px; /* Zmniejszono z 10px na 5px */
 }
 
 .action-option {
   display: flex;
   align-items: flex-start;
   cursor: pointer;
-  padding: 8px;
+  padding: 6px; /* Zmniejszono z 8px na 6px */
   border-radius: 4px;
   transition: background-color 0.2s ease;
 }
@@ -140,21 +140,21 @@
   color: #1976d2;
   border-bottom: 2px solid #1976d2;
   padding-bottom: 8px;
-  margin-bottom: 15px;
+  margin-bottom: 10px; /* Zmniejszono z 15px na 10px */
 }
 
 .spend-points-dialog.sp-dialog .section-group {
   border: 1px solid #bbdefb;
   border-radius: 6px;
   background-color: #ffffff;
-  margin-bottom: 15px;
-  padding: 15px;
+  margin-bottom: 10px; /* Zmniejszono z 15px na 10px */
+  padding: 12px; /* Zmniejszono z 15px na 12px */
 }
 
 .spend-points-dialog.sp-dialog .section-group h4 {
   color: #1565c0;
   margin-top: 0;
-  margin-bottom: 12px;
+  margin-bottom: 8px; /* Zmniejszono z 12px na 8px */
   font-weight: bold;
   border-bottom: 1px solid #e3f2fd;
   padding-bottom: 5px;
@@ -165,13 +165,13 @@
   background-color: #e3f2fd;
   padding: 6px 12px;
   border-radius: 4px;
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0; /* Zmniejszono z 10px na 8px */
   font-size: 14px;
 }
 
 /* Additional layout improvements for SP dialog */
 .spend-points-dialog.sp-dialog .section-group .cost-section {
-  margin-bottom: 15px;
+  margin-bottom: 10px; /* Zmniejszono z 15px na 10px */
 }
 
 .spend-points-dialog.sp-dialog .section-group:last-child {
@@ -204,15 +204,15 @@
 .spend-points-dialog.sp-dialog .action-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 10px;
+  gap: 6px; /* Zmniejszono z 10px na 6px */
+  margin-top: 8px; /* Zmniejszono z 10px na 8px */
 }
 
 .spend-points-dialog.sp-dialog .action-item {
   display: flex;
   align-items: flex-start;
   cursor: pointer;
-  padding: 10px;
+  padding: 8px; /* Zmniejszono z 10px na 8px */
   border-radius: 4px;
   transition: background-color 0.2s ease;
   border: 1px solid #e3f2fd;
