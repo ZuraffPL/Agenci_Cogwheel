@@ -86,6 +86,50 @@
   color: #d32f2f;
 }
 
+/* Custom action with number input styling */
+.action-option.custom-action {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.custom-action-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.custom-action-text {
+  line-height: 1.4;
+  font-size: 14px;
+}
+
+.custom-np-amount {
+  width: 60px;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.custom-np-amount:focus {
+  outline: none;
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.2);
+}
+
+.custom-action-suffix {
+  line-height: 1.4;
+  font-size: 14px;
+}
+
+.action-option.custom-action input[type="radio"]:checked + .custom-action-content .custom-action-text,
+.action-option.custom-action input[type="radio"]:checked + .custom-action-content .custom-action-suffix {
+  font-weight: bold;
+  color: #d32f2f;
+}
+
 .spend-points-dialog .dialog-content p {
   font-size: 16px;
   font-weight: bold;

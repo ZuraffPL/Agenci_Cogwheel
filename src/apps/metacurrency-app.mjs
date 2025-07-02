@@ -154,7 +154,7 @@ class MetaCurrencyApp extends Application {
     }
 
     // Utwórz dialog wydawania punktów Nemezis
-    new Dialog({
+    const dialog = new Dialog({
       title: game.i18n.localize("COGSYNDICATE.metacurrency.spendNPDialog"),
       content: await renderTemplate("systems/cogwheel-syndicate/src/templates/spend-np-dialog.hbs", {}),
       buttons: {
@@ -171,12 +171,30 @@ class MetaCurrencyApp extends Application {
           }
         }
       },
-      default: "spend"
+      default: "spend",
+      render: (html) => {
+        // Dodaj event listenery dla niestandardowej akcji
+        const customAmountInput = html.find('.custom-np-amount');
+        const customRadio = html.find('input[name="npAction"][value="custom"]');
+        
+        // Automatycznie zaznacz radio button gdy użytkownik kliknie na input
+        customAmountInput.on('focus click', () => {
+          customRadio.prop('checked', true);
+        });
+        
+        // Zaktualizuj atrybut data-cost gdy zmieni się wartość
+        customAmountInput.on('input change', (e) => {
+          const value = parseInt(e.target.value) || 1;
+          customRadio.attr('data-cost', value);
+        });
+      }
     }, {
       classes: ["cogwheel", "spend-points-dialog", "spend-np-dialog"],
       width: 600,
       resizable: true
-    }).render(true);
+    });
+    
+    dialog.render(true);
   }
 
   async _handleNPSpend(html) {
@@ -188,7 +206,24 @@ class MetaCurrencyApp extends Application {
     }
 
     const actionValue = selectedAction.val();
-    const cost = parseInt(selectedAction.data('cost'));
+    let cost;
+    
+    // Obsługa akcji niestandardowej
+    if (actionValue === "custom") {
+      const customAmountInput = html.find('.custom-np-amount');
+      const customAmount = parseInt(customAmountInput.val());
+      
+      // Walidacja liczby punktów
+      if (!customAmount || customAmount < 1 || customAmount > 10) {
+        ui.notifications.warn(game.i18n.localize("COGSYNDICATE.metacurrency.invalidCustomAmount"));
+        return;
+      }
+      
+      cost = customAmount;
+    } else {
+      cost = parseInt(selectedAction.data('cost'));
+    }
+    
     const currentNP = game.cogwheelSyndicate.nemesisPoints || 0;
 
     // Sprawdź czy jest wystarczająco punktów
@@ -222,26 +257,47 @@ class MetaCurrencyApp extends Application {
       });
     }
 
-    // Uzyskaj tłumaczenie akcji
-    const actionText = game.i18n.localize(`COGSYNDICATE.metacurrency.action${actionValue}`);
+    // Uzyskaj tłumaczenie akcji i utwórz komunikat
+    let actionText, message;
     
-    // Wyślij komunikat na czat
-    const message = game.i18n.format("COGSYNDICATE.metacurrency.spentNP", {
-      userName: game.user.name,
-      amount: cost,
-      action: actionText
-    });
+    if (actionValue === "custom") {
+      // Dla akcji niestandardowej użyj specjalnego komunikatu
+      message = game.i18n.format("COGSYNDICATE.metacurrency.spentCustomNP", {
+        userName: game.user.name,
+        amount: cost
+      });
+      
+      ChatMessage.create({
+        content: `<div style="padding: 8px; border-radius: 4px; background-color: #ffe6e6;">
+          <p style="margin: 0;">
+            <strong>${game.user.name}</strong> wydał 
+            <strong style="color: #d32f2f;">${cost} Punktów Nemezis</strong> na 
+            <strong>akcję Przybocznego/Nemezis</strong>
+          </p>
+        </div>`,
+        speaker: { alias: game.user.name }
+      });
+    } else {
+      // Dla standardowych akcji użyj istniejącego komunikatu
+      actionText = game.i18n.localize(`COGSYNDICATE.metacurrency.action${actionValue}`);
+      
+      message = game.i18n.format("COGSYNDICATE.metacurrency.spentNP", {
+        userName: game.user.name,
+        amount: cost,
+        action: actionText
+      });
 
-    ChatMessage.create({
-      content: `<div style="padding: 8px; border-radius: 4px; background-color: #ffe6e6;">
-        <p style="margin: 0;">
-          <strong>${game.user.name}</strong> wydał 
-          <strong style="color: #d32f2f;">${cost} Punktów Nemezis</strong> na 
-          <strong>${actionText}</strong>
-        </p>
-      </div>`,
-      speaker: { alias: game.user.name }
-    });
+      ChatMessage.create({
+        content: `<div style="padding: 8px; border-radius: 4px; background-color: #ffe6e6;">
+          <p style="margin: 0;">
+            <strong>${game.user.name}</strong> wydał 
+            <strong style="color: #d32f2f;">${cost} Punktów Nemezis</strong> na 
+            <strong>${actionText}</strong>
+          </p>
+        </div>`,
+        speaker: { alias: game.user.name }
+      });
+    }
 
     // Odśwież aplikację
     this.render(false);

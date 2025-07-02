@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.7] - 2025-07-02
+
+### Added
+- **Akcje Przybocznych/Nemezis w oknie wydawania Punktów Nemezis**:
+  - Dodano nową sekcję "Akcje Przybocznych/Nemezis" z możliwością wydania dowolnej liczby PN (1-10)
+  - Interaktywny input z automatycznym zaznaczaniem opcji przy kliknięciu
+  - Walidacja wprowadzonej liczby punktów z komunikatami błędów
+  - Specjalne formatowanie komunikatów na czacie dla akcji niestandardowych
+  - Pełne tłumaczenia PL/EN dla nowej funkcjonalności
+
 ## [0.6.6] - 2025-07-02
 
 ### Added
