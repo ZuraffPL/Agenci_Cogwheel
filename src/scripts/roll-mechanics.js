@@ -146,10 +146,10 @@ export async function performAttributeRoll(actor, attribute) {
   const dialogContent = `
     <form class="roll-dialog">
       <div class="form-group">
-        <p><strong><span class="attribute-name">${game.i18n.localize("COGSYNDICATE.Roll2d12")} ${attrLabel}:</span> <span class="attribute-value">${baseEffectiveAttrValue}</span></strong></p>
+        <p><strong><span class="roll-label">${game.i18n.localize("COGSYNDICATE.Roll2d12")}</span> <span class="attribute-name">${attrLabel}</span>: <span class="attribute-value">${baseEffectiveAttrValue}</span></strong></p>
       </div>
       <div class="form-group position-group">
-        <strong><span class="position-label">${game.i18n.localize("COGSYNDICATE.Position")}:</span></strong>
+        <strong><span class="position-label">${game.i18n.localize("COGSYNDICATE.Position")}</span>:</strong>
         <select name="position">
           <option value="desperate">${game.i18n.localize("COGSYNDICATE.PositionDesperate")} (-3)</option>
           <option value="risky" selected>${game.i18n.localize("COGSYNDICATE.PositionRisky")} (+0)</option>
@@ -175,7 +175,7 @@ export async function performAttributeRoll(actor, attribute) {
         </label>
       </div>
       <div class="form-group modifier-group">
-        <strong><span class="modifier-label">${game.i18n.localize("COGSYNDICATE.RollModifier")}:</span></strong>
+        <strong><span class="modifier-label">${game.i18n.localize("COGSYNDICATE.RollModifier")}</span>:</strong>
         <select name="rollModifier">
           <option value="0" selected>0</option>
           <option value="-5">-5</option>
