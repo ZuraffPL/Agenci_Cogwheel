@@ -479,7 +479,7 @@ export async function performAttributeRoll(actor, attribute) {
                 <hr>
                 <p><strong style='color: brown;'>${game.i18n.localize("COGSYNDICATE.Position")}: ${positionLabel}</strong></p>
                 <hr>
-                <p><strong style='color: black;'>${game.i18n.format("COGSYNDICATE.RolledOn", { attrLabel, total })}</strong></p>
+                <p><strong style='color: black;'>${game.i18n.localize("COGSYNDICATE.RolledOn").replace('{attrLabel}', `<span style='color: #2563eb; font-weight: bold;'>${attrLabel}</span>`).replace('{total}', `<span style='color: red; font-weight: bold;'>${total}</span>`)}</strong></p>
                 <hr>
                 <p>${result}</p>
                 ${useStressDie ? `<p>${game.i18n.format("COGSYNDICATE.StressDieUsed", { agentName: actor.name })}</p>` : ""}
@@ -884,7 +884,7 @@ async function executeRollWithData(actor, data, isReroll = false) {
       <hr>
       <p><strong style='color: brown;'>${game.i18n.localize("COGSYNDICATE.Position")}: ${positionLabel}</strong></p>
       <hr>
-      <p><strong style='color: black;'>${game.i18n.format("COGSYNDICATE.RolledOn", { attrLabel, total })}</strong></p>
+      <p><strong style='color: black;'>${game.i18n.localize("COGSYNDICATE.RolledOn").replace('{attrLabel}', `<span style='color: #2563eb; font-weight: bold;'>${attrLabel}</span>`).replace('{total}', `<span style='color: red; font-weight: bold;'>${total}</span>`)}</strong></p>
       <hr>
       <p>${result}</p>
       ${useStressDie ? stressDieMessage : ""}
@@ -974,7 +974,7 @@ Hooks.on("renderChatMessage", (message, html, data) => {
     }
     
     // Wywołanie funkcji podnoszenia sukcesu z informacją o testowanym atrybucie
-    await upgradeSuccessLevel(actor, resultType, testedAttribute);
+    await upgradeSuccessLevel(actor, currentResult, testedAttribute);
     
     // Wyłączenie przycisku po użyciu i usunięcie z rejestru aktualnych przycisków
     button.prop('disabled', true);
