@@ -1,0 +1,42 @@
+/* roll-dialog.css - dedykowane style dla okna rzutu atrybutów */
+
+.roll-dialog {
+  /* zachowaj ogólne style z cogwheel.css, jeśli potrzebne */
+}
+
+.roll-dialog .form-group {
+  margin-bottom: 1em;
+}
+
+.roll-dialog .attribute-name {
+  font-weight: bold;
+}
+
+.roll-dialog .attribute-value {
+  color: #6b21a8;
+  font-weight: bold;
+}
+
+.roll-dialog .stress-die-group {
+  background: #ffeaea;
+  border-radius: 6px;
+  padding: 0.5em 0.7em;
+  margin-bottom: 0.5em;
+}
+
+.roll-dialog .steam-die-group {
+  background: #eaf3ff;
+  border-radius: 6px;
+  padding: 0.5em 0.7em;
+  margin-bottom: 0.5em;
+}
+
+.roll-dialog .trauma-group {
+  margin-bottom: 0.5em;
+}
+
+.roll-dialog .modifier-group {
+  margin-bottom: 0.5em;
+}
+
+/* Możesz dodać tu kolejne style dla innych elementów okna rzutu */

@@ -35,6 +35,7 @@
     "src/styles/meta-currency.css",
     "src/styles/spend-points-dialog.css",
     "src/styles/feats.css",
+    "src/styles/rolldialog.css",
     "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
   ],
   "socket": true,
