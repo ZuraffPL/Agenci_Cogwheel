@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Nowy typ aktora: Agent v2**:
+  - Stworzono niezależną kopię karty agenta z dedykowanymi plikami (`actor-sheetv2.js`, `actor-sheetv2.hbs`)
+  - Osobny template `agentv2Base` w `template.json` z własną strukturą danych
+  - Dedykowany plik stylów `agent-v2.css` dla unikalnego wyglądu
+
+### Changed
+- **System obrażeń atrybutów w Agent v2**:
+  - Usunięto atrybuty pochodne (Endurance, Control, Determination) - ukryte przez CSS
+  - Dodano dynamiczne pola obrażeń pod każdym atrybutem głównym
+  - Liczba pól obrażeń dostosowuje się automatycznie do wartości bazowej atrybutu (0 do -X)
+  - Efektywna wartość atrybutu = wartość bazowa - obrażenia (zamiast bazowa + pochodna)
+  - Pola obrażeń ułożone poziomo z etykietami pod spodem
+  - Helper Handlebars `times` dla dynamicznego generowania pól
+
+### Technical
+- Zaktualizowany `system.json` z importem nowych plików
+- Rozszerzony `handlebars.mjs` o helper `times`
+- Rejestracja arkusza `CogwheelActorSheetV2` jako domyślnego dla typu `agentv2`
+- Osobna logika obliczania efektywnych atrybutów w Agent v2
+- Zachowano kompatybilność z oryginalnym agentem
+
 ## [0.6.8] - 2025-07-02
 
 ### Improved
