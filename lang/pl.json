@@ -327,6 +327,7 @@
   "COGSYNDICATE.JournalManualTitle": "Podręcznik: Agenci Cogwheel",
   "COGSYNDICATE.JournalManualLink": "Otwórz podręcznik (PDF)",
   "COGSYNDICATE.JournalManualCreated": "Dodano wpis do dziennika: Podręcznik (PDF)",
+  "COGSYNDICATE.AgentV2Name": "Agent v2",
   "pdfjs-editor-highlight-button": "Zakreślacz",
   "pdfjs-editor-highlight-button-label": "Zaznacz tekst kolorem"
 }

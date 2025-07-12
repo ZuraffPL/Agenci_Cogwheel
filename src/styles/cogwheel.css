@@ -112,6 +112,26 @@
   cursor: default !important;
 }
 
+/* Styl dla wartości zasobów - kolorowe tła i obwódki */
+.cogwheel.sheet.actor .resource-content input.gear-value {
+  background-color: #eaffea !important;
+  border: 2px solid #2ecc40 !important;
+  color: #217a2c !important;
+  font-weight: bold !important;
+}
+.cogwheel.sheet.actor .resource-content input.trauma-value {
+  background-color: #f3eaff !important;
+  border: 2px solid #a259e6 !important;
+  color: #6b21a8 !important;
+  font-weight: bold !important;
+}
+.cogwheel.sheet.actor .resource-content input.stress-value {
+  background-color: #ffeaea !important;
+  border: 2px solid #e62e2e !important;
+  color: #a82121 !important;
+  font-weight: bold !important;
+}
+
 /* Wspólna klasa dla małych przycisków */
 .small-btn {
   background-color: #444; /* Rozjaśnienie tła przycisków */

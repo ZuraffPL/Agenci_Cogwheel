@@ -4,6 +4,14 @@ import { openDoomClocks } from "./clocks.mjs"; // Import funkcji otwierającej z
 import { MetaCurrencyApp } from "../apps/metacurrency-app.mjs";
 
 Hooks.once("init", () => {
+  // Konfiguracja typów aktorów
+  CONFIG.Actor.typeLabels = {
+    agent: "Agent",
+    agentv2: game.i18n.localize("COGSYNDICATE.AgentV2Name"),
+    HQ: "HQ",
+    nemesis: "Nemesis"
+  };
+
   // Inicjalizacja globalnego obiektu przy ładowaniu systemu
   game.cogwheelSyndicate = game.cogwheelSyndicate || {
     nemesisPoints: 1,

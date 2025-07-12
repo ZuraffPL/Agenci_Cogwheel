@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": ["agent", "HQ", "nemesis"],
+    "types": ["agent", "agentv2", "HQ", "nemesis"],
     "templates": {
       "base": {
         "name": {
@@ -113,6 +113,9 @@
       }
     },
     "agent": {
+      "templates": ["base"]
+    },
+    "agentv2": {
       "templates": ["base"]
     },
     "HQ": {

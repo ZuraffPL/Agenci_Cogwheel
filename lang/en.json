@@ -327,6 +327,7 @@
   "COGSYNDICATE.JournalManualTitle": "Manual: Cogwheel Agents",
   "COGSYNDICATE.JournalManualLink": "Open Manual (PDF)",
   "COGSYNDICATE.JournalManualCreated": "Journal entry added: Manual (PDF)",
+  "COGSYNDICATE.AgentV2Name": "Agent v2",
   "pdfjs-editor-highlight-button": "Highlighter",
   "pdfjs-editor-highlight-button-label": "Highlight text with color"
 }

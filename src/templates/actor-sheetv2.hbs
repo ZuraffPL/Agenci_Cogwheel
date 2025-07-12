@@ -1,4 +1,4 @@
-﻿<form class="{{cssClass}}" autocomplete="off">
+<form class="{{cssClass}}" autocomplete="off">
   <header class="sheet-header">
     <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{localize 'COGSYNDICATE.EditImage'}}" />
     <h1><input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'COGSYNDICATE.CharacterName'}}" class="centered" /></h1>
@@ -198,121 +198,136 @@
 
       <!-- Zakładka Atuty -->
       <div class="tab feats" data-group="primary" data-tab="feats">
-        <div class="feats-section">
-          <h3 class="centered">{{localize "COGSYNDICATE.FeatsTab"}}</h3>
-          <div class="feats-drop" data-type="feat">
-            {{#if (gt feats.length 0)}}
-              {{#each feats as |feat|}}
-                <div class="feat-item {{#if @odd}}feat-item-alt{{/if}}" data-item-id="{{feat.id}}">
-                  <div class="feat-header-grid">
-                    <div class="feat-col-name"><span class="feat-name">{{feat.name}}</span></div>
-                    <div class="feat-col-type"><span class="feat-type">{{#if (eq feat.system.type "initial")}}{{localize "COGSYNDICATE.FeatInitial"}}{{else}}{{localize "COGSYNDICATE.FeatAdvanced"}}{{/if}}</span></div>
-                    <div class="feat-col-delete"><button type="button" class="delete-feat small-btn" data-item-id="{{feat.id}}" title="{{localize 'COGSYNDICATE.DeleteFeat'}}"><i class="fas fa-trash"></i></button></div>
-                  </div>
-                  {{#if feat.system.effect}}
-                    <div class="feat-description">
-                      <strong>{{localize "COGSYNDICATE.Description"}}:</strong> {{feat.system.effect}}
-                    </div>
-                  {{/if}}
-                  {{#if feat.system.narrativeEffect}}
-                    <div class="feat-narrative">
-                      <strong>{{localize "COGSYNDICATE.NarrativeEffect"}}:</strong> {{feat.system.narrativeEffect}}
-                    </div>
-                  {{/if}}
-                </div>
-              {{/each}}
-            {{else}}
-             <span>{{localize "COGSYNDICATE.FeatDrop"}}</span>
-            {{/if}}
-          </div>
+        <h3 class="centered">{{localize "COGSYNDICATE.FeatsTab"}}</h3>
+        <div class="feats-drop" style="border: 2px dashed #ccc; padding: 20px; text-align: center; margin-bottom: 20px;">
+          {{localize "COGSYNDICATE.FeatsDrop"}}
         </div>
+        {{#if feats}}
+          <ol class="feats-list">
+            {{#each feats}}
+              <li class="feat-item" data-item-id="{{this.id}}">
+                <div class="feat-header">
+                  <img class="feat-image" src="{{this.img}}" title="{{this.name}}" width="36" height="36" />
+                  <h4 class="feat-name">{{this.name}}</h4>
+                  <div class="feat-controls">
+                    <a class="feat-control delete-feat" title="{{localize 'COGSYNDICATE.RemoveFeat'}}"><i class="fas fa-trash"></i></a>
+                  </div>
+                </div>
+                <div class="feat-description">{{this.system.description}}</div>
+                {{#if this.system.effect}}
+                  <div class="feat-effect"><strong>{{localize "COGSYNDICATE.Effect"}}:</strong> {{this.system.effect}}</div>
+                {{/if}}
+              </li>
+            {{/each}}
+          </ol>
+        {{else}}
+          <p class="no-feats">{{localize "COGSYNDICATE.NoFeats"}}</p>
+        {{/if}}
       </div>
 
-<div class="tab equipment" data-tab="equipment">
-  <section class="equipment-section">
-    <h2>{{localize "COGSYNDICATE.EquipmentTab"}}</h2>
-    
-    <!-- Licznik Punktów Ekwipunku -->
-    <div class="equipment-points">
-      <span class="equipment-points-label">{{localize "COGSYNDICATE.EquipmentPoints"}}:</span>
-      <span class="equipment-points-value">{{system.equipmentPoints.value}}</span>
-      <span class="equipment-points-max">/ {{system.equipmentPoints.max}}</span>
-    </div>
-    
-    <button class="add-equipment-btn">{{localize "COGSYNDICATE.AddEquipment"}}</button>
-      {{#each system.equipments as |equipment index|}}
-        <div class="equipment-item {{#if (or equipment.used equipment.droppedDamaged equipment.destroyed)}}disabled{{/if}}" data-index="{{index}}">
-          <div class="equipment-header">
-            {{equipment.name}} ({{localize (concat 'COGSYNDICATE.EquipmentType' (capitalize equipment.type))}})
-          </div>
-          <div class="equipment-details">
-            <div>
-              {{localize "COGSYNDICATE.EquipmentCost"}}: {{equipment.cost}}
-              <br>
-              {{localize "COGSYNDICATE.EquipmentAction"}}: {{equipment.action}}
-              <br>
-              {{localize "COGSYNDICATE.EquipmentUsage"}}: {{localize (concat 'COGSYNDICATE.EquipmentUsage' (capitalize equipment.usage))}}
-            </div>
-            <div class="equipment-actions">
-              <a class="edit-equipment"><i class="fas fa-edit"></i></a>
-              <a class="delete-equipment"><i class="fas fa-trash"></i></a>
-            </div>
-          </div>
-          <div class="equipment-status">
-            <label><input type="checkbox" class="equipment-status-checkbox" data-index="{{index}}" data-status="used" {{#if equipment.used}}checked{{/if}} /> {{localize "COGSYNDICATE.EquipmentUsed"}}</label>
-            <label><input type="checkbox" class="equipment-status-checkbox" data-index="{{index}}" data-status="droppedDamaged" {{#if equipment.droppedDamaged}}checked{{/if}} /> {{localize "COGSYNDICATE.EquipmentDroppedDamaged"}}</label>
-            <label><input type="checkbox" class="equipment-status-checkbox" data-index="{{index}}" data-status="destroyed" {{#if equipment.destroyed}}checked{{/if}} /> {{localize "COGSYNDICATE.EquipmentDestroyed"}}</label>
+      <!-- Zakładka Ekwipunek -->
+      <div class="tab equipment" data-group="primary" data-tab="equipment">
+        <h3 class="centered">{{localize "COGSYNDICATE.EquipmentTab"}}</h3>
+        
+        <!-- Punkty Ekwipunku -->
+        <div class="equipment-points-section">
+          <h4 class="centered">{{localize "COGSYNDICATE.EquipmentPoints"}}</h4>
+          <div class="equipment-points-display">
+            <span class="equipment-points-value">{{system.equipmentPoints.value}}</span>
+            <span class="equipment-points-max">/ {{system.equipmentPoints.max}}</span>
           </div>
         </div>
-    {{/each}}
-    {{#unless system.equipments.length}}
-      {{localize "COGSYNDICATE.NoEquipmentToAdd"}}
-    {{/unless}}
-  </section>
-</div>
+
+        <!-- Przycisk dodawania ekwipunku -->
+        <div class="equipment-controls">
+          <button type="button" class="add-equipment-btn">{{localize "COGSYNDICATE.AddEquipment"}}</button>
+        </div>
+
+        <!-- Lista ekwipunku -->
+        {{#if system.equipments}}
+          <ol class="equipment-list">
+            {{#each system.equipments}}
+              <li class="equipment-item" data-index="{{@index}}">
+                <div class="equipment-header">
+                  <h4 class="equipment-name">{{this.name}}</h4>
+                  <div class="equipment-controls">
+                    <a class="equipment-control edit-equipment" title="{{localize 'COGSYNDICATE.EditEquipment'}}"><i class="fas fa-edit"></i></a>
+                    <a class="equipment-control delete-equipment" title="{{localize 'COGSYNDICATE.DeleteEquipment'}}"><i class="fas fa-trash"></i></a>
+                  </div>
+                </div>
+                <div class="equipment-details">
+                  <span class="equipment-type">{{localize (concat "COGSYNDICATE.EquipmentType" (capitalize this.type))}}</span>
+                  <span class="equipment-cost">{{localize "COGSYNDICATE.Cost"}}: {{this.cost}}</span>
+                  <span class="equipment-usage">{{localize "COGSYNDICATE.Usage"}}: {{this.usage}}</span>
+                  {{#if this.action}}
+                    <span class="equipment-action">{{localize "COGSYNDICATE.Action"}}: {{this.action}}</span>
+                  {{/if}}
+                </div>
+                <div class="equipment-status">
+                  <label class="status-checkbox">
+                    <input type="checkbox" class="equipment-status-checkbox" data-index="{{@index}}" data-status="used" {{#if this.used}}checked{{/if}} />
+                    {{localize "COGSYNDICATE.Used"}}
+                  </label>
+                  <label class="status-checkbox">
+                    <input type="checkbox" class="equipment-status-checkbox" data-index="{{@index}}" data-status="droppedDamaged" {{#if this.droppedDamaged}}checked{{/if}} />
+                    {{localize "COGSYNDICATE.DroppedDamaged"}}
+                  </label>
+                  <label class="status-checkbox">
+                    <input type="checkbox" class="equipment-status-checkbox" data-index="{{@index}}" data-status="destroyed" {{#if this.destroyed}}checked{{/if}} />
+                    {{localize "COGSYNDICATE.Destroyed"}}
+                  </label>
+                </div>
+              </li>
+            {{/each}}
+          </ol>
+        {{else}}
+          <p class="no-equipment">{{localize "COGSYNDICATE.NoEquipment"}}</p>
+        {{/if}}
+      </div>
 
       <!-- Zakładka Traumy -->
       <div class="tab traumas" data-group="primary" data-tab="traumas">
-        <div class="traumas-section">
-          <h3 class="centered">{{localize "COGSYNDICATE.TraumasTab"}}</h3>
-          <button type="button" class="add-trauma-btn" title="{{localize 'COGSYNDICATE.AddTrauma'}}">{{localize "COGSYNDICATE.AddTrauma"}}</button>
-          <div class="traumas-list">
-            {{#each system.traumas as |trauma index|}}
-              <div class="trauma-item trauma-type-{{trauma.type}}" data-index="{{index}}">
-               <div class="trauma-header">
-                  <span class="trauma-name">{{trauma.name}}</span>
-                  <span class="trauma-level">{{localize "COGSYNDICATE.TraumaLevel"}} {{inc index}}</span>
-                  <span class="trauma-type-label">{{localize (concat "COGSYNDICATE.TraumaType" (capitalize trauma.type))}}</span>
-                </div>
-                <div class="trauma-details">
-                 <span class="trauma-description">{{trauma.description}}</span>
-                  <span class="trauma-effect">{{trauma.effect}}</span>
-                </div>
-                <div class="trauma-actions">
-                  <button type="button" class="edit-trauma trauma-action-btn" title="{{localize 'COGSYNDICATE.EditTrauma'}}"><i class="fas fa-edit"></i></button>
-                  <button type="button" class="delete-trauma trauma-action-btn" title="{{localize 'COGSYNDICATE.DeleteTrauma'}}"><i class="fas fa-trash"></i></button>
-                </div>
-              </div>
-            {{/each}}
-            {{#unless system.traumas.length}}
-              <p>{{localize "COGSYNDICATE.TraumasPlaceholder"}}</p>
-            {{/unless}}
-         </div>
+        <h3 class="centered">{{localize "COGSYNDICATE.TraumasTab"}}</h3>
+        
+        <!-- Przycisk dodawania traumy -->
+        <div class="trauma-controls">
+          <button type="button" class="add-trauma-btn">{{localize "COGSYNDICATE.AddTrauma"}}</button>
         </div>
+
+        <!-- Lista traum -->
+        {{#if system.traumas}}
+          <ol class="trauma-list">
+            {{#each system.traumas}}
+              <li class="trauma-item" data-index="{{@index}}">
+                <div class="trauma-header">
+                  <h4 class="trauma-name">{{this.name}}</h4>
+                  <span class="trauma-type {{this.type}}">{{localize (concat "COGSYNDICATE.TraumaType" (capitalize this.type))}}</span>
+                  <div class="trauma-controls">
+                    <a class="trauma-control edit-trauma" title="{{localize 'COGSYNDICATE.EditTrauma'}}"><i class="fas fa-edit"></i></a>
+                    <a class="trauma-control delete-trauma" title="{{localize 'COGSYNDICATE.DeleteTrauma'}}"><i class="fas fa-trash"></i></a>
+                  </div>
+                </div>
+                {{#if this.description}}
+                  <div class="trauma-description">{{this.description}}</div>
+                {{/if}}
+                {{#if this.effect}}
+                  <div class="trauma-effect"><strong>{{localize "COGSYNDICATE.Effect"}}:</strong> {{this.effect}}</div>
+                {{/if}}
+              </li>
+            {{/each}}
+          </ol>
+        {{else}}
+          <p class="no-traumas">{{localize "COGSYNDICATE.NoTraumas"}}</p>
+        {{/if}}
       </div>
 
       <!-- Zakładka Notatki -->
       <div class="tab notes" data-group="primary" data-tab="notes">
+        <h3 class="centered">{{localize "COGSYNDICATE.NotesTab"}}</h3>
         <div class="notes-section">
-          <h3 class="centered">{{localize "COGSYNDICATE.NotesTab"}}</h3>
-          <div class="notes-content">
-            <textarea name="system.notes" class="notes-textarea" placeholder="{{localize 'COGSYNDICATE.NotesPlaceholder'}}">{{system.notes}}</textarea>
-          </div>
+          <textarea name="system.notes" placeholder="{{localize 'COGSYNDICATE.NotesPlaceholder'}}" rows="15">{{system.notes}}</textarea>
         </div>
       </div>
     </section>
-
-    <!-- Separator -->
-    <hr class="section-separator">
- </section>
+  </section>
 </form>

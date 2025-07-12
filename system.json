@@ -10,6 +10,7 @@
   "scripts": [],
   "esmodules": [
     "src/scripts/actor-sheet.js",
+    "src/scripts/actor-sheetv2.js",
     "src/scripts/hq-sheet.js",
     "src/scripts/nemesis-sheet.js",
     "src/scripts/item-sheet.js",
