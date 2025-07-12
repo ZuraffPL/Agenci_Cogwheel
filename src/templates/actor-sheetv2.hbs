@@ -39,93 +39,59 @@
               <label>{{localize "COGSYNDICATE.Machine"}}</label>
               <div class="attribute-content">
                 <input type="number" class="base-value" name="system.attributes.machine.base" value="{{system.attributes.machine.base}}" min="1" max="6" step="1" {{#unless editable}}disabled{{/unless}} title="{{localize 'COGSYNDICATE.BaseValueTooltip'}}" />
-                <input type="number" class="effective-value" name="system.attributes.machine.value" value="{{effectiveAttributes.machine}}" min="1" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
+                <input type="number" class="effective-value" name="system.attributes.machine.value" value="{{effectiveAttributes.machine}}" min="0" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
                 <button type="button" class="roll-attribute roll-btn" data-attribute="machine" title="{{localize 'COGSYNDICATE.Roll2d12'}}"><i class="fas fa-dice-d12"></i></button>
+              </div>
+              <!-- Obrażenia dla Machine -->
+              <div class="damage-section">
+                <label class="damage-label">{{localize "COGSYNDICATE.Damage"}}</label>
+                <div class="damage-radios horizontal" data-attribute="machine">
+                  {{#times system.attributes.machine.base}}
+                    <div class="radio-item">
+                      <input type="radio" id="machine-damage-{{this}}" name="system.attributes.machine.damage" value="{{this}}" {{#if (eq ../system.attributes.machine.damage this)}}checked{{/if}}>
+                      <label for="machine-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
+                    </div>
+                  {{/times}}
+                </div>
               </div>
             </div>
             <div class="attribute">
               <label>{{localize "COGSYNDICATE.Engineering"}}</label>
               <div class="attribute-content">
                 <input type="number" class="base-value" name="system.attributes.engineering.base" value="{{system.attributes.engineering.base}}" min="1" max="6" step="1" {{#unless editable}}disabled{{/unless}} title="{{localize 'COGSYNDICATE.BaseValueTooltip'}}" />
-                <input type="number" class="effective-value" name="system.attributes.engineering.value" value="{{effectiveAttributes.engineering}}" min="1" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
+                <input type="number" class="effective-value" name="system.attributes.engineering.value" value="{{effectiveAttributes.engineering}}" min="0" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
                 <button type="button" class="roll-attribute roll-btn" data-attribute="engineering" title="{{localize 'COGSYNDICATE.Roll2d12'}}"><i class="fas fa-dice-d12"></i></button>
+              </div>
+              <!-- Obrażenia dla Engineering -->
+              <div class="damage-section">
+                <label class="damage-label">{{localize "COGSYNDICATE.Damage"}}</label>
+                <div class="damage-radios horizontal" data-attribute="engineering">
+                  {{#times system.attributes.engineering.base}}
+                    <div class="radio-item">
+                      <input type="radio" id="engineering-damage-{{this}}" name="system.attributes.engineering.damage" value="{{this}}" {{#if (eq ../system.attributes.engineering.damage this)}}checked{{/if}}>
+                      <label for="engineering-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
+                    </div>
+                  {{/times}}
+                </div>
               </div>
             </div>
             <div class="attribute">
               <label>{{localize "COGSYNDICATE.Intrigue"}}</label>
               <div class="attribute-content">
                 <input type="number" class="base-value" name="system.attributes.intrigue.base" value="{{system.attributes.intrigue.base}}" min="1" max="6" step="1" {{#unless editable}}disabled{{/unless}} title="{{localize 'COGSYNDICATE.BaseValueTooltip'}}" />
-                <input type="number" class="effective-value" name="system.attributes.intrigue.value" value="{{effectiveAttributes.intrigue}}" min="1" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
+                <input type="number" class="effective-value" name="system.attributes.intrigue.value" value="{{effectiveAttributes.intrigue}}" min="0" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
                 <button type="button" class="roll-attribute roll-btn" data-attribute="intrigue" title="{{localize 'COGSYNDICATE.Roll2d12'}}"><i class="fas fa-dice-d12"></i></button>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Atrybuty Pochodne -->
-        <div class="secondary-attributes columns">
-          <h3 class="centered">{{localize "COGSYNDICATE.SecondaryAttributes"}}</h3>
-          <div class="attributes-container">
-            <div class="attribute">
-             <label>{{localize "COGSYNDICATE.Endurance"}}</label>
-              <div class="radio-group horizontal">
-                <div class="radio-item">
-                  <input type="radio" id="endurance-0" name="system.secondaryAttributes.endurance.value" value="0" {{#if (eq system.secondaryAttributes.endurance.value "0")}}checked{{/if}}>
-                  <label for="endurance-0">0</label>
-                </div>
-                <div class="radio-item">
-                  <input type="radio" id="endurance-1" name="system.secondaryAttributes.endurance.value" value="-1" {{#if (eq system.secondaryAttributes.endurance.value "-1")}}checked{{/if}}>
-                  <label for="endurance-1">-1</label>
-                </div>
-                <div class="radio-item">
-                  <input type="radio" id="endurance-2" name="system.secondaryAttributes.endurance.value" value="-2" {{#if (eq system.secondaryAttributes.endurance.value "-2")}}checked{{/if}}>
-                 <label for="endurance-2">-2</label>
-                </div>
-                <div class="radio-item">
-                  <input type="radio" id="endurance-3" name="system.secondaryAttributes.endurance.value" value="-3" {{#if (eq system.secondaryAttributes.endurance.value "-3")}}checked{{/if}}>
-                  <label for="endurance-3">-3</label>
-                </div>
-              </div>
-            </div>
-            <div class="attribute">
-              <label>{{localize "COGSYNDICATE.Control"}}</label>
-              <div class="radio-group horizontal">
-                <div class="radio-item">
-                  <input type="radio" id="control-0" name="system.secondaryAttributes.control.value" value="0" {{#if (eq system.secondaryAttributes.control.value "0")}}checked{{/if}}>
-                  <label for="control-0">0</label>
-                </div>
-                <div class="radio-item">
-                 <input type="radio" id="control-1" name="system.secondaryAttributes.control.value" value="-1" {{#if (eq system.secondaryAttributes.control.value "-1")}}checked{{/if}}>
-                  <label for="control-1">-1</label>
-                </div>
-                <div class="radio-item">
-                  <input type="radio" id="control-2" name="system.secondaryAttributes.control.value" value="-2" {{#if (eq system.secondaryAttributes.control.value "-2")}}checked{{/if}}>
-                  <label for="control-2">-2</label>
-                </div>
-                <div class="radio-item">
-                  <input type="radio" id="control-3" name="system.secondaryAttributes.control.value" value="-3" {{#if (eq system.secondaryAttributes.control.value "-3")}}checked{{/if}}>
-                  <label for="control-3">-3</label>
-                </div>
-              </div>
-            </div>
-            <div class="attribute">
-              <label>{{localize "COGSYNDICATE.Determination"}}</label>
-              <div class="radio-group horizontal">
-                <div class="radio-item">
-                  <input type="radio" id="determination-0" name="system.secondaryAttributes.determination.value" value="0" {{#if (eq system.secondaryAttributes.determination.value "0")}}checked{{/if}}>
-                  <label for="determination-0">0</label>
-                </div>
-                <div class="radio-item">
-                  <input type="radio" id="determination-1" name="system.secondaryAttributes.determination.value" value="-1" {{#if (eq system.secondaryAttributes.determination.value "-1")}}checked{{/if}}>
-                  <label for="determination-1">-1</label>
-                </div>
-                <div class="radio-item">
-                  <input type="radio" id="determination-2" name="system.secondaryAttributes.determination.value" value="-2" {{#if (eq system.secondaryAttributes.determination.value "-2")}}checked{{/if}}>
-                  <label for="determination-2">-2</label>
-                </div>
-                <div class="radio-item">
-                  <input type="radio" id="determination-3" name="system.secondaryAttributes.determination.value" value="-3" {{#if (eq system.secondaryAttributes.determination.value "-3")}}checked{{/if}}>
-                  <label for="determination-3">-3</label>
+              <!-- Obrażenia dla Intrigue -->
+              <div class="damage-section">
+                <label class="damage-label">{{localize "COGSYNDICATE.Damage"}}</label>
+                <div class="damage-radios horizontal" data-attribute="intrigue">
+                  {{#times system.attributes.intrigue.base}}
+                    <div class="radio-item">
+                      <input type="radio" id="intrigue-damage-{{this}}" name="system.attributes.intrigue.damage" value="{{this}}" {{#if (eq ../system.attributes.intrigue.damage this)}}checked{{/if}}>
+                      <label for="intrigue-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
+                    </div>
+                  {{/times}}
                 </div>
               </div>
             </div>

@@ -12,13 +12,19 @@
         },
         "attributes": {
           "machine": {
-            "value": 1
+            "base": 1,
+            "value": 1,
+            "damage": 0
           },
           "engineering": {
-            "value": 1
+            "base": 1,
+            "value": 1,
+            "damage": 0
           },
           "intrigue": {
-            "value": 1
+            "base": 1,
+            "value": 1,
+            "damage": 0
           }
         },
         "secondaryAttributes": {
@@ -55,6 +61,7 @@
           "value": 6,
           "max": 6
         },
+        "feats": [],
         "traumas": [],
         "equipments": [],
         "notes": ""
@@ -110,13 +117,66 @@
         },
         "minions": [],
         "notes": ""
+      },
+      "agentv2Base": {
+        "name": {
+          "value": ""
+        },
+        "archetype": {
+          "id": null,
+          "name": ""
+        },
+        "attributes": {
+          "machine": {
+            "base": 1,
+            "value": 1,
+            "damage": 0
+          },
+          "engineering": {
+            "base": 1,
+            "value": 1,
+            "damage": 0
+          },
+          "intrigue": {
+            "base": 1,
+            "value": 1,
+            "damage": 0
+          }
+        },
+        "resources": {
+          "gear": {
+            "value": 0,
+            "max": 4,
+            "basis": "machine"
+          },
+          "stress": {
+            "value": 0,
+            "max": 4
+          },
+          "trauma": {
+            "value": 0,
+            "max": 4
+          },
+          "development": {
+            "value": 0,
+            "max": 12
+          }
+        },
+        "equipmentPoints": {
+          "value": 6,
+          "max": 6
+        },
+        "feats": [],
+        "traumas": [],
+        "equipments": [],
+        "notes": ""
       }
     },
     "agent": {
       "templates": ["base"]
     },
     "agentv2": {
-      "templates": ["base"]
+      "templates": ["agentv2Base"]
     },
     "HQ": {
       "templates": ["hqBase"]

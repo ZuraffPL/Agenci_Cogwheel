@@ -47,4 +47,13 @@ Handlebars.registerHelper('range', function(start, current, max) {
   }
   return result;
 });
+
+// Helper do generowania określonej liczby elementów (dla obrażeń atrybutów)
+Handlebars.registerHelper('times', function(n, options) {
+  let result = '';
+  for (let i = 0; i <= n; i++) {
+    result += options.fn(i);
+  }
+  return result;
+});
 }

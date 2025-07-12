@@ -22,6 +22,7 @@
   ],
   "styles": [
     "src/styles/cogwheel.css",
+    "src/styles/agent-v2.css",
     "src/styles/hq.css",
     "src/styles/nemesis.css",
     "src/styles/clocks.css",

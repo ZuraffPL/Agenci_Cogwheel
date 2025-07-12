@@ -7,7 +7,7 @@ Hooks.once("init", () => {
   // Konfiguracja typów aktorów
   CONFIG.Actor.typeLabels = {
     agent: "Agent",
-    agentv2: game.i18n.localize("COGSYNDICATE.AgentV2Name"),
+    agentv2: "Agent v2",
     HQ: "HQ",
     nemesis: "Nemesis"
   };

@@ -1,0 +1,65 @@
+/* Agent v2 Specific Styles */
+
+.agentv2 .damage-section {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #ccc;
+}
+
+.agentv2 .damage-label {
+  font-size: 12px;
+  font-weight: bold;
+  color: #8b0000;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.agentv2 .damage-radio-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.agentv2 .damage-radio-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.agentv2 .damage-radio-item input[type="radio"] {
+  margin: 0;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.agentv2 .damage-radio-item label {
+  font-size: 10px;
+  color: #666;
+  cursor: pointer;
+  user-select: none;
+  min-width: 20px;
+  text-align: center;
+}
+
+.agentv2 .damage-radio-item input[type="radio"]:checked + label {
+  color: #8b0000;
+  font-weight: bold;
+}
+
+/* Hide secondary attributes section in Agent v2 */
+.agentv2 .secondary-attributes {
+  display: none;
+}
+
+/* Adjust main attributes layout for Agent v2 */
+.agentv2 .main-attributes .attribute {
+  margin-bottom: 20px;
+}
+
+.agentv2 .attribute-content {
+  margin-bottom: 8px;
+}

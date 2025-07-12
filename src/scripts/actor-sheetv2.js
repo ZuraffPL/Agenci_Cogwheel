@@ -4,7 +4,7 @@ class CogwheelActorSheetV2 extends ActorSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/cogwheel-syndicate/src/templates/actor-sheetv2.hbs",
-      classes: ["cogwheel", "sheet", "actor", "agent-v2"],
+      classes: ["cogwheel", "sheet", "actor", "agentv2"],
       width: 750,
       submitOnChange: true,
       dragDrop: [{ dropSelector: ".archetype-drop, .feats-drop" }],
@@ -15,6 +15,9 @@ class CogwheelActorSheetV2 extends ActorSheet {
   getData() {
     const data = super.getData();
     data.system = data.actor.system;
+
+    // Sprawdź i zainicjalizuj dane jeśli potrzeba
+    this._updateData();
 
     // FEATS: Use reference IDs for live sync
     // Store feat IDs in system.feats (array of strings)
@@ -35,13 +38,17 @@ class CogwheelActorSheetV2 extends ActorSheet {
     data.system.secondaryAttributes.determination = { ...defaultSecondary, ...data.system.secondaryAttributes.determination };
 
     data.system.attributes = data.system.attributes || {};
-    data.system.attributes.machine = data.system.attributes.machine || { base: 1, value: 1 };
-    data.system.attributes.engineering = data.system.attributes.engineering || { base: 1, value: 1 };
-    data.system.attributes.intrigue = data.system.attributes.intrigue || { base: 1, value: 1 };
+    data.system.attributes.machine = data.system.attributes.machine || { base: 1, value: 1, damage: 0 };
+    data.system.attributes.engineering = data.system.attributes.engineering || { base: 1, value: 1, damage: 0 };
+    data.system.attributes.intrigue = data.system.attributes.intrigue || { base: 1, value: 1, damage: 0 };
 
     data.system.attributes.machine.base = parseInt(data.system.attributes.machine.base, 10) || 1;
     data.system.attributes.engineering.base = parseInt(data.system.attributes.engineering.base, 10) || 1;
     data.system.attributes.intrigue.base = parseInt(data.system.attributes.intrigue.base, 10) || 1;
+
+    data.system.attributes.machine.damage = parseInt(data.system.attributes.machine.damage, 10) || 0;
+    data.system.attributes.engineering.damage = parseInt(data.system.attributes.engineering.damage, 10) || 0;
+    data.system.attributes.intrigue.damage = parseInt(data.system.attributes.intrigue.damage, 10) || 0;
 
     data.system.resources = data.system.resources || {};
     data.system.resources.gear = data.system.resources.gear || { value: 0, max: 4, basis: "machine" };
@@ -54,18 +61,13 @@ class CogwheelActorSheetV2 extends ActorSheet {
     data.system.equipments = data.system.equipments || [];
     data.system.notes = data.system.notes || "";
 
-    const attributeMap = {
-      machine: "endurance",
-      engineering: "control",
-      intrigue: "determination"
-    };
-
+    // Calculate effective attributes based on base value minus damage
     data.effectiveAttributes = {};
-    for (const [mainAttr, secondaryAttr] of Object.entries(attributeMap)) {
-      const baseValue = data.system.attributes[mainAttr].base || 1;
-      const secondaryValue = parseInt(data.system.secondaryAttributes[secondaryAttr].value, 10) || 0;
-      data.effectiveAttributes[mainAttr] = baseValue + secondaryValue;
-      data.system.attributes[mainAttr].value = data.effectiveAttributes[mainAttr];
+    for (const attrName of ['machine', 'engineering', 'intrigue']) {
+      const baseValue = data.system.attributes[attrName].base || 1;
+      const damageValue = parseInt(data.system.attributes[attrName].damage, 10) || 0;
+      data.effectiveAttributes[attrName] = Math.max(0, baseValue - damageValue);
+      data.system.attributes[attrName].value = data.effectiveAttributes[attrName];
     }
 
     const gearBasis = data.system.resources.gear.basis || "machine";
@@ -335,25 +337,61 @@ class CogwheelActorSheetV2 extends ActorSheet {
     }
   }
 
-  async _onCreate(data, options, userId) {
-    console.log("Tworzenie postaci Agent v2 - _onCreate wywołane:", data, options, userId);
-    await super._onCreate(data, options, userId);
+  async _updateData() {
+    console.log("Inicjalizacja danych dla Agent v2");
 
-    const gearMax = 4 + (this.actor.system.attributes.machine.base || 0);
-    const updates = {
-      "img": "icons/svg/mystery-man.svg",
-      "system.resources.gear.value": gearMax,
-      "system.resources.gear.basis": "machine",
-      "system.resources.stress.value": 0,
-      "system.resources.trauma.value": 0,
-      "system.resources.development.value": 0,
-      "system.equipmentPoints.value": 6,
-      "system.traumas": [],
-      "system.equipments": []
-    };
+    // Sprawdź czy aktor ma wszystkie wymagane pola
+    const updates = {};
+    
+    if (!this.actor.system.attributes?.machine?.base) {
+      updates["system.attributes.machine.base"] = 1;
+    }
+    if (!this.actor.system.attributes?.engineering?.base) {
+      updates["system.attributes.engineering.base"] = 1;
+    }
+    if (!this.actor.system.attributes?.intrigue?.base) {
+      updates["system.attributes.intrigue.base"] = 1;
+    }
 
-    console.log("Aktualizacja zasobów przy tworzeniu (Agent v2):", updates);
-    await this.actor.update(updates);
+    if (!this.actor.system.feats) {
+      updates["system.feats"] = [];
+    }
+
+    const gearMax = 4 + (this.actor.system.attributes?.machine?.base || 1);
+    
+    if (!this.actor.system.resources?.gear?.value) {
+      updates["system.resources.gear.value"] = gearMax;
+      updates["system.resources.gear.basis"] = "machine";
+    }
+    
+    if (!this.actor.system.resources?.stress?.value) {
+      updates["system.resources.stress.value"] = 0;
+    }
+    
+    if (!this.actor.system.resources?.trauma?.value) {
+      updates["system.resources.trauma.value"] = 0;
+    }
+    
+    if (!this.actor.system.resources?.development?.value) {
+      updates["system.resources.development.value"] = 0;
+    }
+    
+    if (!this.actor.system.equipmentPoints?.value) {
+      updates["system.equipmentPoints.value"] = 6;
+    }
+    
+    if (!this.actor.system.traumas) {
+      updates["system.traumas"] = [];
+    }
+    
+    if (!this.actor.system.equipments) {
+      updates["system.equipments"] = [];
+    }
+
+    if (Object.keys(updates).length > 0) {
+      console.log("Aktualizacja danych Agent v2:", updates);
+      await this.actor.update(updates);
+    }
   }
 
   async _onAddEquipment(event) {
@@ -740,6 +778,6 @@ class CogwheelActorSheetV2 extends ActorSheet {
 
 Actors.registerSheet("cogwheel-syndicate", CogwheelActorSheetV2, {
   types: ["agentv2"],
-  makeDefault: false,
+  makeDefault: true,
   label: "Cogwheel Agent v2 Sheet"
 });
