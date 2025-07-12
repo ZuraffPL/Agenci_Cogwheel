@@ -45,9 +45,9 @@
               <!-- Obrażenia dla Machine -->
               <div class="damage-section">
                 <label class="damage-label">{{localize "COGSYNDICATE.Damage"}}</label>
-                <div class="damage-radios horizontal" data-attribute="machine">
+                <div class="damage-radio-group" data-attribute="machine">
                   {{#times system.attributes.machine.base}}
-                    <div class="radio-item">
+                    <div class="damage-radio-item">
                       <input type="radio" id="machine-damage-{{this}}" name="system.attributes.machine.damage" value="{{this}}" {{#if (eq ../system.attributes.machine.damage this)}}checked{{/if}}>
                       <label for="machine-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
                     </div>
@@ -65,9 +65,9 @@
               <!-- Obrażenia dla Engineering -->
               <div class="damage-section">
                 <label class="damage-label">{{localize "COGSYNDICATE.Damage"}}</label>
-                <div class="damage-radios horizontal" data-attribute="engineering">
+                <div class="damage-radio-group" data-attribute="engineering">
                   {{#times system.attributes.engineering.base}}
-                    <div class="radio-item">
+                    <div class="damage-radio-item">
                       <input type="radio" id="engineering-damage-{{this}}" name="system.attributes.engineering.damage" value="{{this}}" {{#if (eq ../system.attributes.engineering.damage this)}}checked{{/if}}>
                       <label for="engineering-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
                     </div>
@@ -85,9 +85,9 @@
               <!-- Obrażenia dla Intrigue -->
               <div class="damage-section">
                 <label class="damage-label">{{localize "COGSYNDICATE.Damage"}}</label>
-                <div class="damage-radios horizontal" data-attribute="intrigue">
+                <div class="damage-radio-group" data-attribute="intrigue">
                   {{#times system.attributes.intrigue.base}}
-                    <div class="radio-item">
+                    <div class="damage-radio-item">
                       <input type="radio" id="intrigue-damage-{{this}}" name="system.attributes.intrigue.damage" value="{{this}}" {{#if (eq ../system.attributes.intrigue.damage this)}}checked{{/if}}>
                       <label for="intrigue-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
                     </div>

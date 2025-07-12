@@ -10,23 +10,28 @@
   font-size: 12px;
   font-weight: bold;
   color: #8b0000;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   text-transform: uppercase;
+  text-align: center;
+  display: block;
 }
 
 .agentv2 .damage-radio-group {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: nowrap;
+  margin-top: 4px;
 }
 
 .agentv2 .damage-radio-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
+  min-width: 24px;
+  flex-shrink: 0;
 }
 
 .agentv2 .damage-radio-item input[type="radio"] {
@@ -34,15 +39,19 @@
   width: 16px;
   height: 16px;
   cursor: pointer;
+  order: 1;
 }
 
 .agentv2 .damage-radio-item label {
-  font-size: 10px;
+  font-size: 11px;
   color: #666;
   cursor: pointer;
   user-select: none;
   min-width: 20px;
   text-align: center;
+  order: 2;
+  margin-top: 2px;
+  font-weight: normal;
 }
 
 .agentv2 .damage-radio-item input[type="radio"]:checked + label {
