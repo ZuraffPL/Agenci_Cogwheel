@@ -218,7 +218,7 @@
         {{#if system.equipments}}
           <ol class="equipment-list">
             {{#each system.equipments}}
-              <li class="equipment-item" data-index="{{@index}}">
+              <li class="equipment-item {{#if (or this.used this.droppedDamaged this.destroyed)}}disabled{{/if}}" data-index="{{@index}}">
                 <div class="equipment-header">
                   <h4 class="equipment-name">{{this.name}}</h4>
                   <div class="equipment-controls">
@@ -228,31 +228,31 @@
                 </div>
                 <div class="equipment-details">
                   <span class="equipment-type">{{localize (concat "COGSYNDICATE.EquipmentType" (capitalize this.type))}}</span>
-                  <span class="equipment-cost">{{localize "COGSYNDICATE.Cost"}}: {{this.cost}}</span>
-                  <span class="equipment-usage">{{localize "COGSYNDICATE.Usage"}}: {{this.usage}}</span>
+                  <span class="equipment-cost">{{localize "COGSYNDICATE.EquipmentCost"}}: {{this.cost}}</span>
+                  <span class="equipment-usage">{{localize "COGSYNDICATE.EquipmentUsage"}}: {{localize (concat "COGSYNDICATE.EquipmentUsage" (capitalize this.usage))}}</span>
                   {{#if this.action}}
-                    <span class="equipment-action">{{localize "COGSYNDICATE.Action"}}: {{this.action}}</span>
+                    <span class="equipment-action">{{localize "COGSYNDICATE.EquipmentAction"}}: {{this.action}}</span>
                   {{/if}}
                 </div>
                 <div class="equipment-status">
                   <label class="status-checkbox">
                     <input type="checkbox" class="equipment-status-checkbox" data-index="{{@index}}" data-status="used" {{#if this.used}}checked{{/if}} />
-                    {{localize "COGSYNDICATE.Used"}}
+                    {{localize "COGSYNDICATE.EquipmentUsed"}}
                   </label>
                   <label class="status-checkbox">
                     <input type="checkbox" class="equipment-status-checkbox" data-index="{{@index}}" data-status="droppedDamaged" {{#if this.droppedDamaged}}checked{{/if}} />
-                    {{localize "COGSYNDICATE.DroppedDamaged"}}
+                    {{localize "COGSYNDICATE.EquipmentDroppedDamaged"}}
                   </label>
                   <label class="status-checkbox">
                     <input type="checkbox" class="equipment-status-checkbox" data-index="{{@index}}" data-status="destroyed" {{#if this.destroyed}}checked{{/if}} />
-                    {{localize "COGSYNDICATE.Destroyed"}}
+                    {{localize "COGSYNDICATE.EquipmentDestroyed"}}
                   </label>
                 </div>
               </li>
             {{/each}}
           </ol>
         {{else}}
-          <p class="no-equipment">{{localize "COGSYNDICATE.NoEquipment"}}</p>
+          <p class="no-equipment">{{localize "COGSYNDICATE.NoEquipmentToAdd"}}</p>
         {{/if}}
       </div>
 
