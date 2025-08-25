@@ -84,9 +84,9 @@
 }
 
 .agentv2 .remove-archetype {
-  width: 32px;
-  height: 32px;
-  font-size: 14px;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
   padding: 0;
   margin-left: 12px;
   line-height: 1;
@@ -115,7 +115,7 @@
 }
 
 .agentv2 .remove-archetype i {
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .agentv2 .archetype-img {
