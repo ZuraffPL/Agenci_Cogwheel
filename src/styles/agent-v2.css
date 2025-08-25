@@ -188,18 +188,22 @@
   line-height: 1.4;
 }
 
-.agentv2 .feat-effect {
+.agentv2 .feat-description strong {
+  color: #388e3c;
+}
+
+.agentv2 .feat-narrative {
   margin-top: 8px;
   padding: 8px 12px;
-  background-color: #f8f9fa;
-  border-left: 4px solid #007acc;
+  background-color: #f3e5f5;
+  border-left: 4px solid #9c27b0;
   border-radius: 0 4px 4px 0;
   font-size: 14px;
   line-height: 1.4;
 }
 
-.agentv2 .feat-effect strong {
-  color: #007acc;
+.agentv2 .feat-narrative strong {
+  color: #7b1fa2;
 }
 
 .agentv2 .no-feats-message {
