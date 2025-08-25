@@ -75,6 +75,7 @@
   "COGSYNDICATE.FeatInitial": "Initial",
   "COGSYNDICATE.FeatAdvanced": "Advanced",
   "COGSYNDICATE.DeleteFeat": "Delete feat",
+  "COGSYNDICATE.RemoveFeat": "Remove feat",
   "COGSYNDICATE.FeatDrop": "Drag feat here",
   "COGSYNDICATE.Position": "Position",
   "COGSYNDICATE.PositionDesperate": "Desperate",
@@ -328,6 +329,8 @@
   "COGSYNDICATE.JournalManualLink": "Open Manual (PDF)",
   "COGSYNDICATE.JournalManualCreated": "Journal entry added: Manual (PDF)",
   "COGSYNDICATE.AgentV2Name": "Agent v2",
+  "COGSYNDICATE.FeatsDrop": "Drag feats here",
+  "COGSYNDICATE.NoFeats": "No feats",
   "COGSYNDICATE.Damage": "Damage",
   "pdfjs-editor-highlight-button": "Highlighter",
   "pdfjs-editor-highlight-button-label": "Highlight text with color"

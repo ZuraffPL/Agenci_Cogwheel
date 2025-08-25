@@ -205,7 +205,12 @@ class CogwheelActorSheetV2 extends ActorSheet {
     const item = await Item.fromDropData(data);
     console.log("_onDrop: Created item from data:", item);
 
-    const target = event.currentTarget.classList.contains('archetype-drop') ? 'archetype' : 'feat';
+    let target = 'feat'; // domyślnie feat
+    if (event.currentTarget.classList.contains('archetype-drop')) {
+      target = 'archetype';
+    } else if (event.currentTarget.classList.contains('feats-drop')) {
+      target = 'feat';
+    }
     console.log("_onDrop: Drop target:", target);
 
     if (target === 'archetype' && item.type === "archetype") {

@@ -75,6 +75,7 @@
   "COGSYNDICATE.FeatInitial": "Początkowy",
   "COGSYNDICATE.FeatAdvanced": "Rozwój",
   "COGSYNDICATE.DeleteFeat": "Usuń atut",
+  "COGSYNDICATE.RemoveFeat": "Usuń atut",
   "COGSYNDICATE.FeatDrop": "Przeciągnij atut tutaj",
   "COGSYNDICATE.Position": "Pozycja",
   "COGSYNDICATE.PositionDesperate": "Desperacka",
@@ -328,6 +329,8 @@
   "COGSYNDICATE.JournalManualLink": "Otwórz podręcznik (PDF)",
   "COGSYNDICATE.JournalManualCreated": "Dodano wpis do dziennika: Podręcznik (PDF)",
   "COGSYNDICATE.AgentV2Name": "Agent v2",
+  "COGSYNDICATE.FeatsDrop": "Przeciągnij atuty tutaj",
+  "COGSYNDICATE.NoFeats": "Brak atutów",
   "COGSYNDICATE.Damage": "Obrażenia",
   "pdfjs-editor-highlight-button": "Zakreślacz",
   "pdfjs-editor-highlight-button-label": "Zaznacz tekst kolorem"

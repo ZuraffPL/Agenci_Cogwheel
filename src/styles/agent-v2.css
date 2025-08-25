@@ -72,3 +72,139 @@
 .agentv2 .attribute-content {
   margin-bottom: 8px;
 }
+
+/* Feats styles for Agent v2 */
+.agentv2 .feats-section {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.agentv2 .feats-drop {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  width: 100%;
+  min-height: 60px;
+  box-sizing: border-box;
+  display: block;
+}
+
+.agentv2 .feat-item {
+  margin: 10px 0;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+}
+
+.agentv2 .feat-item-alt {
+  background-color: #f0f4fa;
+}
+
+.agentv2 .feat-item:hover {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.agentv2 .feat-header-grid {
+  display: grid;
+  grid-template-columns: 1fr 120px 40px;
+  align-items: center;
+  gap: 0 8px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+  width: 100%;
+}
+
+.agentv2 .feat-col-name {
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.agentv2 .feat-col-type {
+  text-align: center;
+}
+
+.agentv2 .feat-col-delete {
+  text-align: right;
+}
+
+.agentv2 .feat-name {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+.agentv2 .feat-type {
+  font-weight: bold;
+  font-size: 14px;
+  background-color: #e8f4fd;
+  color: #1976d2;
+  padding: 4px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.agentv2 .delete-feat {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  max-width: 28px;
+  flex: none;
+  font-size: 14px;
+  padding: 0;
+  margin-left: 8px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  line-height: 1;
+  text-align: center;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.agentv2 .delete-feat:hover {
+  background-color: #c82333;
+}
+
+.agentv2 .feat-description {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background-color: #e8f5e9;
+  border-left: 4px solid #4caf50;
+  border-radius: 0 4px 4px 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.agentv2 .feat-effect {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  border-left: 4px solid #007acc;
+  border-radius: 0 4px 4px 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.agentv2 .feat-effect strong {
+  color: #007acc;
+}
+
+.agentv2 .no-feats-message {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  font-style: italic;
+}

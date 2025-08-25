@@ -164,31 +164,32 @@
 
       <!-- Zakładka Atuty -->
       <div class="tab feats" data-group="primary" data-tab="feats">
-        <h3 class="centered">{{localize "COGSYNDICATE.FeatsTab"}}</h3>
-        <div class="feats-drop" style="border: 2px dashed #ccc; padding: 20px; text-align: center; margin-bottom: 20px;">
-          {{localize "COGSYNDICATE.FeatsDrop"}}
-        </div>
-        {{#if feats}}
-          <ol class="feats-list">
-            {{#each feats}}
-              <li class="feat-item" data-item-id="{{this.id}}">
-                <div class="feat-header">
-                  <img class="feat-image" src="{{this.img}}" title="{{this.name}}" width="36" height="36" />
-                  <h4 class="feat-name">{{this.name}}</h4>
-                  <div class="feat-controls">
-                    <a class="feat-control delete-feat" title="{{localize 'COGSYNDICATE.RemoveFeat'}}"><i class="fas fa-trash"></i></a>
+        <div class="feats-section">
+          <h3 class="centered">{{localize "COGSYNDICATE.FeatsTab"}}</h3>
+          <div class="feats-drop" data-type="feat">
+            {{#if (gt feats.length 0)}}
+              {{#each feats as |feat|}}
+                <div class="feat-item {{#if @odd}}feat-item-alt{{/if}}" data-item-id="{{feat.id}}">
+                  <div class="feat-header-grid">
+                    <div class="feat-col-name"><span class="feat-name">{{feat.name}}</span></div>
+                    <div class="feat-col-type"><span class="feat-type">{{#if (eq feat.system.type "initial")}}{{localize "COGSYNDICATE.FeatInitial"}}{{else}}{{localize "COGSYNDICATE.FeatAdvanced"}}{{/if}}</span></div>
+                    <div class="feat-col-delete"><button type="button" class="delete-feat small-btn" data-item-id="{{feat.id}}" title="{{localize 'COGSYNDICATE.DeleteFeat'}}"><i class="fas fa-trash"></i></button></div>
                   </div>
+                  {{#if feat.system.description}}
+                    <div class="feat-description">{{feat.system.description}}</div>
+                  {{/if}}
+                  {{#if feat.system.effect}}
+                    <div class="feat-effect"><strong>{{localize "COGSYNDICATE.Effect"}}:</strong> {{feat.system.effect}}</div>
+                  {{/if}}
                 </div>
-                <div class="feat-description">{{this.system.description}}</div>
-                {{#if this.system.effect}}
-                  <div class="feat-effect"><strong>{{localize "COGSYNDICATE.Effect"}}:</strong> {{this.system.effect}}</div>
-                {{/if}}
-              </li>
-            {{/each}}
-          </ol>
-        {{else}}
-          <p class="no-feats">{{localize "COGSYNDICATE.NoFeats"}}</p>
-        {{/if}}
+              {{/each}}
+            {{else}}
+              <div class="no-feats-message">
+                <p>{{localize "COGSYNDICATE.FeatDrop"}}</p>
+              </div>
+            {{/if}}
+          </div>
+        </div>
       </div>
 
       <!-- Zakładka Ekwipunek -->
