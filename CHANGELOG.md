@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.9] - 2025-08-25
+
 ### Added
 - **Nowy typ aktora: Agent v2**:
   - Stworzono niezależną kopię karty agenta z dedykowanymi plikami (`actor-sheetv2.js`, `actor-sheetv2.hbs`)
@@ -22,12 +24,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Pola obrażeń ułożone poziomo z etykietami pod spodem
   - Helper Handlebars `times` dla dynamicznego generowania pól
 
+### Fixed
+- **Sekcja Atutów w Agent v2**:
+  - Naprawiono funkcjonalność drag&drop - atuty można teraz przeciągać z katalogu przedmiotów
+  - Przywrócono pełną funkcjonalność sekcji atutów identyczną z oryginalną kartą agenta
+  - Dodano brakujące style CSS dla prawidłowego wyświetlania atutów w układzie siatki
+  - Poprawiono logikę _onDrop w JavaScript dla prawidłowego rozpoznawania targetów
+  - Dodano brakujące tłumaczenia dla kluczy "COGSYNDICATE.FeatsDrop" i "COGSYNDICATE.NoFeats"
+  - Naprawiono strukturę template'a dla pełnej kompatybilności z systemem atutów
+
 ### Technical
 - Zaktualizowany `system.json` z importem nowych plików
 - Rozszerzony `handlebars.mjs` o helper `times`
 - Rejestracja arkusza `CogwheelActorSheetV2` jako domyślnego dla typu `agentv2`
 - Osobna logika obliczania efektywnych atrybutów w Agent v2
 - Zachowano kompatybilność z oryginalnym agentem
+- Kompletna refaktoryzacja sekcji atutów w `actor-sheetv2.hbs`, `actor-sheetv2.js` i `agent-v2.css`
+- Dodano tłumaczenia do plików `pl.json` i `en.json` dla Agent v2
 
 ## [0.6.8] - 2025-07-02
 
