@@ -272,9 +272,11 @@
 
       <!-- Zakładka Notatki -->
       <div class="tab notes" data-group="primary" data-tab="notes">
-        <h3 class="centered">{{localize "COGSYNDICATE.NotesTab"}}</h3>
         <div class="notes-section">
-          <textarea name="system.notes" placeholder="{{localize 'COGSYNDICATE.NotesPlaceholder'}}" rows="15">{{system.notes}}</textarea>
+          <h3 class="centered">{{localize "COGSYNDICATE.NotesTab"}}</h3>
+          <div class="notes-content">
+            <textarea name="system.notes" class="notes-textarea" placeholder="{{localize 'COGSYNDICATE.NotesPlaceholder'}}">{{system.notes}}</textarea>
+          </div>
         </div>
       </div>
     </section>
