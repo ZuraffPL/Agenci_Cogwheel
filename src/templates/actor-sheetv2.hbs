@@ -198,62 +198,46 @@
 
       <!-- Zakładka Ekwipunek -->
       <div class="tab equipment" data-group="primary" data-tab="equipment">
-        <h3 class="centered">{{localize "COGSYNDICATE.EquipmentTab"}}</h3>
-        
-        <!-- Punkty Ekwipunku -->
-        <div class="equipment-points-section">
-          <h4 class="centered">{{localize "COGSYNDICATE.EquipmentPoints"}}</h4>
-          <div class="equipment-points-display">
+        <section class="equipment-section">
+          <h2>{{localize "COGSYNDICATE.EquipmentTab"}}</h2>
+          
+          <!-- Licznik Punktów Ekwipunku -->
+          <div class="equipment-points">
+            <span class="equipment-points-label">{{localize "COGSYNDICATE.EquipmentPoints"}}:</span>
             <span class="equipment-points-value">{{system.equipmentPoints.value}}</span>
             <span class="equipment-points-max">/ {{system.equipmentPoints.max}}</span>
           </div>
-        </div>
-
-        <!-- Przycisk dodawania ekwipunku -->
-        <div class="equipment-controls">
-          <button type="button" class="add-equipment-btn">{{localize "COGSYNDICATE.AddEquipment"}}</button>
-        </div>
-
-        <!-- Lista ekwipunku -->
-        {{#if system.equipments}}
-          <ol class="equipment-list">
-            {{#each system.equipments}}
-              <li class="equipment-item {{#if (or this.used this.droppedDamaged this.destroyed)}}disabled{{/if}}" data-index="{{@index}}">
+          
+          <button class="add-equipment-btn">{{localize "COGSYNDICATE.AddEquipment"}}</button>
+            {{#each system.equipments as |equipment index|}}
+              <div class="equipment-item {{#if (or equipment.used equipment.droppedDamaged equipment.destroyed)}}disabled{{/if}}" data-index="{{index}}">
                 <div class="equipment-header">
-                  <h4 class="equipment-name">{{this.name}}</h4>
-                  <div class="equipment-controls">
-                    <a class="equipment-control edit-equipment" title="{{localize 'COGSYNDICATE.EditEquipment'}}"><i class="fas fa-edit"></i></a>
-                    <a class="equipment-control delete-equipment" title="{{localize 'COGSYNDICATE.DeleteEquipment'}}"><i class="fas fa-trash"></i></a>
-                  </div>
+                  {{equipment.name}} ({{localize (concat 'COGSYNDICATE.EquipmentType' (capitalize equipment.type))}})
                 </div>
                 <div class="equipment-details">
-                  <span class="equipment-type">{{localize (concat "COGSYNDICATE.EquipmentType" (capitalize this.type))}}</span>
-                  <span class="equipment-cost">{{localize "COGSYNDICATE.EquipmentCost"}}: {{this.cost}}</span>
-                  <span class="equipment-usage">{{localize "COGSYNDICATE.EquipmentUsage"}}: {{localize (concat "COGSYNDICATE.EquipmentUsage" (capitalize this.usage))}}</span>
-                  {{#if this.action}}
-                    <span class="equipment-action">{{localize "COGSYNDICATE.EquipmentAction"}}: {{this.action}}</span>
-                  {{/if}}
+                  <div>
+                    {{localize "COGSYNDICATE.EquipmentCost"}}: {{equipment.cost}}
+                    <br>
+                    {{localize "COGSYNDICATE.EquipmentAction"}}: {{equipment.action}}
+                    <br>
+                    {{localize "COGSYNDICATE.EquipmentUsage"}}: {{localize (concat 'COGSYNDICATE.EquipmentUsage' (capitalize equipment.usage))}}
+                  </div>
+                  <div class="equipment-actions">
+                    <a class="edit-equipment"><i class="fas fa-edit"></i></a>
+                    <a class="delete-equipment"><i class="fas fa-trash"></i></a>
+                  </div>
                 </div>
                 <div class="equipment-status">
-                  <label class="status-checkbox">
-                    <input type="checkbox" class="equipment-status-checkbox" data-index="{{@index}}" data-status="used" {{#if this.used}}checked{{/if}} />
-                    {{localize "COGSYNDICATE.EquipmentUsed"}}
-                  </label>
-                  <label class="status-checkbox">
-                    <input type="checkbox" class="equipment-status-checkbox" data-index="{{@index}}" data-status="droppedDamaged" {{#if this.droppedDamaged}}checked{{/if}} />
-                    {{localize "COGSYNDICATE.EquipmentDroppedDamaged"}}
-                  </label>
-                  <label class="status-checkbox">
-                    <input type="checkbox" class="equipment-status-checkbox" data-index="{{@index}}" data-status="destroyed" {{#if this.destroyed}}checked{{/if}} />
-                    {{localize "COGSYNDICATE.EquipmentDestroyed"}}
-                  </label>
+                  <label><input type="checkbox" class="equipment-status-checkbox" data-index="{{index}}" data-status="used" {{#if equipment.used}}checked{{/if}} /> {{localize "COGSYNDICATE.EquipmentUsed"}}</label>
+                  <label><input type="checkbox" class="equipment-status-checkbox" data-index="{{index}}" data-status="droppedDamaged" {{#if equipment.droppedDamaged}}checked{{/if}} /> {{localize "COGSYNDICATE.EquipmentDroppedDamaged"}}</label>
+                  <label><input type="checkbox" class="equipment-status-checkbox" data-index="{{index}}" data-status="destroyed" {{#if equipment.destroyed}}checked{{/if}} /> {{localize "COGSYNDICATE.EquipmentDestroyed"}}</label>
                 </div>
-              </li>
-            {{/each}}
-          </ol>
-        {{else}}
-          <p class="no-equipment">{{localize "COGSYNDICATE.NoEquipmentToAdd"}}</p>
-        {{/if}}
+              </div>
+          {{/each}}
+          {{#unless system.equipments.length}}
+            {{localize "COGSYNDICATE.NoEquipmentToAdd"}}
+          {{/unless}}
+        </section>
       </div>
 
       <!-- Zakładka Traumy -->

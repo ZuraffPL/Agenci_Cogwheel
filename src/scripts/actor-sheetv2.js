@@ -96,7 +96,8 @@ class CogwheelActorSheetV2 extends ActorSheet {
     html.find('.delete-trauma').click(this._onDeleteTrauma.bind(this));
     html.find('.spend-gear-btn').click(this._onSpendGear.bind(this));
     html.find('.spend-stress-btn').click(this._onSpendStress.bind(this));
-    this._assignRandomBackgrounds(html);
+    this._assignGearBackgrounds(html);
+    this._assignEquipmentColors(html);
     this._updateEquipmentPointsDisplay(html);
   }
 
@@ -674,7 +675,7 @@ class CogwheelActorSheetV2 extends ActorSheet {
     this.render();
   }
 
-  _assignRandomBackgrounds(html) {
+  _assignGearBackgrounds(html) {
     const backgrounds = [
       'url("systems/cogwheel-syndicate/src/styles/images/gears1.png")',
       'url("systems/cogwheel-syndicate/src/styles/images/gears2.png")',
@@ -685,6 +686,29 @@ class CogwheelActorSheetV2 extends ActorSheet {
     html.find('.gear-background').each(function() {
       const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
       $(this).css('background-image', randomBackground);
+    });
+  }
+
+  _assignEquipmentColors(html) {
+    const equipmentItems = html.find('.equipment-item');
+    const pastelColors = [
+      'pastel-pink',
+      'pastel-blue',
+      'pastel-green',
+      'pastel-yellow',
+      'pastel-purple',
+      'pastel-orange'
+    ];
+
+    equipmentItems.each((index, element) => {
+      const randomColorClass = pastelColors[Math.floor(Math.random() * pastelColors.length)];
+      $(element).addClass(randomColorClass);
+
+      const bgColor = window.getComputedStyle(element).backgroundColor;
+      const rgb = bgColor.match(/\d+/g).map(Number);
+      const brightness = (rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000;
+      const textColor = brightness > 128 ? '#000000' : '#FFFFFF';      
+      $(element).find('.equipment-header, .equipment-details').css('color', textColor);
     });
   }
 
