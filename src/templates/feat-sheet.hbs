@@ -6,7 +6,7 @@
 
   <section class="sheet-body">
     <div class="form-group">
-      <label>Typ:</label>
+      <label>{{localize "COGSYNDICATE.FeatType"}}:</label>
       <div class="input-container">
         <select name="system.type">
           <option value="initial" {{#if (eq system.type "initial")}}selected{{/if}}>{{localize "COGSYNDICATE.FeatInitial"}}</option>
@@ -15,9 +15,9 @@
       </div>
     </div>
     <div class="form-group">
-      <label>Opis:</label>
+      <label>{{localize "COGSYNDICATE.Description"}}:</label>
       <div class="input-container">
-        <textarea name="system.effect" rows="4">{{system.effect}}</textarea>
+        <textarea name="system.effect" rows="4" placeholder="{{localize "COGSYNDICATE.Description"}}">{{system.effect}}</textarea>
       </div>
     </div>
     <div class="form-group">

@@ -72,6 +72,7 @@
   "COGSYNDICATE.DevelopmentReceived": "Agent {agentName} otrzymał {amount} Punktów Rozwoju",
   "COGSYNDICATE.DevelopmentSpent": "Agent {agentName} wydał {amount} Punktów Rozwoju",
   "COGSYNDICATE.Feats": "Atuty",
+  "COGSYNDICATE.FeatType": "Typ",
   "COGSYNDICATE.FeatInitial": "Początkowy",
   "COGSYNDICATE.FeatAdvanced": "Rozwój",
   "COGSYNDICATE.DeleteFeat": "Usuń atut",
