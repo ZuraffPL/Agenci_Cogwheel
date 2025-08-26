@@ -7,6 +7,61 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2025-08-26
+
+### Added
+- **Czarci Targ (Devil's Bargain) - Nowa mechanika rzutów**:
+  - Nowy checkbox "Czarci Targ - Dodaj 2 Punkty Nemezis do puli, by dodać 1d12 do rzutu" w oknie rzutu
+  - Umieszczony między checkboxem Steam Die a Trauma
+  - Dodaje 2 Punkty Nemezis do puli MG i dodatkową kość d12 ("devil dice") do rzutu
+  - Wzajemne wykluczanie się z Steam Die - można używać maksymalnie jednego z nich na rzut
+  - Maksymalna liczba kości pozostaje na poziomie 4d12: (2d12 + stress + steam) OR (2d12 + stress + devil)
+  - Pełna kompatybilność z mechanikami krytycznych sukcesów i porażek
+  - Devil dice uwzględniana we wszystkich obliczeniach (11s/12s, krytyczne sukces/porażka)
+
+### Enhanced
+- **Wizualne wskazywanie wzajemnego wykluczania**:
+  - Zaznaczenie Devil Die wizualnie przekreśla Steam Die (i na odwrót)
+  - Efekty wizualne: przygaszenie (opacity 0.5), line-through, czerwona linia przekreślająca
+  - Tło zmienia się na szare, checkbox staje się nieaktywny z odpowiednim kursorem
+  - Automatyczne przywracanie normalnego wyglądu po odznaczeniu
+  - Charakterystyczna czerwona stylistyka dla checkbox Devil Die
+
+- **Mechanika Reroll z Devil Die**:
+  - Devil dice jest dołączana za darmo przy przerzucie testu (3PP)
+  - Punkty Nemezis NIE są dodawane ponownie przy reroll (analogicznie do Steam Die)
+  - Komunikaty wyraźnie oznaczają darmowe kości: "(za darmo)" / "(for free)"
+  - Pełna integracja z istniejącym systemem przerzutów
+
+- **Komunikaty na czacie**:
+  - "Agent {imię} dodał do puli MG 2 Punkty Nemezis, by dodać kość Diabelskiego Targu"
+  - Devil dice wyświetlana w sekcji szczegółowych wyników rzutu
+  - Spójne formatowanie z resztą komunikatów o rzutach
+
+### Enhanced - Stylizacja Archetypu
+- **Jednolite style sekcji archetypu na kartach agenta i agenta v2**:
+  - Eleganckie gradienty tła (szaro-fioletowa paleta)
+  - Fioletowa ramka z zaokrąglonymi rogami i subtelnym cieniem
+  - Efekty hover z animowaną linią świetlną
+  - Stylizowany przycisk usuń z gradientem i efektami hover/active
+  - Dopasowane rozmiary przycisku usuń (24x24px) dla lepszej proporcji
+  - Identyczne style na obu typach kart agentów
+
+### Fixed
+- **Agent v2 - Kompletna rekonstrukcja funkcjonalności**:
+  - Naprawiono sekcję Ekwipunek: koloryzacja, layout, tłumaczenia
+  - Naprawiono sekcję Traumy: struktura, CSS klasy, tłumaczenia typu trauma
+  - Naprawiono sekcję Notatki: struktura HTML, CSS klasy, layout flexbox
+  - Wszystkie sekcje Agent v2 teraz mają identyczną funkcjonalność z oryginalną kartą agenta
+
+### Technical
+- Dodano tłumaczenia PL/EN dla Devil's Bargain functionality
+- Rozszerzono `roll-mechanics.js` o obsługę Devil Die w obu głównych funkcjach
+- Dodano dedykowane style CSS dla Devil Die w `rolldialog.css`
+- Zaktualizowano logikę przypisywania wyników kości dla wszystkich kombinacji (3, 4, 5 kości)
+- Poprawiono funkcję `executeRollWithData` dla prawidłowej obsługi Devil Die w reroll
+- Stylizacja archetypu w plikach `cogwheel.css` i `agent-v2.css`
+
 ## [0.6.9] - 2025-08-25
 
 ### Added
