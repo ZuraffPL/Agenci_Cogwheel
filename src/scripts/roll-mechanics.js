@@ -574,16 +574,26 @@ export async function performAttributeRoll(actor, attribute) {
         // Dodanie logiki wzajemnego wykluczania się checkboxów
         const steamDieCheckbox = html.find('[name="steamDie"]');
         const devilDieCheckbox = html.find('[name="devilDie"]');
+        const steamDieGroup = html.find('.steam-die-group');
+        const devilDieGroup = html.find('.devil-die-group');
         
         steamDieCheckbox.change(function() {
           if (this.checked) {
             devilDieCheckbox.prop('checked', false);
+            devilDieGroup.addClass('disabled-option');
+            steamDieGroup.removeClass('disabled-option');
+          } else {
+            devilDieGroup.removeClass('disabled-option');
           }
         });
         
         devilDieCheckbox.change(function() {
           if (this.checked) {
             steamDieCheckbox.prop('checked', false);
+            steamDieGroup.addClass('disabled-option');
+            devilDieGroup.removeClass('disabled-option');
+          } else {
+            steamDieGroup.removeClass('disabled-option');
           }
         });
       }

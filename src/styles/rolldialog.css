@@ -78,6 +78,45 @@
   font-weight: bold;
 }
 
+/* Style dla wzajemnie wykluczających się checkboxów */
+.roll-dialog .steam-die-group.disabled-option {
+  opacity: 0.5;
+  background: #f0f0f0;
+  position: relative;
+}
+
+.roll-dialog .devil-die-group.disabled-option {
+  opacity: 0.5;
+  background: #f0f0f0;
+  border-color: #999;
+  position: relative;
+}
+
+.roll-dialog .steam-die-group.disabled-option::after,
+.roll-dialog .devil-die-group.disabled-option::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #ff0000;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.roll-dialog .steam-die-group.disabled-option label,
+.roll-dialog .devil-die-group.disabled-option label {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.roll-dialog .steam-die-group.disabled-option input[type="checkbox"],
+.roll-dialog .devil-die-group.disabled-option input[type="checkbox"] {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
 .roll-dialog .trauma-group {
   background: #f3eaff;
   border-radius: 6px;
