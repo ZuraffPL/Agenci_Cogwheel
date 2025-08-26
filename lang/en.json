@@ -137,6 +137,8 @@
   "COGSYNDICATE.NarrativeEffect": "Narrative Effect",
   "COGSYNDICATE.NarrativeEffectPlaceholder": "Enter narrative effect",
   "COGSYNDICATE.SteamDieLabel": "Spend 2 Steam Points to add 1d12 to the roll",
+  "COGSYNDICATE.DevilDieLabel": "Devil's Bargain - Add 2 Nemesis Points to the pool to add 1d12 to the roll",
+  "COGSYNDICATE.DevilDieUsed": "Agent {agentName} added 2 Nemesis Points to GM's pool to add Devil's Bargain die",
   "COGSYNDICATE.SteamDieConfirmTitle": "Confirm Steam Points Usage",
   "COGSYNDICATE.SteamDieInsufficientTitle": "Insufficient Steam Points",
   "COGSYNDICATE.SteamDieInsufficient": "Not enough Steam Points in the pool",

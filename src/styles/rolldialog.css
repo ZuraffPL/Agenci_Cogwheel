@@ -1,9 +1,5 @@
 /* roll-dialog.css - dedykowane style dla okna rzutu atrybutów */
 
-.roll-dialog {
-  /* zachowaj ogólne style z cogwheel.css, jeśli potrzebne */
-}
-
 .roll-dialog .form-group {
   margin-bottom: 1em;
   display: block;
@@ -66,6 +62,20 @@
   border-radius: 6px;
   padding: 0.5em 0.7em;
   margin-bottom: 0.5em;
+}
+
+.roll-dialog .devil-die-group {
+  background: #ffe5e5;
+  border: 2px solid #cc0000;
+  border-radius: 6px;
+  padding: 0.5em 0.7em;
+  margin-bottom: 0.5em;
+  box-shadow: 0 2px 4px rgba(204, 0, 0, 0.2);
+}
+
+.roll-dialog .devil-die-group label {
+  color: #cc0000;
+  font-weight: bold;
 }
 
 .roll-dialog .trauma-group {

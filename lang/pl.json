@@ -137,6 +137,8 @@
   "COGSYNDICATE.NarrativeEffect": "Efekt Narracyjny",
   "COGSYNDICATE.NarrativeEffectPlaceholder": "Wpisz efekt narracyjny",
   "COGSYNDICATE.SteamDieLabel": "Wydaj 2 Punkty Pary, by dodać 1d12 do rzutu",
+  "COGSYNDICATE.DevilDieLabel": "Czarci Targ - Dodaj 2 Punkty Nemezis do puli, by dodać 1d12 do rzutu",
+  "COGSYNDICATE.DevilDieUsed": "Agent {agentName} dodał do puli MG 2 Punkty Nemezis, by dodać kość Diabelskiego Targu",
   "COGSYNDICATE.SteamDieConfirmTitle": "Potwierdzenie użycia Punktów Pary",
   "COGSYNDICATE.SteamDieInsufficientTitle": "Niewystarczająca liczba Punktów Pary",
   "COGSYNDICATE.SteamDieInsufficient": "Za mało Punktów Pary w puli",

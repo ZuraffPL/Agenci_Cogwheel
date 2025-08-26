@@ -168,6 +168,12 @@ export async function performAttributeRoll(actor, attribute) {
           ${game.i18n.localize("COGSYNDICATE.SteamDieLabel")}
         </label>
       </div>
+      <div class="form-group devil-die-group">
+        <label>
+          <input type="checkbox" name="devilDie" />
+          ${game.i18n.localize("COGSYNDICATE.DevilDieLabel")}
+        </label>
+      </div>
       <div class="form-group trauma-group">
         <label>
           <input type="checkbox" name="applyTrauma" />
@@ -194,7 +200,7 @@ export async function performAttributeRoll(actor, attribute) {
   `;
 
   return new Promise((resolve) => {
-    new Dialog({
+    const dialog = new Dialog({
       title: game.i18n.localize("COGSYNDICATE.RollAttribute"),
       content: dialogContent,
       buttons: {
@@ -208,6 +214,7 @@ export async function performAttributeRoll(actor, attribute) {
             const position = html.find('[name="position"]').val();
             const useStressDie = html.find('[name="stressDie"]').is(":checked");
             const useSteamDie = html.find('[name="steamDie"]').is(":checked");
+            const useDevilDie = html.find('[name="devilDie"]').is(":checked");
             const applyTrauma = html.find('[name="applyTrauma"]').is(":checked");
             const rollModifier = parseInt(html.find('[name="rollModifier"]').val(), 10) || 0;
             const positionModifiers = { desperate: -3, risky: 0, controlled: 3 };
@@ -337,9 +344,25 @@ export async function performAttributeRoll(actor, attribute) {
               steamDialogMessage = `<p>${game.i18n.format("COGSYNDICATE.SteamDieUsed", { agentName: actor.name })}</p>`;
             }
 
+            let devilDialogMessage = "";
+            if (useDevilDie) {
+              const nemesisIncrease = 2;
+              game.cogwheelSyndicate.nemesisPoints = game.cogwheelSyndicate.nemesisPoints || 0;
+              game.cogwheelSyndicate.nemesisPoints = Math.clamp(game.cogwheelSyndicate.nemesisPoints + nemesisIncrease, 0, 100);
+              
+              game.socket.emit("system.cogwheel-syndicate", {
+                type: "updateMetaCurrencies",
+                nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
+                steamPoints: game.cogwheelSyndicate.steamPoints
+              });
+              Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
+              devilDialogMessage = `<p>${game.i18n.format("COGSYNDICATE.DevilDieUsed", { agentName: actor.name })}</p>`;
+            }
+
             let diceCount = 2;
             if (useStressDie) diceCount += 1;
             if (useSteamDie) diceCount += 1;
+            if (useDevilDie) diceCount += 1;
 
             const rollFormula = `${diceCount}d12 + @attrMod + @positionMod + @rollMod`;
             const roll = new Roll(rollFormula, {
@@ -350,9 +373,45 @@ export async function performAttributeRoll(actor, attribute) {
             await roll.evaluate();
 
             const diceResults = roll.terms[0].results.map(r => r.result);
-            const [die1, die2, stressDie, steamDie] = diceCount === 4 ? diceResults : 
-              diceCount === 3 ? (useStressDie ? [diceResults[0], diceResults[1], diceResults[2], null] : [diceResults[0], diceResults[1], null, diceResults[2]]) : 
-              [diceResults[0], diceResults[1], null, null];
+            let die1, die2, stressDie, steamDie, devilDie;
+            
+            if (diceCount === 5) {
+              // 2d12 + stress + steam + devil
+              [die1, die2, stressDie, steamDie, devilDie] = diceResults;
+            } else if (diceCount === 4) {
+              // 2d12 + dwie dodatkowe kości
+              if (useStressDie && useSteamDie) {
+                [die1, die2, stressDie, steamDie] = diceResults;
+                devilDie = null;
+              } else if (useStressDie && useDevilDie) {
+                [die1, die2, stressDie, devilDie] = diceResults;
+                steamDie = null;
+              } else if (useSteamDie && useDevilDie) {
+                [die1, die2, steamDie, devilDie] = diceResults;
+                stressDie = null;
+              }
+            } else if (diceCount === 3) {
+              // 2d12 + jedna dodatkowa kość
+              if (useStressDie) {
+                [die1, die2, stressDie] = diceResults;
+                steamDie = null;
+                devilDie = null;
+              } else if (useSteamDie) {
+                [die1, die2, steamDie] = diceResults;
+                stressDie = null;
+                devilDie = null;
+              } else if (useDevilDie) {
+                [die1, die2, devilDie] = diceResults;
+                stressDie = null;
+                steamDie = null;
+              }
+            } else {
+              // tylko 2d12
+              [die1, die2] = diceResults;
+              stressDie = null;
+              steamDie = null;
+              devilDie = null;
+            }
             let total = roll.total;
             let nemesisPoints = 0;
             let steamPoints = 0;
@@ -424,6 +483,7 @@ export async function performAttributeRoll(actor, attribute) {
               position,
               useStressDie,
               useSteamDie,
+              useDevilDie,
               applyTrauma,
               rollModifier,
               baseEffectiveAttrValue,
@@ -484,12 +544,13 @@ export async function performAttributeRoll(actor, attribute) {
                 <p>${result}</p>
                 ${useStressDie ? `<p>${game.i18n.format("COGSYNDICATE.StressDieUsed", { agentName: actor.name })}</p>` : ""}
                 ${useSteamDie ? steamDialogMessage : ""}
+                ${useDevilDie ? devilDialogMessage : ""}
                 ${traumaDialogMessage}
                 ${applyTrauma && traumaModifier !== 0 ? `<p>${game.i18n.format("COGSYNDICATE.TraumaApplied", { traumaValue: Math.abs(traumaModifier) })}</p>` : ""}
                 ${nemesisPoints > 0 ? `<p><span style='color: purple; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedNemesisPoint", { amount: nemesisPoints })}</span></p>` : ""}
                 ${steamPoints > 0 ? `<p><span style='color: orange; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedSteamPoint", { amount: steamPoints })}</span></p>` : ""}
                 <hr>
-                <p>${game.i18n.localize("COGSYNDICATE.Roll")}: ${diceCount}d12 (${die1}+${die2}${useStressDie ? `+${stressDie}` : ""}${useSteamDie ? `+${steamDie}` : ""}) + ${effectiveAttrValue} (${attrLabel})${traumaModifier !== 0 ? ` ${traumaModifier} (${game.i18n.localize("COGSYNDICATE.Trauma")})` : ""} + ${positionModifier} (${game.i18n.localize("COGSYNDICATE.Position")})${rollModifier !== 0 ? ` ${rollModifier > 0 ? '+' : ''}${rollModifier} (${game.i18n.localize("COGSYNDICATE.RollModifier")})` : ""}</p>
+                <p>${game.i18n.localize("COGSYNDICATE.Roll")}: ${diceCount}d12 (${die1}+${die2}${useStressDie ? `+${stressDie}` : ""}${useSteamDie ? `+${steamDie}` : ""}${useDevilDie ? `+${devilDie}` : ""}) + ${effectiveAttrValue} (${attrLabel})${traumaModifier !== 0 ? ` ${traumaModifier} (${game.i18n.localize("COGSYNDICATE.Trauma")})` : ""} + ${positionModifier} (${game.i18n.localize("COGSYNDICATE.Position")})${rollModifier !== 0 ? ` ${rollModifier > 0 ? '+' : ''}${rollModifier} (${game.i18n.localize("COGSYNDICATE.RollModifier")})` : ""}</p>
                 ${upgradeButton}
                 ${rerollButton}
               </div>
@@ -508,7 +569,24 @@ export async function performAttributeRoll(actor, attribute) {
         }
       },
       default: "roll",
-      width: 450
+      width: 450,
+      render: html => {
+        // Dodanie logiki wzajemnego wykluczania się checkboxów
+        const steamDieCheckbox = html.find('[name="steamDie"]');
+        const devilDieCheckbox = html.find('[name="devilDie"]');
+        
+        steamDieCheckbox.change(function() {
+          if (this.checked) {
+            devilDieCheckbox.prop('checked', false);
+          }
+        });
+        
+        devilDieCheckbox.change(function() {
+          if (this.checked) {
+            steamDieCheckbox.prop('checked', false);
+          }
+        });
+      }
     }).render(true);
   });
 }
@@ -585,6 +663,7 @@ async function executeRollWithData(actor, data, isReroll = false) {
     position,
     useStressDie,
     useSteamDie,
+    useDevilDie,
     applyTrauma,
     rollModifier,
     baseEffectiveAttrValue,
@@ -725,6 +804,21 @@ async function executeRollWithData(actor, data, isReroll = false) {
       Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
       steamDialogMessage = `<p>${game.i18n.format("COGSYNDICATE.SteamDieUsed", { agentName: actor.name })}</p>`;
     }
+    
+    let devilDialogMessage = "";
+    if (useDevilDie) {
+      const nemesisIncrease = 2;
+      game.cogwheelSyndicate.nemesisPoints = game.cogwheelSyndicate.nemesisPoints || 0;
+      game.cogwheelSyndicate.nemesisPoints = Math.clamp(game.cogwheelSyndicate.nemesisPoints + nemesisIncrease, 0, 100);
+      
+      game.socket.emit("system.cogwheel-syndicate", {
+        type: "updateMetaCurrencies",
+        nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
+        steamPoints: game.cogwheelSyndicate.steamPoints
+      });
+      Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
+      devilDialogMessage = `<p>${game.i18n.format("COGSYNDICATE.DevilDieUsed", { agentName: actor.name })}</p>`;
+    }
   } else {
     // W przypadku reroll, komunikaty o użyciu kości bez kosztów
     if (useStressDie) {
@@ -733,11 +827,15 @@ async function executeRollWithData(actor, data, isReroll = false) {
     if (useSteamDie) {
       steamDialogMessage = `<p>${game.i18n.format("COGSYNDICATE.SteamDieUsed", { agentName: actor.name })} (${game.i18n.localize("COGSYNDICATE.FreeBonus")})</p>`;
     }
+    if (useDevilDie) {
+      devilDialogMessage = `<p>${game.i18n.format("COGSYNDICATE.DevilDieUsed", { agentName: actor.name })} (${game.i18n.localize("COGSYNDICATE.FreeBonus")})</p>`;
+    }
   }
 
   let diceCount = 2;
   if (useStressDie) diceCount += 1;
   if (useSteamDie) diceCount += 1;
+  if (useDevilDie) diceCount += 1;
 
   const rollFormula = `${diceCount}d12 + @attrMod + @positionMod + @rollMod`;
   const roll = new Roll(rollFormula, {
@@ -748,9 +846,45 @@ async function executeRollWithData(actor, data, isReroll = false) {
   await roll.evaluate();
 
   const diceResults = roll.terms[0].results.map(r => r.result);
-  const [die1, die2, stressDie, steamDie] = diceCount === 4 ? diceResults : 
-    diceCount === 3 ? (useStressDie ? [diceResults[0], diceResults[1], diceResults[2], null] : [diceResults[0], diceResults[1], null, diceResults[2]]) : 
-    [diceResults[0], diceResults[1], null, null];
+  let die1, die2, stressDie, steamDie, devilDie;
+  
+  if (diceCount === 5) {
+    // 2d12 + stress + steam + devil
+    [die1, die2, stressDie, steamDie, devilDie] = diceResults;
+  } else if (diceCount === 4) {
+    // 2d12 + dwie dodatkowe kości
+    if (useStressDie && useSteamDie) {
+      [die1, die2, stressDie, steamDie] = diceResults;
+      devilDie = null;
+    } else if (useStressDie && useDevilDie) {
+      [die1, die2, stressDie, devilDie] = diceResults;
+      steamDie = null;
+    } else if (useSteamDie && useDevilDie) {
+      [die1, die2, steamDie, devilDie] = diceResults;
+      stressDie = null;
+    }
+  } else if (diceCount === 3) {
+    // 2d12 + jedna dodatkowa kość
+    if (useStressDie) {
+      [die1, die2, stressDie] = diceResults;
+      steamDie = null;
+      devilDie = null;
+    } else if (useSteamDie) {
+      [die1, die2, steamDie] = diceResults;
+      stressDie = null;
+      devilDie = null;
+    } else if (useDevilDie) {
+      [die1, die2, devilDie] = diceResults;
+      stressDie = null;
+      steamDie = null;
+    }
+  } else {
+    // tylko 2d12
+    [die1, die2] = diceResults;
+    stressDie = null;
+    steamDie = null;
+    devilDie = null;
+  }
   let total = roll.total;
   let nemesisPoints = 0;
   let steamPoints = 0;
@@ -824,6 +958,7 @@ async function executeRollWithData(actor, data, isReroll = false) {
       position,
       useStressDie,
       useSteamDie,
+      useDevilDie,
       applyTrauma,
       rollModifier,
       baseEffectiveAttrValue,
@@ -889,12 +1024,13 @@ async function executeRollWithData(actor, data, isReroll = false) {
       <p>${result}</p>
       ${useStressDie ? stressDieMessage : ""}
       ${useSteamDie ? steamDialogMessage : ""}
+      ${useDevilDie ? devilDialogMessage : ""}
       ${traumaMessageFromDialog}
       ${applyTrauma && traumaModifier !== 0 ? `<p>${game.i18n.format("COGSYNDICATE.TraumaApplied", { traumaValue: Math.abs(traumaModifier) })}</p>` : ""}
       ${nemesisPoints > 0 ? `<p><span style='color: purple; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedNemesisPoint", { amount: nemesisPoints })}</span></p>` : ""}
       ${steamPoints > 0 ? `<p><span style='color: orange; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedSteamPoint", { amount: steamPoints })}</span></p>` : ""}
       <hr>
-      <p>${game.i18n.localize("COGSYNDICATE.Roll")}: ${diceCount}d12 (${die1}+${die2}${useStressDie ? `+${stressDie}` : ""}${useSteamDie ? `+${steamDie}` : ""}) + ${effectiveAttrValue} (${attrLabel})${traumaModifier !== 0 ? ` ${traumaModifier} (${game.i18n.localize("COGSYNDICATE.Trauma")})` : ""} + ${positionModifier} (${game.i18n.localize("COGSYNDICATE.Position")})${rollModifier !== 0 ? ` ${rollModifier > 0 ? '+' : ''}${rollModifier} (${game.i18n.localize("COGSYNDICATE.RollModifier")})` : ""}</p>
+      <p>${game.i18n.localize("COGSYNDICATE.Roll")}: ${diceCount}d12 (${die1}+${die2}${useStressDie ? `+${stressDie}` : ""}${useSteamDie ? `+${steamDie}` : ""}${useDevilDie ? `+${devilDie}` : ""}) + ${effectiveAttrValue} (${attrLabel})${traumaModifier !== 0 ? ` ${traumaModifier} (${game.i18n.localize("COGSYNDICATE.Trauma")})` : ""} + ${positionModifier} (${game.i18n.localize("COGSYNDICATE.Position")})${rollModifier !== 0 ? ` ${rollModifier > 0 ? '+' : ''}${rollModifier} (${game.i18n.localize("COGSYNDICATE.RollModifier")})` : ""}</p>
       ${upgradeButton}
       ${rerollButton}
     </div>
