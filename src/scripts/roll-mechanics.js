@@ -696,6 +696,7 @@ async function executeRollWithData(actor, data, isReroll = false) {
   let traumaMessageFromDialog = "";
   let resetStress = false;
   let steamDialogMessage = "";
+  let devilDialogMessage = "";
   let stressDieMessage = "";
 
   // W przypadku reroll, kości stresu i pary są dołączone za darmo
@@ -804,8 +805,7 @@ async function executeRollWithData(actor, data, isReroll = false) {
       Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
       steamDialogMessage = `<p>${game.i18n.format("COGSYNDICATE.SteamDieUsed", { agentName: actor.name })}</p>`;
     }
-    
-    let devilDialogMessage = "";
+
     if (useDevilDie) {
       const nemesisIncrease = 2;
       game.cogwheelSyndicate.nemesisPoints = game.cogwheelSyndicate.nemesisPoints || 0;
