@@ -11,6 +11,7 @@
       <a class="item" data-tab="feats">{{localize "COGSYNDICATE.FeatsTab"}}</a>
       <a class="item" data-tab="equipment">{{localize "COGSYNDICATE.EquipmentTab"}}</a>
       <a class="item" data-tab="traumas">{{localize "COGSYNDICATE.TraumasTab"}}</a>
+      <a class="item" data-tab="development">{{localize "COGSYNDICATE.DevelopmentTab"}}</a>
       <a class="item" data-tab="notes">{{localize "COGSYNDICATE.NotesTab"}}</a>
     </nav>
 
@@ -191,22 +192,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Rozwój -->
-        <div class="development-section">
-          <h3 class="centered">{{localize "COGSYNDICATE.Development"}}</h3>
-          <div class="resources-container">
-            <div class="resource development">
-              <label>{{localize "COGSYNDICATE.DevelopmentPoints"}}</label>
-              <div class="resource-content">
-                <button type="button" class="decrement small-btn" data-resource="development">-</button>
-                <input type="number" class="development-value" name="system.resources.development.value" value="{{system.resources.development.value}}" min="0" max="12" data-dtype="Number" title="{{localize 'COGSYNDICATE.DevelopmentPointsTooltip' max=system.resources.development.max}}" />
-                <span>/ {{system.resources.development.max}}</span>
-                <button type="button" class="increment small-btn" data-resource="development">+</button>
-              </div>
-            </div>
-         </div>
-        </div>
       </div>
 
       <!-- Zakładka Atuty -->
@@ -311,6 +296,24 @@
               <p>{{localize "COGSYNDICATE.TraumasPlaceholder"}}</p>
             {{/unless}}
          </div>
+        </div>
+      </div>
+
+      <!-- Zakładka Rozwój -->
+      <div class="tab development" data-group="primary" data-tab="development">
+        <div class="development-section">
+          <h3 class="centered">{{localize "COGSYNDICATE.Development"}}</h3>
+          <div class="resources-container">
+            <div class="resource development">
+              <label>{{localize "COGSYNDICATE.DevelopmentPoints"}}</label>
+              <div class="resource-content">
+                <button type="button" class="decrement small-btn" data-resource="development">-</button>
+                <input type="number" class="development-value" name="system.resources.development.value" value="{{system.resources.development.value}}" min="0" max="12" data-dtype="Number" title="{{localize 'COGSYNDICATE.DevelopmentPointsTooltip' max=system.resources.development.max}}" />
+                <span>/ {{system.resources.development.max}}</span>
+                <button type="button" class="increment small-btn" data-resource="development">+</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
