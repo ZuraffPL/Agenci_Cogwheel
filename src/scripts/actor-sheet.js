@@ -16,6 +16,19 @@ class CogwheelActorSheet extends ActorSheet {
     const data = super.getData();
     data.system = data.actor.system;
 
+    // ARCHETYPE: Load archetype data if ID exists
+    if (data.system.archetype && data.system.archetype.id) {
+      const archetypeItem = game.items.get(data.system.archetype.id);
+      if (archetypeItem && archetypeItem.type === "archetype") {
+        data.system.archetype = {
+          id: archetypeItem.id,
+          name: archetypeItem.name,
+          img: archetypeItem.img,
+          attributes: archetypeItem.system.attributes
+        };
+      }
+    }
+
     // FEATS: Use reference IDs for live sync
     // Store feat IDs in system.feats (array of strings)
     // At render, resolve to actual items from game.items
@@ -237,7 +250,12 @@ class CogwheelActorSheet extends ActorSheet {
 
     if (target === 'archetype' && item.type === "archetype") {
       console.log("_onDrop: Adding archetype to actor.");
-      await this.actor.createEmbeddedDocuments("Item", [item.toObject()]);
+      // ARCHETYPE: Store only reference to item ID for live sync
+      await this.actor.update({ 
+        "system.archetype.id": item.id,
+        "system.archetype.name": item.name,
+        "system.archetype.img": item.img
+      });
     } else if (target === 'feat' && item.type === "feat") {
       // FEATS: Only store reference to item ID for live sync
       const featIds = Array.isArray(this.actor.system.feats) ? [...this.actor.system.feats] : [];
@@ -273,16 +291,10 @@ class CogwheelActorSheet extends ActorSheet {
   }
 
   async _onRemoveArchetype(event) {
-    if (this.actor.system.archetype.id) {
-      await this.actor.deleteEmbeddedDocuments("Item", [this.actor.system.archetype.id]);
-    }
     await this.actor.update({
       "system.archetype.name": "",
       "system.archetype.id": null,
-      "system.archetype.img": null,
-      "system.attributes.machine.base": 1,
-      "system.attributes.engineering.base": 1,
-      "system.attributes.intrigue.base": 1
+      "system.archetype.img": null
     });
   }
 

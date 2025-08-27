@@ -27,9 +27,10 @@
 }
 
 .agentv2 .archetype-drop {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 60px;
   align-items: center;
-  justify-content: space-between;
+  gap: 12px;
   padding: 12px 16px;
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   border: 2px dashed #6f42c1;
@@ -70,9 +71,32 @@
   font-weight: bold;
   color: #6f42c1;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  flex-grow: 1;
-  text-align: left;
-  padding: 8px 0;
+}
+
+.agentv2 .archetype-info-left {
+  justify-self: start;
+}
+
+.agentv2 .archetype-info-center {
+  justify-self: center;
+}
+
+.agentv2 .archetype-info-right {
+  justify-self: end;
+}
+
+.agentv2 .archetype-attributes {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: center;
+}
+
+.agentv2 .archetype-attribute {
+  font-size: 12px;
+  color: #495057;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .agentv2 .archetype-drop span:not(.archetype-name) {

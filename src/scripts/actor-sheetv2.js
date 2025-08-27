@@ -19,6 +19,19 @@ class CogwheelActorSheetV2 extends ActorSheet {
     // Sprawdź i zainicjalizuj dane jeśli potrzeba
     this._updateData();
 
+    // ARCHETYPE: Load archetype data if ID exists
+    if (data.system.archetype && data.system.archetype.id) {
+      const archetypeItem = game.items.get(data.system.archetype.id);
+      if (archetypeItem && archetypeItem.type === "archetype") {
+        data.system.archetype = {
+          id: archetypeItem.id,
+          name: archetypeItem.name,
+          img: archetypeItem.img,
+          attributes: archetypeItem.system.attributes
+        };
+      }
+    }
+
     // FEATS: Use reference IDs for live sync
     // Store feat IDs in system.feats (array of strings)
     // At render, resolve to actual items from game.items
