@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.1] - 2025-08-27
+
+### Fixed
+- **Funkcjonalność drag & drop archetypu**:
+  - Naprawiono przeciąganie archetypu na kartę agenta - teraz poprawnie aktualizuje wartości atrybutów
+  - Poprawiono wyświetlanie wartości atrybutów w sekcji archetypu (pokazuje liczby zamiast pustych pól)
+  - Dodano obsługę starszego formatu danych archetypu dla kompatybilności wstecznej
+- **Layout sekcji archetypu**:
+  - Poprawiono pozycjonowanie CSS Grid dla lepszego wyśrodkowania atrybutów
+  - Zmieniono proporcje kolumn na 1fr 2fr 60px dla lepszej równowagi
+  - Naprawiono struktura HTML dla przypadku bez archetypu
+
+### Technical
+- Rozszerzono funkcje `_onDrop()` o kopiowanie wartości atrybutów z archetypu do aktora
+- Dodano obsługę dwóch formatów danych: `item.system.attributes` i `item.data.attributes`
+- Poprawiono szablony Handlebars: `{{attr}}` zamiast `{{attr.base}}` dla atrybutów archetypu
+- Zoptymalizowano CSS Grid layout w `cogwheel.css` i `agent-v2.css`
+
 ## [0.7.0] - 2025-08-26
 
 ### Added
