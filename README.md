@@ -2,7 +2,7 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.6.8**
+**Current System Version: 0.7.1**
 
 ## Description
 
@@ -10,19 +10,49 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 
 *A game about secret agents who fight threats of the industrial revolution era.*
 
+## 🎲 What's New in v0.7.1
+
+- **🎯 Enhanced Archetype System**: Drag & drop archetypes now properly update character attributes
+- **🎨 Improved Visual Layout**: Better CSS Grid positioning and archetype information display
+- **🔧 Technical Improvements**: Backward compatibility and enhanced data handling
+- **✨ Polished UI**: Optimized layouts with better visual balance and user experience
+
+## 🔥 Key Features in v0.7.0
+
+- **🎲 Devil's Bargain**: New rolling mechanic - trade 2 Nemesis Points for an extra d12 die
+- **⚡ Visual Effects**: Smart mutual exclusion between Devil Die and Steam Die with cross-out effects
+- **🎭 Complete Agent v2**: Full feature parity between both agent sheet types
+- **🎨 Premium Styling**: Elegant archetype sections with gradients and hover effects
+
 ## Features
 
-- **Multilingual Support**: Available in English and Polish
-- **Character Sheets**: Complete actor sheets for players and NPCs
-- **Headquarters Management**: HQ sheets for managing your base of operations
-- **Nemesis System**: Special sheets for tracking antagonists
-- **Nemesis Clocks Tab**: Dedicated tab for Nemesis clocks (goal, weakening, revenge) with visual progress and chat notifications
-- **Clock System**: Built-in progress clocks for tracking missions and events
-- **Equipment Management**: Comprehensive gear and equipment tracking
-- **Trauma System**: Detailed trauma tracking mechanics
-- **Roll Mechanics**: Integrated dice rolling system
-- **Meta Currency**: Special currency management system with real-time synchronization for all users
-- **Improved Translations**: Full support for Polish and English, including dynamic UI elements
+- **Advanced Rolling System**: 
+  - **Devil's Bargain (Czarci Targ)**: New rolling mechanic - add 2 Nemesis Points to pool for extra d12 die
+  - **Steam Die Integration**: Enhanced steam die mechanics with visual exclusion effects
+  - **Smart Dice Management**: Maximum 4d12 per roll with intelligent combination handling
+  - **Reroll System**: 3PP reroll mechanics with free bonus dice integration
+- **Multilingual Support**: Available in English and Polish with complete UI localization
+- **Character Management**:
+  - **Dual Agent Sheets**: Complete actor sheets for both Agent v1 and Agent v2 with identical functionality
+  - **Archetype System**: Drag-and-drop archetype support with automatic attribute value application
+  - **Trauma Tracking**: Detailed trauma system with specialized trauma types and levels
+  - **Equipment Points**: Comprehensive gear and equipment management
+- **Headquarters Management**: 
+  - **HQ Sheets**: Complete base management with locations and expansion projects
+  - **Primary Sections**: Infirmary, Crew Quarters, Training Halls, Workshop with upgrade tracking
+- **Nemesis System**: 
+  - **Nemesis Sheets**: Specialized antagonist tracking with influence ranges and organization types
+  - **Clock Management**: Goal, weakening, and revenge clocks with visual progress indicators
+  - **Minion Tracking**: Complete minion management within nemesis sheets
+- **Meta Currency System**: 
+  - **Real-time Synchronization**: Instant updates for all users, not just GM
+  - **Interactive Dialogs**: Spending interfaces for gear, stress, and development points
+  - **Chat Integration**: Automatic notifications for all meta currency changes
+- **Enhanced UI/UX**:
+  - **Visual Feedback**: Mutual exclusion effects for Devil Die and Steam Die
+  - **Archetype Styling**: Elegant gradients, hover effects, and professional layout
+  - **Grid Layouts**: Optimized CSS Grid systems for better information organization
+  - **Responsive Design**: Consistent experience across different screen sizes
 
 ## Installation
 
@@ -43,6 +73,27 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 
 - **Foundry VTT**: Version 12 or higher
 - **Verified Compatibility**: Foundry VTT v12.331
+
+## 🎮 Core Mechanics
+
+### Rolling System
+- **Base Roll**: 2d12 + attribute + stress dice
+- **Steam Die**: Spend 1 stress for +1d12 (max once per roll)
+- **Devil's Bargain**: Spend 2 Nemesis Points for +1d12 (mutual exclusive with Steam Die)
+- **Reroll**: Spend 3PP to reroll with bonus dice included for free
+- **Critical Results**: Double 11s and 12s for critical success, double 1s for critical failure
+
+### Character Development
+- **Archetypes**: Pre-built character templates with balanced attribute distributions
+- **Trauma System**: Specialized trauma types affecting different aspects of gameplay
+- **Equipment Points**: Strategic resource management for gear acquisition
+- **Development Points**: Character advancement through mission completion
+
+### Meta Currency Management
+- **Nemesis Points**: Shared pool affecting Devil's Bargain and GM complications
+- **Stress**: Individual resource for enhanced performance and Steam Die usage
+- **Gear Points**: Equipment acquisition and maintenance resource
+- **Real-time Sync**: All currency changes instantly visible to all players
 
 ## File Structure
 
@@ -95,21 +146,46 @@ If you encounter any issues or have questions about this system, please:
 
 ## Changelog
 
-### Version 0.6.8
-- **Nowa funkcja**: Możliwość przenoszenia i edycji zegarów Nemezis w dedykowanej zakładce
-- **Poprawki synchronizacji**: Ulepszona synchronizacja metawalut i liczników stresu dla wszystkich użytkowników
-- **Usprawnienia UI**: Refaktoryzacja szablonów, lepsza nawigacja i czytelność kart aktorów
-- **Drobne poprawki tłumaczeń**: Uzupełnienia i korekty w plikach językowych
-- **Stabilność**: Poprawki błędów zgłaszanych przez użytkowników
+### Version 0.7.1 (2025-08-27) - Latest
+- **Enhanced Archetype Functionality**:
+  - Fixed drag & drop archetype application - now properly updates actor attribute values
+  - Improved archetype attribute display with correct numerical values
+  - Added backward compatibility for different archetype data formats
+- **UI/UX Improvements**:
+  - Optimized CSS Grid layout for better archetype section centering
+  - Enhanced visual balance with improved column proportions (1fr 2fr 60px)
+  - Fixed HTML structure for better Grid compatibility
+- **Technical Enhancements**:
+  - Enhanced `_onDrop()` functions to properly copy archetype attributes to actors
+  - Improved data loading in `getData()` with dual format support
+  - Optimized Handlebars templates for correct attribute value rendering
 
-### Version 0.6.3
-- **Synchronizacja metawalut**: Zmiany metawalut i liczników stresu są natychmiast widoczne dla wszystkich użytkowników (nie tylko GM)
-- **Refaktoryzacja UI**: Sekcja zegarów Nemezis przeniesiona do osobnej zakładki z dedykowaną nawigacją
-- **Poprawki tłumaczeń**: Uzupełniono i poprawiono tłumaczenia atrybutów i UI
-- **Wsparcie PowerShell 7**: Zalecane środowisko terminalowe dla deweloperów na Windows
+### Version 0.7.0 (2025-08-26)
+- **Devil's Bargain (Czarci Targ) - New Rolling Mechanic**:
+  - Added "Devil's Bargain" checkbox in roll dialog - spend 2 Nemesis Points for +1d12
+  - Positioned between Steam Die and Trauma checkboxes with distinctive red styling
+  - Mutual exclusion with Steam Die - maximum one bonus die per roll
+  - Full integration with critical success/failure mechanics and reroll system
+- **Visual Mutual Exclusion Effects**:
+  - Cross-out effects when Devil Die and Steam Die exclude each other
+  - Dynamic visual feedback: opacity reduction, line-through, red strike-through
+  - Gray background and disabled cursor for inactive options
+  - Automatic restoration when checkboxes are unchecked
+- **Enhanced Agent v2 Functionality**:
+  - Complete reconstruction of Equipment, Trauma, and Notes sections
+  - Color-coded equipment, structured trauma types, improved layout
+  - Full feature parity with original Agent sheets
+- **Archetype Styling Enhancement**:
+  - Elegant gradient backgrounds (gray-purple palette) for archetype sections
+  - Purple borders with rounded corners and subtle shadows
+  - Hover effects with animated light streaks and scaling transforms
+  - Stylized remove buttons with gradient effects and hover/active states
 
-### Version 0.6.1
-- **Compendium Pack dla Archetypów**: Automatyczne dostarczanie gotowych archetypów po instalacji systemu
+### Version 0.6.9 (2025-08-25)
+- **Enhanced Nemesis Clock Management**: Moveable and editable clocks in dedicated tab
+- **Improved Meta Currency Synchronization**: Real-time updates for all users
+- **UI Refactoring**: Better navigation and readability across all actor sheets
+- **Translation Updates**: Comprehensive Polish and English localization improvements
 
 ---
 
