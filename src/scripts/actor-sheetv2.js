@@ -23,11 +23,13 @@ class CogwheelActorSheetV2 extends ActorSheet {
     if (data.system.archetype && data.system.archetype.id) {
       const archetypeItem = game.items.get(data.system.archetype.id);
       if (archetypeItem && archetypeItem.type === "archetype") {
+        // Handle both old (data.attributes) and new (system.attributes) format
+        const archetypeAttributes = archetypeItem.system?.attributes || archetypeItem.data?.attributes;
         data.system.archetype = {
           id: archetypeItem.id,
           name: archetypeItem.name,
           img: archetypeItem.img,
-          attributes: archetypeItem.system.attributes
+          attributes: archetypeAttributes
         };
       }
     }
@@ -228,14 +230,20 @@ class CogwheelActorSheetV2 extends ActorSheet {
     console.log("_onDrop: Drop target:", target);
 
     if (target === 'archetype' && item.type === "archetype") {
+      // Handle both old (data.attributes) and new (system.attributes) format
+      const archetypeAttributes = item.system?.attributes || item.data?.attributes;
       const archetypeUpdates = {
         "system.archetype.name": item.name,
         "system.archetype.id": item.id,
-        "system.archetype.img": item.img,
-        "system.attributes.machine.base": item.system.attributes.machine,
-        "system.attributes.engineering.base": item.system.attributes.engineering,
-        "system.attributes.intrigue.base": item.system.attributes.intrigue
+        "system.archetype.img": item.img
       };
+      
+      // Copy archetype attribute values to actor's base attributes
+      if (archetypeAttributes) {
+        archetypeUpdates["system.attributes.machine.base"] = archetypeAttributes.machine;
+        archetypeUpdates["system.attributes.engineering.base"] = archetypeAttributes.engineering;
+        archetypeUpdates["system.attributes.intrigue.base"] = archetypeAttributes.intrigue;
+      }
 
       await this.actor.update(archetypeUpdates);
       this.render();

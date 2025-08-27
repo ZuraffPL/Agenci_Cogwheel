@@ -28,7 +28,7 @@
 
 .agentv2 .archetype-drop {
   display: grid;
-  grid-template-columns: 1fr auto 60px;
+  grid-template-columns: 1fr 2fr 60px;
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
@@ -104,7 +104,6 @@
   font-style: italic;
   font-size: 14px;
   text-align: center;
-  flex-grow: 1;
 }
 
 .agentv2 .remove-archetype {

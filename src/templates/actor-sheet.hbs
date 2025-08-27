@@ -29,7 +29,7 @@
               <div class="archetype-info-center">
                 <div class="archetype-attributes">
                   {{#each system.archetype.attributes as |attr key|}}
-                    <div class="archetype-attribute">{{localize (concat "COGSYNDICATE." (capitalize key))}}: {{attr.base}}</div>
+                    <div class="archetype-attribute">{{localize (concat "COGSYNDICATE." (capitalize key))}}: {{attr}}</div>
                   {{/each}}
                 </div>
               </div>
@@ -37,7 +37,9 @@
                 <button type="button" class="remove-archetype" title="{{localize 'COGSYNDICATE.RemoveArchetype'}}"><i class="fas fa-trash"></i></button>
               </div>
             {{else}}
-              <span>{{localize "COGSYNDICATE.ArchetypeDrop"}}</span>
+              <div class="archetype-info-center">
+                <span>{{localize "COGSYNDICATE.ArchetypeDrop"}}</span>
+              </div>
             {{/if}}
           </div>
         </div>
