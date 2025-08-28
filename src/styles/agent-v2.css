@@ -88,8 +88,24 @@
 .agentv2 .archetype-attributes {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
   text-align: center;
+}
+
+.agentv2 .archetype-attributes-header {
+  font-size: 11px;
+  color: #6f42c1;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.agentv2 .archetype-attributes-values {
+  font-size: 12px;
+  color: #495057;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
 .agentv2 .archetype-attribute {
