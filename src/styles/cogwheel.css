@@ -640,8 +640,8 @@
   display: block;
 }
 
-/* Style dla zakładki notatki - steampunkowa kolorystyka jak w sekcji archetyp */
-.notes-section {
+/* Style dla zakładki notatki w Agent v1 - steampunkowa kolorystyka jak w sekcji archetyp */
+.cogwheel.sheet.actor .notes-section {
   margin-bottom: 20px;
   padding: 15px;
   background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #4a321d 100%);
@@ -653,7 +653,7 @@
   overflow: hidden;
 }
 
-.notes-section::before {
+.cogwheel.sheet.actor .notes-section::before {
   content: '';
   position: absolute;
   top: 0;
@@ -666,13 +666,13 @@
   pointer-events: none;
 }
 
-.notes-section:hover {
+.cogwheel.sheet.actor .notes-section:hover {
   box-shadow: 0 6px 12px rgba(184, 134, 11, 0.4), inset 0 1px 0 rgba(205, 127, 50, 0.6);
   transform: translateY(-1px);
   border-color: #cd7f32;
 }
 
-.notes-section h3 {
+.cogwheel.sheet.actor .notes-section h3 {
   color: #cd7f32;
   font-weight: bold;
   font-size: 18px;
@@ -684,12 +684,12 @@
   z-index: 1;
 }
 
-.notes-content {
+.cogwheel.sheet.actor .notes-content {
   position: relative;
   z-index: 1;
 }
 
-.notes-textarea {
+.cogwheel.sheet.actor .notes-textarea {
   width: 100%;
   min-height: 200px;
   background: linear-gradient(135deg, rgba(26, 26, 26, 0.6) 0%, rgba(58, 58, 58, 0.4) 100%);
@@ -708,7 +708,7 @@
   transition: all 0.3s ease;
 }
 
-.notes-textarea:focus {
+.cogwheel.sheet.actor .notes-textarea:focus {
   border-color: #cd7f32;
   box-shadow: 
     0 0 10px rgba(205, 127, 50, 0.4),
@@ -716,7 +716,7 @@
   outline: none;
 }
 
-.notes-textarea::placeholder {
+.cogwheel.sheet.actor .notes-textarea::placeholder {
   color: #8b4513;
   font-style: italic;
   opacity: 0.8;
