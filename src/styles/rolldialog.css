@@ -1,10 +1,46 @@
 /* roll-dialog.css - dedykowane style dla okna rzutu atrybutów */
 
+/* Główne tło okna rzutu - kolorystyka z sekcji archetyp */
+.roll-dialog, 
+.dialog.cogwheel-roll-dialog,
+.window-app.dialog.cogwheel-roll-dialog .window-content {
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #4a321d 100%) !important;
+  border: 2px solid #b8860b !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 8px rgba(184, 134, 11, 0.3), inset 0 1px 0 rgba(205, 127, 50, 0.4) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.roll-dialog::before, 
+.dialog.cogwheel-roll-dialog::before,
+.window-app.dialog.cogwheel-roll-dialog .window-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at 20% 30%, rgba(205, 127, 50, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(139, 69, 19, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.roll-dialog .dialog-content,
+.dialog.cogwheel-roll-dialog .dialog-content {
+  position: relative;
+  z-index: 1;
+}
+
 .roll-dialog .form-group {
   margin-bottom: 1em;
   display: block;
   align-items: unset;
   gap: unset;
+  position: relative;
+  z-index: 1;
 }
 
 /* Poprawka tylko dla selectów: pozycja i modyfikator w jednej linii z etykietą */

@@ -736,3 +736,85 @@
   color: #666;
   font-style: italic;
 }
+
+/* Style dla zakładki notatki w Agent v2 - steampunkowa kolorystyka jak w sekcji archetyp */
+.agentv2 .notes-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #4a321d 100%);
+  border: 2px solid #b8860b;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(184, 134, 11, 0.3), inset 0 1px 0 rgba(205, 127, 50, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.agentv2 .notes-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at 20% 30%, rgba(205, 127, 50, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(139, 69, 19, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.agentv2 .notes-section:hover {
+  box-shadow: 0 6px 12px rgba(184, 134, 11, 0.4), inset 0 1px 0 rgba(205, 127, 50, 0.6);
+  transform: translateY(-1px);
+  border-color: #cd7f32;
+}
+
+.agentv2 .notes-section h3 {
+  color: #cd7f32;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6), 0 0 8px rgba(205, 127, 50, 0.3);
+  position: relative;
+  z-index: 1;
+}
+
+.agentv2 .notes-content {
+  position: relative;
+  z-index: 1;
+}
+
+.agentv2 .notes-textarea {
+  width: 100%;
+  min-height: 200px;
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.6) 0%, rgba(58, 58, 58, 0.4) 100%);
+  border: 2px solid rgba(205, 127, 50, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  color: #f4a460;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  resize: vertical;
+  box-shadow: 
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    inset 0 1px 3px rgba(205, 127, 50, 0.1);
+  transition: all 0.3s ease;
+}
+
+.agentv2 .notes-textarea:focus {
+  border-color: #cd7f32;
+  box-shadow: 
+    0 0 10px rgba(205, 127, 50, 0.4),
+    inset 0 1px 3px rgba(205, 127, 50, 0.2);
+  outline: none;
+}
+
+.agentv2 .notes-textarea::placeholder {
+  color: #8b4513;
+  font-style: italic;
+  opacity: 0.8;
+}
