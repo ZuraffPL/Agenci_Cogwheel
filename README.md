@@ -159,27 +159,10 @@ If you encounter any issues or have questions about this system, please:
 
 ## Changelog
 
-### Version 0.7.2 (2025-08-28) - Latest
+### Version 0.7.2
 - **Complete Steampunk Theme Implementation**:
-  - Full visual overhaul with cohesive steampunk color palette
-  - Copper (#cd7f32), steel (#c0c0c0-#d3d3d3), coal gradients, and sandy (#f4a460) colors throughout
-  - Enhanced archetype sections with steampunk styling on both agent cards v1 and v2
-  - Notes sections unified with steampunk theme across all actor sheets
 - **Roll Dialog Enhanced Styling**:
-  - Color-coded dice sections: stress dice (red), steam dice (blue), devil dice (steel gradient), trauma (purple)
-  - Fixed position and modifier labels - now properly display sandy color (#f4a460)
-  - Ultra-specific CSS selectors for reliable label styling
-  - Devil dice section background changed to dark steel gradient
-- **Trauma Text Formatting**:
-  - Removed bold formatting from "Agent posiada traumę" prefix text
-  - Changed prefix text color to black for better readability
-  - Maintained purple styling for trauma values
-- **UI Consistency Improvements**:
-  - Enhanced visual hierarchy in roll dialogs
-  - Improved text contrast and readability
-  - Consistent steampunk aesthetic across entire system
 
-### Version 0.7.1 (2025-08-27)
 - **Enhanced Archetype Functionality**:
   - Fixed drag & drop archetype application - now properly updates actor attribute values
   - Improved archetype attribute display with correct numerical values
@@ -193,28 +176,10 @@ If you encounter any issues or have questions about this system, please:
   - Improved data loading in `getData()` with dual format support
   - Optimized Handlebars templates for correct attribute value rendering
 
-### Version 0.7.0 (2025-08-26)
-- **Devil's Bargain (Czarci Targ) - New Rolling Mechanic**:
-  - Added "Devil's Bargain" checkbox in roll dialog - spend 2 Nemesis Points for +1d12
-  - Positioned between Steam Die and Trauma checkboxes with distinctive red styling
-  - Mutual exclusion with Steam Die - maximum one bonus die per roll
-  - Full integration with critical success/failure mechanics and reroll system
-- **Visual Mutual Exclusion Effects**:
-  - Cross-out effects when Devil Die and Steam Die exclude each other
-  - Dynamic visual feedback: opacity reduction, line-through, red strike-through
-  - Gray background and disabled cursor for inactive options
-  - Automatic restoration when checkboxes are unchecked
-- **Enhanced Agent v2 Functionality**:
-  - Complete reconstruction of Equipment, Trauma, and Notes sections
-  - Color-coded equipment, structured trauma types, improved layout
-  - Full feature parity with original Agent sheets
-- **Archetype Styling Enhancement**:
-  - Elegant gradient backgrounds (gray-purple palette) for archetype sections
-  - Purple borders with rounded corners and subtle shadows
-  - Hover effects with animated light streaks and scaling transforms
-  - Stylized remove buttons with gradient effects and hover/active states
+### Version 0.7.2
+- **Complete Steampunk Theme Implementation**:
+- **Roll Dialog Enhanced Styling**:
 
-### Version 0.6.9 (2025-08-25)
 - **Enhanced Nemesis Clock Management**: Moveable and editable clocks in dedicated tab
 - **Improved Meta Currency Synchronization**: Real-time updates for all users
 - **UI Refactoring**: Better navigation and readability across all actor sheets
