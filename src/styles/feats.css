@@ -127,13 +127,53 @@
 
 .feat-header-grid {
   display: grid;
-  grid-template-columns: 1fr 120px 40px;
+  grid-template-columns: 30px 1fr 120px 40px;
   align-items: center;
   gap: 0 8px;
-  margin-bottom: 8px;
+  margin-bottom: 0;
   padding-bottom: 8px;
   border-bottom: 1px solid #e0e0e0;
   width: 100%;
+}
+
+.feat-col-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feat-toggle-btn {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  max-width: 24px;
+  font-size: 12px;
+  padding: 0;
+  background-color: #007acc;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feat-toggle-btn:hover {
+  background-color: #005a9e;
+  transform: scale(1.1);
+}
+
+.feat-toggle-btn.expanded i {
+  transform: rotate(45deg);
+}
+
+.feat-details {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
 }
 
 .feat-col-name {

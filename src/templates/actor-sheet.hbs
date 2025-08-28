@@ -203,20 +203,27 @@
               {{#each feats as |feat|}}
                 <div class="feat-item {{#if @odd}}feat-item-alt{{/if}}" data-item-id="{{feat.id}}">
                   <div class="feat-header-grid">
+                    <div class="feat-col-toggle">
+                      <button type="button" class="feat-toggle-btn" data-item-id="{{feat.id}}" title="{{localize 'COGSYNDICATE.ToggleFeatDetails'}}">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </div>
                     <div class="feat-col-name"><span class="feat-name">{{feat.name}}</span></div>
                     <div class="feat-col-type"><span class="feat-type">{{#if (eq feat.system.type "initial")}}{{localize "COGSYNDICATE.FeatInitial"}}{{else}}{{localize "COGSYNDICATE.FeatAdvanced"}}{{/if}}</span></div>
                     <div class="feat-col-delete"><button type="button" class="delete-feat small-btn" data-item-id="{{feat.id}}" title="{{localize 'COGSYNDICATE.DeleteFeat'}}"><i class="fas fa-trash"></i></button></div>
                   </div>
-                  {{#if feat.system.effect}}
-                    <div class="feat-description">
-                      <strong>{{localize "COGSYNDICATE.Description"}}:</strong> {{feat.system.effect}}
-                    </div>
-                  {{/if}}
-                  {{#if feat.system.narrativeEffect}}
-                    <div class="feat-narrative">
-                      <strong>{{localize "COGSYNDICATE.NarrativeEffect"}}:</strong> {{feat.system.narrativeEffect}}
-                    </div>
-                  {{/if}}
+                  <div class="feat-details" style="display: none;">
+                    {{#if feat.system.effect}}
+                      <div class="feat-description">
+                        <strong>{{localize "COGSYNDICATE.Description"}}:</strong> {{feat.system.effect}}
+                      </div>
+                    {{/if}}
+                    {{#if feat.system.narrativeEffect}}
+                      <div class="feat-narrative">
+                        <strong>{{localize "COGSYNDICATE.NarrativeEffect"}}:</strong> {{feat.system.narrativeEffect}}
+                      </div>
+                    {{/if}}
+                  </div>
                 </div>
               {{/each}}
             {{else}}

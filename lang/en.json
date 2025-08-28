@@ -106,6 +106,7 @@
   "COGSYNDICATE.EffectiveValueTooltip": "Effective attribute value (after damage)",
   "COGSYNDICATE.BaseValueTooltipV2": "Base value from archetype before damage modifiers",
   "COGSYNDICATE.EffectiveValueTooltipV2": "Effective value used for rolls (base value reduced by attribute damage)",
+  "COGSYNDICATE.ToggleFeatDetails": "Show/hide feat details",
   "COGSYNDICATE.GearTooltip": "Current gear points (max: {max})",
   "COGSYNDICATE.TraumaTooltip": "Current trauma level (max: {max})",
   "COGSYNDICATE.StressTooltip": "Current stress level (max: {max})",

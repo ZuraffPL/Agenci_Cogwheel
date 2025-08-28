@@ -97,6 +97,7 @@ class CogwheelActorSheet extends ActorSheet {
     super.activateListeners(html);
     html.find('.roll-attribute').click(this._onRollAttribute.bind(this));
     html.find('.delete-feat').click(this._onDeleteFeat.bind(this));
+    html.find('.feat-toggle-btn').click(this._onToggleFeat.bind(this));
     html.find('.remove-archetype').click(this._onRemoveArchetype.bind(this));
     html.find('.increment').click(this._onIncrementResource.bind(this));
     html.find('.decrement').click(this._onDecrementResource.bind(this));
@@ -306,6 +307,25 @@ class CogwheelActorSheet extends ActorSheet {
       await this.actor.update({ "system.feats": featIds });
     }
     this.render();
+  }
+
+  _onToggleFeat(event) {
+    const toggleBtn = event.currentTarget;
+    const featItem = toggleBtn.closest('.feat-item');
+    const featDetails = featItem.querySelector('.feat-details');
+    const icon = toggleBtn.querySelector('i');
+    
+    if (featDetails.style.display === 'none' || featDetails.style.display === '') {
+      // Rozwijanie
+      featDetails.style.display = 'block';
+      icon.className = 'fas fa-minus';
+      toggleBtn.classList.add('expanded');
+    } else {
+      // Zwijanie
+      featDetails.style.display = 'none';
+      icon.className = 'fas fa-plus';
+      toggleBtn.classList.remove('expanded');
+    }
   }
 
   async _onRemoveArchetype(event) {
