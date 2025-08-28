@@ -63,6 +63,13 @@
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
 }
 
+/* Dodatkowy bardziej specyficzny selektor dla etykiet */
+.roll-dialog .form-group label {
+  color: #f4a460 !important; /* Piaskowy kolor dla wszystkich etykiet */
+  font-weight: bold !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
 .roll-dialog .form-group.position-group select,
 .roll-dialog .form-group.modifier-group select {
   margin-left: 0;
@@ -195,13 +202,46 @@
 
 .roll-dialog .trauma-group {
   background: #f3eaff;
+  border: 2px solid #8a2be2 !important; /* Fioletowe obramowanie */
   border-radius: 6px;
   padding: 0.5em 0.7em;
   margin-bottom: 0.5em;
+  box-shadow: 0 2px 4px rgba(138, 43, 226, 0.2);
+}
+
+.roll-dialog .trauma-group label {
+  color: #8a2be2 !important; /* Fioletowy kolor etykiety */
+  font-weight: bold !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 .roll-dialog .modifier-group {
   margin-bottom: 0.5em;
+}
+
+/* Dodatkowe style dla większej pewności kolorowania etykiet */
+.roll-dialog label,
+.roll-dialog .form-group > label {
+  color: #f4a460 !important; /* Piaskowy kolor dla wszystkich etykiet */
+  font-weight: bold !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Override dla specjalnych etykiet w grupach kości */
+.roll-dialog .stress-die-group label {
+  color: #cc0000 !important; /* Czerwony dla stress dice */
+}
+
+.roll-dialog .steam-die-group label {
+  color: #0066cc !important; /* Niebieski dla steam dice */
+}
+
+.roll-dialog .devil-die-group label {
+  color: #cd7f32 !important; /* Miedziany dla devil dice */
+}
+
+.roll-dialog .trauma-group label {
+  color: #8a2be2 !important; /* Fioletowy dla trauma */
 }
 
 /* Możesz dodać tu kolejne style dla innych elementów okna rzutu */
