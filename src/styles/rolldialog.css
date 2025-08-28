@@ -58,6 +58,9 @@
   min-width: unset;
   flex: none;
   white-space: nowrap;
+  color: #f4a460 !important; /* Piaskowy kolor */
+  font-weight: bold !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
 }
 
 .roll-dialog .form-group.position-group select,
@@ -65,12 +68,24 @@
   margin-left: 0;
   margin-right: 0.5em;
   flex: none;
+  color: #f4a460 !important; /* Piaskowy kolor dla tekstu w select */
+  background-color: rgba(44, 24, 16, 0.9) !important;
+  border: 2px solid #cd7f32 !important;
+  border-radius: 4px !important;
+  font-weight: bold !important;
+}
+
+.roll-dialog .form-group.position-group select option,
+.roll-dialog .form-group.modifier-group select option {
+  background-color: #2c1810 !important;
+  color: #f4a460 !important;
 }
 
 .roll-dialog .roll-label {
-  color: #000;
+  color: #f4a460 !important; /* Piaskowy kolor dla "Rzuć" */
   font-size: 1.2em;
   font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
 }
 
 .roll-dialog .attribute-name {
@@ -87,44 +102,69 @@
 }
 
 .roll-dialog .stress-die-group {
-  background: #ffeaea;
-  border-radius: 6px;
-  padding: 0.5em 0.7em;
-  margin-bottom: 0.5em;
-}
-
-.roll-dialog .steam-die-group {
-  background: #eaf3ff;
-  border-radius: 6px;
-  padding: 0.5em 0.7em;
-  margin-bottom: 0.5em;
-}
-
-.roll-dialog .devil-die-group {
-  background: #ffe5e5;
-  border: 2px solid #cc0000;
+  background: #ffcccc !important; /* Jasnoczerwone tło */
+  border: 2px solid #cc0000 !important; /* Czerwone obramowanie */
   border-radius: 6px;
   padding: 0.5em 0.7em;
   margin-bottom: 0.5em;
   box-shadow: 0 2px 4px rgba(204, 0, 0, 0.2);
 }
 
+.roll-dialog .stress-die-group label {
+  color: #cc0000 !important;
+  font-weight: bold !important; /* Pogrubiona etykieta */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.roll-dialog .steam-die-group {
+  background: #eaf3ff;
+  border: 2px solid #0066cc !important; /* Niebieskie obramowanie */
+  border-radius: 6px;
+  padding: 0.5em 0.7em;
+  margin-bottom: 0.5em;
+  box-shadow: 0 2px 4px rgba(0, 102, 204, 0.2);
+}
+
+.roll-dialog .steam-die-group label {
+  color: #0066cc !important;
+  font-weight: bold !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.roll-dialog .devil-die-group {
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #4a321d 100%) !important; /* Gradient węglowy */
+  border: 2px solid #000000 !important; /* Czarne obramowanie */
+  border-radius: 6px;
+  padding: 0.5em 0.7em;
+  margin-bottom: 0.5em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
 .roll-dialog .devil-die-group label {
-  color: #cc0000;
+  color: #cd7f32 !important; /* Miedziany kolor etykiety */
   font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 /* Style dla wzajemnie wykluczających się checkboxów */
 .roll-dialog .steam-die-group.disabled-option {
   opacity: 0.5;
   background: #f0f0f0;
+  border-color: #999 !important;
   position: relative;
 }
 
 .roll-dialog .devil-die-group.disabled-option {
   opacity: 0.5;
-  background: #f0f0f0;
-  border-color: #999;
+  background: #f0f0f0 !important;
+  border-color: #999 !important;
+  position: relative;
+}
+
+.roll-dialog .stress-die-group.disabled-option {
+  opacity: 0.5;
+  background: #f0f0f0 !important;
+  border-color: #999 !important;
   position: relative;
 }
 
