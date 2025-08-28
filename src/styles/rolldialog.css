@@ -139,7 +139,7 @@
 }
 
 .roll-dialog .devil-die-group {
-  background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #4a321d 100%) !important; /* Gradient węglowy */
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #3c5a78 100%) !important; /* Gradient ciemnoszary/stalowy */
   border: 2px solid #000000 !important; /* Czarne obramowanie */
   border-radius: 6px;
   padding: 0.5em 0.7em;
@@ -242,6 +242,42 @@
 
 .roll-dialog .trauma-group label {
   color: #8a2be2 !important; /* Fioletowy dla trauma */
+}
+
+/* Ultra-specificzne selektory dla etykiet pozycji i modyfikatorów */
+.roll-dialog .form-group.position-group strong span.position-label {
+  color: #f4a460 !important; /* Piaskowy kolor */
+  font-weight: bold !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+.roll-dialog .form-group.modifier-group strong span.modifier-label {
+  color: #f4a460 !important; /* Piaskowy kolor */
+  font-weight: bold !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Dodatowe selektory na wszelki wypadek */
+.roll-dialog .position-group strong {
+  color: #f4a460 !important;
+}
+
+.roll-dialog .modifier-group strong {
+  color: #f4a460 !important;
+}
+
+.roll-dialog .position-group span {
+  color: #f4a460 !important;
+}
+
+.roll-dialog .modifier-group span {
+  color: #f4a460 !important;
+}
+
+/* Specjalne formatowanie dla tekstu traumy - usunięcie pogrubienia z "Agent posiada traumę" */
+.roll-dialog .trauma-group label .trauma-text-prefix {
+  font-weight: normal !important;
+  color: #000000 !important; /* Czarny kolor */
 }
 
 /* Możesz dodać tu kolejne style dla innych elementów okna rzutu */

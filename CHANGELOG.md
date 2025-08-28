@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.2] - 2025-08-28
+
+### Added
+- **Complete Steampunk Theme Implementation**:
+  - Kompletna przebudowa wizualna z spójną steampunkową paletą kolorów
+  - Kolory: miedź (#cd7f32), stal (#c0c0c0-#d3d3d3), gradienty węglowe, piaskowy (#f4a460)
+  - Steampunkowy styl sekcji archetypu na obu kartach agentów v1 i v2
+  - Unifikacja sekcji notatek ze steampunkowym motywem na wszystkich arkuszach aktorów
+
+### Enhanced
+- **Roll Dialog Enhanced Styling**:
+  - Kolorowe sekcje kości: kości stresu (czerwone), kości pary (niebieskie), kości diabelskie (stalowy gradient), trauma (fioletowe)
+  - Naprawiono etykiety pozycji i modyfikatorów - teraz prawidłowo wyświetlają piaskowy kolor (#f4a460)
+  - Ultra-specyficzne selektory CSS dla niezawodnego stylizowania etykiet
+  - Tło sekcji kości diabelskich zmienione na ciemnoszary gradient stalowy
+
+### Fixed
+- **Trauma Text Formatting**:
+  - Usunięto pogrubienie z tekstu prefiksu "Agent posiada traumę"
+  - Zmieniono kolor tekstu prefiksu na czarny dla lepszej czytelności
+  - Zachowano fioletowy styl dla wartości traumy
+- **UI Consistency Improvements**:
+  - Ulepszona hierarchia wizualna w oknach rzutów
+  - Poprawiony kontrast tekstu i czytelność
+  - Spójna steampunkowa estetyka w całym systemie
+
+### Technical
+- Dodano ultra-specyficzne selektory CSS dla etykiet .position-label i .modifier-label
+- Modyfikacje plików językowych (pl.json, en.json) dla prawidłowego formatowania tekstu traumy
+- Rozszerzone stylizowanie w plikach rolldialog.css, cogwheel.css, agent-v2.css
+- Implementacja steampunkowych gradientów i efektów hover w całym systemie
+
 ## [0.7.1] - 2025-08-27
 
 ### Fixed

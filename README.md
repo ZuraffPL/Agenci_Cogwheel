@@ -2,7 +2,7 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.7.1**
+**Current System Version: 0.7.2**
 
 ## Description
 
@@ -10,14 +10,27 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 
 *A game about secret agents who fight threats of the industrial revolution era.*
 
-## 🎲 What's New in v0.7.1
+## � What's New in v0.7.2
+
+- **🎨 Complete Steampunk Theme**: Full visual overhaul with copper, steel, and coal color palette
+- **🎯 Enhanced Roll Dialog**: Color-coded dice sections with stress (red), steam (blue), devil (steel gradient), and trauma (purple)
+- **🔧 Label Styling Fixes**: All roll dialog labels now display properly in sandy color (#f4a460)
+- **💜 Trauma Text Formatting**: Improved trauma display with proper black text for descriptions
+- **✨ Visual Polish**: Enhanced UI consistency across both agent card versions
 
 - **🎯 Enhanced Archetype System**: Drag & drop archetypes now properly update character attributes
 - **🎨 Improved Visual Layout**: Better CSS Grid positioning and archetype information display
 - **🔧 Technical Improvements**: Backward compatibility and enhanced data handling
 - **✨ Polished UI**: Optimized layouts with better visual balance and user experience
 
-## 🔥 Key Features in v0.7.0
+## 🔥 Key Features in v0.7.1
+
+- **🎯 Enhanced Archetype System**: Drag & drop archetypes now properly update character attributes
+- **🎨 Improved Visual Layout**: Better CSS Grid positioning and archetype information display
+- **🔧 Technical Improvements**: Backward compatibility and enhanced data handling
+- **✨ Polished UI**: Optimized layouts with better visual balance and user experience
+
+## 🎲 Previous Major Features in v0.7.0
 
 - **🎲 Devil's Bargain**: New rolling mechanic - trade 2 Nemesis Points for an extra d12 die
 - **⚡ Visual Effects**: Smart mutual exclusion between Devil Die and Steam Die with cross-out effects
@@ -146,7 +159,27 @@ If you encounter any issues or have questions about this system, please:
 
 ## Changelog
 
-### Version 0.7.1 (2025-08-27) - Latest
+### Version 0.7.2 (2025-08-28) - Latest
+- **Complete Steampunk Theme Implementation**:
+  - Full visual overhaul with cohesive steampunk color palette
+  - Copper (#cd7f32), steel (#c0c0c0-#d3d3d3), coal gradients, and sandy (#f4a460) colors throughout
+  - Enhanced archetype sections with steampunk styling on both agent cards v1 and v2
+  - Notes sections unified with steampunk theme across all actor sheets
+- **Roll Dialog Enhanced Styling**:
+  - Color-coded dice sections: stress dice (red), steam dice (blue), devil dice (steel gradient), trauma (purple)
+  - Fixed position and modifier labels - now properly display sandy color (#f4a460)
+  - Ultra-specific CSS selectors for reliable label styling
+  - Devil dice section background changed to dark steel gradient
+- **Trauma Text Formatting**:
+  - Removed bold formatting from "Agent posiada traumę" prefix text
+  - Changed prefix text color to black for better readability
+  - Maintained purple styling for trauma values
+- **UI Consistency Improvements**:
+  - Enhanced visual hierarchy in roll dialogs
+  - Improved text contrast and readability
+  - Consistent steampunk aesthetic across entire system
+
+### Version 0.7.1 (2025-08-27)
 - **Enhanced Archetype Functionality**:
   - Fixed drag & drop archetype application - now properly updates actor attribute values
   - Improved archetype attribute display with correct numerical values

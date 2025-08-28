@@ -114,7 +114,7 @@
   "COGSYNDICATE.ResourceSpent": "{actorName} spent {resource}.",
   "COGSYNDICATE.ResourceAdded": "{actorName} added {resource}.",
   "COGSYNDICATE.StressReduced": "{actorName} reduced the {resource} level.",
-  "COGSYNDICATE.ApplyTraumaLabel": "Agent has Trauma <strong>Trauma {traumaValue}</strong>",
+  "COGSYNDICATE.ApplyTraumaLabel": "<span class=\"trauma-text-prefix\">Agent has trauma</span> <strong>Trauma {traumaValue}</strong>",
   "COGSYNDICATE.TraumaApplied": "Applied Trauma penalty: -{traumaValue}",
   "COGSYNDICATE.CoreTab": "Core",
   "COGSYNDICATE.TraumasTab": "Traumas",

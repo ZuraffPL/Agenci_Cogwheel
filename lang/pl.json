@@ -114,7 +114,7 @@
   "COGSYNDICATE.ResourceSpent": "{actorName} wydał(a) {resource}.",
   "COGSYNDICATE.ResourceAdded": "{actorName} dodał(a) {resource}.",
   "COGSYNDICATE.StressReduced": "{actorName} obniżył(a) poziom {resource}.",
-  "COGSYNDICATE.ApplyTraumaLabel": "Agent posiada Traumę <strong>Trauma {traumaValue}</strong>",
+  "COGSYNDICATE.ApplyTraumaLabel": "<span class=\"trauma-text-prefix\">Agent posiada traumę</span> <strong>Trauma {traumaValue}</strong>",
   "COGSYNDICATE.TraumaApplied": "Zastosowano karę za Traumę: -{traumaValue}",
   "COGSYNDICATE.CoreTab": "Podstawowe",
   "COGSYNDICATE.TraumasTab": "Traumy",
