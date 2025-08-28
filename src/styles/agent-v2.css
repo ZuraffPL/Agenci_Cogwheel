@@ -436,8 +436,8 @@
 }
 
 .agentv2 .damage-radio-item label {
-  font-size: 11px;
-  color: #8b4513; /* Ciemna miedź dla podstawowych */
+  font-size: 12px; /* Zwiększony rozmiar z 11px */
+  color: #f4a460; /* Piaskowy kolor */
   cursor: pointer;
   user-select: none;
   min-width: 20px;
@@ -445,6 +445,7 @@
   order: 2;
   margin-top: 2px;
   font-weight: normal;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .agentv2 .damage-radio-item input[type="radio"]:checked + label {
@@ -669,31 +670,33 @@
 .agentv2 .feat-description {
   margin-top: 8px;
   padding: 8px 12px;
-  background-color: rgba(139, 69, 19, 0.1) !important; /* Zmiana na steampunkowe tło */
-  border-left: 4px solid #cd7f32 !important; /* Miedziany border */
-  border-radius: 0 4px 4px 0;
+  background-color: rgba(32, 178, 170, 0.1) !important; /* Seledynowe tło */
+  border: 2px solid #20b2aa !important; /* Seledynowe obramowanie */
+  border-radius: 8px;
   font-size: 14px;
   line-height: 1.4;
-  color: #8b4513 !important; /* Ciemniejsza miedź dla tekstu */
+  color: #f4a460 !important; /* Piaskowy kolor dla treści */
 }
 
 .agentv2 .feat-description strong {
-  color: #cd7f32 !important; /* Jasna miedź dla ważnych elementów */
+  color: #20b2aa !important; /* Seledynowy kolor dla etykiety "Opis:" */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
 }
 
 .agentv2 .feat-narrative {
   margin-top: 8px;
   padding: 8px 12px;
-  background-color: rgba(139, 69, 19, 0.1) !important; /* Zmiana na steampunkowe tło */
-  border-left: 4px solid #cd7f32 !important; /* Miedziany border */
-  border-radius: 0 4px 4px 0;
+  background-color: rgba(138, 43, 226, 0.1) !important; /* Fioletowe tło */
+  border: 2px solid #8a2be2 !important; /* Fioletowe obramowanie */
+  border-radius: 8px;
   font-size: 14px;
   line-height: 1.4;
-  color: #8b4513 !important; /* Ciemniejsza miedź dla tekstu */
+  color: #f4a460 !important; /* Piaskowy kolor dla treści */
 }
 
 .agentv2 .feat-narrative strong {
-  color: #cd7f32 !important; /* Jasna miedź dla ważnych elementów */
+  color: #8a2be2 !important; /* Fioletowy kolor dla etykiety "Efekt narracyjny:" */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
 }
 
 /* Dodatkowe style dla nazw atutów w różnych kontekstach */
@@ -703,6 +706,28 @@
   color: #f4a460 !important; /* Piaskowy kolor dla nazw atutów */
   font-weight: bold !important;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Style dla listy wyboru podstawy sprzętu w Agent v2 - jaśniejszy kolor tekstu */
+.agentv2 .gear-basis-select, .agentv2 select[name*="gear.basis"] {
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 100%) !important;
+  border: 2px solid #cd7f32 !important;
+  border-radius: 6px !important;
+  color: #f4a460 !important; /* Piaskowy kolor dla lepszej widoczności */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+  font-weight: bold !important;
+  padding: 4px 8px !important;
+}
+
+.agentv2 .gear-basis-select option, .agentv2 select[name*="gear.basis"] option {
+  background-color: #2c1810 !important;
+  color: #f4a460 !important; /* Piaskowy kolor dla opcji */
+  font-weight: bold !important;
+}
+
+.agentv2 .gear-basis-select option:checked, .agentv2 select[name*="gear.basis"] option:checked {
+  background-color: #cd7f32 !important; /* Miedziane tło dla wybranej opcji */
+  color: #2c1810 !important; /* Ciemny tekst na jasnym tle */
 }
 
 .agentv2 .no-feats-message {
