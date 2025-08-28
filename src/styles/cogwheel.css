@@ -341,6 +341,33 @@
   transform: translateY(-1px);
 }
 
+/* Style dla nazw atutów i ich zawartości */
+.feat-item .feat-name, .feat-item h3, .feat-item h4 {
+  color: #f4a460 !important; /* Piaskowy kolor dla nazw atutów */
+  font-weight: bold !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+}
+
+.feat-item .feat-description {
+  color: #8b4513 !important; /* Ciemniejsza miedź dla opisów */
+  background-color: rgba(139, 69, 19, 0.1) !important;
+  border-left: 4px solid #cd7f32 !important;
+}
+
+.feat-item .feat-description strong {
+  color: #cd7f32 !important; /* Jasna miedź dla ważnych elementów */
+}
+
+.feat-item .feat-narrative {
+  color: #8b4513 !important; /* Ciemniejsza miedź dla efektów narracyjnych */
+  background-color: rgba(139, 69, 19, 0.1) !important;
+  border-left: 4px solid #cd7f32 !important;
+}
+
+.feat-item .feat-narrative strong {
+  color: #cd7f32 !important; /* Jasna miedź dla ważnych elementów */
+}
+
 .attributes-container, .resources-container {
   display: flex;
   justify-content: space-between;
@@ -706,6 +733,13 @@
   margin-top: 2px;
   font-size: 0.9em;
   text-align: center;
+  color: #8b4513; /* Ciemna miedź dla podstawowego */
+}
+
+.radio-item input[type="radio"]:checked + label {
+  color: #cd7f32 !important; /* Jasna miedź dla zaznaczonych */
+  font-weight: bold !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
 }
 
 .meta-currency {
