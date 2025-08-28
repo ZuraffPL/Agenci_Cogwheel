@@ -1,5 +1,141 @@
 /* Agent v2 Specific Styles */
 
+/* Main Steampunk Card Styling */
+.agentv2.sheet.actor {
+  background: linear-gradient(135deg, #3d2817 0%, #4a321d 35%, #2c1810 100%); /* Steampunk węglowe tło */
+  color: #f4a460; /* Piaskowy tekst */
+  border: 2px solid #cd7f32; /* Miedziany border */
+  border-radius: 15px;
+  box-shadow: 
+    0 0 20px rgba(205, 127, 50, 0.3),
+    inset 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.agentv2 .sheet-header {
+  background: linear-gradient(135deg, #4a321d 0%, #6b4423 50%, #5a3a1f 100%);
+  border-bottom: 3px solid #cd7f32;
+  margin-bottom: 10px;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 3px rgba(205, 127, 50, 0.2);
+}
+
+.agentv2 .sheet-header h1 {
+  color: #cd7f32;
+  text-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.6),
+    0 0 8px rgba(205, 127, 50, 0.4);
+  font-weight: bold;
+}
+
+.agentv2 .profile-img {
+  border: 3px solid #cd7f32;
+  box-shadow: 
+    0 0 15px rgba(205, 127, 50, 0.4),
+    inset 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.agentv2 .sheet-body {
+  background: linear-gradient(135deg, rgba(44, 24, 16, 0.3) 0%, rgba(74, 50, 29, 0.2) 100%);
+  border-radius: 0 0 12px 12px;
+}
+
+/* Steampunk Tabs */
+.agentv2 .sheet-tabs.tabs {
+  background: linear-gradient(135deg, #3d2817 0%, #4a321d 50%, #2c1810 100%);
+  border-bottom: 3px solid #cd7f32;
+  border-radius: 8px;
+  padding: 5px;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 3px rgba(205, 127, 50, 0.1);
+}
+
+.agentv2 .sheet-tabs.tabs .item {
+  color: #f4a460;
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.6) 0%, rgba(58, 58, 58, 0.4) 100%);
+  border-radius: 6px;
+  margin: 0 2px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+  transition: all 0.3s ease;
+}
+
+.agentv2 .sheet-tabs.tabs .item.active {
+  background: linear-gradient(135deg, #cd7f32 0%, #b8860b 50%, #daa520 100%);
+  color: #2c1810;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 2px 6px rgba(205, 127, 50, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+.agentv2 .sheet-tabs.tabs .item:hover {
+  background: linear-gradient(135deg, rgba(205, 127, 50, 0.3) 0%, rgba(184, 134, 11, 0.2) 100%);
+  color: #cd7f32;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  transform: translateY(-1px);
+}
+
+/* Steampunk Containers */
+.agentv2 .attributes-container, 
+.agentv2 .resources-container {
+  background: linear-gradient(135deg, rgba(44, 24, 16, 0.4) 0%, rgba(74, 50, 29, 0.3) 100%);
+  border: 2px solid rgba(205, 127, 50, 0.5);
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px 0;
+  box-shadow: 
+    0 3px 10px rgba(0, 0, 0, 0.3),
+    inset 0 1px 3px rgba(205, 127, 50, 0.1);
+}
+
+.agentv2 .attribute, 
+.agentv2 .resource {
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.3) 0%, rgba(58, 58, 58, 0.2) 100%);
+  border: 1px solid rgba(205, 127, 50, 0.3);
+  border-radius: 8px;
+  padding: 10px;
+  color: #f4a460;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.agentv2 input {
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 100%);
+  border: 2px solid #cd7f32;
+  border-radius: 6px;
+  color: #f4a460;
+  text-align: center;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(205, 127, 50, 0.2);
+}
+
+/* Steampunk Buttons */
+.agentv2 .small-btn {
+  background: linear-gradient(135deg, #3d2817 0%, #4a321d 50%, #2c1810 100%);
+  border: 2px solid #cd7f32;
+  border-radius: 6px;
+  color: #f4a460;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(205, 127, 50, 0.2);
+  transition: all 0.2s ease;
+}
+
+.agentv2 .small-btn:hover {
+  background: linear-gradient(135deg, #cd7f32 0%, #b8860b 50%, #daa520 100%);
+  color: #2c1810;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 4px 8px rgba(205, 127, 50, 0.4),
+    inset 0 1px 3px rgba(255, 255, 255, 0.3);
+}
+
 /* Archetype Section - identical styling to main agent card */
 .agentv2 .archetype-section {
   margin-bottom: 20px;
@@ -272,35 +408,54 @@
 .agentv2 .feats-section {
   width: 100%;
   box-sizing: border-box;
+  background: linear-gradient(135deg, rgba(44, 24, 16, 0.3) 0%, rgba(74, 50, 29, 0.2) 100%);
+  border: 1px solid rgba(205, 127, 50, 0.3);
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px 0;
 }
 
 .agentv2 .feats-drop {
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 4px;
-  background-color: #f9f9f9;
+  border: 2px solid #cd7f32;
+  padding: 15px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.3) 0%, rgba(58, 58, 58, 0.2) 100%);
   width: 100%;
   min-height: 60px;
   box-sizing: border-box;
   display: block;
+  color: #f4a460;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+  box-shadow: 
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    inset 0 1px 3px rgba(205, 127, 50, 0.1);
+  transition: all 0.3s ease;
 }
 
 .agentv2 .feat-item {
   margin: 10px 0;
   padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.2s ease;
+  border: 2px solid rgba(205, 127, 50, 0.4);
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(44, 24, 16, 0.6) 0%, rgba(61, 40, 23, 0.4) 100%);
+  color: #f4a460;
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 3px rgba(205, 127, 50, 0.2);
+  transition: all 0.3s ease;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .agentv2 .feat-item-alt {
-  background-color: #f0f4fa;
+  background: linear-gradient(135deg, rgba(74, 50, 29, 0.5) 0%, rgba(44, 24, 16, 0.7) 100%);
 }
 
 .agentv2 .feat-item:hover {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 
+    0 4px 12px rgba(205, 127, 50, 0.3),
+    inset 0 1px 3px rgba(205, 127, 50, 0.3);
+  border-color: #cd7f32;
+  transform: translateY(-1px);
 }
 
 .agentv2 .feat-header-grid {

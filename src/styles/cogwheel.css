@@ -1,11 +1,16 @@
 .cogwheel.sheet.actor {
   font-family: Arial, sans-serif;
-  background-color: #2a2a2a; /* Rozjaśnienie ogólnego tła */
-  color: #e0e0e0;
+  background: linear-gradient(135deg, #3d2817 0%, #4a321d 35%, #2c1810 100%); /* Steampunk węglowe tło */
+  color: #f4a460; /* Piaskowy tekst */
   min-height: auto !important;
   height: auto !important;
   max-height: none !important;
   overflow: visible !important;
+  border: 2px solid #cd7f32; /* Miedziany border */
+  border-radius: 15px;
+  box-shadow: 
+    0 0 20px rgba(205, 127, 50, 0.3),
+    inset 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Nagłówek z ikoną awatara */
@@ -14,20 +19,37 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 10px;
+  padding: 15px;
+  background: linear-gradient(135deg, #4a321d 0%, #6b4423 50%, #5a3a1f 100%);
+  border-bottom: 3px solid #cd7f32;
+  margin-bottom: 10px;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 3px rgba(205, 127, 50, 0.2);
 }
 
 .profile-img {
   width: 100px;
   height: 100px;
-  border: 2px solid #ccc;
+  border: 3px solid #cd7f32; /* Miedziany border */
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 10px;
+  box-shadow: 
+    0 0 15px rgba(205, 127, 50, 0.4),
+    inset 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .sheet-header h1 {
   text-align: center;
+  color: #cd7f32; /* Miedziany kolor nagłówka */
+  text-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.6),
+    0 0 8px rgba(205, 127, 50, 0.4);
+  margin: 0;
+  font-weight: bold;
+  font-size: 1.4em;
 }
 
 .centered {
@@ -35,11 +57,13 @@
 }
 
 .sheet-body {
-  padding: 10px;
+  padding: 15px;
   min-height: auto !important;
   height: auto !important;
   max-height: none !important;
   overflow: visible !important;
+  background: linear-gradient(135deg, rgba(44, 24, 16, 0.3) 0%, rgba(74, 50, 29, 0.2) 100%);
+  border-radius: 0 0 12px 12px;
 }
 
 /* Archetype Section Styles */
@@ -227,12 +251,26 @@
 .attributes-container, .resources-container {
   display: flex;
   justify-content: space-between;
+  background: linear-gradient(135deg, rgba(44, 24, 16, 0.4) 0%, rgba(74, 50, 29, 0.3) 100%);
+  border: 2px solid rgba(205, 127, 50, 0.5);
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px 0;
+  box-shadow: 
+    0 3px 10px rgba(0, 0, 0, 0.3),
+    inset 0 1px 3px rgba(205, 127, 50, 0.1);
 }
 
 .attribute, .resource {
   flex: 1;
   margin: 0 5px;
   text-align: center;
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.3) 0%, rgba(58, 58, 58, 0.2) 100%);
+  border: 1px solid rgba(205, 127, 50, 0.3);
+  border-radius: 8px;
+  padding: 10px;
+  color: #f4a460;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .attribute-content, .resource-content {
@@ -245,6 +283,16 @@
 .attribute-content input, .resource-content input {
   width: 50px;
   margin-right: 5px;
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 100%);
+  border: 2px solid #cd7f32;
+  border-radius: 6px;
+  color: #f4a460;
+  text-align: center;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(205, 127, 50, 0.2);
 }
 
 /* Styl dla wartości bazowej */
@@ -294,21 +342,32 @@
 
 /* Wspólna klasa dla małych przycisków */
 .small-btn {
-  background-color: #444; /* Rozjaśnienie tła przycisków */
-  border: 1px solid #666; /* Jaśniejsza ramka */
-  border-radius: 3px;
-  color: #fff;
+  background: linear-gradient(135deg, #3d2817 0%, #4a321d 50%, #2c1810 100%);
+  border: 2px solid #cd7f32;
+  border-radius: 6px;
+  color: #f4a460;
   cursor: pointer;
-  width: 25px; /* Domyślna szerokość */
-  height: 25px; /* Domyślna wysokość */
-  padding: 0; /* Usunięto padding */
-  font-size: 14px; /* Zwiększono rozmiar ikon */
-  line-height: 25px; /* Wyrównanie ikon w pionie */
-  text-align: center; /* Wyrównanie ikon w poziomie */
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  font-size: 14px;
+  line-height: 25px;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(205, 127, 50, 0.2);
+  transition: all 0.2s ease;
 }
 
 .small-btn:hover {
-  background-color: #555; /* Nieco jaśniejszy hover */
+  background: linear-gradient(135deg, #cd7f32 0%, #b8860b 50%, #daa520 100%);
+  color: #2c1810;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 4px 8px rgba(205, 127, 50, 0.4),
+    inset 0 1px 3px rgba(255, 255, 255, 0.3);
 }
 
 /* Specyficzne style dla przycisków rzutu w zakładce Core */
@@ -335,26 +394,49 @@
 .sheet-tabs.tabs {
   display: flex;
   justify-content: space-around;
-  border-bottom: 1px solid #ccc;
-  margin-top: 20px; /* Dodatkowy odstęp na dole */
+  border-bottom: 3px solid #cd7f32;
+  margin-top: 20px;
+  background: linear-gradient(135deg, #3d2817 0%, #4a321d 50%, #2c1810 100%);
+  border-radius: 8px;
+  padding: 5px;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 3px rgba(205, 127, 50, 0.1);
 }
 
 .sheet-tabs.tabs .item {
   flex: 1;
   text-align: center;
-  padding: 5px;
+  padding: 8px 12px;
   cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: border-bottom 0.3s ease;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+  color: #f4a460; /* Piaskowy kolor tekstu */
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.6) 0%, rgba(58, 58, 58, 0.4) 100%);
+  border-radius: 6px;
+  margin: 0 2px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .sheet-tabs.tabs .item.active {
-  border-bottom: 2px solid #000;
+  border-bottom: 3px solid #cd7f32;
   font-weight: bold;
+  background: linear-gradient(135deg, #cd7f32 0%, #b8860b 50%, #daa520 100%);
+  color: #2c1810; /* Ciemny tekst na jasnym tle */
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 2px 6px rgba(205, 127, 50, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
 }
 
 .sheet-tabs.tabs .item:hover {
-  background-color: #f0f0f0;
+  background: linear-gradient(135deg, rgba(205, 127, 50, 0.3) 0%, rgba(184, 134, 11, 0.2) 100%);
+  color: #cd7f32;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 3px 8px rgba(205, 127, 50, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
 }
 
 /* Ukrywanie nieaktywnych zakładek */

@@ -332,7 +332,10 @@ class CogwheelActorSheet extends ActorSheet {
     await this.actor.update({
       "system.archetype.name": "",
       "system.archetype.id": null,
-      "system.archetype.img": null
+      "system.archetype.img": null,
+      "system.attributes.machine.base": 1,
+      "system.attributes.engineering.base": 1,
+      "system.attributes.intrigue.base": 1
     });
   }
 
