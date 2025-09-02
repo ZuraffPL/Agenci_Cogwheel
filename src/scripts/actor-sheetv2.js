@@ -406,7 +406,7 @@ class CogwheelActorSheetV2 extends ActorSheet {
 
     const gearMax = 4 + (this.actor.system.attributes?.machine?.base || 1);
     
-    if (!this.actor.system.resources?.gear?.value) {
+    if (this.actor.system.resources?.gear?.value === undefined || this.actor.system.resources?.gear?.value === null) {
       updates["system.resources.gear.value"] = gearMax;
       updates["system.resources.gear.basis"] = "machine";
     }
