@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Zmiana nazwy atrybutu z "Machine" na "Steel" w języku angielskim
   - Zaktualizowane wszystkie interfejsy użytkownika i opisy archetypu
   - Zachowana kompatybilność z istniejącymi danymi postaci
+- **Atrybut "Inżynieria" przemianowany na "Maszyna"**:
+  - Zmiana nazwy atrybutu z "Inżynieria" na "Maszyna" w języku polskim
+  - Zmiana nazwy atrybutu z "Engineering" na "Machine" w języku angielskim
+  - Zaktualizowane wszystkie interfejsy użytkownika i opisy archetypu
+  - Zachowana kompatybilność z istniejącymi danymi postaci (internal key "engineering" unchanged)
 
 ## [0.7.2] - 2025-08-28
 
@@ -321,10 +326,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - **Zaktualizowane archetypy**: Zastąpiono stare archetypy (Mechanik, Inżynier, Szpieg) nowymi, bardziej zbalansowanymi
-  - **Parowy Komandos**: Stal: 5, Inżynieria: 1, Intryga: 3 (specjalista walki z technologią parową)
-  - **Geniusz Techniki**: Stal: 3, Inżynieria: 5, Intryga: 1 (mistrz wynalazków i konstrukcji)
-  - **Płaszcz Cienia**: Stal: 1, Inżynieria: 3, Intryga: 5 (ekspert szpiegowstwa i manipulacji)
-  - **Agent Pary**: Stal: 3, Inżynieria: 3, Intryga: 3 (wszechstronny agent)
+  - **Parowy Komandos**: Stal: 5, Maszyna: 1, Intryga: 3 (specjalista walki z technologią parową)
+  - **Geniusz Techniki**: Stal: 3, Maszyna: 5, Intryga: 1 (mistrz wynalazków i konstrukcji)
+  - **Płaszcz Cienia**: Stal: 1, Maszyna: 3, Intryga: 5 (ekspert szpiegowstwa i manipulacji)
+  - **Agent Pary**: Stal: 3, Maszyna: 3, Intryga: 3 (wszechstronny agent)
 
 ### Technical
 - Dodano konfigurację `packs` do system.json
