@@ -12,7 +12,7 @@ export class DoomClocksDialog extends Application {
       template: "systems/cogwheel-syndicate/src/templates/doom-clocks-dialog.hbs",
       width: 500,
       height: "auto",
-      left: window.innerWidth - 520,
+      left: 20,
       top: 20,
       resizable: true,
       classes: ["cogwheel", "doom-clocks"]
@@ -45,7 +45,7 @@ export class DoomClocksDialog extends Application {
     if (this.element && this.element.length > 0) {
       const element = this.element[0];
       if (element) {
-        element.style.left = `${window.innerWidth - 520}px`;
+        element.style.left = '20px';
         element.style.top = '20px';
       }
     }
@@ -192,8 +192,8 @@ export class DoomClocksDialog extends Application {
 export function openDoomClocks() {
   const dialog = new DoomClocksDialog();
   
-  // Ustaw pozycję w prawym górnym rogu
-  dialog.options.left = window.innerWidth - 520;
+  // Ustaw pozycję w lewym górnym rogu
+  dialog.options.left = 20;
   dialog.options.top = 20;
   
   dialog.render(true);
