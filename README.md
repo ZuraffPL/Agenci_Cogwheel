@@ -2,7 +2,7 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.7.3**
+**Current System Version: 0.7.4**
 
 ## Description
 
@@ -10,7 +10,25 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 
 *A game about secret agents who fight threats of the industrial revolution era.*
 
-## 🔄 What's New in v0.7.3
+## 🎨 What's New in v0.7.4
+
+- **🎯 Complete Resource Icon System**: All agent resources now have distinctive, color-coded icons
+  - ⚙️ **Gear**: Copper cog icon for equipment and tools
+  - ⚠️ **Stress**: Red warning triangle for danger indicators  
+  - 💀 **Trauma**: Purple skull icon for permanent damage
+- **📝 Enhanced Typography**: Larger, more readable labels across both agent cards
+  - 16px main resource labels with improved contrast
+  - 15px secondary attribute labels for better hierarchy
+- **🪟 Optimized Window Layout**: Better workspace organization
+  - Metacurrency window positioned in bottom-left corner (250px height)
+  - Doom clocks positioned in top-left corner for optimal workflow
+- **🔧 Agent v2 Functionality Parity**: Complete feature synchronization
+  - Fixed spend stress mechanics with trauma warnings and Steam Points integration
+  - Fixed spend gear system with all gear types and proper validation
+  - Resolved gear auto-regeneration bug for accurate resource tracking
+- **✨ Visual Consistency**: Both agent card versions now have identical functionality and appearance
+
+## 🔄 Previous Updates in v0.7.3
 
 - **🏗️ Major Attribute Restructuring**: Complete attribute rename system implemented
   - **Stal (Steel)**: New name for the first core attribute (was: Maszyna)

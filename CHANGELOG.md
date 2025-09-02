@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.4] - 2025-09-02
+
+### Added
+- **Complete Resource Icon System**: Added distinctive icons for all agent resources
+  - ⚙️ **Gear**: Copper colored cog icon for equipment and tools
+  - ⚠️ **Stress**: Red warning triangle for danger and pressure indicators
+  - 💀 **Trauma**: Purple skull icon for permanent psychological damage
+  - Icons appear on both Agent v1 and v2 cards with consistent color coding
+- **Enhanced Typography**: Increased font sizes for better readability
+  - Main attribute labels increased to 16px with bold styling
+  - Secondary attribute labels increased to 15px on Agent v1
+  - Resource labels increased to 16px on both card versions
+  - Improved text shadows and color contrast for steampunk aesthetic
+
+### Fixed
+- **Agent v2 Functionality Parity**: Complete synchronization with Agent v1 features
+  - **Spend Stress**: Fixed missing trauma warnings, Steam Points integration, and comprehensive error handling
+  - **Spend Gear**: Added different gear types (light, medium, heavy, very heavy) with Steam Points costs
+  - **Gear Auto-Regeneration Bug**: Fixed gear points incorrectly regenerating to maximum after spending
+  - **Resource Validation**: Proper distinction between 0 values and undefined states
+- **UI Positioning**: Improved workspace layout and window management
+  - Metacurrency window positioned in bottom-left corner with 250px height
+  - Doom clocks window positioned in top-left corner (20px from edges)
+  - Better screen real estate utilization for main workspace
+
+### Enhanced
+- **Visual Consistency**: Both agent card versions now have complete visual and functional parity
+- **Steampunk Aesthetic**: Maintained copper/bronze color scheme while adding semantic color coding
+- **User Experience**: Improved accessibility with larger fonts and distinctive iconography
+- **Workspace Organization**: Optimized window positioning for better workflow
+
 ## [0.7.3] - 2025-09-02
 
 ### Fixed
