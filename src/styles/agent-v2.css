@@ -818,3 +818,34 @@
   font-style: italic;
   opacity: 0.8;
 }
+
+/* Enhanced Font Sizes for Attribute and Resource Labels - Agent v2 */
+.agentv2.sheet.actor .attribute label, 
+.agentv2.sheet.actor .resource label {
+  font-size: 16px !important;
+  font-weight: bold !important;
+  color: #f4a460 !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+  margin-bottom: 6px !important;
+  display: block !important;
+}
+
+/* Enhanced Font Sizes for Damage Labels - Agent v2 */
+.agentv2.sheet.actor .damage-label {
+  font-size: 14px !important;
+  font-weight: bold !important;
+  color: #ff6b6b !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+  margin-bottom: 6px !important;
+  display: block !important;
+}
+
+/* Enhanced Font Sizes for Gear Basis Labels - Agent v2 */
+.agentv2.sheet.actor .gear-basis label {
+  font-size: 14px !important;
+  font-weight: bold !important;
+  color: #f4a460 !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+  margin-bottom: 4px !important;
+  display: block !important;
+}

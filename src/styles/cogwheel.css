@@ -1003,3 +1003,24 @@
   pointer-events: none;
   z-index: 0;
 }
+
+/* Enhanced Font Sizes for Attribute and Resource Labels - Agent v1 */
+.cogwheel.sheet.actor .attribute label, 
+.cogwheel.sheet.actor .resource label {
+  font-size: 16px !important;
+  font-weight: bold !important;
+  color: #f4a460 !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+  margin-bottom: 6px !important;
+  display: block !important;
+}
+
+/* Enhanced Font Sizes for Secondary Attributes Labels - Agent v1 */
+.cogwheel.sheet.actor .secondary-attributes .attribute label {
+  font-size: 15px !important;
+  font-weight: bold !important;
+  color: #f4a460 !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+  margin-bottom: 4px !important;
+  display: block !important;
+}
