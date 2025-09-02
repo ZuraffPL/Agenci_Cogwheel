@@ -1120,7 +1120,7 @@ Hooks.on("renderChatMessage", (message, html, data) => {
     }
     
     // Wywołanie funkcji podnoszenia sukcesu z informacją o testowanym atrybucie
-    await upgradeSuccessLevel(actor, currentResult, testedAttribute);
+    await upgradeSuccessLevel(actor, resultType, testedAttribute);
     
     // Wyłączenie przycisku po użyciu i usunięcie z rejestru aktualnych przycisków
     button.prop('disabled', true);
