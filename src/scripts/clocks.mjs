@@ -12,6 +12,8 @@ export class DoomClocksDialog extends Application {
       template: "systems/cogwheel-syndicate/src/templates/doom-clocks-dialog.hbs",
       width: 500,
       height: "auto",
+      left: window.innerWidth - 520,
+      top: 20,
       resizable: true,
       classes: ["cogwheel", "doom-clocks"]
     });
@@ -33,6 +35,19 @@ export class DoomClocksDialog extends Application {
       html.find(".decrement-clock").click(this._onDecrementClock.bind(this));
       html.find(".edit-clock").click(this._onEditClock.bind(this));
       html.find(".delete-clock").click(this._onDeleteClock.bind(this));
+    }
+
+    // Ustaw pozycję w prawym górnym rogu po wyrenderowaniu
+    this._updatePosition();
+  }
+
+  _updatePosition() {
+    if (this.element && this.element.length > 0) {
+      const element = this.element[0];
+      if (element) {
+        element.style.left = `${window.innerWidth - 520}px`;
+        element.style.top = '20px';
+      }
     }
   }
 
@@ -176,6 +191,11 @@ export class DoomClocksDialog extends Application {
 
 export function openDoomClocks() {
   const dialog = new DoomClocksDialog();
+  
+  // Ustaw pozycję w prawym górnym rogu
+  dialog.options.left = window.innerWidth - 520;
+  dialog.options.top = 20;
+  
   dialog.render(true);
 }
 
