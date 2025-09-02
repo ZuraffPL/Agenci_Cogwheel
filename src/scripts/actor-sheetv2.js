@@ -755,48 +755,190 @@ class CogwheelActorSheetV2 extends ActorSheet {
 
   async _onSpendGear(event) {
     event.preventDefault();
+    console.log("=== SPEND GEAR DEBUG START ===");
 
     const templateData = {
-      actor: this.actor,
-      gearValue: this.actor.system.resources.gear.value
+      currentGear: this.actor.system.resources.gear.value || 0,
+      currentSteam: game.cogwheelSyndicate?.steamPoints || 0
     };
 
     const dialogContent = await renderTemplate("systems/cogwheel-syndicate/src/templates/spend-gear-dialog.hbs", templateData);
 
-    new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.SpendGear"),
+    // Zachowaj referencję do this dla użycia w callback
+    const actorRef = this.actor;
+    const sheetRef = this;
+
+    const dialog = new Dialog({
+      title: game.i18n.localize("COGSYNDICATE.SpendGearTitle"),
       content: dialogContent,
       buttons: {
         cancel: {
           label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => {}
+          callback: () => {
+            console.log("Dialog anulowany");
+          }
         },
-        spend: {
+        confirm: {
           label: game.i18n.localize("COGSYNDICATE.Confirm"),
           callback: async (html) => {
-            const spendAmount = parseInt(html.find('[name="spendAmount"]').val(), 10) || 1;
-            const spendReason = html.find('[name="spendReason"]').val();
+            console.log("Callback confirm uruchomiony");
+            
+            const selectedOption = html.find('input[name="gearType"]:checked');
+            const errorMessage = html.find('.error-message');
 
-            const currentGear = this.actor.system.resources.gear.value || 0;
-            const newGear = Math.max(currentGear - spendAmount, 0);
+            console.log("Wybrane opcje:", selectedOption.length);
 
-            await this.actor.update({
-              "system.resources.gear.value": newGear
-            });
+            if (selectedOption.length === 0) {
+              console.log("Brak wybranej opcji");
+              new Dialog({
+                title: game.i18n.localize("COGSYNDICATE.Error"),
+                content: `<p style="color: red; font-weight: bold; text-align: center; font-size: 16px;">${game.i18n.localize("COGSYNDICATE.ErrorNoGearSelected")}</p>`,
+                buttons: {
+                  ok: {
+                    label: game.i18n.localize("COGSYNDICATE.Confirm"),
+                    callback: () => {}
+                  }
+                },
+                default: "ok"
+              }).render(true);
+              return false;
+            }
 
-            await ChatMessage.create({
-              content: `<p>${game.i18n.format("COGSYNDICATE.SpentGear", { agentName: this.actor.name, amount: spendAmount, reason: spendReason })}</p>`,
-              speaker: { actor: this.actor.id }
-            });
+            const gearType = selectedOption.val();
+            const gearCost = parseInt(selectedOption.data('cost'), 10);
+            const steamCost = parseInt(selectedOption.data('steam'), 10);
 
-            this.render();
+            const currentGear = actorRef.system.resources.gear.value || 0;
+            const currentSteam = game.cogwheelSyndicate?.steamPoints || 0;
+
+            console.log("Dane sprzętu:", { gearType, gearCost, steamCost, currentGear, currentSteam });
+
+            // Sprawdź czy agent ma wystarczająco punktów sprzętu
+            if (currentGear < gearCost) {
+              console.log("Za mało punktów sprzętu");
+              new Dialog({
+                title: game.i18n.localize("COGSYNDICATE.Error"),
+                content: `<p style="color: red; font-weight: bold; text-align: center; font-size: 16px;">${game.i18n.format("COGSYNDICATE.ErrorInsufficientGear", {required: gearCost, available: currentGear})}</p>`,
+                buttons: {
+                  ok: {
+                    label: game.i18n.localize("COGSYNDICATE.Confirm"),
+                    callback: () => {}
+                  }
+                },
+                default: "ok"
+              }).render(true);
+              return false;
+            }
+
+            // Sprawdź czy są wystarczające punkty pary
+            if (steamCost > 0 && currentSteam < steamCost) {
+              console.log("Za mało punktów pary");
+              new Dialog({
+                title: game.i18n.localize("COGSYNDICATE.Error"),
+                content: `<p style="color: red; font-weight: bold; text-align: center; font-size: 16px;">${game.i18n.format("COGSYNDICATE.ErrorInsufficientSteam", {required: steamCost, available: currentSteam})}</p>`,
+                buttons: {
+                  ok: {
+                    label: game.i18n.localize("COGSYNDICATE.Confirm"),
+                    callback: () => {}
+                  }
+                },
+                default: "ok"
+              }).render(true);
+              return false;
+            }
+
+            try {
+              console.log("Rozpoczynam aktualizację...");
+              
+              // Aktualizuj punkty sprzętu u agenta
+              const newGearValue = currentGear - gearCost;
+              await actorRef.update({
+                "system.resources.gear.value": newGearValue
+              });
+              console.log("Zaktualizowano punkty sprzętu:", newGearValue);
+
+              // Aktualizuj punkty pary (jeśli potrzebne)
+              if (steamCost > 0) {
+                const newSteamValue = currentSteam - steamCost;
+                game.cogwheelSyndicate.steamPoints = newSteamValue;
+                
+                // Synchronizacja przez socket
+                game.socket.emit("system.cogwheel-syndicate", {
+                  type: "updateMetaCurrencies",
+                  nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
+                  steamPoints: game.cogwheelSyndicate.steamPoints
+                });
+                
+                Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
+                console.log("Zaktualizowano punkty pary:", newSteamValue);
+              }
+
+              // Przygotuj komunikat na czat
+              const gearTypeLabels = {
+                'light': game.i18n.localize("COGSYNDICATE.GearLight"),
+                'medium': game.i18n.localize("COGSYNDICATE.GearMedium"), 
+                'heavy': game.i18n.localize("COGSYNDICATE.GearHeavy"),
+                'very-heavy': game.i18n.localize("COGSYNDICATE.GearVeryHeavy")
+              };
+
+              const gearTypeName = gearTypeLabels[gearType] || gearType;
+              const agentName = actorRef.name;
+              const gearPointsLabel = gearCost === 1 ? 
+                game.i18n.localize("COGSYNDICATE.GearPoint") : 
+                game.i18n.localize("COGSYNDICATE.GearPoints");
+            
+              let message;
+            
+              if (steamCost > 0) {
+                message = `Agent <strong>${agentName}</strong> wydał <strong>${gearCost}</strong> ${gearPointsLabel} oraz <strong>1 ${game.i18n.localize("COGSYNDICATE.SteamPoint")}</strong> na <strong>${gearTypeName}</strong>.`;
+              } else {
+                message = `Agent <strong>${agentName}</strong> wydał <strong>${gearCost}</strong> ${gearPointsLabel} na <strong>${gearTypeName}</strong>.`;
+              }
+
+              console.log("Przygotowany komunikat:", message);
+
+              // Wyślij komunikat na czat
+              const chatMessage = await ChatMessage.create({
+                content: `<p>${message}</p>`,
+                speaker: { actor: actorRef.id },
+                style: CONST.CHAT_MESSAGE_STYLES.OTHER
+              });
+
+              console.log("ChatMessage utworzony:", chatMessage);
+              console.log("=== SPEND GEAR DEBUG END ===");
+
+              sheetRef.render();
+              
+              // Zamknij dialog dopiero po sukcesie
+              dialog.close();
+              return true;
+            } catch (error) {
+              console.error("Błąd podczas wydawania sprzętu:", error);
+              new Dialog({
+                title: game.i18n.localize("COGSYNDICATE.Error"),
+                content: `<p style="color: red; font-weight: bold; text-align: center; font-size: 16px;">${game.i18n.format("COGSYNDICATE.ErrorGeneral", {error: error.message})}</p>`,
+                buttons: {
+                  ok: {
+                    label: game.i18n.localize("COGSYNDICATE.Confirm"),
+                    callback: () => {}
+                  }
+                },
+                default: "ok"
+              }).render(true);
+              return false;
+            }
           }
         }
       },
-      default: "spend",
+      default: "confirm",
       width: 400,
-      classes: ["cogsyndicate", "dialog", "spend-gear-dialog"]
-    }).render(true);
+      classes: ["cogsyndicate", "dialog", "spend-gear-dialog"],
+      close: () => {
+        console.log("Dialog zamknięty");
+      }
+    });
+
+    dialog.render(true);
   }
 
   async _onSpendStress(event) {
