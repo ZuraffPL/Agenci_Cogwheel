@@ -13,6 +13,9 @@ class MetaCurrencyApp extends Application {
       popOut: true,
       resizable: true,
       width: 320,
+      height: 200,
+      left: 20,
+      top: window.innerHeight - 250,
       classes: ["cogwheel", "metacurrency-app"],
     });
   }
@@ -50,6 +53,19 @@ class MetaCurrencyApp extends Application {
     // Obsługa bezpośredniej edycji wartości metawalut
     html.find('.meta-value-input').on('change blur', this._onValueChange.bind(this));
     html.find('.meta-value-input').on('keydown', this._onValueKeydown.bind(this));
+    
+    // Ustaw pozycję w lewym dolnym rogu po wyrenderowaniu
+    this._updatePosition();
+  }
+
+  _updatePosition() {
+    if (this.element && this.element.length > 0) {
+      const element = this.element[0];
+      if (element) {
+        element.style.left = '20px';
+        element.style.top = `${window.innerHeight - 250}px`;
+      }
+    }
   }
 
   async _onIncrement(event) {
@@ -142,6 +158,11 @@ class MetaCurrencyApp extends Application {
 
   static showApp() {
     const app = new MetaCurrencyApp();
+    
+    // Ustaw pozycję w lewym dolnym rogu
+    app.options.left = 20;
+    app.options.top = window.innerHeight - 250;
+    
     app.render(true);
     return app;
   }
