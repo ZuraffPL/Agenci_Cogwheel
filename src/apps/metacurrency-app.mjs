@@ -13,9 +13,9 @@ class MetaCurrencyApp extends Application {
       popOut: true,
       resizable: true,
       width: 320,
-      height: 200,
+      height: 250,
       left: 20,
-      top: window.innerHeight - 250,
+      top: window.innerHeight - 270,
       classes: ["cogwheel", "metacurrency-app"],
     });
   }
@@ -63,7 +63,7 @@ class MetaCurrencyApp extends Application {
       const element = this.element[0];
       if (element) {
         element.style.left = '20px';
-        element.style.top = `${window.innerHeight - 250}px`;
+        element.style.top = `${window.innerHeight - 270}px`;
       }
     }
   }
@@ -161,7 +161,7 @@ class MetaCurrencyApp extends Application {
     
     // Ustaw pozycję w lewym dolnym rogu
     app.options.left = 20;
-    app.options.top = window.innerHeight - 250;
+    app.options.top = window.innerHeight - 270;
     
     app.render(true);
     return app;
