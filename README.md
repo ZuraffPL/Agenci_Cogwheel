@@ -2,7 +2,7 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.7.2**
+**Current System Version: 0.7.3**
 
 ## Description
 
@@ -10,7 +10,17 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 
 *A game about secret agents who fight threats of the industrial revolution era.*
 
-## � What's New in v0.7.2
+## 🔄 What's New in v0.7.3
+
+- **🏗️ Major Attribute Restructuring**: Complete attribute rename system implemented
+  - **Stal (Steel)**: New name for the first core attribute (was: Maszyna)
+  - **Maszyna (Machine)**: New name for the second core attribute (was: Inżynieria) 
+  - **Intryga (Intrigue)**: Unchanged third core attribute
+- **🐛 Critical Bugfix**: Fixed "currentResult is not defined" error in success upgrade buttons
+- **✨ Enhanced User Experience**: All UI elements updated with consistent naming convention
+- **🔧 Full Backward Compatibility**: All existing characters work without data migration
+
+## 🎨 Previous Features in v0.7.2
 
 - **🎨 Complete Steampunk Theme**: Full visual overhaul with copper, steel, and coal color palette
 - **🎯 Enhanced Roll Dialog**: Color-coded dice sections with stress (red), steam (blue), devil (steel gradient), and trauma (purple)
@@ -159,7 +169,26 @@ If you encounter any issues or have questions about this system, please:
 
 ## Changelog
 
-### Version 0.7.2 (2025-08-28) - Latest
+### Version 0.7.3 (2025-09-02) - Latest
+- **Major Attribute Restructuring**:
+  - Complete attribute rename system: Stal (Steel), Maszyna (Machine), Intryga (Intrigue)
+  - Strategic remapping: Former "Maszyna" → "Stal", Former "Inżynieria" → "Maszyna"
+  - All character sheets, roll dialogs, and archetype descriptions updated
+  - Full backward compatibility maintained with existing character data
+- **Critical Bugfix**:
+  - Fixed "currentResult is not defined" error in success upgrade button functionality
+  - Success upgrade buttons now work correctly for both Agent v1 and v2 sheets
+  - Proper Steam Points deduction and chat message display restored
+- **Enhanced User Experience**:
+  - Unified naming convention across entire system interface
+  - All UI elements updated with consistent attribute naming
+  - Archetype descriptions reflect new attribute structure
+- **Technical Improvements**:
+  - Comprehensive localization updates for both Polish and English
+  - All Handlebars templates updated with new attribute references
+  - Data integrity preserved for seamless compatibility
+
+### Version 0.7.2 (2025-08-28)
 - **Complete Steampunk Theme Implementation**:
   - Full visual overhaul with cohesive steampunk color palette
   - Copper (#cd7f32), steel (#c0c0c0-#d3d3d3), coal gradients, and sandy (#f4a460) colors throughout

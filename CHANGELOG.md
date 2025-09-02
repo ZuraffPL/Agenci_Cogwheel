@@ -7,7 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.3] - 2025-09-02
+
+### Fixed
+- **Critical JavaScript Error**: Fixed "currentResult is not defined" error in success upgrade button functionality
+  - Resolved variable name mismatch in roll-mechanics.js click handler
+  - Success upgrade buttons now work correctly for both Agent v1 and v2 sheets
+  - Proper Steam Points deduction and chat message display restored
+
 ### Changed
+- **Atrybut "Maszyna" przemianowany na "Stal"**: 
+  - Zmiana nazwy atrybutu z "Maszyna" na "Stal" w języku polskim
+  - Zmiana nazwy atrybutu z "Machine" na "Steel" w języku angielskim
+  - Zaktualizowane wszystkie interfejsy użytkownika i opisy archetypu
+  - Zachowana kompatybilność z istniejącymi danymi postaci
+- **Atrybut "Inżynieria" przemianowany na "Maszyna"**:
+  - Zmiana nazwy atrybutu z "Inżynieria" na "Maszyna" w języku polskim
+  - Zmiana nazwy atrybutu z "Engineering" na "Machine" w języku angielskim
+  - Zaktualizowane wszystkie interfejsy użytkownika i opisy archetypu
+  - Zachowana kompatybilność z istniejącymi danymi postaci (internal key "engineering" unchanged)
+
+### Enhanced
+- **Strategic Attribute Mapping**: Complete attribute restructuring for better consistency
+  - Final attribute names: Stal (Steel), Maszyna (Machine), Intryga (Intrigue)
+  - All character sheets, roll dialogs, and archetype descriptions updated
+  - Full backward compatibility maintained with existing character data
+- **Archetype Updates**: All archetype descriptions reflect new attribute naming
+  - Parowy Komandos: Stal: 5, Maszyna: 1, Intryga: 3
+  - Geniusz Techniki: Stal: 3, Maszyna: 5, Intryga: 1
+  - Płaszcz Cienia: Stal: 1, Maszyna: 3, Intryga: 5
+  - Agent Pary: Stal: 3, Maszyna: 3, Intryga: 3
+
+### Technical
+- **Language File Updates**: Comprehensive localization updates for both Polish and English
+- **Template Updates**: All Handlebars templates updated with new attribute references
+- **UI Consistency**: Unified naming convention across entire system interface
+- **Data Integrity**: All internal data structures preserved for seamless compatibility
+
+## [0.7.2] - 2025-08-28
 - **Atrybut "Maszyna" przemianowany na "Stal"**: 
   - Zmiana nazwy atrybutu z "Maszyna" na "Stal" w języku polskim
   - Zmiana nazwy atrybutu z "Machine" na "Steel" w języku angielskim
