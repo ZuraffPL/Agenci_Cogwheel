@@ -74,6 +74,17 @@
   text-align: center;
 }
 
+/* Stylowanie nagłówków sekcji (jak Archetyp) */
+h3.centered {
+  color: #cd7f32;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
 .sheet-body {
   padding: 15px;
   min-height: auto !important;

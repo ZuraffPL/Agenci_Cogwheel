@@ -558,9 +558,9 @@
 
 .agentv2 .feat-header-grid {
   display: grid;
-  grid-template-columns: 30px 1fr 120px 40px;
+  grid-template-columns: 30px 1fr 200px 40px;
   align-items: center;
-  gap: 0 8px;
+  gap: 0 4px;
   margin-bottom: 0;
   padding-bottom: 8px;
   border-bottom: 1px solid #e0e0e0;
@@ -616,10 +616,15 @@
 
 .agentv2 .feat-col-type {
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .agentv2 .feat-col-delete {
   text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .agentv2 .feat-name {
@@ -638,6 +643,33 @@
   border-radius: 12px;
   text-transform: uppercase;
   display: inline-block;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.agentv2 .feat-archetype {
+  font-weight: bold;
+  font-size: 12px;
+  background: linear-gradient(135deg, #cd7f32 0%, #b8860b 100%);
+  color: #2c1810;
+  padding: 4px 8px;
+  border-radius: 12px;
+  display: inline-block;
+  border: 1px solid #8b4513;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+  vertical-align: middle;
+}
+
+/* Stylowanie nagłówków sekcji (jak Archetyp) */
+.agentv2 h3.centered {
+  color: #cd7f32;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
 }
 
 .agentv2 .delete-feat {
