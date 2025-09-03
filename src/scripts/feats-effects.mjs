@@ -36,6 +36,11 @@ export class FeatsEffects {
       return await this._applyIntrigantEffect(actor, feat);
     }
 
+    // Tech Genius + Steam Booster effect
+    if (archetypeName.includes('geniusz techniki') && featName.includes('dopalacz pary')) {
+      return await this._applySteamBoosterFeatEffect(actor, feat);
+    }
+
     // Add more archetype-feat combinations here as needed
     // Example structure:
     // if (archetypeName.includes('other archetype') && featName.includes('other feat')) {
@@ -202,6 +207,36 @@ export class FeatsEffects {
   }
 
   /**
+   * Apply Steam Booster feat effect to Tech Genius
+   * This is a passive effect that doesn't modify attributes but shows notification
+   * @param {Actor} actor - The Tech Genius actor
+   * @param {Item} feat - The Steam Booster feat
+   * @returns {Promise<boolean>} - Whether the effect was applied
+   */
+  static async _applySteamBoosterFeatEffect(actor, feat) {
+    // Show notification
+    ui.notifications.info(
+      `${actor.name}: Dopalacz Pary aktywowany - punkty Pary będą podwajane podczas testów atrybutów głównych.`
+    );
+
+    // Log to chat
+    await ChatMessage.create({
+      content: `
+        <div class="feat-effect-message">
+          <h3><i class="fas fa-tachometer-alt"></i> Efekt Atutu</h3>
+          <p><strong>${actor.name}</strong> otrzymał <strong>${feat.name}</strong></p>
+          <p><strong>Efekt:</strong> Punkty Pary będą <strong>podwajane</strong> podczas testów atrybutów głównych</p>
+          <hr>
+          <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
+        </div>
+      `,
+      speaker: { actor: actor.id }
+    });
+
+    return true;
+  }
+
+  /**
    * Remove effects when a feat is removed from an actor
    * @param {Actor} actor - The actor losing the feat
    * @param {Item} feat - The feat item being removed
@@ -230,6 +265,11 @@ export class FeatsEffects {
     // Shadowmantle + Intrigant removal
     if (archetypeName.includes('płaszcz cienia') && featName.includes('intrygant')) {
       return await this._removeIntrigantEffect(actor, feat);
+    }
+
+    // Tech Genius + Steam Booster removal
+    if (archetypeName.includes('geniusz techniki') && featName.includes('dopalacz pary')) {
+      return await this._removeSteamBoosterFeatEffect(actor, feat);
     }
 
     // Add more removal effects here as needed
@@ -421,6 +461,36 @@ export class FeatsEffects {
   }
 
   /**
+   * Remove Steam Booster feat effect from Tech Genius
+   * This is a passive effect removal that shows notification
+   * @param {Actor} actor - The Tech Genius actor
+   * @param {Item} feat - The Steam Booster feat
+   * @returns {Promise<boolean>} - Whether the effect was removed
+   */
+  static async _removeSteamBoosterFeatEffect(actor, feat) {
+    // Show notification
+    ui.notifications.info(
+      `${actor.name}: Dopalacz Pary został usunięty - punkty Pary nie będą już podwajane.`
+    );
+
+    // Log to chat
+    await ChatMessage.create({
+      content: `
+        <div class="feat-effect-message">
+          <h3><i class="fas fa-tachometer-alt"></i> Usunięcie Efektu Atutu</h3>
+          <p><strong>${actor.name}</strong> stracił <strong>${feat.name}</strong></p>
+          <p><strong>Efekt:</strong> Punkty Pary nie będą już <strong>podwajane</strong> podczas testów atrybutów głównych</p>
+          <hr>
+          <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
+        </div>
+      `,
+      speaker: { actor: actor.id }
+    });
+
+    return true;
+  }
+
+  /**
    * Check if a feat has special effects for the given actor
    * @param {Actor} actor - The actor to check
    * @param {Item} feat - The feat to check
@@ -446,6 +516,11 @@ export class FeatsEffects {
 
     // Shadowmantle + Intrigant
     if (archetypeName.includes('płaszcz cienia') && featName.includes('intrygant')) {
+      return true;
+    }
+
+    // Tech Genius + Steam Booster
+    if (archetypeName.includes('geniusz techniki') && featName.includes('dopalacz pary')) {
       return true;
     }
 
@@ -493,6 +568,11 @@ export class FeatsEffects {
       return canIncrease 
         ? `Zwiększy bazową wartość Intrygi z ${currentIntryga} na ${Math.min(currentIntryga + 1, 6)}`
         : `Intryga już ma maksymalną wartość bazową (6) - efekt nie zostanie zastosowany`;
+    }
+
+    // Tech Genius + Steam Booster
+    if (archetypeName.includes('geniusz techniki') && featName.includes('dopalacz pary')) {
+      return `Punkty Pary będą podwajane podczas testów atrybutów głównych`;
     }
 
     // Add more descriptions here as needed
