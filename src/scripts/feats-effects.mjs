@@ -588,6 +588,7 @@ export class FeatsEffects {
    */
   static hasSteamBoosterEffect(actor) {
     if (!actor || !actor.system.archetype?.name) {
+      console.log(`Steam Booster check failed: no actor or archetype`);
       return false;
     }
 
@@ -595,6 +596,7 @@ export class FeatsEffects {
     
     // Check if actor is Tech Genius
     if (!archetypeName.includes('geniusz techniki')) {
+      console.log(`Steam Booster check failed: not Tech Genius archetype (${archetypeName})`);
       return false;
     }
 
@@ -603,6 +605,8 @@ export class FeatsEffects {
       item.type === 'feat' && 
       item.name.toLowerCase().includes('dopalacz pary')
     );
+
+    console.log(`Steam Booster check for ${actor.name}: Tech Genius=${archetypeName.includes('geniusz techniki')}, has feat=${!!steamBoosterFeat}`);
 
     return !!steamBoosterFeat;
   }
