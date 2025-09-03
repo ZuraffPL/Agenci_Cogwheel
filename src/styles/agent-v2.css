@@ -558,7 +558,7 @@
 
 .agentv2 .feat-header-grid {
   display: grid;
-  grid-template-columns: 30px 1fr 200px 40px;
+  grid-template-columns: 30px 1fr minmax(230px, max-content) 40px;
   align-items: center;
   gap: 0 4px;
   margin-bottom: 0;
