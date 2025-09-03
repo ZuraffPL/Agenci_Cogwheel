@@ -253,6 +253,12 @@ class CogwheelActorSheetV2 extends ActorSheet {
       if (!featIds.includes(item.id)) {
         featIds.push(item.id);
         await this.actor.update({ "system.feats": featIds });
+        
+        // Apply feat effects if any exist
+        if (window.CogwheelFeatsEffects) {
+          await window.CogwheelFeatsEffects.applyFeatEffects(this.actor, item);
+        }
+        
         this.render();
       }
     }
@@ -269,12 +275,20 @@ class CogwheelActorSheetV2 extends ActorSheet {
 
   async _onDeleteFeat(event) {
     const itemId = event.currentTarget.closest('.feat-item').dataset.itemId;
+    // Get the feat item before removing it to check for effects
+    const featItem = game.items.get(itemId);
+    
     // Remove feat ID from system.feats
     const featIds = Array.isArray(this.actor.system.feats) ? [...this.actor.system.feats] : [];
     const idx = featIds.indexOf(itemId);
     if (idx !== -1) {
       featIds.splice(idx, 1);
       await this.actor.update({ "system.feats": featIds });
+      
+      // Remove feat effects if any exist
+      if (window.CogwheelFeatsEffects && featItem) {
+        await window.CogwheelFeatsEffects.removeFeatEffects(this.actor, featItem);
+      }
     }
     this.render();
   }

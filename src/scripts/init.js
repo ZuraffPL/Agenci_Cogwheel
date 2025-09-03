@@ -2,6 +2,7 @@
 import { registerHandlebarsHelpers } from "./handlebars.mjs";
 import { openDoomClocks } from "./clocks.mjs"; // Import funkcji otwierającej zegary
 import { MetaCurrencyApp } from "../apps/metacurrency-app.mjs";
+import { FeatsEffects } from "./feats-effects.mjs"; // Import systemu efektów atutów
 
 Hooks.once("init", () => {
   // Konfiguracja typów aktorów
@@ -52,6 +53,9 @@ Hooks.once("init", () => {
     if (typeof str !== 'string') return str;
     return str.charAt(0).toUpperCase() + str.slice(1);
   });
+
+  // Initialize feats effects system
+  window.CogwheelFeatsEffects = FeatsEffects;
 
   registerHandlebarsHelpers();
 });

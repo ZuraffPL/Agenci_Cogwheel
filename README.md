@@ -2,7 +2,7 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.7.4**
+**Current System Version: 0.7.5**
 
 ## Description
 
@@ -10,7 +10,23 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 
 *A game about secret agents who fight threats of the industrial revolution era.*
 
-## 🎨 What's New in v0.7.4
+## � What's New in v0.7.5
+
+- **🔧 Feats Effects System**: Complete automated attribute modification system
+  - **Steam Commando + Steam Augmentation**: Steel attribute +1 (maximum 6)
+  - **Tech Genius + Tinkerer**: Machine attribute +1 (maximum 6)  
+  - Automatic effect application when feat-archetype combinations are detected
+  - Visual notifications with chat messages and steampunk theming
+  - Smart effect removal when feats are deleted or archetypes changed
+- **✨ Terminology Consistency**: Complete system rename from "advantage" to "feats"
+  - All files renamed: `advantage-effects.mjs` → `feats-effects.mjs`
+  - Updated API methods: `applyAdvantageEffects()` → `applyFeatEffects()`
+  - CSS classes updated: `.advantage-effect-message` → `.feat-effect-message`
+  - Language files corrected: `COGSYNDICATE.AdvantageEffect` → `COGSYNDICATE.FeatEffect`
+- **🎨 Visual Polish**: Enhanced feat effect messages with Font Awesome icons and copper theming
+- **📚 Documentation**: Complete system documentation in `FEATS_EFFECTS.md`
+
+## 🔄 Previous Updates in v0.7.4
 
 - **🎯 Complete Resource Icon System**: All agent resources now have distinctive, color-coded icons
   - ⚙️ **Gear**: Copper cog icon for equipment and tools
@@ -187,7 +203,22 @@ If you encounter any issues or have questions about this system, please:
 
 ## Changelog
 
-### Version 0.7.3 (2025-09-02) - Latest
+### Version 0.7.5 (2025-09-03) - Latest
+- **Feats Effects System**:
+  - Complete automated attribute modification system for feat-archetype combinations
+  - Steam Commando + Steam Augmentation: Steel attribute +1 (maximum 6)
+  - Tech Genius + Tinkerer: Machine attribute +1 (maximum 6)
+  - Automatic effect application and removal with visual notifications
+  - Chat messages with steampunk theming and Font Awesome icons
+- **System Terminology Consistency**:
+  - Complete rename from "advantage-effects" to "feats-effects" throughout system
+  - Updated all API methods, CSS classes, and language file keys
+  - Consistent "feats" terminology across entire codebase
+- **Documentation Enhancement**:
+  - Added comprehensive FEATS_EFFECTS.md documentation
+  - System architecture and effect implementation details
+
+### Version 0.7.4 (2025-09-02)
 - **Major Attribute Restructuring**:
   - Complete attribute rename system: Stal (Steel), Maszyna (Machine), Intryga (Intrigue)
   - Strategic remapping: Former "Maszyna" → "Stal", Former "Inżynieria" → "Maszyna"

@@ -340,6 +340,12 @@
   "COGSYNDICATE.FeatsDrop": "Drag feats here",
   "COGSYNDICATE.NoFeats": "No feats",
   "COGSYNDICATE.Damage": "Damage",
+  "COGSYNDICATE.FeatEffect": "Feat Effect",
+  "COGSYNDICATE.FeatEffectRemoval": "Feat Effect Removal",
+  "COGSYNDICATE.FeatEffectApplied": "{actorName}: {featName} increased base {attributeName} by {increase} (from {oldValue} to {newValue})",
+  "COGSYNDICATE.FeatEffectRemoved": "{actorName}: Removing {featName} decreased base {attributeName} by {decrease} (from {oldValue} to {newValue})",
+  "COGSYNDICATE.FeatEffectMaxValue": "{actorName}: Attribute {attributeName} already reached maximum base value ({maxValue}). {featName} effect cannot be applied",
+  "COGSYNDICATE.FeatEffectMinValue": "{actorName}: Attribute {attributeName} already has archetype base value ({minValue}). Cannot remove {featName} effect",
   "pdfjs-editor-highlight-button": "Highlighter",
   "pdfjs-editor-highlight-button-label": "Highlight text with color"
 }

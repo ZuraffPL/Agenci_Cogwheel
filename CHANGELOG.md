@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.5] - 2025-09-03
+
+### Added
+- **Feats Effects System**: Complete automated attribute modification system
+  - **Steam Commando + Steam Augmentation**: Automatic Steel attribute +1 when "Parowy Komandos" archetype has "Parowa Augmentacja" feat (maximum value 6)
+  - **Tech Genius + Tinkerer**: Automatic Machine attribute +1 when "Geniusz Techniki" archetype has "Majsterkowicz" feat (maximum value 6)
+  - **Visual Notifications**: Chat messages with steampunk theming, Font Awesome icons, and color coding
+  - **Smart Effect Management**: Automatic effect removal when feats are deleted or archetypes changed
+  - **System Architecture**: `FeatsEffects` class with comprehensive API methods
+  - **Integration**: Seamless integration with both Agent v1 and v2 sheets
+
+### Changed
+- **Complete System Terminology Consistency**: Renamed entire system from "advantage-effects" to "feats-effects"
+  - **File Renaming**: `advantage-effects.mjs` → `feats-effects.mjs`, `ADVANTAGE_EFFECTS.md` → `FEATS_EFFECTS.md`
+  - **API Methods**: All method names updated (`applyAdvantageEffects` → `applyFeatEffects`, etc.)
+  - **CSS Classes**: Updated class names (`.advantage-effect-message` → `.feat-effect-message`)
+  - **Language Files**: Corrected all keys from `COGSYNDICATE.AdvantageEffect` to `COGSYNDICATE.FeatEffect`
+  - **Parameter Names**: Updated from `{advantageName}` to `{featName}` in language strings
+
+### Enhanced
+- **Visual Polish**: Enhanced feat effect messages with copper theming and steampunk aesthetic
+- **Documentation**: Added comprehensive `FEATS_EFFECTS.md` with system architecture and implementation details
+- **Code Quality**: Improved naming consistency across entire codebase
+
+### Technical
+- **Module Loading**: Updated `system.json` to load `feats-effects.mjs`
+- **Actor Sheet Integration**: Both v1 and v2 sheets call feat effects on drop and delete operations
+- **Language Support**: Complete Polish and English localization for all feat effects
+- **CSS Styling**: Dedicated `.feat-effect-message` styling with steampunk theme
+
 ## [0.7.4] - 2025-09-02
 
 ### Added

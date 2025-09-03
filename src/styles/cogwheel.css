@@ -1043,3 +1043,53 @@
   color: #9b59b6 !important;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
 }
+
+/* ===== FEATS EFFECTS CHAT MESSAGES ===== */
+.feat-effect-message {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  border: 2px solid #f39c12;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 10px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  color: #ecf0f1;
+}
+
+.feat-effect-message h3 {
+  color: #f39c12 !important;
+  font-size: 18px !important;
+  font-weight: bold !important;
+  margin: 0 0 10px 0 !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+  border-bottom: 1px solid #f39c12;
+  padding-bottom: 5px;
+}
+
+.feat-effect-message h3 i {
+  margin-right: 8px !important;
+  color: #e67e22 !important;
+}
+
+.feat-effect-message p {
+  margin: 8px 0 !important;
+  font-size: 14px !important;
+  line-height: 1.4 !important;
+}
+
+.feat-effect-message p strong {
+  color: #f1c40f !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+.feat-effect-message hr {
+  border: none !important;
+  border-top: 1px solid #7f8c8d !important;
+  margin: 10px 0 !important;
+}
+
+.feat-effect-message p:last-child {
+  color: #bdc3c7 !important;
+  font-style: italic !important;
+  font-size: 12px !important;
+  margin-bottom: 0 !important;
+}

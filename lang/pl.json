@@ -340,6 +340,12 @@
   "COGSYNDICATE.FeatsDrop": "Przeciągnij atuty tutaj",
   "COGSYNDICATE.NoFeats": "Brak atutów",
   "COGSYNDICATE.Damage": "Obrażenia",
+  "COGSYNDICATE.FeatEffect": "Efekt Atutu",
+  "COGSYNDICATE.FeatEffectRemoval": "Usunięcie Efektu Atutu",
+  "COGSYNDICATE.FeatEffectApplied": "{actorName}: {featName} zwiększył bazową wartość {attributeName} o {increase} (z {oldValue} na {newValue})",
+  "COGSYNDICATE.FeatEffectRemoved": "{actorName}: Usunięcie {featName} zmniejszyło bazową wartość {attributeName} o {decrease} (z {oldValue} na {newValue})",
+  "COGSYNDICATE.FeatEffectMaxValue": "{actorName}: Atrybut {attributeName} już osiągnął maksymalną wartość bazową ({maxValue}). Efekt {featName} nie może być zastosowany",
+  "COGSYNDICATE.FeatEffectMinValue": "{actorName}: Atrybut {attributeName} już ma wartość bazową archetypu ({minValue}). Nie można usunąć efektu {featName}",
   "pdfjs-editor-highlight-button": "Zakreślacz",
   "pdfjs-editor-highlight-button-label": "Zaznacz tekst kolorem"
 }
