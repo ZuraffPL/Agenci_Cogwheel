@@ -612,40 +612,26 @@ export class FeatsEffects {
         return false;
       }
 
-      // Check actor.items structure - try different ways to access items
-      console.log(`Actor.items exists: ${!!actor.items}`);
-      console.log(`Actor.items is array: ${Array.isArray(actor.items)}`);
-      console.log(`Actor.items length: ${actor.items?.length || 'undefined'}`);
-      console.log(`Actor.items is collection: ${actor.items?.constructor?.name}`);
+      // Use the same method as actor sheets to get feats from system.feats array
+      const featIds = actor.system.feats || [];
+      console.log(`Actor feats IDs: [${featIds.join(', ')}]`);
       
-      // Try to get items from different sources
-      let actorItems = null;
+      // Resolve feat IDs to actual items from game.items (same as actor-sheet.js and actor-sheetv2.js)
+      const actorFeats = featIds
+        .map(id => game.items.get(id))
+        .filter(item => item && item.type === "feat");
       
-      if (actor.items && typeof actor.items.contents === 'object') {
-        // Foundry collection - use contents
-        actorItems = actor.items.contents;
-        console.log(`Using actor.items.contents, length: ${actorItems.length}`);
-      } else if (actor.items && Array.isArray(actor.items)) {
-        // Already an array
-        actorItems = actor.items;
-        console.log(`Using actor.items as array, length: ${actorItems.length}`);
-      } else if (actor.data?.items && Array.isArray(actor.data.items)) {
-        // Items in data
-        actorItems = actor.data.items;
-        console.log(`Using actor.data.items, length: ${actorItems.length}`);
-      }
+      console.log(`Resolved ${actorFeats.length} feats:`, actorFeats.map(f => f?.name));
       
-      if (!actorItems || actorItems.length === 0) {
-        console.log(`No items found on actor - actorItems:`, actorItems);
+      if (!actorFeats || actorFeats.length === 0) {
+        console.log(`No feats found on actor - system.feats: [${featIds.join(', ')}]`);
         return false;
       }
 
-      console.log(`Actor items:`, actorItems.map(item => ({ name: item.name, type: item.type })));
-      
-      const steamBoosterFeat = actorItems.find(item => {
+      const steamBoosterFeat = actorFeats.find(item => {
         const isRightType = item.type === 'feat';
         const hasRightName = item.name.toLowerCase().includes('dopalacz pary');
-        console.log(`Item "${item.name}" (type: ${item.type}): isRightType=${isRightType}, hasRightName=${hasRightName}`);
+        console.log(`Feat "${item.name}" (type: ${item.type}): isRightType=${isRightType}, hasRightName=${hasRightName}`);
         return isRightType && hasRightName;
       });
 
