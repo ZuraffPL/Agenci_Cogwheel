@@ -636,8 +636,9 @@ export class FeatsEffects {
       return { steamPoints: originalSteamPoints, message: null };
     }
     
+    console.log(`About to call hasSteamBoosterEffect...`);
     const hasSteamBooster = this.hasSteamBoosterEffect(actor);
-    console.log(`Has Steam Booster effect: ${hasSteamBooster}`);
+    console.log(`hasSteamBoosterEffect returned: ${hasSteamBooster}`);
     
     if (!hasSteamBooster) {
       console.log(`Steam Booster effect not active, returning original points: ${originalSteamPoints}`);
