@@ -128,6 +128,8 @@ async function upgradeSuccessLevel(actor, currentResult, testedAttribute) {
 }
 
 export async function performAttributeRoll(actor, attribute) {
+  console.log(`=== performAttributeRoll called for ${actor?.name} on attribute ${attribute} ===`);
+  
   const attrValue = actor.system.attributes[attribute].value;
   const secondaryMap = {
     machine: "endurance",
@@ -684,6 +686,8 @@ async function rerollTest(actor, rollDataKey) {
 
 // Funkcja wykonująca rzut z podanymi parametrami
 async function executeRollWithData(actor, data, isReroll = false) {
+  console.log(`=== executeRollWithData called for ${actor?.name}, isReroll=${isReroll} ===`);
+  
   const {
     attribute,
     position,
