@@ -128,7 +128,6 @@ async function upgradeSuccessLevel(actor, currentResult, testedAttribute) {
 }
 
 export async function performAttributeRoll(actor, attribute) {
-  console.log(`=== performAttributeRoll called for ${actor?.name} on attribute ${attribute} ===`);
   
   const attrValue = actor.system.attributes[attribute].value;
   const secondaryMap = {
@@ -457,9 +456,7 @@ export async function performAttributeRoll(actor, attribute) {
             // Apply Steam Booster effect if applicable
             let steamBoosterMessage = "";
             if (steamPoints > 0) {
-              console.log(`Checking Steam Booster effect for ${actor.name} with ${steamPoints} steam points`);
               const steamBoosterResult = FeatsEffects.applySteamBoosterEffect(actor, steamPoints);
-              console.log(`Steam Booster result:`, steamBoosterResult);
               steamPoints = steamBoosterResult.steamPoints;
               if (steamBoosterResult.message) {
                 steamBoosterMessage = steamBoosterResult.message;
@@ -955,9 +952,7 @@ async function executeRollWithData(actor, data, isReroll = false) {
   // Apply Steam Booster effect if applicable
   let steamBoosterMessage = "";
   if (steamPoints > 0) {
-    console.log(`Checking Steam Booster effect for ${actor.name} with ${steamPoints} steam points (reroll)`);
     const steamBoosterResult = FeatsEffects.applySteamBoosterEffect(actor, steamPoints);
-    console.log(`Steam Booster result (reroll):`, steamBoosterResult);
     steamPoints = steamBoosterResult.steamPoints;
     if (steamBoosterResult.message) {
       steamBoosterMessage = steamBoosterResult.message;

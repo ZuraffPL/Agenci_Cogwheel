@@ -7,6 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.6] - 2025-09-04
+
+### Added
+- **Steam Booster Effect for Tech Genius Archetype**: Complete implementation of Steam Booster feat effect
+  - **Automatic Steam Points Doubling**: When Tech Genius archetype has "Dopalacz Pary" feat, attribute tests generate 2x Steam Points
+  - **Visual Notifications**: Styled chat messages with steampunk theming announcing Steam Booster activation
+  - **Perfect Compatibility**: Works seamlessly on both Agent v1 and Agent v2 character sheets
+  - **Smart Detection**: Automatically detects Tech Genius archetype and Steam Booster feat combination
+  - **Chat Integration**: Displays Steam Booster effects in chat with copper-themed styling matching other feat effects
+
+### Enhanced
+- **Feat Display System Improvements**: Complete visual overhaul of feat management interface
+  - **Archetype Integration**: Added archetype selection dropdown to feat creation dialog
+  - **Adaptive Column Width**: Feat names now display with dynamic width to prevent truncation
+  - **Inline Archetype Display**: Shows archetype name next to feat type with steampunk styling
+  - **Grid Layout Optimization**: Improved feat grid alignment, spacing, and visual hierarchy
+  - **Section Header Standardization**: Consistent headers across feat management interface
+  - **Enhanced Visual Polish**: Better typography, spacing, and steampunk aesthetic integration
+
+### Fixed
+- **Critical Agent v2 Compatibility Issue**: Resolved Steam Booster effect not working on Agent v2 sheets
+  - **Root Cause**: Fixed incorrect feat access method - system uses `actor.system.feats` array of IDs, not `actor.items`
+  - **Correct Implementation**: Now uses same feat resolution method as actor sheets (map IDs to items via `game.items.get()`)
+  - **Universal Compatibility**: Steam Booster effects now work identically on both Agent v1 and Agent v2
+  - **Comprehensive Debugging**: Added detailed logging system for feat detection and resolution
+  - **Consistent Architecture**: Aligned with Cogwheel Syndicate's feat storage system using ID references
+
+### Technical
+- **Feat Effects Architecture Enhancement**: Improved `feats-effects.mjs` with proper feat access patterns
+  - Changed from `actor.items.contents` to `actor.system.feats` array approach
+  - Implemented same feat resolution method as `actor-sheet.js` and `actor-sheetv2.js`
+  - Added comprehensive debugging infrastructure for feat detection issues
+  - Maintained compatibility with existing feat effects (Steam Commando, Shadowmantle, etc.)
+- **Module Loading Optimization**: Corrected module loading order to ensure proper initialization
+- **Error Handling**: Enhanced error handling with detailed console logging for troubleshooting
+- **Code Quality**: Improved code consistency and maintainability across feat effects system
+
 ## [0.7.5] - 2025-09-03
 
 ### Added

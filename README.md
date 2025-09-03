@@ -2,7 +2,7 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.7.5**
+**Current System Version: 0.7.6**
 
 ## Description
 
@@ -10,7 +10,23 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 
 *A game about secret agents who fight threats of the industrial revolution era.*
 
-## � What's New in v0.7.5
+## 🔥 What's New in v0.7.6
+
+- **⚡ Steam Booster Effect**: Complete Steam Booster feat effect implementation for Tech Genius archetype
+  - **2x Steam Points Generation**: Attribute tests now generate double Steam Points when Tech Genius has "Dopalacz Pary" feat
+  - **Universal Compatibility**: Works perfectly on both Agent v1 and Agent v2 character sheets
+  - **Visual Notifications**: Styled chat messages announce Steam Booster activation with steampunk theming
+  - **Smart Detection**: Automatically detects archetype-feat combinations and applies effects seamlessly
+- **🎯 Feat Display Enhancements**: Major visual improvements to feat management system
+  - **Archetype Integration**: Feat creation now includes archetype selection for better organization
+  - **Adaptive Layout**: Dynamic column widths prevent feat name truncation
+  - **Enhanced Grid**: Improved spacing, alignment, and visual hierarchy in feat display
+- **🔧 Critical Agent v2 Fix**: Resolved Steam Booster compatibility issue with Agent v2 sheets
+  - **Root Cause Fixed**: Corrected feat access method to use proper `actor.system.feats` array
+  - **Architectural Alignment**: Now matches Cogwheel Syndicate's feat storage system perfectly
+  - **Comprehensive Testing**: Added debugging infrastructure to prevent future compatibility issues
+
+## 🔄 Previous Updates in v0.7.5
 
 - **🔧 Feats Effects System**: Complete automated attribute modification system
   - **Steam Commando + Steam Augmentation**: Steel attribute +1 (maximum 6)

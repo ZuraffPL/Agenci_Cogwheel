@@ -399,8 +399,6 @@ class CogwheelActorSheetV2 extends ActorSheet {
   }
 
   async _updateData() {
-    console.log("Inicjalizacja danych dla Agent v2");
-
     // Sprawdź czy aktor ma wszystkie wymagane pola
     const updates = {};
     

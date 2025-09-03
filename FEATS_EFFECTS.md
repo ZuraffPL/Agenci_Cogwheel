@@ -57,6 +57,29 @@ System automatycznie stosuje specjalne efekty gdy określone atuty (feats) są p
 - Bazowa wartość **Intrygi** maleje o 1 punkt
 - Minimalna wartość to wartość bazowa archetypu (zwykle 5)
 
+### Geniusz Techniki + Dopalacz Pary
+
+**Warunki:**
+- Agent posiada archetyp "Geniusz Techniki"
+- Na jego kartę zostaje przeciągnięty atut "Dopalacz Pary"
+
+**Efekt:**
+- **Podwojenie Punktów Pary**: Podczas testów atrybutów agent generuje 2x więcej Punktów Pary
+- Efekt działa automatycznie przy każdym rzucie na atrybut
+- System wyświetla powiadomienie na czacie z informacją o aktywacji Steam Booster
+- Stylizowana wiadomość z miedzianą paletą kolorów i ikoną pary
+- **Przykład**: normalnie 1 Punkt Pary → z efektem 2 Punkty Pary
+
+**Usuwanie:**
+- Gdy atut "Dopalacz Pary" jest usuwany z karty Geniusza Techniki
+- Efekt podwajania zostaje automatycznie wyłączony
+- Testy atrybutów wracają do generowania standardowej liczby Punktów Pary
+
+**Kompatybilność:**
+- Działa na obu wersjach kart agentów (Agent v1 i Agent v2)
+- Integruje się z systemem rzutów i metawalut
+- Automatyczna detekcja kombinacji archetyp-atut
+
 ## Techniczne Aspekty
 
 ### Pliki
@@ -74,6 +97,8 @@ System automatycznie stosuje specjalne efekty gdy określone atuty (feats) są p
 - `removeFeatEffects(actor, feat)` - usuwa efekty przy usuwaniu atutu
 - `hasFeatEffects(actor, feat)` - sprawdza czy atut ma efekty dla danego aktora
 - `getFeatEffectDescription(actor, feat)` - zwraca opis efektów
+- `hasSteamBoosterEffect(actor)` - sprawdza czy agent ma aktywny efekt Steam Booster
+- `applySteamBoosterEffect(actor, originalSteamPoints)` - stosuje podwojenie punktów pary
 
 #### Prywatne Metody dla Konkretnych Efektów
 
@@ -83,6 +108,12 @@ System automatycznie stosuje specjalne efekty gdy określone atuty (feats) są p
 - `_removeTinkererEffect(actor, feat)` - usuwa efekt Majsterkowicza
 - `_applyIntrigantEffect(actor, feat)` - stosuje efekt Intryganta
 - `_removeIntrigantEffect(actor, feat)` - usuwa efekt Intryganta
+
+#### Integracja z Systemem Rzutów
+
+- `hasSteamBoosterEffect(actor)` - sprawdza aktywność efektu Steam Booster dla agenta
+- `applySteamBoosterEffect(actor, steamPoints)` - podwaja punkty pary i generuje wiadomość czatu
+- Integracja z `roll-mechanics.js` dla automatycznego zastosowania efektów podczas testów atrybutów
 
 ### Integracja z Kartami Agentów
 

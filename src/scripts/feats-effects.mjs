@@ -587,56 +587,37 @@ export class FeatsEffects {
    * @returns {boolean} - Whether Steam Booster effect is active
    */
   static hasSteamBoosterEffect(actor) {
-    console.log(`=== Steam Booster Check for ${actor?.name} ===`);
-    
     try {
       if (!actor || !actor.system.archetype?.name) {
-        console.log(`Steam Booster check failed: no actor or archetype`, { actor: !!actor, archetype: actor?.system?.archetype?.name });
         return false;
       }
 
-      console.log(`=== FULL ACTOR DEBUG ===`);
-      console.log(`Actor name: ${actor.name}`);
-      console.log(`Actor system:`, actor.system);
-      console.log(`Actor archetype:`, actor.system.archetype);
-      
       const archetypeName = actor.system.archetype.name.toLowerCase();
-      console.log(`Archetype name: "${archetypeName}"`);
       
       // Check if actor is Tech Genius
       const isTechGenius = archetypeName.includes('geniusz techniki');
-      console.log(`Is Tech Genius: ${isTechGenius}`);
       
       if (!isTechGenius) {
-        console.log(`Steam Booster check failed: not Tech Genius archetype (${archetypeName})`);
         return false;
       }
 
       // Use the same method as actor sheets to get feats from system.feats array
       const featIds = actor.system.feats || [];
-      console.log(`Actor feats IDs: [${featIds.join(', ')}]`);
       
       // Resolve feat IDs to actual items from game.items (same as actor-sheet.js and actor-sheetv2.js)
       const actorFeats = featIds
         .map(id => game.items.get(id))
         .filter(item => item && item.type === "feat");
       
-      console.log(`Resolved ${actorFeats.length} feats:`, actorFeats.map(f => f?.name));
-      
       if (!actorFeats || actorFeats.length === 0) {
-        console.log(`No feats found on actor - system.feats: [${featIds.join(', ')}]`);
         return false;
       }
 
       const steamBoosterFeat = actorFeats.find(item => {
         const isRightType = item.type === 'feat';
         const hasRightName = item.name.toLowerCase().includes('dopalacz pary');
-        console.log(`Feat "${item.name}" (type: ${item.type}): isRightType=${isRightType}, hasRightName=${hasRightName}`);
         return isRightType && hasRightName;
       });
-
-      console.log(`Steam Booster check result for ${actor.name}: Tech Genius=${isTechGenius}, has feat=${!!steamBoosterFeat}`);
-      console.log(`Steam Booster feat found:`, steamBoosterFeat ? { name: steamBoosterFeat.name, type: steamBoosterFeat.type } : null);
 
       return !!steamBoosterFeat;
     } catch (error) {
@@ -653,34 +634,18 @@ export class FeatsEffects {
    * @returns {Object} - {steamPoints: number, message: string|null}
    */
   static applySteamBoosterEffect(actor, originalSteamPoints) {
-    console.log(`=== applySteamBoosterEffect called ===`);
-    console.log(`Actor: ${actor?.name}, Original steam points: ${originalSteamPoints}`);
-    
     if (originalSteamPoints <= 0) {
-      console.log(`No steam points to boost, returning original: ${originalSteamPoints}`);
       return { steamPoints: originalSteamPoints, message: null };
     }
     
-    console.log(`About to call hasSteamBoosterEffect...`);
-    let hasSteamBooster = false;
     try {
-      hasSteamBooster = this.hasSteamBoosterEffect(actor);
-      console.log(`hasSteamBoosterEffect returned: ${hasSteamBooster}`);
-    } catch (error) {
-      console.error(`Error in hasSteamBoosterEffect:`, error);
-      console.log(`Steam Booster check failed due to error, returning original points: ${originalSteamPoints}`);
-      return { steamPoints: originalSteamPoints, message: null };
-    }
-    
-    if (!hasSteamBooster) {
-      console.log(`Steam Booster effect not active, returning original points: ${originalSteamPoints}`);
-      return { steamPoints: originalSteamPoints, message: null };
-    }
+      if (!this.hasSteamBoosterEffect(actor)) {
+        return { steamPoints: originalSteamPoints, message: null };
+      }
 
-    const doubledSteamPoints = originalSteamPoints * 2;
-    console.log(`Steam Booster active! Doubling ${originalSteamPoints} -> ${doubledSteamPoints}`);
-    
-    const message = `
+      const doubledSteamPoints = originalSteamPoints * 2;
+      
+      const message = `
       <div class="steam-booster-effect">
         <p style="color: #cd7f32; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">
           <i class="fas fa-tachometer-alt"></i> ${game.i18n.localize("COGSYNDICATE.FeatSteamBoosterEffect")}
@@ -688,7 +653,11 @@ export class FeatsEffects {
       </div>
     `;
 
-    return { steamPoints: doubledSteamPoints, message: message };
+      return { steamPoints: doubledSteamPoints, message: message };
+    } catch (error) {
+      console.error(`Error in applySteamBoosterEffect:`, error);
+      return { steamPoints: originalSteamPoints, message: null };
+    }
   }
 }
 
