@@ -110,6 +110,7 @@
   text-overflow: ellipsis; /* Skracanie opisu z "..." */
   display: -webkit-box;
   -webkit-line-clamp: 2; /* Maksymalnie 2 linie */
+  line-clamp: 2; /* Standard property for compatibility */
   -webkit-box-orient: vertical;
 }
 

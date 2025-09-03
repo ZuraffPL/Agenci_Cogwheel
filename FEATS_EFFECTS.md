@@ -40,6 +40,23 @@ System automatycznie stosuje specjalne efekty gdy określone atuty (feats) są p
 - Bazowa wartość **Maszyny** maleje o 1 punkt
 - Minimalna wartość to wartość bazowa archetypu
 
+### Płaszcz Cienia + Intrygant
+
+**Warunki:**
+- Agent posiada archetyp "Płaszcz Cienia"
+- Na jego kartę zostaje przeciągnięty atut "Intrygant"
+
+**Efekt:**
+- Bazowa wartość atrybutu **Intryga** wzrasta o 1 punkt
+- Maksymalna wartość bazowa to 6
+- Jeśli Intryga już ma wartość 6, efekt nie jest stosowany
+- System wyświetla powiadomienie i wiadomość na czacie z ikoną maski
+
+**Usuwanie:**
+- Gdy atut "Intrygant" jest usuwany z karty Płaszcza Cienia
+- Bazowa wartość **Intrygi** maleje o 1 punkt
+- Minimalna wartość to wartość bazowa archetypu (zwykle 5)
+
 ## Techniczne Aspekty
 
 ### Pliki
@@ -60,8 +77,12 @@ System automatycznie stosuje specjalne efekty gdy określone atuty (feats) są p
 
 #### Prywatne Metody dla Konkretnych Efektów
 
-- `_applySteamAugmentationEffect(actor, advantage)` - stosuje efekt Parowej Augmentacji
-- `_removeSteamAugmentationEffect(actor, advantage)` - usuwa efekt Parowej Augmentacji
+- `_applySteamAugmentationEffect(actor, feat)` - stosuje efekt Parowej Augmentacji
+- `_removeSteamAugmentationEffect(actor, feat)` - usuwa efekt Parowej Augmentacji
+- `_applyTinkererEffect(actor, feat)` - stosuje efekt Majsterkowicza
+- `_removeTinkererEffect(actor, feat)` - usuwa efekt Majsterkowicza
+- `_applyIntrigantEffect(actor, feat)` - stosuje efekt Intryganta
+- `_removeIntrigantEffect(actor, feat)` - usuwa efekt Intryganta
 
 ### Integracja z Kartami Agentów
 

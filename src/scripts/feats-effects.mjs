@@ -31,6 +31,11 @@ export class FeatsEffects {
       return await this._applyTinkererEffect(actor, feat);
     }
 
+    // Shadowmantle + Intrigant effect
+    if (archetypeName.includes('płaszcz cienia') && featName.includes('intrygant')) {
+      return await this._applyIntrigantEffect(actor, feat);
+    }
+
     // Add more archetype-feat combinations here as needed
     // Example structure:
     // if (archetypeName.includes('other archetype') && featName.includes('other feat')) {
@@ -145,6 +150,58 @@ export class FeatsEffects {
   }
 
   /**
+   * Apply Intrigant effect to Shadowmantle
+   * Increases base Intrigue (Intryga) attribute by 1 (max 6)
+   * @param {Actor} actor - The Shadowmantle actor
+   * @param {Item} feat - The Intrigant feat
+   * @returns {Promise<boolean>} - Whether the effect was applied
+   */
+  static async _applyIntrigantEffect(actor, feat) {
+    const currentIntrigaBase = actor.system.attributes.intrigue.base || 1;
+    const maxIntrigaBase = 6;
+
+    // Check if Intrigue can be increased
+    if (currentIntrigaBase >= maxIntrigaBase) {
+      ui.notifications.warn(
+        `${actor.name}: Atrybut Intryga już osiągnął maksymalną wartość bazową (${maxIntrigaBase}). Efekt Intryganta nie może być zastosowany.`
+      );
+      return false;
+    }
+
+    const newIntrigaBase = Math.min(currentIntrigaBase + 1, maxIntrigaBase);
+    const increase = newIntrigaBase - currentIntrigaBase;
+
+    // Apply the attribute increase
+    const updates = {
+      "system.attributes.intrigue.base": newIntrigaBase,
+      "system.attributes.intrigue.value": newIntrigaBase // Also update current value
+    };
+
+    await actor.update(updates);
+
+    // Show notification
+    ui.notifications.info(
+      `${actor.name}: Intrygant zwiększył bazową wartość Intrygi o ${increase} (z ${currentIntrigaBase} na ${newIntrigaBase}).`
+    );
+
+    // Log to chat
+    await ChatMessage.create({
+      content: `
+        <div class="feat-effect-message">
+          <h3><i class="fas fa-mask"></i> Efekt Atutu</h3>
+          <p><strong>${actor.name}</strong> otrzymał <strong>${feat.name}</strong></p>
+          <p><strong>Efekt:</strong> Bazowa wartość <strong>Intrygi</strong> wzrosła o ${increase} (z ${currentIntrigaBase} na ${newIntrigaBase})</p>
+          <hr>
+          <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
+        </div>
+      `,
+      speaker: { actor: actor.id }
+    });
+
+    return true;
+  }
+
+  /**
    * Remove effects when a feat is removed from an actor
    * @param {Actor} actor - The actor losing the feat
    * @param {Item} feat - The feat item being removed
@@ -168,6 +225,11 @@ export class FeatsEffects {
     // Tech Genius + Tinkerer removal
     if (archetypeName.includes('geniusz techniki') && featName.includes('majsterkowicz')) {
       return await this._removeTinkererEffect(actor, feat);
+    }
+
+    // Shadowmantle + Intrigant removal
+    if (archetypeName.includes('płaszcz cienia') && featName.includes('intrygant')) {
+      return await this._removeIntrigantEffect(actor, feat);
     }
 
     // Add more removal effects here as needed
@@ -298,6 +360,67 @@ export class FeatsEffects {
   }
 
   /**
+   * Remove Intrigant effect from Shadowmantle
+   * Decreases base Intrigue (Intryga) attribute by 1 (min archetype base)
+   * @param {Actor} actor - The Shadowmantle actor
+   * @param {Item} feat - The Intrigant feat
+   * @returns {Promise<boolean>} - Whether the effect was removed
+   */
+  static async _removeIntrigantEffect(actor, feat) {
+    const currentIntrigaBase = actor.system.attributes.intrigue.base || 1;
+    const archetypeId = actor.system.archetype.id;
+    
+    // Get archetype's base Intrigue value (default for Shadowmantle is 5)
+    let archetypeIntrigaBase = 5; // Default for Shadowmantle
+    if (archetypeId) {
+      const archetypeItem = game.items.get(archetypeId);
+      if (archetypeItem?.system?.attributes?.intrigue) {
+        archetypeIntrigaBase = archetypeItem.system.attributes.intrigue;
+      }
+    }
+
+    // Check if Intrigue can be decreased (shouldn't go below archetype base)
+    if (currentIntrigaBase <= archetypeIntrigaBase) {
+      ui.notifications.warn(
+        `${actor.name}: Atrybut Intryga już ma wartość bazową archetypu (${archetypeIntrigaBase}). Nie można usunąć efektu Intryganta.`
+      );
+      return false;
+    }
+
+    const newIntrigaBase = Math.max(currentIntrigaBase - 1, archetypeIntrigaBase);
+    const decrease = currentIntrigaBase - newIntrigaBase;
+
+    // Apply the attribute decrease
+    const updates = {
+      "system.attributes.intrigue.base": newIntrigaBase,
+      "system.attributes.intrigue.value": newIntrigaBase // Also update current value
+    };
+
+    await actor.update(updates);
+
+    // Show notification
+    ui.notifications.info(
+      `${actor.name}: Usunięcie Intryganta zmniejszyło bazową wartość Intrygi o ${decrease} (z ${currentIntrigaBase} na ${newIntrigaBase}).`
+    );
+
+    // Log to chat
+    await ChatMessage.create({
+      content: `
+        <div class="feat-effect-message">
+          <h3><i class="fas fa-mask"></i> Usunięcie Efektu Atutu</h3>
+          <p><strong>${actor.name}</strong> stracił <strong>${feat.name}</strong></p>
+          <p><strong>Efekt:</strong> Bazowa wartość <strong>Intrygi</strong> zmniejszyła się o ${decrease} (z ${currentIntrigaBase} na ${newIntrigaBase})</p>
+          <hr>
+          <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
+        </div>
+      `,
+      speaker: { actor: actor.id }
+    });
+
+    return true;
+  }
+
+  /**
    * Check if a feat has special effects for the given actor
    * @param {Actor} actor - The actor to check
    * @param {Item} feat - The feat to check
@@ -318,6 +441,11 @@ export class FeatsEffects {
 
     // Tech Genius + Tinkerer
     if (archetypeName.includes('geniusz techniki') && featName.includes('majsterkowicz')) {
+      return true;
+    }
+
+    // Shadowmantle + Intrigant
+    if (archetypeName.includes('płaszcz cienia') && featName.includes('intrygant')) {
       return true;
     }
 
@@ -356,6 +484,15 @@ export class FeatsEffects {
       return canIncrease 
         ? `Zwiększy bazową wartość Maszyny z ${currentMaszyna} na ${Math.min(currentMaszyna + 1, 6)}`
         : `Maszyna już ma maksymalną wartość bazową (6) - efekt nie zostanie zastosowany`;
+    }
+
+    // Shadowmantle + Intrigant
+    if (archetypeName.includes('płaszcz cienia') && featName.includes('intrygant')) {
+      const currentIntryga = actor.system.attributes.intrigue.base || 1;
+      const canIncrease = currentIntryga < 6;
+      return canIncrease 
+        ? `Zwiększy bazową wartość Intrygi z ${currentIntryga} na ${Math.min(currentIntryga + 1, 6)}`
+        : `Intryga już ma maksymalną wartość bazową (6) - efekt nie zostanie zastosowany`;
     }
 
     // Add more descriptions here as needed
