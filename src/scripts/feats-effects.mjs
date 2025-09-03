@@ -628,11 +628,25 @@ export class FeatsEffects {
    * @returns {Object} - {steamPoints: number, message: string|null}
    */
   static applySteamBoosterEffect(actor, originalSteamPoints) {
-    if (originalSteamPoints <= 0 || !this.hasSteamBoosterEffect(actor)) {
+    console.log(`=== applySteamBoosterEffect called ===`);
+    console.log(`Actor: ${actor?.name}, Original steam points: ${originalSteamPoints}`);
+    
+    if (originalSteamPoints <= 0) {
+      console.log(`No steam points to boost, returning original: ${originalSteamPoints}`);
+      return { steamPoints: originalSteamPoints, message: null };
+    }
+    
+    const hasSteamBooster = this.hasSteamBoosterEffect(actor);
+    console.log(`Has Steam Booster effect: ${hasSteamBooster}`);
+    
+    if (!hasSteamBooster) {
+      console.log(`Steam Booster effect not active, returning original points: ${originalSteamPoints}`);
       return { steamPoints: originalSteamPoints, message: null };
     }
 
     const doubledSteamPoints = originalSteamPoints * 2;
+    console.log(`Steam Booster active! Doubling ${originalSteamPoints} -> ${doubledSteamPoints}`);
+    
     const message = `
       <div class="steam-booster-effect">
         <p style="color: #cd7f32; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">
