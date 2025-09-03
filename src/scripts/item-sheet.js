@@ -56,6 +56,10 @@ class CogwheelFeatSheet extends ItemSheet {
   getData() {
     const data = super.getData();
     data.system = data.item.system;
+    
+    // Pobierz dostępne archetypy
+    data.availableArchetypes = game.items.filter(item => item.type === "archetype");
+    
     // Ustaw domyślną ikonę, jeśli nie istnieje
     if (!data.item.img || data.item.img === "icons/svg/item-bag.svg") {
       data.item.img = "icons/svg/card-joker.svg";
@@ -67,6 +71,21 @@ class CogwheelFeatSheet extends ItemSheet {
     await super._onCreate(data, options, userId);
     // Ustawienie domyślnej ikony dla nowego atutu
     await this.item.update({ "img": "icons/svg/card-joker.svg" });
+  }
+
+  async _updateObject(event, formData) {
+    // Jeśli zmieniono archetyp, zaktualizuj jego nazwę
+    if (formData["system.archetype.id"]) {
+      const archetype = game.items.get(formData["system.archetype.id"]);
+      if (archetype) {
+        formData["system.archetype.name"] = archetype.name;
+      }
+    } else {
+      // Jeśli nie wybrano archetypu, wyczyść nazwę
+      formData["system.archetype.name"] = "";
+    }
+    
+    return super._updateObject(event, formData);
   }
 }
 

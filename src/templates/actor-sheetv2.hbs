@@ -176,7 +176,12 @@
                       </button>
                     </div>
                     <div class="feat-col-name"><span class="feat-name">{{feat.name}}</span></div>
-                    <div class="feat-col-type"><span class="feat-type">{{#if (eq feat.system.type "initial")}}{{localize "COGSYNDICATE.FeatInitial"}}{{else}}{{localize "COGSYNDICATE.FeatAdvanced"}}{{/if}}</span></div>
+                    <div class="feat-col-type">
+                      <span class="feat-type">{{#if (eq feat.system.type "initial")}}{{localize "COGSYNDICATE.FeatInitial"}}{{else}}{{localize "COGSYNDICATE.FeatAdvanced"}}{{/if}}</span>
+                      {{#if feat.system.archetype.name}}
+                      <span class="feat-archetype"> | {{feat.system.archetype.name}}</span>
+                      {{/if}}
+                    </div>
                     <div class="feat-col-delete"><button type="button" class="delete-feat small-btn" data-item-id="{{feat.id}}" title="{{localize 'COGSYNDICATE.DeleteFeat'}}"><i class="fas fa-trash"></i></button></div>
                   </div>
                   <div class="feat-details" style="display: none;">
