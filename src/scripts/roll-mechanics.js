@@ -5,6 +5,9 @@ window.cogwheelSyndicate.currentRerollButtons = window.cogwheelSyndicate.current
 window.cogwheelSyndicate.lastRollTimestamp = window.cogwheelSyndicate.lastRollTimestamp || {};
 window.cogwheelSyndicate.rollData = window.cogwheelSyndicate.rollData || {};
 
+// Import FeatsEffects directly
+import { FeatsEffects } from './feats-effects.mjs';
+
 // Funkcja sprawdzająca czy użytkownik ma uprawnienia do kliknięcia przycisku czatu
 function canUserInteractWithButton(authorUserId) {
   const currentUser = game.user;
@@ -451,16 +454,14 @@ export async function performAttributeRoll(actor, attribute) {
 
             // Apply Steam Booster effect if applicable
             let steamBoosterMessage = "";
-            if (steamPoints > 0 && window.CogwheelFeatsEffects) {
+            if (steamPoints > 0) {
               console.log(`Checking Steam Booster effect for ${actor.name} with ${steamPoints} steam points`);
-              const steamBoosterResult = window.CogwheelFeatsEffects.applySteamBoosterEffect(actor, steamPoints);
+              const steamBoosterResult = FeatsEffects.applySteamBoosterEffect(actor, steamPoints);
               console.log(`Steam Booster result:`, steamBoosterResult);
               steamPoints = steamBoosterResult.steamPoints;
               if (steamBoosterResult.message) {
                 steamBoosterMessage = steamBoosterResult.message;
               }
-            } else if (steamPoints > 0) {
-              console.log(`Steam Booster effect not available - window.CogwheelFeatsEffects:`, window.CogwheelFeatsEffects);
             }
 
             if (nemesisPoints > 0 || steamPoints > 0) {
@@ -949,16 +950,14 @@ async function executeRollWithData(actor, data, isReroll = false) {
 
   // Apply Steam Booster effect if applicable
   let steamBoosterMessage = "";
-  if (steamPoints > 0 && window.CogwheelFeatsEffects) {
+  if (steamPoints > 0) {
     console.log(`Checking Steam Booster effect for ${actor.name} with ${steamPoints} steam points (reroll)`);
-    const steamBoosterResult = window.CogwheelFeatsEffects.applySteamBoosterEffect(actor, steamPoints);
+    const steamBoosterResult = FeatsEffects.applySteamBoosterEffect(actor, steamPoints);
     console.log(`Steam Booster result (reroll):`, steamBoosterResult);
     steamPoints = steamBoosterResult.steamPoints;
     if (steamBoosterResult.message) {
       steamBoosterMessage = steamBoosterResult.message;
     }
-  } else if (steamPoints > 0) {
-    console.log(`Steam Booster effect not available (reroll) - window.CogwheelFeatsEffects:`, window.CogwheelFeatsEffects);
   }
 
   if (nemesisPoints > 0 || steamPoints > 0) {

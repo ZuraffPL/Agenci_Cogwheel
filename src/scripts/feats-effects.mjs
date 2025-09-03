@@ -587,26 +587,35 @@ export class FeatsEffects {
    * @returns {boolean} - Whether Steam Booster effect is active
    */
   static hasSteamBoosterEffect(actor) {
+    console.log(`=== Steam Booster Check for ${actor?.name} ===`);
+    
     if (!actor || !actor.system.archetype?.name) {
-      console.log(`Steam Booster check failed: no actor or archetype`);
+      console.log(`Steam Booster check failed: no actor or archetype`, { actor: !!actor, archetype: actor?.system?.archetype?.name });
       return false;
     }
 
     const archetypeName = actor.system.archetype.name.toLowerCase();
+    console.log(`Archetype name: "${archetypeName}"`);
     
     // Check if actor is Tech Genius
-    if (!archetypeName.includes('geniusz techniki')) {
+    const isTechGenius = archetypeName.includes('geniusz techniki');
+    if (!isTechGenius) {
       console.log(`Steam Booster check failed: not Tech Genius archetype (${archetypeName})`);
       return false;
     }
 
     // Check if actor has Steam Booster feat active
-    const steamBoosterFeat = actor.items.find(item => 
-      item.type === 'feat' && 
-      item.name.toLowerCase().includes('dopalacz pary')
-    );
+    console.log(`Actor items:`, actor.items.map(item => ({ name: item.name, type: item.type })));
+    
+    const steamBoosterFeat = actor.items.find(item => {
+      const isRightType = item.type === 'feat';
+      const hasRightName = item.name.toLowerCase().includes('dopalacz pary');
+      console.log(`Item "${item.name}" (type: ${item.type}): isRightType=${isRightType}, hasRightName=${hasRightName}`);
+      return isRightType && hasRightName;
+    });
 
-    console.log(`Steam Booster check for ${actor.name}: Tech Genius=${archetypeName.includes('geniusz techniki')}, has feat=${!!steamBoosterFeat}`);
+    console.log(`Steam Booster check for ${actor.name}: Tech Genius=${isTechGenius}, has feat=${!!steamBoosterFeat}`);
+    console.log(`Steam Booster feat found:`, steamBoosterFeat ? { name: steamBoosterFeat.name, type: steamBoosterFeat.type } : null);
 
     return !!steamBoosterFeat;
   }
