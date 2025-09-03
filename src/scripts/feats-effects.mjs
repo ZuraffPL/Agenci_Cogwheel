@@ -595,6 +595,11 @@ export class FeatsEffects {
         return false;
       }
 
+      console.log(`=== FULL ACTOR DEBUG ===`);
+      console.log(`Actor name: ${actor.name}`);
+      console.log(`Actor system:`, actor.system);
+      console.log(`Actor archetype:`, actor.system.archetype);
+      
       const archetypeName = actor.system.archetype.name.toLowerCase();
       console.log(`Archetype name: "${archetypeName}"`);
       
