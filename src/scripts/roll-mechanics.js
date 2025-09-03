@@ -449,6 +449,16 @@ export async function performAttributeRoll(actor, attribute) {
               }
             }
 
+            // Apply Steam Booster effect if applicable
+            let steamBoosterMessage = "";
+            if (steamPoints > 0 && window.CogwheelFeatsEffects) {
+              const steamBoosterResult = window.CogwheelFeatsEffects.applySteamBoosterEffect(actor, steamPoints);
+              steamPoints = steamBoosterResult.steamPoints;
+              if (steamBoosterResult.message) {
+                steamBoosterMessage = steamBoosterResult.message;
+              }
+            }
+
             if (nemesisPoints > 0 || steamPoints > 0) {
               game.cogwheelSyndicate.nemesisPoints = game.cogwheelSyndicate.nemesisPoints || 0;
               game.cogwheelSyndicate.steamPoints = game.cogwheelSyndicate.steamPoints || 0;
@@ -549,6 +559,7 @@ export async function performAttributeRoll(actor, attribute) {
                 ${applyTrauma && traumaModifier !== 0 ? `<p>${game.i18n.format("COGSYNDICATE.TraumaApplied", { traumaValue: Math.abs(traumaModifier) })}</p>` : ""}
                 ${nemesisPoints > 0 ? `<p><span style='color: purple; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedNemesisPoint", { amount: nemesisPoints })}</span></p>` : ""}
                 ${steamPoints > 0 ? `<p><span style='color: orange; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedSteamPoint", { amount: steamPoints })}</span></p>` : ""}
+                ${steamBoosterMessage}
                 <hr>
                 <p>${game.i18n.localize("COGSYNDICATE.Roll")}: ${diceCount}d12 (${die1}+${die2}${useStressDie ? `+${stressDie}` : ""}${useSteamDie ? `+${steamDie}` : ""}${useDevilDie ? `+${devilDie}` : ""}) + ${effectiveAttrValue} (${attrLabel})${traumaModifier !== 0 ? ` ${traumaModifier} (${game.i18n.localize("COGSYNDICATE.Trauma")})` : ""} + ${positionModifier} (${game.i18n.localize("COGSYNDICATE.Position")})${rollModifier !== 0 ? ` ${rollModifier > 0 ? '+' : ''}${rollModifier} (${game.i18n.localize("COGSYNDICATE.RollModifier")})` : ""}</p>
                 ${upgradeButton}
@@ -932,6 +943,16 @@ async function executeRollWithData(actor, data, isReroll = false) {
     }
   }
 
+  // Apply Steam Booster effect if applicable
+  let steamBoosterMessage = "";
+  if (steamPoints > 0 && window.CogwheelFeatsEffects) {
+    const steamBoosterResult = window.CogwheelFeatsEffects.applySteamBoosterEffect(actor, steamPoints);
+    steamPoints = steamBoosterResult.steamPoints;
+    if (steamBoosterResult.message) {
+      steamBoosterMessage = steamBoosterResult.message;
+    }
+  }
+
   if (nemesisPoints > 0 || steamPoints > 0) {
     game.cogwheelSyndicate.nemesisPoints = game.cogwheelSyndicate.nemesisPoints || 0;
     game.cogwheelSyndicate.steamPoints = game.cogwheelSyndicate.steamPoints || 0;
@@ -1039,6 +1060,7 @@ async function executeRollWithData(actor, data, isReroll = false) {
       ${applyTrauma && traumaModifier !== 0 ? `<p>${game.i18n.format("COGSYNDICATE.TraumaApplied", { traumaValue: Math.abs(traumaModifier) })}</p>` : ""}
       ${nemesisPoints > 0 ? `<p><span style='color: purple; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedNemesisPoint", { amount: nemesisPoints })}</span></p>` : ""}
       ${steamPoints > 0 ? `<p><span style='color: orange; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedSteamPoint", { amount: steamPoints })}</span></p>` : ""}
+      ${steamBoosterMessage}
       <hr>
       <p>${game.i18n.localize("COGSYNDICATE.Roll")}: ${diceCount}d12 (${die1}+${die2}${useStressDie ? `+${stressDie}` : ""}${useSteamDie ? `+${steamDie}` : ""}${useDevilDie ? `+${devilDie}` : ""}) + ${effectiveAttrValue} (${attrLabel})${traumaModifier !== 0 ? ` ${traumaModifier} (${game.i18n.localize("COGSYNDICATE.Trauma")})` : ""} + ${positionModifier} (${game.i18n.localize("COGSYNDICATE.Position")})${rollModifier !== 0 ? ` ${rollModifier > 0 ? '+' : ''}${rollModifier} (${game.i18n.localize("COGSYNDICATE.RollModifier")})` : ""}</p>
       ${upgradeButton}

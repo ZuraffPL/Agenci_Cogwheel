@@ -107,6 +107,7 @@
   "COGSYNDICATE.BaseValueTooltipV2": "Wartość bazowa z archetypu przed modyfikatorem z obrażeń",
   "COGSYNDICATE.EffectiveValueTooltipV2": "Wartość efektywna używana do rzutów (wartość bazowa obniżona o obrażenia otrzymane w atrybut)",
   "COGSYNDICATE.ToggleFeatDetails": "Pokaż/ukryj szczegóły atutu",
+  "COGSYNDICATE.FeatSteamBoosterEffect": "Atut Dopalacz Pary - Punkty Pary x2",
   "COGSYNDICATE.StartingAttributeValues": "Startowe wartości atrybutów:",
   "COGSYNDICATE.GearTooltip": "Aktualne punkty sprzętu (maks.: {max})",
   "COGSYNDICATE.TraumaTooltip": "Aktualny poziom traumy (maks.: {max})",

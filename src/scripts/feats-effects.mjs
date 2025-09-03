@@ -499,6 +499,57 @@ export class FeatsEffects {
 
     return null;
   }
+
+  /**
+   * Check if actor has Steam Booster effect active
+   * (Tech Genius archetype with Steam Booster feat)
+   * @param {Actor} actor - The actor to check
+   * @returns {boolean} - Whether Steam Booster effect is active
+   */
+  static hasSteamBoosterEffect(actor) {
+    if (!actor || !actor.system.archetype?.name) {
+      return false;
+    }
+
+    const archetypeName = actor.system.archetype.name.toLowerCase();
+    
+    // Check if actor is Tech Genius
+    if (!archetypeName.includes('geniusz techniki')) {
+      return false;
+    }
+
+    // Check if actor has Steam Booster feat active
+    const steamBoosterFeat = actor.items.find(item => 
+      item.type === 'feat' && 
+      item.name.toLowerCase().includes('dopalacz pary')
+    );
+
+    return !!steamBoosterFeat;
+  }
+
+  /**
+   * Apply Steam Booster effect to steam points generation
+   * Doubles steam points for Tech Genius with Steam Booster feat
+   * @param {Actor} actor - The actor generating steam points
+   * @param {number} originalSteamPoints - Original steam points generated
+   * @returns {Object} - {steamPoints: number, message: string|null}
+   */
+  static applySteamBoosterEffect(actor, originalSteamPoints) {
+    if (originalSteamPoints <= 0 || !this.hasSteamBoosterEffect(actor)) {
+      return { steamPoints: originalSteamPoints, message: null };
+    }
+
+    const doubledSteamPoints = originalSteamPoints * 2;
+    const message = `
+      <div class="steam-booster-effect">
+        <p style="color: #cd7f32; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">
+          <i class="fas fa-tachometer-alt"></i> ${game.i18n.localize("COGSYNDICATE.FeatSteamBoosterEffect")}
+        </p>
+      </div>
+    `;
+
+    return { steamPoints: doubledSteamPoints, message: message };
+  }
 }
 
 // Export for use in other modules

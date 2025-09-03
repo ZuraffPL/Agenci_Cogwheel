@@ -673,30 +673,39 @@
 }
 
 .agentv2 .delete-feat {
-  width: 28px;
-  height: 28px;
-  min-width: 28px;
-  max-width: 28px;
-  flex: none;
-  font-size: 14px;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
   padding: 0;
-  margin-left: 8px;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+  margin-left: 12px;
   line-height: 1;
   text-align: center;
-  pointer-events: auto;
+  background: linear-gradient(135deg, #8b0000 0%, #660000 100%);
+  color: #ffcccb;
+  border: 2px solid #a0522d;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 4px rgba(139, 0, 0, 0.4), inset 0 1px 0 rgba(205, 127, 50, 0.2);
 }
 
 .agentv2 .delete-feat:hover {
-  background-color: #c82333;
+  background: linear-gradient(135deg, #a0522d 0%, #8b4513 100%);
+  border-color: #cd7f32;
+  color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(139, 0, 0, 0.5), inset 0 1px 0 rgba(205, 127, 50, 0.4);
+}
+
+.agentv2 .delete-feat:active {
+  transform: scale(0.95);
+}
+
+.agentv2 .delete-feat i {
+  font-size: 10px;
 }
 
 .agentv2 .feat-description {

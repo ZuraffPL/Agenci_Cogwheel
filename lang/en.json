@@ -107,6 +107,7 @@
   "COGSYNDICATE.BaseValueTooltipV2": "Base value from archetype before damage modifiers",
   "COGSYNDICATE.EffectiveValueTooltipV2": "Effective value used for rolls (base value reduced by attribute damage)",
   "COGSYNDICATE.ToggleFeatDetails": "Show/hide feat details",
+  "COGSYNDICATE.FeatSteamBoosterEffect": "Steam Booster Feat - Steam Points x2",
   "COGSYNDICATE.StartingAttributeValues": "Starting attribute values:",
   "COGSYNDICATE.GearTooltip": "Current gear points (max: {max})",
   "COGSYNDICATE.TraumaTooltip": "Current trauma level (max: {max})",
