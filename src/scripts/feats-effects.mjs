@@ -607,19 +607,37 @@ export class FeatsEffects {
         return false;
       }
 
-      // Check actor.items structure
+      // Check actor.items structure - try different ways to access items
       console.log(`Actor.items exists: ${!!actor.items}`);
       console.log(`Actor.items is array: ${Array.isArray(actor.items)}`);
       console.log(`Actor.items length: ${actor.items?.length || 'undefined'}`);
+      console.log(`Actor.items is collection: ${actor.items?.constructor?.name}`);
       
-      if (!actor.items || actor.items.length === 0) {
-        console.log(`No items found on actor`);
+      // Try to get items from different sources
+      let actorItems = null;
+      
+      if (actor.items && typeof actor.items.contents === 'object') {
+        // Foundry collection - use contents
+        actorItems = actor.items.contents;
+        console.log(`Using actor.items.contents, length: ${actorItems.length}`);
+      } else if (actor.items && Array.isArray(actor.items)) {
+        // Already an array
+        actorItems = actor.items;
+        console.log(`Using actor.items as array, length: ${actorItems.length}`);
+      } else if (actor.data?.items && Array.isArray(actor.data.items)) {
+        // Items in data
+        actorItems = actor.data.items;
+        console.log(`Using actor.data.items, length: ${actorItems.length}`);
+      }
+      
+      if (!actorItems || actorItems.length === 0) {
+        console.log(`No items found on actor - actorItems:`, actorItems);
         return false;
       }
 
-      console.log(`Actor items:`, actor.items.map(item => ({ name: item.name, type: item.type })));
+      console.log(`Actor items:`, actorItems.map(item => ({ name: item.name, type: item.type })));
       
-      const steamBoosterFeat = actor.items.find(item => {
+      const steamBoosterFeat = actorItems.find(item => {
         const isRightType = item.type === 'feat';
         const hasRightName = item.name.toLowerCase().includes('dopalacz pary');
         console.log(`Item "${item.name}" (type: ${item.type}): isRightType=${isRightType}, hasRightName=${hasRightName}`);
