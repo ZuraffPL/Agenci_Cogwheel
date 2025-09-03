@@ -589,35 +589,51 @@ export class FeatsEffects {
   static hasSteamBoosterEffect(actor) {
     console.log(`=== Steam Booster Check for ${actor?.name} ===`);
     
-    if (!actor || !actor.system.archetype?.name) {
-      console.log(`Steam Booster check failed: no actor or archetype`, { actor: !!actor, archetype: actor?.system?.archetype?.name });
+    try {
+      if (!actor || !actor.system.archetype?.name) {
+        console.log(`Steam Booster check failed: no actor or archetype`, { actor: !!actor, archetype: actor?.system?.archetype?.name });
+        return false;
+      }
+
+      const archetypeName = actor.system.archetype.name.toLowerCase();
+      console.log(`Archetype name: "${archetypeName}"`);
+      
+      // Check if actor is Tech Genius
+      const isTechGenius = archetypeName.includes('geniusz techniki');
+      console.log(`Is Tech Genius: ${isTechGenius}`);
+      
+      if (!isTechGenius) {
+        console.log(`Steam Booster check failed: not Tech Genius archetype (${archetypeName})`);
+        return false;
+      }
+
+      // Check actor.items structure
+      console.log(`Actor.items exists: ${!!actor.items}`);
+      console.log(`Actor.items is array: ${Array.isArray(actor.items)}`);
+      console.log(`Actor.items length: ${actor.items?.length || 'undefined'}`);
+      
+      if (!actor.items || actor.items.length === 0) {
+        console.log(`No items found on actor`);
+        return false;
+      }
+
+      console.log(`Actor items:`, actor.items.map(item => ({ name: item.name, type: item.type })));
+      
+      const steamBoosterFeat = actor.items.find(item => {
+        const isRightType = item.type === 'feat';
+        const hasRightName = item.name.toLowerCase().includes('dopalacz pary');
+        console.log(`Item "${item.name}" (type: ${item.type}): isRightType=${isRightType}, hasRightName=${hasRightName}`);
+        return isRightType && hasRightName;
+      });
+
+      console.log(`Steam Booster check result for ${actor.name}: Tech Genius=${isTechGenius}, has feat=${!!steamBoosterFeat}`);
+      console.log(`Steam Booster feat found:`, steamBoosterFeat ? { name: steamBoosterFeat.name, type: steamBoosterFeat.type } : null);
+
+      return !!steamBoosterFeat;
+    } catch (error) {
+      console.error(`Error in hasSteamBoosterEffect:`, error);
       return false;
     }
-
-    const archetypeName = actor.system.archetype.name.toLowerCase();
-    console.log(`Archetype name: "${archetypeName}"`);
-    
-    // Check if actor is Tech Genius
-    const isTechGenius = archetypeName.includes('geniusz techniki');
-    if (!isTechGenius) {
-      console.log(`Steam Booster check failed: not Tech Genius archetype (${archetypeName})`);
-      return false;
-    }
-
-    // Check if actor has Steam Booster feat active
-    console.log(`Actor items:`, actor.items.map(item => ({ name: item.name, type: item.type })));
-    
-    const steamBoosterFeat = actor.items.find(item => {
-      const isRightType = item.type === 'feat';
-      const hasRightName = item.name.toLowerCase().includes('dopalacz pary');
-      console.log(`Item "${item.name}" (type: ${item.type}): isRightType=${isRightType}, hasRightName=${hasRightName}`);
-      return isRightType && hasRightName;
-    });
-
-    console.log(`Steam Booster check for ${actor.name}: Tech Genius=${isTechGenius}, has feat=${!!steamBoosterFeat}`);
-    console.log(`Steam Booster feat found:`, steamBoosterFeat ? { name: steamBoosterFeat.name, type: steamBoosterFeat.type } : null);
-
-    return !!steamBoosterFeat;
   }
 
   /**
@@ -637,8 +653,15 @@ export class FeatsEffects {
     }
     
     console.log(`About to call hasSteamBoosterEffect...`);
-    const hasSteamBooster = this.hasSteamBoosterEffect(actor);
-    console.log(`hasSteamBoosterEffect returned: ${hasSteamBooster}`);
+    let hasSteamBooster = false;
+    try {
+      hasSteamBooster = this.hasSteamBoosterEffect(actor);
+      console.log(`hasSteamBoosterEffect returned: ${hasSteamBooster}`);
+    } catch (error) {
+      console.error(`Error in hasSteamBoosterEffect:`, error);
+      console.log(`Steam Booster check failed due to error, returning original points: ${originalSteamPoints}`);
+      return { steamPoints: originalSteamPoints, message: null };
+    }
     
     if (!hasSteamBooster) {
       console.log(`Steam Booster effect not active, returning original points: ${originalSteamPoints}`);
