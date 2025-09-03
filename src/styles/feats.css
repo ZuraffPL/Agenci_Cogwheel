@@ -127,7 +127,7 @@
 
 .feat-header-grid {
   display: grid;
-  grid-template-columns: 30px 1fr 120px 40px;
+  grid-template-columns: 30px 1fr 200px 40px;
   align-items: center;
   gap: 0 8px;
   margin-bottom: 0;
@@ -185,6 +185,11 @@
 
 .feat-col-type {
   text-align: center;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
 }
 
 .feat-col-delete {
