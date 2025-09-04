@@ -1172,6 +1172,13 @@ h3.centered {
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+.organization-training-dialog select option {
+  background: #ffffff;
+  color: #000000;
+  padding: 8px;
+  font-weight: bold;
+}
+
 .organization-training-dialog select:focus {
   outline: none;
   border-color: #cd7f32;

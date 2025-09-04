@@ -926,3 +926,76 @@
   font-size: 14px !important;
   line-height: 1.4 !important;
 }
+
+/* ===== ORGANIZATION TRAINING DIALOG - AGENT V2 ===== */
+.agentv2 .organization-training-dialog {
+  background: linear-gradient(135deg, #3e2723 0%, #5d4037 50%, #6d4c41 100%);
+  border: 3px solid #8d6e63;
+  border-radius: 15px;
+  padding: 20px;
+  color: #efebe9;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.agentv2 .organization-training-dialog h3 {
+  color: #cd7f32;
+  text-align: center;
+  margin: 0 0 15px 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.agentv2 .organization-training-dialog p {
+  margin: 10px 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.agentv2 .organization-training-dialog .form-group {
+  margin: 15px 0;
+}
+
+.agentv2 .organization-training-dialog label {
+  display: block;
+  color: #d7ccc8;
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.agentv2 .organization-training-dialog select {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #8d6e63;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #424242 0%, #616161 100%);
+  color: #efebe9;
+  font-size: 14px;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.agentv2 .organization-training-dialog select option {
+  background: #ffffff;
+  color: #000000;
+  padding: 8px;
+  font-weight: bold;
+}
+
+.agentv2 .organization-training-dialog select:focus {
+  outline: none;
+  border-color: #cd7f32;
+  box-shadow: 0 0 8px rgba(205, 127, 50, 0.5);
+}
+
+.agentv2 .organization-training-dialog select:hover {
+  background: linear-gradient(135deg, #4a4a4a 0%, #6a6a6a 100%);
+}
+
+.agentv2 .organization-training-dialog em {
+  color: #bcaaa4;
+  font-style: italic;
+  font-size: 13px;
+}
