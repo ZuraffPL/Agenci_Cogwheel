@@ -69,7 +69,10 @@ export class FeatsEffects {
     // Check if Steel can be increased
     if (currentStalBase >= maxStalBase) {
       ui.notifications.warn(
-        `${actor.name}: Atrybut Stal już osiągnął maksymalną wartość bazową (${maxStalBase}). Efekt Parowej Augmentacji nie może być zastosowany.`
+        game.i18n.format("COGSYNDICATE.SteamAugmentationMaxReached", {
+          agentName: actor.name,
+          maxValue: maxStalBase
+        })
       );
       return false;
     }
@@ -87,14 +90,19 @@ export class FeatsEffects {
 
     // Show notification
     ui.notifications.info(
-      `${actor.name}: Parowa Augmentacja zwiększyła bazową wartość Stali o ${increase} (z ${currentStalBase} na ${newStalBase}).`
+      game.i18n.format("COGSYNDICATE.SteamAugmentationIncreased", {
+        agentName: actor.name,
+        increase: increase,
+        oldValue: currentStalBase,
+        newValue: newStalBase
+      })
     );
 
     // Log to chat
     await ChatMessage.create({
       content: `
         <div class="feat-effect-message">
-          <h3><i class="fas fa-cog"></i> Efekt Atutu</h3>
+          <h3><i class="fas fa-cog"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectAppliedTitle")}</h3>
           <p><strong>${actor.name}</strong> otrzymał <strong>${feat.name}</strong></p>
           <p><strong>Efekt:</strong> Bazowa wartość <strong>Stali</strong> wzrosła o ${increase} (z ${currentStalBase} na ${newStalBase})</p>
           <hr>
@@ -191,14 +199,19 @@ export class FeatsEffects {
 
     // Show notification
     ui.notifications.info(
-      `${actor.name}: Intrygant zwiększył bazową wartość Intrygi o ${increase} (z ${currentIntrigaBase} na ${newIntrigaBase}).`
+      game.i18n.format("COGSYNDICATE.IntrigantIncreased", {
+        agentName: actor.name,
+        increase: increase,
+        oldValue: currentIntrigaBase,
+        newValue: newIntrigaBase
+      })
     );
 
     // Log to chat
     await ChatMessage.create({
       content: `
         <div class="feat-effect-message">
-          <h3><i class="fas fa-mask"></i> Efekt Atutu</h3>
+          <h3><i class="fas fa-mask"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectAppliedTitle")}</h3>
           <p><strong>${actor.name}</strong> otrzymał <strong>${feat.name}</strong></p>
           <p><strong>Efekt:</strong> Bazowa wartość <strong>Intrygi</strong> wzrosła o ${increase} (z ${currentIntrigaBase} na ${newIntrigaBase})</p>
           <hr>
@@ -450,14 +463,19 @@ export class FeatsEffects {
 
     // Show notification
     ui.notifications.info(
-      `${actor.name}: Usunięcie Intryganta zmniejszyło bazową wartość Intrygi o ${decrease} (z ${currentIntrigaBase} na ${newIntrigaBase}).`
+      game.i18n.format("COGSYNDICATE.IntrigantRemoved", {
+        agentName: actor.name,
+        decrease: decrease,
+        oldValue: currentIntrigaBase,
+        newValue: newIntrigaBase
+      })
     );
 
     // Log to chat
     await ChatMessage.create({
       content: `
         <div class="feat-effect-message">
-          <h3><i class="fas fa-mask"></i> Usunięcie Efektu Atutu</h3>
+          <h3><i class="fas fa-mask"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectRemovedTitle")}</h3>
           <p><strong>${actor.name}</strong> stracił <strong>${feat.name}</strong></p>
           <p><strong>Efekt:</strong> Bazowa wartość <strong>Intrygi</strong> zmniejszyła się o ${decrease} (z ${currentIntrigaBase} na ${newIntrigaBase})</p>
           <hr>
@@ -480,14 +498,14 @@ export class FeatsEffects {
   static async _removeSteamBoosterFeatEffect(actor, feat) {
     // Show notification
     ui.notifications.info(
-      `${actor.name}: Dopalacz Pary został usunięty - punkty Pary nie będą już podwajane.`
+      game.i18n.format("COGSYNDICATE.SteamBoosterRemoved", { agentName: actor.name })
     );
 
     // Log to chat
     await ChatMessage.create({
       content: `
         <div class="feat-effect-message">
-          <h3><i class="fas fa-tachometer-alt"></i> Usunięcie Efektu Atutu</h3>
+          <h3><i class="fas fa-tachometer-alt"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectRemovedTitle")}</h3>
           <p><strong>${actor.name}</strong> stracił <strong>${feat.name}</strong></p>
           <p><strong>Efekt:</strong> Punkty Pary nie będą już <strong>podwajane</strong> podczas testów atrybutów głównych</p>
           <hr>
@@ -519,27 +537,33 @@ export class FeatsEffects {
     const availableAttributes = Object.entries(attributes).filter(([key, attr]) => attr.current < 6);
 
     if (availableAttributes.length === 0) {
-      ui.notifications.warn(`${actor.name}: Wszystkie atrybuty już mają maksymalną wartość bazową (6). Efekt nie może być zastosowany.`);
+      ui.notifications.warn(
+        game.i18n.format("COGSYNDICATE.OrganizationTrainingMaxAttributesWarning", { agentName: actor.name })
+      );
       return false;
     }
 
     // Create attribute selection dialog
-    const attributeOptions = availableAttributes.map(([key, attr]) => 
+    const firstAttributeKey = availableAttributes[0][0];
+    const attributeOptions = availableAttributes.map(([key, attr], index) => 
       `<option value="${key}">${attr.name} (${attr.current} → ${Math.min(attr.current + 1, 6)})</option>`
     ).join('');
 
     const dialogContent = `
       <div class="organization-training-dialog">
-        <h3><i class="fas fa-graduation-cap"></i> Szkolenie Organizacji</h3>
-        <p><strong>${actor.name}</strong> otrzymuje specjalne szkolenie!</p>
-        <p>Wybierz atrybut do wzmocnienia:</p>
+        <h3><i class="fas fa-graduation-cap"></i> ${game.i18n.localize("COGSYNDICATE.OrganizationTrainingTitle")}</h3>
+        <p><strong>${game.i18n.format("COGSYNDICATE.OrganizationTrainingReceives", { agentName: actor.name })}</strong></p>
+        <p>${game.i18n.localize("COGSYNDICATE.OrganizationTrainingSelect")}</p>
         <div class="form-group">
-          <label for="chosen-attribute"><strong>Główny Atrybut:</strong></label>
-          <select id="chosen-attribute" name="chosenAttribute">
-            ${attributeOptions}
+          <label for="chosen-attribute"><strong>${game.i18n.localize("COGSYNDICATE.OrganizationTrainingMainAttribute")}</strong></label>
+          <select id="chosen-attribute" name="chosenAttribute" style="width: 100%;">
+            <option value="${firstAttributeKey}" selected>${availableAttributes[0][1].name} (${availableAttributes[0][1].current} → ${Math.min(availableAttributes[0][1].current + 1, 6)})</option>
+            ${availableAttributes.slice(1).map(([key, attr]) => 
+              `<option value="${key}">${attr.name} (${attr.current} → ${Math.min(attr.current + 1, 6)})</option>`
+            ).join('')}
           </select>
         </div>
-        <p><em>Wybrany atrybut zostanie zwiększony o <strong>+1</strong> punkt bazowy.</em></p>
+        <p><em>${game.i18n.localize("COGSYNDICATE.OrganizationTrainingBonus")}</em></p>
       </div>
     `;
 
@@ -559,7 +583,7 @@ export class FeatsEffects {
               const attributeData = attributes[chosenAttribute];
               
               if (!attributeData) {
-                ui.notifications.error("Błąd: nie można znaleźć wybranego atrybutu");
+                ui.notifications.error(game.i18n.localize("COGSYNDICATE.AttributeCannotBeFound"));
                 resolve(false);
                 return;
               }
@@ -572,14 +596,19 @@ export class FeatsEffects {
 
                 // Show success notification
                 ui.notifications.info(
-                  `${actor.name}: Szkolenie Organizacji zwiększyło ${attributeData.name} z ${attributeData.current} na ${newValue}!`
+                  game.i18n.format("COGSYNDICATE.OrganizationTrainingIncreased", {
+                    agentName: actor.name,
+                    attributeName: attributeData.name,
+                    oldValue: attributeData.current,
+                    newValue: newValue
+                  })
                 );
 
                 // Log to chat with steampunk styling
                 await ChatMessage.create({
                   content: `
                     <div class="feat-effect-message">
-                      <h3><i class="fas fa-graduation-cap"></i> Efekt Atutu Zastosowany</h3>
+                      <h3><i class="fas fa-graduation-cap"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectAppliedTitle")}</h3>
                       <p><strong>${actor.name}</strong> otrzymał <strong>${feat.name}</strong></p>
                       <p><strong>Efekt:</strong> Bazowa wartość <strong>${attributeData.name}</strong> zwiększona z <span style="color: #8b4513;">${attributeData.current}</span> na <span style="color: #cd7f32; font-weight: bold;">${newValue}</span></p>
                       <hr>
@@ -592,7 +621,7 @@ export class FeatsEffects {
                 resolve(true);
               } catch (error) {
                 console.error('Error applying Organization Training effect:', error);
-                ui.notifications.error(`Błąd podczas zastosowania efektu: ${error.message}`);
+                ui.notifications.error(game.i18n.format("COGSYNDICATE.ApplyEffectError", { error: error.message }));
                 resolve(false);
               }
             }
@@ -624,13 +653,15 @@ export class FeatsEffects {
     const availableAttributes = Object.entries(attributes).filter(([key, attr]) => attr.current > attr.base);
 
     if (availableAttributes.length === 0) {
-      ui.notifications.warn(`${actor.name}: Żaden atrybut nie może być zmniejszony - wszystkie są na poziomie bazowym archetypu.`);
+      ui.notifications.warn(
+        game.i18n.format("COGSYNDICATE.OrganizationTrainingRemovalNoAttributes", { agentName: actor.name })
+      );
       
       // Still log removal message
       await ChatMessage.create({
         content: `
           <div class="feat-effect-message">
-            <h3><i class="fas fa-graduation-cap"></i> Usunięcie Efektu Atutu</h3>
+            <h3><i class="fas fa-graduation-cap"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectRemovedTitle")}</h3>
             <p><strong>${actor.name}</strong> stracił <strong>${feat.name}</strong></p>
             <p><strong>Efekt:</strong> Brak atrybutów do zmniejszenia (wszystkie na poziomie bazowym archetypu)</p>
             <hr>
@@ -644,22 +675,26 @@ export class FeatsEffects {
     }
 
     // Create attribute selection dialog for removal
-    const attributeOptions = availableAttributes.map(([key, attr]) => 
+    const firstAttributeKey = availableAttributes[0][0];
+    const attributeOptions = availableAttributes.map(([key, attr], index) => 
       `<option value="${key}">${attr.name} (${attr.current} → ${Math.max(attr.current - 1, attr.base)})</option>`
     ).join('');
 
     const dialogContent = `
       <div class="organization-training-dialog">
-        <h3><i class="fas fa-graduation-cap"></i> Usunięcie: Szkolenie Organizacji</h3>
-        <p><strong>${actor.name}</strong> traci efekt specjalnego szkolenia.</p>
-        <p>Wybierz atrybut do obniżenia:</p>
+        <h3><i class="fas fa-graduation-cap"></i> ${game.i18n.localize("COGSYNDICATE.OrganizationTrainingRemoval")}</h3>
+        <p><strong>${game.i18n.format("COGSYNDICATE.OrganizationTrainingRemovalLoses", { agentName: actor.name })}</strong></p>
+        <p>${game.i18n.localize("COGSYNDICATE.OrganizationTrainingRemovalSelect")}</p>
         <div class="form-group">
-          <label for="chosen-attribute"><strong>Atrybut do obniżenia:</strong></label>
-          <select id="chosen-attribute" name="chosenAttribute">
-            ${attributeOptions}
+          <label for="chosen-attribute"><strong>${game.i18n.localize("COGSYNDICATE.OrganizationTrainingRemovalAttribute")}</strong></label>
+          <select id="chosen-attribute" name="chosenAttribute" style="width: 100%;">
+            <option value="${firstAttributeKey}" selected>${availableAttributes[0][1].name} (${availableAttributes[0][1].current} → ${Math.max(availableAttributes[0][1].current - 1, availableAttributes[0][1].base)})</option>
+            ${availableAttributes.slice(1).map(([key, attr]) => 
+              `<option value="${key}">${attr.name} (${attr.current} → ${Math.max(attr.current - 1, attr.base)})</option>`
+            ).join('')}
           </select>
         </div>
-        <p><em>Wybrany atrybut zostanie obniżony o <strong>1</strong> punkt bazowy.</em></p>
+        <p><em>${game.i18n.localize("COGSYNDICATE.OrganizationTrainingRemovalPenalty")}</em></p>
       </div>
     `;
 
@@ -679,7 +714,7 @@ export class FeatsEffects {
               const attributeData = attributes[chosenAttribute];
               
               if (!attributeData) {
-                ui.notifications.error("Błąd: nie można znaleźć wybranego atrybutu");
+                ui.notifications.error(game.i18n.localize("COGSYNDICATE.AttributeCannotBeFound"));
                 resolve(false);
                 return;
               }
@@ -692,14 +727,19 @@ export class FeatsEffects {
 
                 // Show success notification
                 ui.notifications.info(
-                  `${actor.name}: Usunięcie Szkolenia Organizacji obniżyło ${attributeData.name} z ${attributeData.current} na ${newValue}.`
+                  game.i18n.format("COGSYNDICATE.OrganizationTrainingRemovalDecreased", {
+                    agentName: actor.name,
+                    attributeName: attributeData.name,
+                    oldValue: attributeData.current,
+                    newValue: newValue
+                  })
                 );
 
                 // Log to chat
                 await ChatMessage.create({
                   content: `
                     <div class="feat-effect-message">
-                      <h3><i class="fas fa-graduation-cap"></i> Usunięcie Efektu Atutu</h3>
+                      <h3><i class="fas fa-graduation-cap"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectRemovedTitle")}</h3>
                       <p><strong>${actor.name}</strong> stracił <strong>${feat.name}</strong></p>
                       <p><strong>Efekt:</strong> Bazowa wartość <strong>${attributeData.name}</strong> obniżona z <span style="color: #cd7f32;">${attributeData.current}</span> na <span style="color: #8b4513; font-weight: bold;">${newValue}</span></p>
                       <hr>
@@ -712,7 +752,7 @@ export class FeatsEffects {
                 resolve(true);
               } catch (error) {
                 console.error('Error removing Organization Training effect:', error);
-                ui.notifications.error(`Błąd podczas usuwania efektu: ${error.message}`);
+                ui.notifications.error(game.i18n.format("COGSYNDICATE.RemoveEffectError", { error: error.message }));
                 resolve(false);
               }
             }
