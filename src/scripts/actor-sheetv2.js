@@ -401,9 +401,45 @@ class CogwheelActorSheetV2 extends ActorSheet {
         }
       }
     } else if (currentValue < maxValue) {
+      const newValue = currentValue + 1;
       await this.actor.update({
-        [`system.resources.${resource}.value`]: currentValue + 1
+        [`system.resources.${resource}.value`]: newValue
       });
+
+      // Add chat messages for gear resource changes
+      const actorName = this.actor.name;
+      const resourceLabel = game.i18n.localize(`COGSYNDICATE.${resource.charAt(0).toUpperCase() + resource.slice(1)}`);
+
+      if (resource === "gear") {
+        await ChatMessage.create({
+          content: `
+            <div class="feat-effect-message">
+              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.ResourceAdded", { actorName, resource: resourceLabel })}</h3>
+            </div>
+          `,
+          speaker: { actor: this.actor.id }
+        });
+      } else if (resource === "trauma") {
+        await ChatMessage.create({
+          content: `<p>${game.i18n.format("COGSYNDICATE.TraumaIncreased", { actorName: this.actor.name })}</p>`,
+          speaker: { actor: this.actor.id }
+        });
+
+        if (newValue === 4) {
+          const maxTraumaMessage = game.i18n.localize("COGSYNDICATE.MaxTraumaReached");
+          await ChatMessage.create({
+            content: `<p>${maxTraumaMessage}</p>`,
+            speaker: { actor: this.actor.id }
+          });
+          new Dialog({
+            title: "Maximum Trauma",
+            content: `<p>${maxTraumaMessage}</p>`,
+            buttons: {
+              ok: { label: "OK" }
+            }
+          }).render(true);
+        }
+      }
     }
   }
 
@@ -413,9 +449,35 @@ class CogwheelActorSheetV2 extends ActorSheet {
     const currentValue = this.actor.system.resources[resource].value || 0;
 
     if (currentValue > 0) {
+      const newValue = currentValue - 1;
       await this.actor.update({
-        [`system.resources.${resource}.value`]: currentValue - 1
+        [`system.resources.${resource}.value`]: newValue
       });
+
+      // Add chat messages for gear resource changes
+      const actorName = this.actor.name;
+      const resourceLabel = game.i18n.localize(`COGSYNDICATE.${resource.charAt(0).toUpperCase() + resource.slice(1)}`);
+
+      if (resource === "gear") {
+        await ChatMessage.create({
+          content: `
+            <div class="feat-effect-message">
+              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.ResourceSpent", { actorName, resource: resourceLabel })}</h3>
+            </div>
+          `,
+          speaker: { actor: this.actor.id }
+        });
+      } else if (resource === "stress") {
+        await ChatMessage.create({
+          content: `<p>${game.i18n.format("COGSYNDICATE.StressReduced", { actorName, resource: resourceLabel })}</p>`,
+          speaker: { actor: this.actor.id }
+        });
+      } else if (resource === "trauma") {
+        await ChatMessage.create({
+          content: `<p>${game.i18n.format("COGSYNDICATE.TraumaDecreased", { actorName: actorName })}</p>`,
+          speaker: { actor: this.actor.id }
+        });
+      }
     }
   }
 

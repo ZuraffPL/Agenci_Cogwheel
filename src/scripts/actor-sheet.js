@@ -473,7 +473,11 @@ class CogwheelActorSheet extends ActorSheet {
         });
       } else if (resource === "gear") {
         await ChatMessage.create({
-          content: `<p>${game.i18n.format("COGSYNDICATE.ResourceAdded", { actorName, resource: resourceLabel })}</p>`,
+          content: `
+            <div class="feat-effect-message">
+              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.ResourceAdded", { actorName, resource: resourceLabel })}</h3>
+            </div>
+          `,
           speaker: { actor: this.actor.id }
         });
       } else if (resource === "stress") {
@@ -505,7 +509,11 @@ class CogwheelActorSheet extends ActorSheet {
         });
       } else if (resource === "gear") {
         await ChatMessage.create({
-          content: `<p>${game.i18n.format("COGSYNDICATE.ResourceSpent", { actorName, resource: resourceLabel })}</p>`,
+          content: `
+            <div class="feat-effect-message">
+              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.ResourceSpent", { actorName, resource: resourceLabel })}</h3>
+            </div>
+          `,
           speaker: { actor: this.actor.id }
         });
       } else if (resource === "stress") {
