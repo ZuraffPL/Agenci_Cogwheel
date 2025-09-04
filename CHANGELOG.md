@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Styled Gear Resource Chat Messages**: Enhanced visual consistency between agent sheet versions
+  - **V2 Agent Sheet**: Added missing gear resource increment/decrement chat messages
+  - **Both V1/V2**: Applied `.feat-effect-message` CSS styling with steampunk appearance
+  - **Cog Icon Integration**: Messages display with `<i class="fas fa-cog"></i>` icon matching feat effects
+  - **Unified Styling**: Both sheet versions now use identical visual formatting for gear messages
+
+### Enhanced
+- **Chat Message Consistency**: Gear resource messages now match existing feat effects visual style
+  - **Steampunk Theme**: Gold borders, gradient backgrounds, and professional typography
+  - **Multilingual Support**: Uses existing `COGSYNDICATE.ResourceAdded/ResourceSpent` translation keys
+  - **Visual Hierarchy**: Clear distinction from plain chat messages with enhanced styling
+
 ### Fixed
 - **Resource Auto-Correction System**: Automatic correction of resource values when maximums decrease
   - **Gear Resource**: Auto-corrects current gear points when machine attribute damage reduces maximum
