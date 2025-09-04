@@ -47,7 +47,6 @@ class CogwheelNemesisSheet extends ActorSheet {
       { value: "Globalny", label: "Globalny" }
     ];
 
-    console.log("Dane w getData dla Nemezis:", data);
     return data;
   }
 

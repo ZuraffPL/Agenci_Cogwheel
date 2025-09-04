@@ -7,6 +7,63 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.7] - 2025-09-04
+
+### Added
+- **Complete Equipment Functions Deduplication System**: Revolutionary shared function architecture
+  - **ActorEquipmentFunctions Module**: Comprehensive equipment management with add/edit/delete operations
+  - **Flexible Customization System**: 10+ customization hooks allowing per-sheet version behavior modification
+  - **Full V1/V2 Compatibility**: Both agent sheet versions maintain identical behavior while using shared code
+  - **Future-Proof Architecture**: Easy integration for future agent sheet versions (V3, V4, etc.)
+
+### Enhanced
+- **Massive Code Reduction**: Eliminated 300+ lines of duplicated equipment code per sheet version
+  - **Total Savings**: ~500+ lines of duplicated code removed across gear/stress/equipment functions
+  - **Maintainability**: Bug fixes now require changes in single location instead of multiple files
+  - **Consistency**: All equipment operations work identically unless explicitly customized
+- **Advanced Customization Options**: Comprehensive callback system for equipment operations
+  - **Validation Hooks**: Custom input validation, cost validation, and error handling per sheet version
+  - **Processing Hooks**: Custom data processing and equipment defaults configuration
+  - **Success Callbacks**: Customizable success/error handling with version-specific behaviors
+  - **Refund System**: Configurable equipment deletion refund calculation
+- **Documentation Excellence**: Comprehensive examples and implementation guides
+  - **EQUIPMENT-EXAMPLES.js**: 7+ detailed implementation scenarios for different sheet versions
+  - **Shared Function Architecture Documentation**: Complete system overview and usage patterns
+  - **Customization Recipes**: Step-by-step guides for extending functionality
+
+### Technical
+- **Shared Function Architecture**: Complete modularization of equipment operations
+  - **handleAddEquipment()**: Universal equipment addition with validation and callbacks
+  - **handleEditEquipment()**: Equipment modification with cost difference handling
+  - **handleDeleteEquipment()**: Equipment removal with optional confirmation and refund calculation
+- **Backward Compatibility**: All existing functionality preserved with zero breaking changes
+  - **V1 Behavior**: Strict validation with trimming and dialog error display maintained
+  - **V2 Behavior**: Simplified validation with notification-based errors maintained
+  - **Integration**: Seamless replacement of original functions without API changes
+- **Error Handling**: Comprehensive error management with fallback mechanisms
+  - **Validation Pipeline**: Multi-stage validation with custom override capabilities
+  - **Exception Safety**: Robust error handling prevents system crashes during equipment operations
+  - **Debug Support**: Enhanced logging and error reporting for troubleshooting
+- **Module System**: Clean separation of concerns with shared function modules
+  - **ActorGearFunctions**: Gear spending operations (v0.7.6)
+  - **ActorStressFunctions**: Stress spending operations (v0.7.6)  
+  - **ActorEquipmentFunctions**: Equipment management operations (v0.7.7)
+  - **Example Documentation**: Comprehensive usage examples for all shared functions
+
+### Refactored
+- **Actor Sheet V1 Equipment Functions**: Complete replacement with shared function calls
+  - **_onAddEquipment()**: Now uses ActorEquipmentFunctions.handleAddEquipment() with V1-specific options
+  - **_onEditEquipment()**: Utilizes shared editing with strict validation preservation
+  - **_onDeleteEquipment()**: Shared deletion with V1-style chat messages and rendering
+- **Actor Sheet V2 Equipment Functions**: Full migration to shared function architecture
+  - **_onAddEquipment()**: Uses shared functions with V2-simplified validation approach
+  - **_onEditEquipment()**: Shared editing with notification-based error handling
+  - **_onDeleteEquipment()**: Shared deletion with V2-style immediate execution
+- **System Configuration**: Updated module loading for new shared functions
+  - **system.json**: Added actor-equipment-functions.js to esmodules array
+  - **Import Structure**: Clean ES6 module imports across all affected files
+  - **Loading Order**: Optimized module loading sequence for dependency resolution
+
 ## [0.7.6] - 2025-09-04
 
 ### Added

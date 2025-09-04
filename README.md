@@ -2,7 +2,7 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.7.6**
+**Current System Version: 0.7.7**
 
 ## Description
 
@@ -10,7 +10,27 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 
 *A game about secret agents who fight threats of the industrial revolution era.*
 
-## 🔥 What's New in v0.7.6
+## 🔥 What's New in v0.7.7
+
+- **🏗️ Revolutionary Code Architecture**: Complete equipment function deduplication system
+  - **ActorEquipmentFunctions Module**: Universal equipment management (add/edit/delete) with shared functions
+  - **500+ Lines of Code Eliminated**: Massive reduction in duplicated code across both agent sheet versions
+  - **Flexible Customization System**: 10+ customization hooks allowing different behavior per sheet version
+  - **Zero Breaking Changes**: All existing functionality preserved while dramatically improving maintainability
+- **⚡ Advanced Shared Function System**: Comprehensive modular architecture for all actor operations
+  - **Gear/Stress Functions** (v0.7.6): Shared _onSpendGear and _onSpendStress operations
+  - **Equipment Functions** (v0.7.7): Complete add/edit/delete equipment operations with validation pipelines
+  - **Future-Proof Design**: Easy integration for upcoming agent sheet versions (V3, V4, etc.)
+- **📚 Comprehensive Documentation**: Extensive examples and implementation guides
+  - **EQUIPMENT-EXAMPLES.js**: 7+ detailed scenarios showing customization patterns
+  - **Complete API Documentation**: Every customization hook and callback explained
+  - **Architecture Guide**: Step-by-step system overview for future development
+- **🔧 Enhanced Maintainability**: Single-point-of-change for all equipment operations
+  - **Bug Fixes**: Changes in one location automatically affect all sheet versions
+  - **Consistent Behavior**: Identical functionality across all agent sheets unless explicitly customized
+  - **Easy Testing**: Centralized logic enables comprehensive testing of equipment operations
+
+## 🔄 Previous Updates in v0.7.6
 
 - **⚡ Steam Booster Effect**: Complete Steam Booster feat effect implementation for Tech Genius archetype
   - **2x Steam Points Generation**: Attribute tests now generate double Steam Points when Tech Genius has "Dopalacz Pary" feat
@@ -219,7 +239,35 @@ If you encounter any issues or have questions about this system, please:
 
 ## Changelog
 
-### Version 0.7.5 (2025-09-03) - Latest
+### Version 0.7.7 (2025-09-04) - Latest
+- **Revolutionary Code Architecture**:
+  - Complete equipment function deduplication system with ActorEquipmentFunctions module
+  - 500+ lines of duplicated code eliminated while preserving all existing functionality
+  - Advanced shared function system with 10+ customization hooks for per-version behavior
+  - Universal equipment management (add/edit/delete) with flexible validation and callback systems
+- **Enhanced Maintainability**:
+  - Single-point-of-change for all equipment operations across both agent sheet versions
+  - Future-proof architecture ready for V3, V4, and additional agent sheet versions
+  - Comprehensive documentation with EQUIPMENT-EXAMPLES.js showing 7+ implementation scenarios
+  - Zero breaking changes - all existing sheets work identically with new shared function architecture
+- **Technical Excellence**:
+  - Modular shared function architecture with ActorGearFunctions, ActorStressFunctions, and ActorEquipmentFunctions
+  - Complete validation pipeline with custom override capabilities and robust error handling
+  - ES6 module system with clean dependency management and optimized loading order
+
+### Version 0.7.6 (2025-09-04)
+- **Steam Booster Effect for Tech Genius Archetype**:
+  - Complete implementation with 2x Steam Points generation during attribute tests
+  - Universal compatibility across both Agent v1 and Agent v2 character sheets
+  - Visual notifications with steampunk-themed chat messages and automatic effect detection
+- **Feat Display System Enhancements**:
+  - Major visual improvements with archetype integration and adaptive layout systems
+  - Enhanced grid display preventing feat name truncation with dynamic column width adjustment
+- **Critical Agent v2 Compatibility Fix**:
+  - Resolved Steam Booster effect issues with corrected feat access methods
+  - Architectural alignment with Cogwheel Syndicate's feat storage system using actor.system.feats array
+
+### Version 0.7.5 (2025-09-03)
 - **Feats Effects System**:
   - Complete automated attribute modification system for feat-archetype combinations
   - Steam Commando + Steam Augmentation: Steel attribute +1 (maximum 6)

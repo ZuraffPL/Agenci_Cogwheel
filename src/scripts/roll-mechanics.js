@@ -683,8 +683,6 @@ async function rerollTest(actor, rollDataKey) {
 
 // Funkcja wykonująca rzut z podanymi parametrami
 async function executeRollWithData(actor, data, isReroll = false) {
-  console.log(`=== executeRollWithData called for ${actor?.name}, isReroll=${isReroll} ===`);
-  
   const {
     attribute,
     position,

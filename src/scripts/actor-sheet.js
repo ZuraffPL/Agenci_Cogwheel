@@ -1,4 +1,7 @@
 import { performAttributeRoll } from "./roll-mechanics.js";
+import { ActorGearFunctions } from './shared/actor-gear-functions.js';
+import { ActorStressFunctions } from './shared/actor-stress-functions.js';
+import { ActorEquipmentFunctions } from './shared/actor-equipment-functions.js';
 
 class CogwheelActorSheet extends ActorSheet {
   static get defaultOptions() {
@@ -108,8 +111,8 @@ class CogwheelActorSheet extends ActorSheet {
     html.find('.add-trauma-btn').click(this._onAddTrauma.bind(this));
     html.find('.edit-trauma').click(this._onEditTrauma.bind(this));
     html.find('.delete-trauma').click(this._onDeleteTrauma.bind(this));
-    html.find('.spend-gear-btn').click(this._onSpendGear.bind(this));
-    html.find('.spend-stress-btn').click(this._onSpendStress.bind(this));
+    html.find('.spend-gear-btn').click(this._onSpendGearShared.bind(this));
+    html.find('.spend-stress-btn').click(this._onSpendStressShared.bind(this));
     this._assignRandomBackgrounds(html);
     this._updateEquipmentPointsDisplay(html);
   }
@@ -518,164 +521,51 @@ class CogwheelActorSheet extends ActorSheet {
 
   async _onAddEquipment(event) {
     event.preventDefault();
-
-    const templateData = {
-      equipment: { name: "", type: "weapon", cost: "1", usage: "Single", action: "", used: false, droppedDamaged: false, destroyed: false }
-    };
-
-    const dialogContent = await renderTemplate("systems/cogwheel-syndicate/src/templates/equipment-dialog.hbs", templateData);
-
-    new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.AddEquipment"),
-      content: dialogContent,
-      buttons: {
-        cancel: {
-          label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => {}
-        },
-        add: {
-          label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          callback: async (html) => {
-            const equipmentName = html.find('[name="name"]').val().trim();
-            const equipmentType = html.find('[name="type"]').val().trim();
-            const equipmentCost = parseInt(html.find('[name="cost"]').val().trim(), 10);
-            const equipmentUsage = html.find('[name="usage"]').val().trim();
-            const equipmentAction = html.find('[name="action"]').val().trim();
-
-            const errorMessage = html.find('.error-message');
-            if (!equipmentName || !equipmentAction) {
-              errorMessage.text(game.i18n.localize("COGSYNDICATE.EquipmentValidationError")).addClass('show');
-              setTimeout(() => errorMessage.removeClass('show'), 3000);
-              return;
-            }
-
-            const currentEquipmentPoints = this.actor.system.equipmentPoints.value || 0;
-            if (equipmentCost > currentEquipmentPoints) {
-              errorMessage.text(game.i18n.localize("COGSYNDICATE.InsufficientEquipmentPointsMessage")).addClass('show');
-              setTimeout(() => errorMessage.removeClass('show'), 3000);
-              return;
-            }
-
-            const newEquipment = {
-              name: equipmentName,
-              type: equipmentType,
-              cost: equipmentCost,
-              usage: equipmentUsage,
-              action: equipmentAction,
-              used: false,
-              droppedDamaged: false,
-              destroyed: false
-            };
-            const currentEquipments = foundry.utils.deepClone(this.actor.system.equipments) || [];
-            currentEquipments.push(newEquipment);
-            await this.actor.update({
-              "system.equipments": currentEquipments,
-              "system.equipmentPoints.value": currentEquipmentPoints - equipmentCost
-            });
-            await ChatMessage.create({
-              content: `<p>${game.i18n.format("COGSYNDICATE.EquipmentAdded", { name: equipmentName, actorName: this.actor.name })}</p>`,
-              speaker: { actor: this.actor.id }
-            });
-            this.render();
-          }
-        }
-      },
-      default: "add",
-      width: 400,
-      classes: ["cogsyndicate", "dialog", "equipment-dialog"],
-      close: () => {}
-    }).render(true);
+    await ActorEquipmentFunctions.handleAddEquipment(this.actor, this, {
+      // V1 uses strict validation with trimming
+      // Uses default validation which checks for name and action
+      // Uses default error display in dialog
+      // V1 success message format
+      onSuccess: async (equipment, actor, sheet, config) => {
+        await ChatMessage.create({
+          content: `<p>${game.i18n.format("COGSYNDICATE.EquipmentAdded", { 
+            name: equipment.name, 
+            actorName: actor.name 
+          })}</p>`,
+          speaker: { actor: actor.id }
+        });
+        sheet.render(); // V1 also calls render
+      }
+    });
   }
 
   async _onEditEquipment(event) {
     event.preventDefault();
     const index = parseInt(event.currentTarget.closest('.equipment-item').dataset.index);
-    const currentEquipments = foundry.utils.deepClone(this.actor.system.equipments) || [];
-    const equipment = currentEquipments[index];
-    const originalCost = parseInt(equipment.cost, 10);
-
-    const templateData = {
-      equipment: equipment
-    };
-
-    const dialogContent = await renderTemplate("systems/cogwheel-syndicate/src/templates/equipment-dialog.hbs", templateData);
-
-    new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.EditEquipment"),
-      content: dialogContent,
-      buttons: {
-        cancel: {
-          label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => {}
-        },
-        save: {
-          label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          callback: async (html) => {
-            const equipmentName = html.find('[name="name"]').val().trim();
-            const equipmentType = html.find('[name="type"]').val().trim();
-            const equipmentCost = parseInt(html.find('[name="cost"]').val().trim(), 10);
-            const equipmentUsage = html.find('[name="usage"]').val().trim();
-            const equipmentAction = html.find('[name="action"]').val().trim();
-
-            const errorMessage = html.find('.error-message');
-            if (!equipmentName || !equipmentAction) {
-              errorMessage.text(game.i18n.localize("COGSYNDICATE.EquipmentValidationError")).addClass('show');
-              setTimeout(() => errorMessage.removeClass('show'), 3000);
-              return;
-            }
-
-            const currentEquipmentPoints = this.actor.system.equipmentPoints.value || 0;
-            const costDifference = equipmentCost - originalCost;
-            if (costDifference > currentEquipmentPoints) {
-              errorMessage.text(game.i18n.localize("COGSYNDICATE.InsufficientEquipmentPointsMessage")).addClass('show');
-              setTimeout(() => errorMessage.removeClass('show'), 3000);
-              return;
-            }
-
-            currentEquipments[index] = {
-              name: equipmentName,
-              type: equipmentType,
-              cost: equipmentCost,
-              usage: equipmentUsage,
-              action: equipmentAction,
-              used: equipment.used,
-              droppedDamaged: equipment.droppedDamaged,
-              destroyed: equipment.destroyed
-            };
-            await this.actor.update({
-              "system.equipments": currentEquipments,
-              "system.equipmentPoints.value": currentEquipmentPoints - costDifference
-            });
-            this.render();
-          }
-        }
-      },
-      default: "save",
-      width: 400,
-      classes: ["cogsyndicate", "dialog", "equipment-dialog"],
-      close: () => {}
-    }).render(true);
+    await ActorEquipmentFunctions.handleEditEquipment(this.actor, this, index, {
+      // V1 uses default strict validation with trimming and error dialog
+      onSuccess: async (newEquipment, oldEquipment, actor, sheet, config) => {
+        sheet.render(); // V1 renders after edit but no chat message
+      }
+    });
   }
 
   async _onDeleteEquipment(event) {
     event.preventDefault();
     const index = parseInt(event.currentTarget.closest('.equipment-item').dataset.index);
-    const currentEquipments = foundry.utils.deepClone(this.actor.system.equipments) || [];
-    const deletedEquipment = currentEquipments[index];
-    const equipmentCost = parseInt(deletedEquipment.cost, 10);
-    const currentEquipmentPoints = this.actor.system.equipmentPoints.value || 0;
-    const maxEquipmentPoints = this.actor.system.equipmentPoints.max || 6;
-    const newEquipmentPoints = Math.min(currentEquipmentPoints + equipmentCost, maxEquipmentPoints);
-    currentEquipments.splice(index, 1);
-    await this.actor.update({
-      "system.equipments": currentEquipments,
-      "system.equipmentPoints.value": newEquipmentPoints
+    await ActorEquipmentFunctions.handleDeleteEquipment(this.actor, this, index, {
+      confirmDelete: false, // V1 also doesn't confirm
+      onSuccess: async (equipment, refund, actor, sheet, config) => {
+        await ChatMessage.create({
+          content: `<p>${game.i18n.format("COGSYNDICATE.DeleteEquipment", { 
+            name: equipment.name, 
+            actorName: actor.name 
+          })}</p>`,
+          speaker: { actor: actor.id }
+        });
+        sheet.render();
+      }
     });
-    await ChatMessage.create({
-      content: `<p>${game.i18n.format("COGSYNDICATE.DeleteEquipment", { name: deletedEquipment.name, actorName: this.actor.name })}</p>`,
-      speaker: { actor: this.actor.id }
-    });
-    this.render();
   }
 
   async _onAddTrauma(event) {
@@ -1209,6 +1099,21 @@ class CogwheelActorSheet extends ActorSheet {
     });
 
     dialog.render(true);
+  }
+
+  // Override methods with shared functions
+  async _onSpendGearShared(event) {
+    event.preventDefault();
+    await ActorGearFunctions.handleSpendGear(this.actor, this, {
+      // v1 uses default behavior, but can be customized here if needed
+    });
+  }
+
+  async _onSpendStressShared(event) {
+    event.preventDefault();
+    await ActorStressFunctions.handleSpendStress(this.actor, this, {
+      // v1 uses default behavior, but can be customized here if needed
+    });
   }
 }
 

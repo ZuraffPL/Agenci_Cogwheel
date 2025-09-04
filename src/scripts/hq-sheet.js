@@ -34,7 +34,6 @@ class CogwheelHQSheet extends ActorSheet {
       workshop: { level: 0, isDestroyed: false }
     };
 
-    console.log("Dane w getData dla HQ:", data);
     return data;
   }
 
@@ -345,7 +344,6 @@ class CogwheelHQSheet extends ActorSheet {
   }
 
   async _onCreate(data, options, userId) {
-    console.log("Tworzenie HQ - _onCreate wywołane:", data, options, userId);
     await super._onCreate(data, options, userId);
 
     const updates = {
@@ -361,7 +359,6 @@ class CogwheelHQSheet extends ActorSheet {
       }
     };
 
-    console.log("Aktualizacja danych przy tworzeniu HQ:", updates);
     await this.actor.update(updates);
   }
 }

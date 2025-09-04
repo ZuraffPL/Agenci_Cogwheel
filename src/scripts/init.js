@@ -33,7 +33,6 @@ Hooks.once("init", () => {
     type: Array,
     default: [],     // Domyślnie pusta tablica
     onChange: (clocks) => {
-      console.log("Doom Clocks updated in settings:", clocks);
       Hooks.call("cogwheelSyndicateClocksUpdated"); // Wywołaj hook po zmianie
     }
   });
@@ -66,8 +65,6 @@ Hooks.once("ready", async () => {
     game.cogwheelSyndicate.nemesisPoints = 1;
     game.cogwheelSyndicate.steamPoints = 1;
 
-    console.log("Cogwheel Syndicate | Metawaluty zresetowane do 1 globalnie.");
-
     // Synchronizacja metawalut przez socket
     game.socket.emit("system.cogwheel-syndicate", {
       type: "updateMetaCurrencies",
@@ -80,7 +77,6 @@ Hooks.once("ready", async () => {
 
   // Resetuj licznik użyć redukcji stresu na początku sesji (opcjonalnie)
   // Można to zastąpić manualnym resetem przez GM
-  console.log("Cogwheel Syndicate system ready - GM session started");
 
   // Automatyczne otwieranie aplikacji przy starcie
   openDoomClocks(); // Otwiera "Zegary Potępu" przy starcie
@@ -189,11 +185,9 @@ Hooks.on("getSceneControlButtons", (controls) => {
 
 // Hook do odświeżania metawalut
 Hooks.on("cogwheelSyndicateMetaCurrenciesUpdated", () => {
-  console.log("Hook triggered: cogwheelSyndicateMetaCurrenciesUpdated");
   for (let appId in ui.windows) {
     const window = ui.windows[appId];
     if (window instanceof MetaCurrencyApp) {
-      console.log(`Odświeżanie okna MetaCurrencyApp o ID: ${appId}`);
       window.render(false);
     }
   }
@@ -205,11 +199,9 @@ Hooks.once("setup", () => {
     if (data.type === "updateMetaCurrencies") {
       game.cogwheelSyndicate.nemesisPoints = Math.clamp(data.nemesisPoints, 0, 100);
       game.cogwheelSyndicate.steamPoints = Math.clamp(data.steamPoints, 0, 100);
-      console.log("Socket: Metawaluty zaktualizowane - Nemesis:", game.cogwheelSyndicate.nemesisPoints, "Steam:", game.cogwheelSyndicate.steamPoints);
       Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
     } else if (data.type === "updateStressUses") {
       game.cogwheelSyndicate.stressReduceUsesThisSession = data.stressReduceUsesThisSession;
-      console.log("Socket: Zaktualizowano licznik użyć redukcji stresu:", data.stressReduceUsesThisSession);
       Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
     }
     // Usunięto obsługę "updateClocks", bo game.settings automatycznie synchronizuje dane
