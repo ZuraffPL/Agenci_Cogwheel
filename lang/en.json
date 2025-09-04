@@ -347,6 +347,10 @@
   "COGSYNDICATE.FeatEffectRemoved": "{actorName}: Removing {featName} decreased base {attributeName} by {decrease} (from {oldValue} to {newValue})",
   "COGSYNDICATE.FeatEffectMaxValue": "{actorName}: Attribute {attributeName} already reached maximum base value ({maxValue}). {featName} effect cannot be applied",
   "COGSYNDICATE.FeatEffectMinValue": "{actorName}: Attribute {attributeName} already has archetype base value ({minValue}). Cannot remove {featName} effect",
+  "COGSYNDICATE.SteamPointsDoubled": "Steam Points doubled!",
+  "COGSYNDICATE.OrganizationTrainingTitle": "Organization Training",
+  "COGSYNDICATE.OrganizationTrainingRemoval": "Removal: Organization Training",
+  "COGSYNDICATE.OrganizationTrainingDescription": "Choose main attribute to enhance",
   "pdfjs-editor-highlight-button": "Highlighter",
   "pdfjs-editor-highlight-button-label": "Highlight text with color"
 }

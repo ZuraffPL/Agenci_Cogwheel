@@ -41,6 +41,11 @@ export class FeatsEffects {
       return await this._applySteamBoosterFeatEffect(actor, feat);
     }
 
+    // Steam Agent + Organization Training effect
+    if (archetypeName.includes('agent pary') && featName.includes('szkolenie organizacji')) {
+      return await this._applyOrganizationTrainingEffect(actor, feat);
+    }
+
     // Add more archetype-feat combinations here as needed
     // Example structure:
     // if (archetypeName.includes('other archetype') && featName.includes('other feat')) {
@@ -272,6 +277,11 @@ export class FeatsEffects {
       return await this._removeSteamBoosterFeatEffect(actor, feat);
     }
 
+    // Steam Agent + Organization Training removal
+    if (archetypeName.includes('agent pary') && featName.includes('szkolenie organizacji')) {
+      return await this._removeOrganizationTrainingEffect(actor, feat);
+    }
+
     // Add more removal effects here as needed
 
     return false;
@@ -491,6 +501,232 @@ export class FeatsEffects {
   }
 
   /**
+   * Apply Organization Training effect to Steam Agent
+   * Shows dialog for attribute selection and increases chosen attribute by 1 (max 6)
+   * @param {Actor} actor - The Steam Agent actor
+   * @param {Item} feat - The Organization Training feat
+   * @returns {Promise<boolean>} - Whether the effect was applied
+   */
+  static async _applyOrganizationTrainingEffect(actor, feat) {
+    // Check if all base attributes are at their starting value (3) for Steam Agent
+    const attributes = {
+      machine: { key: 'machine', name: 'Stal', current: actor.system.attributes.machine.base || 1 },
+      engineering: { key: 'engineering', name: 'Maszyna', current: actor.system.attributes.engineering.base || 1 },
+      intrigue: { key: 'intrigue', name: 'Intryga', current: actor.system.attributes.intrigue.base || 1 }
+    };
+
+    // Get attributes that can be increased (not at maximum 6)
+    const availableAttributes = Object.entries(attributes).filter(([key, attr]) => attr.current < 6);
+
+    if (availableAttributes.length === 0) {
+      ui.notifications.warn(`${actor.name}: Wszystkie atrybuty już mają maksymalną wartość bazową (6). Efekt nie może być zastosowany.`);
+      return false;
+    }
+
+    // Create attribute selection dialog
+    const attributeOptions = availableAttributes.map(([key, attr]) => 
+      `<option value="${key}">${attr.name} (${attr.current} → ${Math.min(attr.current + 1, 6)})</option>`
+    ).join('');
+
+    const dialogContent = `
+      <div class="organization-training-dialog">
+        <h3><i class="fas fa-graduation-cap"></i> Szkolenie Organizacji</h3>
+        <p><strong>${actor.name}</strong> otrzymuje specjalne szkolenie!</p>
+        <p>Wybierz atrybut do wzmocnienia:</p>
+        <div class="form-group">
+          <label for="chosen-attribute"><strong>Główny Atrybut:</strong></label>
+          <select id="chosen-attribute" name="chosenAttribute">
+            ${attributeOptions}
+          </select>
+        </div>
+        <p><em>Wybrany atrybut zostanie zwiększony o <strong>+1</strong> punkt bazowy.</em></p>
+      </div>
+    `;
+
+    return new Promise((resolve) => {
+      new Dialog({
+        title: game.i18n.localize("COGSYNDICATE.OrganizationTrainingTitle") || "Szkolenie Organizacji",
+        content: dialogContent,
+        buttons: {
+          cancel: {
+            label: game.i18n.localize("COGSYNDICATE.Cancel") || "Anuluj",
+            callback: () => resolve(false)
+          },
+          confirm: {
+            label: game.i18n.localize("COGSYNDICATE.Confirm") || "Zatwierdź",
+            callback: async (html) => {
+              const chosenAttribute = html.find('[name="chosenAttribute"]').val();
+              const attributeData = attributes[chosenAttribute];
+              
+              if (!attributeData) {
+                ui.notifications.error("Błąd: nie można znaleźć wybranego atrybutu");
+                resolve(false);
+                return;
+              }
+
+              const newValue = Math.min(attributeData.current + 1, 6);
+              const updateKey = `system.attributes.${chosenAttribute}.base`;
+
+              try {
+                await actor.update({ [updateKey]: newValue });
+
+                // Show success notification
+                ui.notifications.info(
+                  `${actor.name}: Szkolenie Organizacji zwiększyło ${attributeData.name} z ${attributeData.current} na ${newValue}!`
+                );
+
+                // Log to chat with steampunk styling
+                await ChatMessage.create({
+                  content: `
+                    <div class="feat-effect-message">
+                      <h3><i class="fas fa-graduation-cap"></i> Efekt Atutu Zastosowany</h3>
+                      <p><strong>${actor.name}</strong> otrzymał <strong>${feat.name}</strong></p>
+                      <p><strong>Efekt:</strong> Bazowa wartość <strong>${attributeData.name}</strong> zwiększona z <span style="color: #8b4513;">${attributeData.current}</span> na <span style="color: #cd7f32; font-weight: bold;">${newValue}</span></p>
+                      <hr>
+                      <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
+                    </div>
+                  `,
+                  speaker: { actor: actor.id }
+                });
+
+                resolve(true);
+              } catch (error) {
+                console.error('Error applying Organization Training effect:', error);
+                ui.notifications.error(`Błąd podczas zastosowania efektu: ${error.message}`);
+                resolve(false);
+              }
+            }
+          }
+        },
+        default: "confirm",
+        width: 400,
+        classes: ["cogsyndicate", "dialog", "organization-training-dialog"],
+        close: () => resolve(false)
+      }).render(true);
+    });
+  }
+
+  /**
+   * Remove Organization Training effect from Steam Agent
+   * Shows dialog for attribute selection and decreases chosen attribute by 1 (min archetype base)
+   * @param {Actor} actor - The Steam Agent actor
+   * @param {Item} feat - The Organization Training feat
+   * @returns {Promise<boolean>} - Whether the effect was removed
+   */
+  static async _removeOrganizationTrainingEffect(actor, feat) {
+    const attributes = {
+      machine: { key: 'machine', name: 'Stal', current: actor.system.attributes.machine.base || 1, base: 3 },
+      engineering: { key: 'engineering', name: 'Maszyna', current: actor.system.attributes.engineering.base || 1, base: 3 },
+      intrigue: { key: 'intrigue', name: 'Intryga', current: actor.system.attributes.intrigue.base || 1, base: 3 }
+    };
+
+    // Get attributes that can be decreased (above archetype base of 3)
+    const availableAttributes = Object.entries(attributes).filter(([key, attr]) => attr.current > attr.base);
+
+    if (availableAttributes.length === 0) {
+      ui.notifications.warn(`${actor.name}: Żaden atrybut nie może być zmniejszony - wszystkie są na poziomie bazowym archetypu.`);
+      
+      // Still log removal message
+      await ChatMessage.create({
+        content: `
+          <div class="feat-effect-message">
+            <h3><i class="fas fa-graduation-cap"></i> Usunięcie Efektu Atutu</h3>
+            <p><strong>${actor.name}</strong> stracił <strong>${feat.name}</strong></p>
+            <p><strong>Efekt:</strong> Brak atrybutów do zmniejszenia (wszystkie na poziomie bazowym archetypu)</p>
+            <hr>
+            <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
+          </div>
+        `,
+        speaker: { actor: actor.id }
+      });
+      
+      return true;
+    }
+
+    // Create attribute selection dialog for removal
+    const attributeOptions = availableAttributes.map(([key, attr]) => 
+      `<option value="${key}">${attr.name} (${attr.current} → ${Math.max(attr.current - 1, attr.base)})</option>`
+    ).join('');
+
+    const dialogContent = `
+      <div class="organization-training-dialog">
+        <h3><i class="fas fa-graduation-cap"></i> Usunięcie: Szkolenie Organizacji</h3>
+        <p><strong>${actor.name}</strong> traci efekt specjalnego szkolenia.</p>
+        <p>Wybierz atrybut do obniżenia:</p>
+        <div class="form-group">
+          <label for="chosen-attribute"><strong>Atrybut do obniżenia:</strong></label>
+          <select id="chosen-attribute" name="chosenAttribute">
+            ${attributeOptions}
+          </select>
+        </div>
+        <p><em>Wybrany atrybut zostanie obniżony o <strong>1</strong> punkt bazowy.</em></p>
+      </div>
+    `;
+
+    return new Promise((resolve) => {
+      new Dialog({
+        title: game.i18n.localize("COGSYNDICATE.OrganizationTrainingRemoval") || "Usunięcie: Szkolenie Organizacji",
+        content: dialogContent,
+        buttons: {
+          cancel: {
+            label: game.i18n.localize("COGSYNDICATE.Cancel") || "Anuluj",
+            callback: () => resolve(false)
+          },
+          confirm: {
+            label: game.i18n.localize("COGSYNDICATE.Confirm") || "Zatwierdź",
+            callback: async (html) => {
+              const chosenAttribute = html.find('[name="chosenAttribute"]').val();
+              const attributeData = attributes[chosenAttribute];
+              
+              if (!attributeData) {
+                ui.notifications.error("Błąd: nie można znaleźć wybranego atrybutu");
+                resolve(false);
+                return;
+              }
+
+              const newValue = Math.max(attributeData.current - 1, attributeData.base);
+              const updateKey = `system.attributes.${chosenAttribute}.base`;
+
+              try {
+                await actor.update({ [updateKey]: newValue });
+
+                // Show success notification
+                ui.notifications.info(
+                  `${actor.name}: Usunięcie Szkolenia Organizacji obniżyło ${attributeData.name} z ${attributeData.current} na ${newValue}.`
+                );
+
+                // Log to chat
+                await ChatMessage.create({
+                  content: `
+                    <div class="feat-effect-message">
+                      <h3><i class="fas fa-graduation-cap"></i> Usunięcie Efektu Atutu</h3>
+                      <p><strong>${actor.name}</strong> stracił <strong>${feat.name}</strong></p>
+                      <p><strong>Efekt:</strong> Bazowa wartość <strong>${attributeData.name}</strong> obniżona z <span style="color: #cd7f32;">${attributeData.current}</span> na <span style="color: #8b4513; font-weight: bold;">${newValue}</span></p>
+                      <hr>
+                      <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
+                    </div>
+                  `,
+                  speaker: { actor: actor.id }
+                });
+
+                resolve(true);
+              } catch (error) {
+                console.error('Error removing Organization Training effect:', error);
+                ui.notifications.error(`Błąd podczas usuwania efektu: ${error.message}`);
+                resolve(false);
+              }
+            }
+          }
+        },
+        default: "confirm",
+        width: 400,
+        classes: ["cogsyndicate", "dialog", "organization-training-dialog"],
+        close: () => resolve(false)
+      }).render(true);
+    });
+  }
+
+  /**
    * Check if a feat has special effects for the given actor
    * @param {Actor} actor - The actor to check
    * @param {Item} feat - The feat to check
@@ -521,6 +757,11 @@ export class FeatsEffects {
 
     // Tech Genius + Steam Booster
     if (archetypeName.includes('geniusz techniki') && featName.includes('dopalacz pary')) {
+      return true;
+    }
+
+    // Steam Agent + Organization Training
+    if (archetypeName.includes('agent pary') && featName.includes('szkolenie organizacji')) {
       return true;
     }
 
@@ -573,6 +814,11 @@ export class FeatsEffects {
     // Tech Genius + Steam Booster
     if (archetypeName.includes('geniusz techniki') && featName.includes('dopalacz pary')) {
       return `Punkty Pary będą podwajane podczas testów atrybutów głównych`;
+    }
+
+    // Steam Agent + Organization Training
+    if (archetypeName.includes('agent pary') && featName.includes('szkolenie organizacji')) {
+      return `Umożliwi wybór głównego atrybutu do wzmocnienia (zwiększenie bazowej wartości o 1)`;
     }
 
     // Add more descriptions here as needed
