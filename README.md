@@ -1,15 +1,8 @@
-# Agenci Cogwh- **💀 Trauma Section UI Modernization**: Complete visual overhaul matching equipment section design  
-  - **Archetype-Style Background**: Applied steampunk gradient backgrounds with golden borders to trauma sections
-  - **Purple Skull Icon**: Added distinctive fa-skull icon with purple color (#8e44ad) for thematic distinction
-  - **Steampunk Button Design**: "Dodaj traumę" button with professional gradient styling and hover animations
-  - **Visual Consistency**: Trauma sections now match equipment section elegance with unified archetype-inspired styling
-  - **Template Updates**: Both V1 and V2 actor sheets updated with `.archetype-section` class and `.steampunk-btn` components
-
-- **🎒 Enhanced Equipment Messaging System**: Complete overhaul of equipment chat messagesel - Foundry VTT System
+# Agenci Cogwheel - Foundry VTT System
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.7.7**
+**Current System Version: 0.7.8**
 
 ## Description
 
@@ -17,9 +10,52 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 
 *A game about secret agents who fight threats of the industrial revolution era.*
 
-## 🔥 What's New in v0.7.7
+## 🔥 What's New in v0.7.8
 
-- **� Enhanced Equipment Messaging System**: Complete overhaul of equipment chat messages
+- **💀 Trauma Section UI Modernization**: Complete visual overhaul matching equipment section design  
+  - **Archetype-Style Background**: Applied steampunk gradient backgrounds with golden borders to trauma sections
+  - **Purple Skull Icon**: Added distinctive fa-skull icon with purple color (#8e44ad) for thematic distinction
+  - **Steampunk Button Design**: "Dodaj traumę" button with professional gradient styling and hover animations
+  - **Visual Consistency**: Trauma sections now match equipment section elegance with unified archetype-inspired styling
+  - **Template Updates**: Both V1 and V2 actor sheets updated with `.archetype-section` class and `.steampunk-btn` components
+
+- **🎒 Equipment Section UI Overhaul**: Complete modernization of equipment interface
+  - **Archetype-Style Background**: Applied steampunk gradient backgrounds with golden borders to equipment sections  
+  - **Backpack Icons**: Added fa-backpack icons throughout equipment sections for thematic consistency
+  - **Steampunk Button Design**: "Dodaj Ekwipunek" button with professional gradient styling and animations
+  - **Interface Cleanup**: Removed "Brak ekwipunku do dodania" placeholder messages for cleaner UI
+  - **Visual Polish**: Enhanced user experience with consistent archetype-inspired design language
+
+- **🎒 Enhanced Equipment Messaging System**: Complete overhaul of equipment chat messages
+  - **Archetype-Style Design**: Equipment messages now match character archetype visual styling
+  - **Equipment-Message CSS Class**: Steampunk gradient backgrounds with golden borders and shadows
+  - **Visual Differentiation**: Color-coded agent names (blue), equipment names (green), and costs (red)
+  - **Backpack Icons**: fa-backpack icons for all equipment add/delete operations
+  - **Both Sheet Support**: V1 and V2 actor sheets fully integrated with custom message callbacks
+
+- **⚡ Resource Message Icon System**: Specialized visual indicators for different resource types
+  - **Gear Resources**: fa-cog (cog wheel) icons - maintains mechanical theme
+  - **Stress Resources**: fa-exclamation-triangle (warning triangle) icons
+  - **Trauma Resources**: fa-skull icons for dramatic impact
+  - **Agent Name Styling**: Consistent blue coloring (#3498db) across all message types
+
+- **🎨 CSS Architecture Enhancement**: Modular styling system for better maintainability
+  - **feats-effects.css**: Dedicated stylesheet for all feat effects and message styling
+  - **Equipment-Message Class**: New archetype-inspired styling for equipment operations
+  - **Resource-Specific Colors**: Gear (green), stress (red), trauma (purple) visual coding
+  - **Unified Design Language**: Consistent steampunk aesthetic across all message types
+
+- **🏗️ Revolutionary Code Architecture**: Complete equipment function deduplication system
+  - **ActorEquipmentFunctions Module**: Universal equipment management (add/edit/delete) with shared functions
+  - **500+ Lines of Code Eliminated**: Massive reduction in duplicated code across both agent sheet versions
+  - **Flexible Customization System**: 10+ customization hooks allowing different behavior per sheet version
+  - **Zero Breaking Changes**: All existing functionality preserved while dramatically improving maintainability
+
+- **📚 Enhanced Multilingual Support**: Improved translation system for equipment messages
+  - **HTML-Formatted Translations**: Rich text support in PL/EN language files
+  - **Consistent Message Formatting**: Standardized equipment add/delete message templates
+
+## 🔄 Previous Updates in v0.7.7
   - **Archetype-Style Design**: Equipment messages now match character archetype visual styling
   - **Equipment-Message CSS Class**: Steampunk gradient backgrounds with golden borders and shadows
   - **Visual Differentiation**: Color-coded agent names (blue), equipment names (green), and costs (red)
@@ -258,7 +294,23 @@ If you encounter any issues or have questions about this system, please:
 
 ## Changelog
 
-### Version 0.7.7 (2025-09-04) - Latest
+### Version 0.7.8 (2025-09-04) - Latest
+- **Complete UI Enhancement System**:
+  - Trauma Section UI Modernization with archetype-style backgrounds and purple skull icons
+  - Equipment Section UI Overhaul with steampunk gradient styling and backpack iconography
+  - Unified design language across all character sheet sections with consistent button styling
+  - Professional steampunk aesthetic with golden borders, shadows, and hover animations
+- **Enhanced Equipment & Resource Systems**:
+  - Equipment messaging system with archetype-inspired chat message styling
+  - Resource-specific icons (gear/stress/trauma) with color-coded information display
+  - Revolutionary code architecture with ActorEquipmentFunctions module eliminating 500+ lines of duplication
+  - Advanced customization hooks allowing flexible behavior across different sheet versions
+- **Visual Excellence & Maintainability**:
+  - Modular CSS architecture with dedicated feats-effects.css stylesheet
+  - Template synchronization across V1 and V2 actor sheets with identical functionality
+  - Enhanced multilingual support with HTML-formatted translations and consistent messaging
+
+### Version 0.7.7 (2025-09-04)
 - **Revolutionary Code Architecture**:
   - Complete equipment function deduplication system with ActorEquipmentFunctions module
   - 500+ lines of duplicated code eliminated while preserving all existing functionality
