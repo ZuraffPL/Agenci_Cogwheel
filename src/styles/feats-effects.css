@@ -38,11 +38,21 @@
 }
 
 /* Special styling for resource names in h3 headings */
-.feat-effect-message h3 .gear-resource-name,
-.feat-effect-message h3 span.gear-resource-name {
-  color: #27ae60 !important;
+.feat-effect-message h3 .resource-name {
   font-weight: bold !important;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+.feat-effect-message h3 .resource-name.resource-gear {
+  color: #27ae60 !important; /* Green for gear */
+}
+
+.feat-effect-message h3 .resource-name.resource-stress {
+  color: #e74c3c !important; /* Red for stress */
+}
+
+.feat-effect-message h3 .resource-name.resource-trauma {
+  color: #9b59b6 !important; /* Purple for trauma */
 }
 
 .feat-effect-message p {
@@ -57,11 +67,22 @@
 }
 
 /* Special styling for resource names (like Gear/Sprzęt, Stress/Stres, Trauma/Trauma) in feat effect messages */
-.feat-effect-message .gear-resource-name,
-.feat-effect-message span.gear-resource-name {
-  color: #27ae60 !important;
+.feat-effect-message .resource-name {
   font-weight: bold !important;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Color coding based on resource type classes */
+.feat-effect-message .resource-name.resource-gear {
+  color: #27ae60 !important; /* Green for gear */
+}
+
+.feat-effect-message .resource-name.resource-stress {
+  color: #e74c3c !important; /* Red for stress */
+}
+
+.feat-effect-message .resource-name.resource-trauma {
+  color: #9b59b6 !important; /* Purple for trauma */
 }
 
 .feat-effect-message hr {

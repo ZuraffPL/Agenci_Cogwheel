@@ -164,7 +164,11 @@ export class ActorGearFunctions {
 
       // Send chat message
       await ChatMessage.create({
-        content: `<p>${message}</p>`,
+        content: `
+          <div class="feat-effect-message">
+            <h3><i class="fas fa-cog"></i> ${message}</h3>
+          </div>
+        `,
         speaker: { actor: actor.id },
         style: CONST.CHAT_MESSAGE_STYLES.OTHER
       });
@@ -223,9 +227,9 @@ export class ActorGearFunctions {
       game.i18n.localize("COGSYNDICATE.GearPoints");
 
     if (steamCost > 0) {
-      return `Agent <strong>${actorName}</strong> wydał <strong>${gearCost}</strong> ${gearPointsLabel} oraz <strong>1 ${game.i18n.localize("COGSYNDICATE.SteamPoint")}</strong> na <strong>${gearTypeName}</strong>.`;
+      return `Agent <strong>${actorName}</strong> wydał <strong>${gearCost}</strong> ${gearPointsLabel} oraz <strong>1 ${game.i18n.localize("COGSYNDICATE.SteamPoint")}</strong> na <strong><span class='resource-name resource-gear'>${gearTypeName}</span></strong>.`;
     } else {
-      return `Agent <strong>${actorName}</strong> wydał <strong>${gearCost}</strong> ${gearPointsLabel} na <strong>${gearTypeName}</strong>.`;
+      return `Agent <strong>${actorName}</strong> wydał <strong>${gearCost}</strong> ${gearPointsLabel} na <strong><span class='resource-name resource-gear'>${gearTypeName}</span></strong>.`;
     }
   }
 }

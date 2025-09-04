@@ -479,7 +479,7 @@ class CogwheelActorSheet extends ActorSheet {
         await ChatMessage.create({
           content: `
             <div class="feat-effect-message">
-              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.ResourceAdded", { actorName, resource: resourceLabel })}</h3>
+              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.ResourceAdded", { actorName, resource: `<span class='resource-name resource-gear'>${resourceLabel}</span>` })}</h3>
             </div>
           `,
           speaker: { actor: this.actor.id }
@@ -488,7 +488,7 @@ class CogwheelActorSheet extends ActorSheet {
         await ChatMessage.create({
           content: `
             <div class="feat-effect-message">
-              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.ResourceAdded", { actorName, resource: resourceLabel })}</h3>
+              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.ResourceAdded", { actorName, resource: `<span class='resource-name resource-stress'>${resourceLabel}</span>` })}</h3>
             </div>
           `,
           speaker: { actor: this.actor.id }
@@ -519,7 +519,7 @@ class CogwheelActorSheet extends ActorSheet {
         await ChatMessage.create({
           content: `
             <div class="feat-effect-message">
-              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.ResourceSpent", { actorName, resource: resourceLabel })}</h3>
+              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.ResourceSpent", { actorName, resource: `<span class='resource-name resource-gear'>${resourceLabel}</span>` })}</h3>
             </div>
           `,
           speaker: { actor: this.actor.id }
@@ -528,7 +528,7 @@ class CogwheelActorSheet extends ActorSheet {
         await ChatMessage.create({
           content: `
             <div class="feat-effect-message">
-              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.StressReduced", { actorName, resource: resourceLabel })}</h3>
+              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.StressReduced", { actorName, resource: `<span class='resource-name resource-stress'>${resourceLabel}</span>` })}</h3>
             </div>
           `,
           speaker: { actor: this.actor.id }

@@ -202,7 +202,11 @@ export class ActorStressFunctions {
 
       // Send chat message
       await ChatMessage.create({
-        content: `<p>${message}</p>`,
+        content: `
+          <div class="feat-effect-message">
+            <h3><i class="fas fa-cog"></i> ${message}</h3>
+          </div>
+        `,
         speaker: { actor: actor.id },
         style: CONST.CHAT_MESSAGE_STYLES.OTHER
       });
