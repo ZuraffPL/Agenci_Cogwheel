@@ -209,17 +209,20 @@
 
       <!-- Zakładka Ekwipunek -->
       <div class="tab equipment" data-group="primary" data-tab="equipment">
-        <section class="equipment-section">
-          <h2>{{localize "COGSYNDICATE.EquipmentTab"}}</h2>
+        <section class="equipment-section archetype-section">
+          <h3><i class="fas fa-backpack"></i> {{localize "COGSYNDICATE.EquipmentTab"}}</h3>
           
           <!-- Licznik Punktów Ekwipunku -->
           <div class="equipment-points">
-            <span class="equipment-points-label">{{localize "COGSYNDICATE.EquipmentPoints"}}:</span>
+            <span class="equipment-points-label"><i class="fas fa-backpack"></i> {{localize "COGSYNDICATE.EquipmentPoints"}}:</span>
             <span class="equipment-points-value">{{system.equipmentPoints.value}}</span>
             <span class="equipment-points-max">/ {{system.equipmentPoints.max}}</span>
           </div>
           
-          <button class="add-equipment-btn">{{localize "COGSYNDICATE.AddEquipment"}}</button>
+          <div class="equipment-btn-container">
+            <button class="add-equipment-btn steampunk-btn"><i class="fas fa-plus"></i> {{localize "COGSYNDICATE.AddEquipment"}}</button>
+          </div>
+          
             {{#each system.equipments as |equipment index|}}
               <div class="equipment-item {{#if (or equipment.used equipment.droppedDamaged equipment.destroyed)}}disabled{{/if}}" data-index="{{index}}">
                 <div class="equipment-header">
@@ -245,17 +248,18 @@
                 </div>
               </div>
           {{/each}}
-          {{#unless system.equipments.length}}
-            {{localize "COGSYNDICATE.NoEquipmentToAdd"}}
-          {{/unless}}
         </section>
       </div>
 
       <!-- Zakładka Traumy -->
       <div class="tab traumas" data-group="primary" data-tab="traumas">
-        <div class="traumas-section">
-          <h3 class="centered">{{localize "COGSYNDICATE.TraumasTab"}}</h3>
-          <button type="button" class="add-trauma-btn" title="{{localize 'COGSYNDICATE.AddTrauma'}}">{{localize "COGSYNDICATE.AddTrauma"}}</button>
+        <div class="traumas-section archetype-section">
+          <h3><i class="fas fa-skull trauma-skull-icon"></i> {{localize "COGSYNDICATE.TraumasTab"}}</h3>
+          
+          <div class="trauma-btn-container">
+            <button type="button" class="add-trauma-btn steampunk-btn" title="{{localize 'COGSYNDICATE.AddTrauma'}}"><i class="fas fa-plus"></i> {{localize "COGSYNDICATE.AddTrauma"}}</button>
+          </div>
+          
           <div class="traumas-list">
             {{#each system.traumas as |trauma index|}}
               <div class="trauma-item trauma-type-{{trauma.type}}" data-index="{{index}}">

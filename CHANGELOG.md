@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Trauma Section UI Modernization**: Complete visual overhaul matching equipment section design
+  - **Archetype-Style Background**: Applied `.archetype-section` class to trauma sections in both V1 and V2
+  - **Steampunk Gradient**: Brown-gold gradient background with golden borders and shadow effects
+  - **Purple Skull Icon**: Added distinctive `fa-skull` icon with purple color (#8e44ad) for trauma sections
+  - **Steampunk Button Design**: "Dodaj traumę" button with `.steampunk-btn` class and hover animations
+  - **Visual Consistency**: Trauma sections now match equipment section elegance with thematic distinction
+  - **Template Updates**: Modified both `actor-sheet.hbs` and `actor-sheetv2.hbs` for unified styling
+  - **CSS Enhancements**: Added `.trauma-skull-icon` styling with purple coloring and text shadows
+
 - **Equipment Messages System**: Complete overhaul of equipment-related chat messages
   - **Equipment-Message CSS Class**: New archetype-inspired styling with steampunk gradient background
   - **Backpack Icon**: Added fa-backpack icons for all equipment messages

@@ -1,4 +1,11 @@
-# Agenci Cogwheel - Foundry VTT System
+# Agenci Cogwh- **💀 Trauma Section UI Modernization**: Complete visual overhaul matching equipment section design  
+  - **Archetype-Style Background**: Applied steampunk gradient backgrounds with golden borders to trauma sections
+  - **Purple Skull Icon**: Added distinctive fa-skull icon with purple color (#8e44ad) for thematic distinction
+  - **Steampunk Button Design**: "Dodaj traumę" button with professional gradient styling and hover animations
+  - **Visual Consistency**: Trauma sections now match equipment section elegance with unified archetype-inspired styling
+  - **Template Updates**: Both V1 and V2 actor sheets updated with `.archetype-section` class and `.steampunk-btn` components
+
+- **🎒 Enhanced Equipment Messaging System**: Complete overhaul of equipment chat messagesel - Foundry VTT System
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
