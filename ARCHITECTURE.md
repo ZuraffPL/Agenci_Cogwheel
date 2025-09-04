@@ -221,6 +221,29 @@ src/scripts/
 └── README.md                  # User documentation
 ```
 
+### CSS Architecture
+```
+src/styles/
+├── cogwheel.css               # Main V1 actor sheet styling
+├── agent-v2.css               # V2 actor sheet styling
+├── feats-effects.css          # Dedicated feat effects styling (v0.7.7+)
+├── hq.css                     # Headquarters styling
+├── nemesis.css                # Nemesis sheet styling
+├── clocks.css                 # Clock system styling
+├── equipment.css              # Equipment dialogs styling
+├── equipment-points.css       # Equipment points styling
+├── notes.css                  # Notes section styling
+├── trauma-types.css           # Trauma system styling
+├── sidebars-controls.css      # Sidebar controls styling
+├── spend-gear.css             # Gear spending dialogs styling
+├── spend-stress.css           # Stress spending dialogs styling
+├── success-upgrade.css        # Success upgrade buttons styling
+├── meta-currency.css          # Meta currency system styling
+├── spend-points-dialog.css    # Points spending dialogs styling
+├── feats.css                  # General feats styling
+└── rolldialog.css            # Roll dialogs styling
+```
+
 ## Benefits
 
 ### For Developers
@@ -228,18 +251,22 @@ src/scripts/
 - **Easier Testing**: Centralized functions enable comprehensive testing
 - **Consistent Behavior**: Identical functionality unless explicitly overridden
 - **Clear Architecture**: Well-defined interfaces and extension points
+- **Modular CSS**: Dedicated styling files for better code organization
+- **Reduced File Bloat**: Extracted feat effects CSS to dedicated feats-effects.css module
 
 ### For Users
 - **Reliability**: Fewer bugs due to code deduplication
 - **Consistency**: Predictable behavior across all actor sheets
 - **Performance**: Optimized shared code reduces memory usage
 - **Future Features**: New functionality automatically available to all sheets
+- **Better UX**: Consistent styling and behavior across all interfaces
 
 ### For System Evolution
 - **Easy Extensions**: New actor sheet versions integrate effortlessly
 - **Backward Compatibility**: All existing functionality preserved
 - **Flexible Customization**: Any aspect can be modified for specific needs
 - **Documentation**: Comprehensive examples for all use cases
+- **CSS Modularity**: Easier styling maintenance with dedicated files for specific features
 
 ## Future Directions
 

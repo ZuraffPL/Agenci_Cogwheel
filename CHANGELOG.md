@@ -8,6 +8,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **CSS Modularization**: Extracted feat effects styling to dedicated file for better code organization
+  - **feats-effects.css**: New dedicated CSS file containing all feat effects styling
+  - **Comprehensive Extraction**: Moved `.feat-effect-message`, `.steam-booster-effect`, and `.organization-training-dialog` styles
+  - **Both Sheet Versions**: Includes styles for V1 and V2 (with `.agentv2` prefix) in single file
+  - **Clean Architecture**: Reduced cogwheel.css and agent-v2.css file size by ~200 lines total
+  - **System Integration**: Added feats-effects.css to system.json styles array for proper loading
+
+### Enhanced
+- **Code Organization**: Improved maintainability with modular CSS approach
+  - **Dedicated Module**: All feat effects styling centralized in single location
+  - **Reduced Duplication**: Eliminated redundant CSS across multiple files
+  - **Better Structure**: Clear separation between general styles and feat-specific styling
+  - **Future-Proof**: Easy addition of new feat effects without bloating main CSS files
+
 - **Styled Gear Resource Chat Messages**: Enhanced visual consistency between agent sheet versions
   - **V2 Agent Sheet**: Added missing gear resource increment/decrement chat messages
   - **Both V1/V2**: Applied `.feat-effect-message` CSS styling with steampunk appearance
