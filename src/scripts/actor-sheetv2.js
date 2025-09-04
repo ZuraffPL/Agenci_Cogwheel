@@ -94,6 +94,36 @@ class CogwheelActorSheetV2 extends ActorSheet {
     data.system.resources.trauma.max = 4;
     data.system.resources.development.max = 12;
 
+    // Auto-correct current values if they exceed new maximums due to attribute damage
+    const updates = {};
+    
+    // Check gear resource
+    if (data.system.resources.gear.value > data.system.resources.gear.max) {
+      updates["system.resources.gear.value"] = data.system.resources.gear.max;
+      data.system.resources.gear.value = data.system.resources.gear.max;
+    }
+    
+    // Check stress resource
+    if (data.system.resources.stress.value > data.system.resources.stress.max) {
+      updates["system.resources.stress.value"] = data.system.resources.stress.max;
+      data.system.resources.stress.value = data.system.resources.stress.max;
+    }
+    
+    // Check equipment points
+    const equipmentMax = Math.max(6, 6 + (data.effectiveAttributes.engineering || 0));
+    data.system.equipmentPoints.max = equipmentMax;
+    
+    if (data.system.equipmentPoints.value > equipmentMax) {
+      updates["system.equipmentPoints.value"] = equipmentMax;
+      data.system.equipmentPoints.value = equipmentMax;
+    }
+    
+    // Apply auto-corrections if any were needed
+    if (Object.keys(updates).length > 0) {
+      console.log("Auto-correcting resource values due to attribute changes:", updates);
+      this.actor.update(updates);
+    }
+
     return data;
   }
 
