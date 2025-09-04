@@ -109,14 +109,8 @@ class CogwheelActorSheetV2 extends ActorSheet {
       data.system.resources.stress.value = data.system.resources.stress.max;
     }
     
-    // Check equipment points
-    const equipmentMax = Math.max(6, 6 + (data.effectiveAttributes.engineering || 0));
-    data.system.equipmentPoints.max = equipmentMax;
-    
-    if (data.system.equipmentPoints.value > equipmentMax) {
-      updates["system.equipmentPoints.value"] = equipmentMax;
-      data.system.equipmentPoints.value = equipmentMax;
-    }
+    // Equipment points are always max 6 - no attribute dependency
+    data.system.equipmentPoints.max = 6;
     
     // Apply auto-corrections if any were needed
     if (Object.keys(updates).length > 0) {

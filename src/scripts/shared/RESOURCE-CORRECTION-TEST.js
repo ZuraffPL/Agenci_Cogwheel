@@ -33,24 +33,25 @@ const testScenarios = {
     result: "✅ Gear automatically corrected from 9/6 to 6/6"
   },
 
-  // SCENARIO 2: Equipment points correction  
-  equipmentCorrection: {
-    description: "Agent has 10/10 equipment points, then receives Engineering damage",
+  // SCENARIO 2: Equipment points are ALWAYS max 6 - NO auto-correction needed
+  equipmentPoints: {
+    description: "Equipment points always have maximum 6 regardless of attributes",
+    note: "Equipment points do NOT depend on any attributes - they are separate mechanic",
     before: {
       "system.attributes.engineering.base": 4,
       "system.attributes.engineering.damage": 0,
-      "system.equipmentPoints.value": 10,
-      "system.equipmentPoints.max": 10 // 6 + 4 engineering
+      "system.equipmentPoints.value": 6,
+      "system.equipmentPoints.max": 6 // ALWAYS 6
     },
     damageApplied: {
-      "system.attributes.engineering.damage": 2 // reduces effective to 2
+      "system.attributes.engineering.damage": 2 // This does NOT affect equipment points
     },
     after: {
-      "system.attributes.engineering.value": 2,
-      "system.equipmentPoints.max": 8, // 6 + 2 engineering  
-      "system.equipmentPoints.value": 8 // AUTO-CORRECTED from 10 to 8
+      "system.attributes.engineering.value": 2, // Reduced due to damage
+      "system.equipmentPoints.max": 6, // STILL 6 - unchanged
+      "system.equipmentPoints.value": 6 // NO change - equipment points independent
     },
-    result: "✅ Equipment points automatically corrected from 10/8 to 8/8"
+    result: "✅ Equipment points remain 6/6 - no attribute dependency"
   },
 
   // SCENARIO 3: Stress resource correction
@@ -73,20 +74,20 @@ const testScenarios = {
     result: "✅ Stress automatically corrected from 8/5 to 5/5"
   },
 
-  // SCENARIO 4: Multiple corrections at once
+  // SCENARIO 3: Multiple corrections (but NOT equipment points)
   multipleCorrections: {
-    description: "Multiple attribute damage affects multiple resources",
+    description: "Multiple attribute damage affects gear and stress (equipment points unchanged)",
     before: {
       "system.attributes.machine.base": 3,
       "system.attributes.engineering.base": 3, 
       "system.attributes.intrigue.base": 3,
-      "system.resources.gear.value": 7, // 4+3
-      "system.resources.stress.value": 7, // 4+3
-      "system.equipmentPoints.value": 9 // 6+3
+      "system.resources.gear.value": 7, // 4+3 machine
+      "system.resources.stress.value": 7, // 4+3 intrigue
+      "system.equipmentPoints.value": 6 // Always 6 regardless of engineering
     },
     damageApplied: {
       "system.attributes.machine.damage": 2, // machine: 3->1
-      "system.attributes.engineering.damage": 1, // engineering: 3->2  
+      "system.attributes.engineering.damage": 1, // engineering: 3->2 (doesn't affect equipment)
       "system.attributes.intrigue.damage": 2 // intrigue: 3->1
     },
     after: {
@@ -94,10 +95,10 @@ const testScenarios = {
       "system.resources.gear.value": 5, // AUTO-CORRECTED from 7
       "system.resources.stress.max": 5, // 4+1 intrigue
       "system.resources.stress.value": 5, // AUTO-CORRECTED from 7
-      "system.equipmentPoints.max": 8, // 6+2 engineering
-      "system.equipmentPoints.value": 8 // AUTO-CORRECTED from 9
+      "system.equipmentPoints.max": 6, // ALWAYS 6 - no attribute dependency
+      "system.equipmentPoints.value": 6 // NO CHANGE - independent of attributes
     },
-    result: "✅ All resources auto-corrected simultaneously"
+    result: "✅ Gear and stress auto-corrected, equipment points unchanged (always 6/6)"
   }
 };
 
@@ -118,8 +119,8 @@ const implementationDetails = {
   
   correctedResources: [
     "system.resources.gear.value (based on machine attribute)",
-    "system.resources.stress.value (based on intrigue attribute)", 
-    "system.equipmentPoints.value (based on engineering attribute)"
+    "system.resources.stress.value (based on intrigue attribute)"
+    // NOTE: Equipment points are ALWAYS max 6 - no attribute dependency, no auto-correction needed
   ],
   
   logging: "Console.log shows when auto-corrections are applied",

@@ -11,8 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Resource Auto-Correction System**: Automatic correction of resource values when maximums decrease
   - **Gear Resource**: Auto-corrects current gear points when machine attribute damage reduces maximum
   - **Stress Resource**: Auto-corrects current stress when intrigue attribute damage reduces maximum
-  - **Equipment Points**: Auto-corrects current equipment points when engineering attribute damage reduces maximum
-  - **Prevents Invalid States**: Eliminates situations like 8/6 equipment points or 9/7 gear
+  - **Equipment Points**: Always maintain maximum of 6 (independent of attributes - separate mechanic)
+  - **Prevents Invalid States**: Eliminates situations like 9/7 gear or 8/5 stress
   - **Both Sheet Versions**: Works identically in V1 (secondary attribute damage) and V2 (direct attribute damage)
   - **Automatic Activation**: Triggers every time actor sheet refreshes, no manual intervention required
   - **Console Logging**: Transparently logs when auto-corrections are applied
