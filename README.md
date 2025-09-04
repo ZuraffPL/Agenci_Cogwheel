@@ -12,23 +12,35 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 
 ## 🔥 What's New in v0.7.7
 
+- **� Enhanced Equipment Messaging System**: Complete overhaul of equipment chat messages
+  - **Archetype-Style Design**: Equipment messages now match character archetype visual styling
+  - **Equipment-Message CSS Class**: Steampunk gradient backgrounds with golden borders and shadows
+  - **Visual Differentiation**: Color-coded agent names (blue), equipment names (green), and costs (red)
+  - **Backpack Icons**: fa-backpack icons for all equipment add/delete operations
+  - **Both Sheet Support**: V1 and V2 actor sheets fully integrated with custom message callbacks
+
+- **⚡ Resource Message Icon System**: Specialized visual indicators for different resource types
+  - **Gear Resources**: fa-cog (cog wheel) icons - maintains mechanical theme
+  - **Stress Resources**: fa-exclamation-triangle (warning triangle) icons
+  - **Trauma Resources**: fa-skull icons for dramatic impact
+  - **Agent Name Styling**: Consistent blue coloring (#3498db) across all message types
+
+- **🎨 CSS Architecture Enhancement**: Modular styling system for better maintainability
+  - **feats-effects.css**: Dedicated stylesheet for all feat effects and message styling
+  - **Equipment-Message Class**: New archetype-inspired styling for equipment operations
+  - **Resource-Specific Colors**: Gear (green), stress (red), trauma (purple) visual coding
+  - **Unified Design Language**: Consistent steampunk aesthetic across all message types
+
 - **🏗️ Revolutionary Code Architecture**: Complete equipment function deduplication system
   - **ActorEquipmentFunctions Module**: Universal equipment management (add/edit/delete) with shared functions
   - **500+ Lines of Code Eliminated**: Massive reduction in duplicated code across both agent sheet versions
   - **Flexible Customization System**: 10+ customization hooks allowing different behavior per sheet version
   - **Zero Breaking Changes**: All existing functionality preserved while dramatically improving maintainability
-- **⚡ Advanced Shared Function System**: Comprehensive modular architecture for all actor operations
-  - **Gear/Stress Functions** (v0.7.6): Shared _onSpendGear and _onSpendStress operations
-  - **Equipment Functions** (v0.7.7): Complete add/edit/delete equipment operations with validation pipelines
-  - **Future-Proof Design**: Easy integration for upcoming agent sheet versions (V3, V4, etc.)
-- **📚 Comprehensive Documentation**: Extensive examples and implementation guides
-  - **EQUIPMENT-EXAMPLES.js**: 7+ detailed scenarios showing customization patterns
-  - **Complete API Documentation**: Every customization hook and callback explained
-  - **Architecture Guide**: Step-by-step system overview for future development
-- **🔧 Enhanced Maintainability**: Single-point-of-change for all equipment operations
-  - **Bug Fixes**: Changes in one location automatically affect all sheet versions
-  - **Consistent Behavior**: Identical functionality across all agent sheets unless explicitly customized
-  - **Easy Testing**: Centralized logic enables comprehensive testing of equipment operations
+
+- **� Enhanced Multilingual Support**: Improved translation system for equipment messages
+  - **HTML-Formatted Translations**: Rich text support in PL/EN language files
+  - **Consistent Message Formatting**: Standardized equipment add/delete message templates
+  - **Agent Name Integration**: Proper bold formatting for character names in all languages
 
 ## 🔄 Previous Updates in v0.7.6
 

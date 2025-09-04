@@ -351,10 +351,15 @@ export class ActorEquipmentFunctions {
   // Default success callbacks
   static async _defaultOnSuccess(equipment, actor, sheet, config) {
     await ChatMessage.create({
-      content: `<p>${game.i18n.format("COGSYNDICATE.EquipmentAdded", { 
-        equipmentName: equipment.name, 
-        actorName: actor.name 
-      })}</p>`,
+      content: `
+        <div class="equipment-message">
+          <h3><i class="fas fa-backpack"></i> ${game.i18n.format("COGSYNDICATE.EquipmentAdded", { 
+            actorName: `<strong>${actor.name}</strong>`, 
+            equipmentName: `<span class="equipment-name">${equipment.name}</span>`,
+            equipmentCost: `<span class="equipment-cost">${equipment.cost}</span>`
+          })}</h3>
+        </div>
+      `,
       speaker: { actor: actor.id }
     });
   }
@@ -371,11 +376,14 @@ export class ActorEquipmentFunctions {
 
   static async _defaultOnDeleteSuccess(equipment, refund, actor, sheet, config) {
     await ChatMessage.create({
-      content: `<p>${game.i18n.format("COGSYNDICATE.EquipmentDeleted", { 
-        equipmentName: equipment.name, 
-        actorName: actor.name,
-        refund: refund
-      })}</p>`,
+      content: `
+        <div class="equipment-message">
+          <h3><i class="fas fa-backpack"></i> ${game.i18n.format("COGSYNDICATE.EquipmentDeleted", { 
+            equipmentName: `<span class="equipment-name">${equipment.name}</span>`,
+            actorName: `<strong>${actor.name}</strong>`
+          })}</h3>
+        </div>
+      `,
       speaker: { actor: actor.id }
     });
   }

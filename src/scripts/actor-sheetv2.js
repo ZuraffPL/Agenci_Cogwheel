@@ -423,7 +423,7 @@ class CogwheelActorSheetV2 extends ActorSheet {
         await ChatMessage.create({
           content: `
             <div class="feat-effect-message">
-              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.ResourceAdded", { actorName, resource: `<span class='resource-name resource-stress'>${resourceLabel}</span>` })}</h3>
+              <h3><i class="fas fa-exclamation-triangle"></i> ${game.i18n.format("COGSYNDICATE.ResourceAdded", { actorName, resource: `<span class='resource-name resource-stress'>${resourceLabel}</span>` })}</h3>
             </div>
           `,
           speaker: { actor: this.actor.id }
@@ -432,7 +432,7 @@ class CogwheelActorSheetV2 extends ActorSheet {
         await ChatMessage.create({
           content: `
             <div class="feat-effect-message">
-              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.TraumaIncreased", { actorName: this.actor.name })}</h3>
+              <h3><i class="fas fa-skull"></i> ${game.i18n.format("COGSYNDICATE.TraumaIncreased", { actorName: this.actor.name })}</h3>
             </div>
           `,
           speaker: { actor: this.actor.id }
@@ -484,7 +484,7 @@ class CogwheelActorSheetV2 extends ActorSheet {
         await ChatMessage.create({
           content: `
             <div class="feat-effect-message">
-              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.StressReduced", { actorName, resource: `<span class='resource-name resource-stress'>${resourceLabel}</span>` })}</h3>
+              <h3><i class="fas fa-exclamation-triangle"></i> ${game.i18n.format("COGSYNDICATE.StressReduced", { actorName, resource: `<span class='resource-name resource-stress'>${resourceLabel}</span>` })}</h3>
             </div>
           `,
           speaker: { actor: this.actor.id }
@@ -493,7 +493,7 @@ class CogwheelActorSheetV2 extends ActorSheet {
         await ChatMessage.create({
           content: `
             <div class="feat-effect-message">
-              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.TraumaDecreased", { actorName: actorName })}</h3>
+              <h3><i class="fas fa-skull"></i> ${game.i18n.format("COGSYNDICATE.TraumaDecreased", { actorName: actorName })}</h3>
             </div>
           `,
           speaker: { actor: this.actor.id }
@@ -585,10 +585,15 @@ class CogwheelActorSheetV2 extends ActorSheet {
       // V2 style success message
       onSuccess: async (equipment, actor, sheet, config) => {
         await ChatMessage.create({
-          content: `<p>${game.i18n.format("COGSYNDICATE.AddEquipment", { 
-            name: equipment.name, 
-            actorName: actor.name 
-          })}</p>`,
+          content: `
+            <div class="equipment-message">
+              <h3><i class="fas fa-backpack"></i> ${game.i18n.format("COGSYNDICATE.EquipmentAdded", { 
+                actorName: `<strong>${actor.name}</strong>`, 
+                equipmentName: `<span class="equipment-name">${equipment.name}</span>`,
+                equipmentCost: `<span class="equipment-cost">${equipment.cost}</span>`
+              })}</h3>
+            </div>
+          `,
           speaker: { actor: actor.id }
         });
         sheet.render(); // V2 calls render after success
@@ -625,10 +630,14 @@ class CogwheelActorSheetV2 extends ActorSheet {
       confirmDelete: false, // V2 doesn't confirm delete
       onSuccess: async (equipment, refund, actor, sheet, config) => {
         await ChatMessage.create({
-          content: `<p>${game.i18n.format("COGSYNDICATE.DeleteEquipment", { 
-            name: equipment.name, 
-            actorName: actor.name 
-          })}</p>`,
+          content: `
+            <div class="equipment-message">
+              <h3><i class="fas fa-backpack"></i> ${game.i18n.format("COGSYNDICATE.EquipmentDeleted", { 
+                equipmentName: `<span class="equipment-name">${equipment.name}</span>`,
+                actorName: `<strong>${actor.name}</strong>`
+              })}</h3>
+            </div>
+          `,
           speaker: { actor: actor.id }
         });
         sheet.render(); // V2 renders after delete

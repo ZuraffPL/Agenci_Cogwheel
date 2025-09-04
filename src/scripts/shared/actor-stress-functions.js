@@ -204,7 +204,7 @@ export class ActorStressFunctions {
       await ChatMessage.create({
         content: `
           <div class="feat-effect-message">
-            <h3><i class="fas fa-cog"></i> ${message}</h3>
+            <h3><i class="fas fa-exclamation-triangle"></i> ${message}</h3>
           </div>
         `,
         speaker: { actor: actor.id },

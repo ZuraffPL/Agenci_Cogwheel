@@ -8,6 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **Equipment Messages System**: Complete overhaul of equipment-related chat messages
+  - **Equipment-Message CSS Class**: New archetype-inspired styling with steampunk gradient background
+  - **Backpack Icon**: Added fa-backpack icons for all equipment messages
+  - **Color-Coded Information**: Agent names (blue), equipment names (green), costs (red)
+  - **Both Sheet Versions**: V1 and V2 actor sheets fully supported with custom callbacks
+  - **Multilingual Support**: Enhanced PL/EN translations with HTML formatting
+
+- **Resource Message Icon Differentiation**: Specialized icons for different resource types
+  - **Gear Resources**: fa-cog (cog wheel) - maintains existing theme
+  - **Stress Resources**: fa-exclamation-triangle (warning triangle)
+  - **Trauma Resources**: fa-skull (skull icon)
+  - **Agent Names Styling**: Blue color (#3498db) for all agent names in messages
+
 - **CSS Modularization**: Extracted feat effects styling to dedicated file for better code organization
   - **feats-effects.css**: New dedicated CSS file containing all feat effects styling
   - **Comprehensive Extraction**: Moved `.feat-effect-message`, `.steam-booster-effect`, and `.organization-training-dialog` styles
@@ -16,6 +29,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **System Integration**: Added feats-effects.css to system.json styles array for proper loading
 
 ### Enhanced
+- **Equipment Functions**: Enhanced shared ActorEquipmentFunctions with new message formats
+  - **Add Equipment**: "{backpack icon} {agent name - bold blue} dodał {equipment name - green} za {cost - red} Punktów Ekwipunku"
+  - **Delete Equipment**: "Usunięto {equipment name - green} z karty {agent name - bold blue}"
+  - **Archetype-Style Design**: Same visual styling as character archetype sections
+
+- **Resource Messages**: Improved resource increment/decrement messages with proper styling
+  - **Shared Functions**: ActorGearFunctions and ActorStressFunctions use feat-effect-message wrapper
+  - **Missing V2 Messages**: Added missing stress increment messages to V2 actor sheet
+  - **Consistent Styling**: All resource messages now use steampunk aesthetic
+
 - **Code Organization**: Improved maintainability with modular CSS approach
   - **Dedicated Module**: All feat effects styling centralized in single location
   - **Reduced Duplication**: Eliminated redundant CSS across multiple files
