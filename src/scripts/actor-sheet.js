@@ -439,7 +439,11 @@ class CogwheelActorSheet extends ActorSheet {
         [`system.resources.${resource}.value`]: newTrauma
       });
       await ChatMessage.create({
-        content: `<p>${game.i18n.format("COGSYNDICATE.TraumaIncreased", { actorName: this.actor.name })}</p>`,
+        content: `
+          <div class="feat-effect-message">
+            <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.TraumaIncreased", { actorName: this.actor.name })}</h3>
+          </div>
+        `,
         speaker: { actor: this.actor.id }
       });
 
@@ -482,7 +486,11 @@ class CogwheelActorSheet extends ActorSheet {
         });
       } else if (resource === "stress") {
         await ChatMessage.create({
-          content: `<p>${game.i18n.format("COGSYNDICATE.ResourceSpent", { actorName, resource: resourceLabel })}</p>`,
+          content: `
+            <div class="feat-effect-message">
+              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.ResourceAdded", { actorName, resource: resourceLabel })}</h3>
+            </div>
+          `,
           speaker: { actor: this.actor.id }
         });
       }
@@ -518,12 +526,20 @@ class CogwheelActorSheet extends ActorSheet {
         });
       } else if (resource === "stress") {
         await ChatMessage.create({
-          content: `<p>${game.i18n.format("COGSYNDICATE.StressReduced", { actorName, resource: resourceLabel })}</p>`,
+          content: `
+            <div class="feat-effect-message">
+              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.StressReduced", { actorName, resource: resourceLabel })}</h3>
+            </div>
+          `,
           speaker: { actor: this.actor.id }
         });
       } else if (resource === "trauma") {
         await ChatMessage.create({
-          content: `<p>${game.i18n.format("COGSYNDICATE.TraumaDecreased", { actorName: actorName })}</p>`,
+          content: `
+            <div class="feat-effect-message">
+              <h3><i class="fas fa-cog"></i> ${game.i18n.format("COGSYNDICATE.TraumaDecreased", { actorName: actorName })}</h3>
+            </div>
+          `,
           speaker: { actor: this.actor.id }
         });
       }

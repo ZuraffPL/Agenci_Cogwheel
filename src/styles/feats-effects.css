@@ -37,6 +37,14 @@
   color: #e67e22 !important;
 }
 
+/* Special styling for resource names in h3 headings */
+.feat-effect-message h3 .gear-resource-name,
+.feat-effect-message h3 span.gear-resource-name {
+  color: #27ae60 !important;
+  font-weight: bold !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
 .feat-effect-message p {
   margin: 8px 0 !important;
   font-size: 14px !important;
@@ -45,6 +53,14 @@
 
 .feat-effect-message p strong {
   color: #f1c40f !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Special styling for resource names (like Gear/Sprzęt, Stress/Stres, Trauma/Trauma) in feat effect messages */
+.feat-effect-message .gear-resource-name,
+.feat-effect-message span.gear-resource-name {
+  color: #27ae60 !important;
+  font-weight: bold !important;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
 }
 
