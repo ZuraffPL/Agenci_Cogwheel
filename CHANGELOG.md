@@ -13,6 +13,14 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.7.9] - 2025-09-06
 
+- **Debug Enhancement**: Added comprehensive logging to track clock creation process
+- **Category Fix**: Use this.activeCategory instead of button dataset for reliable category detection
+- **Troubleshooting**: Added detailed console output for form values, clock creation, and saving process
+
+
+
+## [0.7.9] - 2025-09-06
+
 - **State Persistence**: Active category is now preserved between renders and after adding new clocks
 - **Template Improvements**: Dynamic tab highlighting based on active category
 - **Better UX**: When adding a clock, it stays in the current active category view
@@ -790,6 +798,7 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Comprehensive README.md with installation instructions
 - MIT License included
 - GitHub repository integration for easy updates
+
 
 
 

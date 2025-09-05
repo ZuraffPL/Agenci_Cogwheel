@@ -93,8 +93,10 @@ export class DoomClocksDialog extends Application {
   async _onAddClock(event) {
     event.preventDefault();
     
-    // Pobierz aktualnie aktywną kategorię
-    const activeCategory = event.currentTarget.dataset.category || 'mission';
+    // Pobierz aktualnie aktywną kategorię z instancji
+    const activeCategory = this.activeCategory || 'mission';
+    
+    console.log(`Adding clock to category: ${activeCategory}`); // Debug
     
     const dialogContent = await renderTemplate(
       "systems/cogwheel-syndicate/src/templates/add-clock-dialog.hbs",
@@ -117,6 +119,8 @@ export class DoomClocksDialog extends Application {
             const max = parseInt(html.find('[name="max"]').val()) || 4;
             const category = html.find('[name="category"]').val() || activeCategory;
 
+            console.log(`Form values - name: "${name}", category: "${category}", activeCategory fallback: "${activeCategory}"`);
+
             if (!name) {
               ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
               return;
@@ -129,7 +133,10 @@ export class DoomClocksDialog extends Application {
               max: Math.clamp(max, 2, 12),
               category: category 
             };
+            
+            console.log(`Creating clock:`, newClock);
             this.clocks.push(newClock);
+            console.log(`Total clocks after add:`, this.clocks.length);
             console.log(`Added clock "${newClock.name}" to category "${newClock.category}"`);
             await this._updateClocks();
           }
@@ -217,6 +224,9 @@ export class DoomClocksDialog extends Application {
   }
 
   async _updateClocks() {
+    console.log(`Updating clocks - total count: ${this.clocks.length}`);
+    console.log(`Clock categories:`, this.clocks.map(c => ({name: c.name, category: c.category})));
+    
     // Zapis zegarów do ustawień świata
     await game.settings.set("cogwheel-syndicate", "doomClocks", this.clocks);
     
