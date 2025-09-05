@@ -12,7 +12,10 @@ param(
     [string]$ReadmeEntry = "",
     
     [Parameter(Mandatory=$false)]
-    [string]$VersionBump = ""
+    [string]$VersionBump = "",
+    
+    [Parameter(Mandatory=$false)]
+    [switch]$Push
 )
 
 Write-Host "🚀 Cogwheel Syndicate - Documentation Update & Commit Script" -ForegroundColor Cyan
@@ -134,9 +137,21 @@ if ($GitStatus) {
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✅ Commit utworzony pomyślnie!" -ForegroundColor Green
         
-        # Opcjonalnie push (odkomentuj jeśli chcesz automatyczny push)
-        # Write-Host "🚀 Pushing to remote..." -ForegroundColor Yellow
-        # git push origin main
+        # Push jesli podano parametr -Push
+        if ($Push) {
+            Write-Host "🚀 Wypychanie na remote repository..." -ForegroundColor Yellow
+            git push origin main
+            
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "✅ Push wykonany pomyślnie!" -ForegroundColor Green
+            } else {
+                Write-Host "❌ Błąd podczas push" -ForegroundColor Red
+                Write-Host "💡 Wykonaj ręcznie: git push origin main" -ForegroundColor Yellow
+            }
+        } else {
+            Write-Host "💡 Aby wypchnąć zmiany wykonaj: git push origin main" -ForegroundColor Yellow
+            Write-Host "💡 Lub użyj parametru -Push w następnym commicie" -ForegroundColor Yellow
+        }
         
         Write-Host "🎉 Proces zakończony pomyślnie!" -ForegroundColor Green
     } else {

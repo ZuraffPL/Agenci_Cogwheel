@@ -13,6 +13,15 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.7.9] - 2025-09-05
 
+- **Git Configuration**: Fixed push automation and added safety measures
+- **Enhanced Scripts**: Added -Push parameter to update-docs-and-commit.ps1
+- **New Script**: Added push-changes.ps1 for interactive push management
+- **Git Settings**: Configured push.default=simple and proper upstream tracking
+
+
+
+## [0.7.9] - 2025-09-05
+
 - **Progress Clocks Tabs**: Added category tabs (Mission, Combat, Other) to organize progress clocks by type
 - **Enhanced Clock Creation**: New clocks are automatically assigned to the active tab category
 - **Improved UX**: Easy switching between different clock categories with visual tab indicators
@@ -755,5 +764,6 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Comprehensive README.md with installation instructions
 - MIT License included
 - GitHub repository integration for easy updates
+
 
 
