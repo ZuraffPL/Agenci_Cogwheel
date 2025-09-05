@@ -1,146 +1,149 @@
-# Changelog
+# Changelog | Historia Zmian
 
-All notable changes to this project will be documented in this file.
+All notable changes to this project will be documented in this file in both English and Polish.  
+Wszystkie istotne zmiany w projekcie są dokumentowane w tym pliku w języku angielskim i polskim.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+Format oparty na [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased] | [Nieopublikowane]
 
 ## [0.7.8] - 2025-09-04
 
-### Added
-- **Trauma Section UI Modernization**: Complete visual overhaul matching equipment section design
-  - **Archetype-Style Background**: Applied `.archetype-section` class to trauma sections in both V1 and V2
-  - **Steampunk Gradient**: Brown-gold gradient background with golden borders and shadow effects
-  - **Purple Skull Icon**: Added distinctive `fa-skull` icon with purple color (#8e44ad) for trauma sections
-  - **Steampunk Button Design**: "Dodaj traumę" button with `.steampunk-btn` class and hover animations
-  - **Visual Consistency**: Trauma sections now match equipment section elegance with thematic distinction
-  - **Template Updates**: Modified both `actor-sheet.hbs` and `actor-sheetv2.hbs` for unified styling
-  - **CSS Enhancements**: Added `.trauma-skull-icon` styling with purple coloring and text shadows
+### Added | Dodano
+- **Trauma Section UI Modernization | Modernizacja UI Sekcji Traumy**: Complete visual overhaul matching equipment section design | Kompletna przebudowa wizualna dopasowana do designu sekcji ekwipunku
+  - **Archetype-Style Background | Tło w Stylu Archetypu**: Applied `.archetype-section` class to trauma sections in both V1 and V2 | Zastosowano klasę `.archetype-section` w sekcjach traumy w V1 i V2
+  - **Steampunk Gradient | Gradient Steampunkowy**: Brown-gold gradient background with golden borders and shadow effects | Brązowo-złoty gradient tła ze złotymi ramkami i efektami cienia
+  - **Purple Skull Icon | Fioletowa Ikona Czaszki**: Added distinctive `fa-skull` icon with purple color (#8e44ad) for trauma sections | Dodano charakterystyczną ikonę `fa-skull` w kolorze fioletowym (#8e44ad) dla sekcji traumy
+  - **Steampunk Button Design | Design Przycisku Steampunk**: "Dodaj traumę" button with `.steampunk-btn` class and hover animations | Przycisk "Dodaj traumę" z klasą `.steampunk-btn` i animacjami hover
+  - **Visual Consistency | Spójność Wizualna**: Trauma sections now match equipment section elegance with thematic distinction | Sekcje traumy teraz odpowiadają elegancji sekcji ekwipunku z tematycznym rozróżnieniem
+  - **Template Updates | Aktualizacje Szablonów**: Modified both `actor-sheet.hbs` and `actor-sheetv2.hbs` for unified styling | Zmodyfikowano `actor-sheet.hbs` i `actor-sheetv2.hbs` dla ujednoliconej stylizacji
+  - **CSS Enhancements | Ulepszenia CSS**: Added `.trauma-skull-icon` styling with purple coloring and text shadows | Dodano stylizację `.trauma-skull-icon` z fioletowym kolorem i cieniami tekstu
 
-- **Equipment Section UI Overhaul**: Complete modernization of equipment interface
-  - **Archetype-Style Background**: Applied steampunk gradient backgrounds with golden borders
-  - **Backpack Icons**: Added `fa-backpack` icons throughout equipment sections for thematic consistency
-  - **Steampunk Button Design**: "Dodaj Ekwipunek" button with professional gradient styling and animations
-  - **Interface Cleanup**: Removed "Brak ekwipunku do dodania" placeholder messages for cleaner UI
-  - **Visual Polish**: Enhanced user experience with consistent archetype-inspired design language
+- **Equipment Section UI Overhaul | Przebudowa UI Sekcji Ekwipunku**: Complete modernization of equipment interface | Kompletna modernizacja interfejsu ekwipunku
+  - **Archetype-Style Background | Tło w Stylu Archetypu**: Applied steampunk gradient backgrounds with golden borders | Zastosowano steampunkowe gradienty tła ze złotymi ramkami
+  - **Backpack Icons | Ikony Plecaka**: Added `fa-backpack` icons throughout equipment sections for thematic consistency | Dodano ikony `fa-backpack` w sekcjach ekwipunku dla spójności tematycznej
+  - **Steampunk Button Design | Design Przycisku Steampunk**: "Dodaj Ekwipunek" button with professional gradient styling and animations | Przycisk "Dodaj Ekwipunek" z profesjonalną stylizacją gradientu i animacjami
+  - **Interface Cleanup | Oczyszczenie Interfejsu**: Removed "Brak ekwipunku do dodania" placeholder messages for cleaner UI | Usunięto komunikaty zastępcze "Brak ekwipunku do dodania" dla czystszego UI
+  - **Visual Polish | Szlif Wizualny**: Enhanced user experience with consistent archetype-inspired design language | Ulepszone doświadczenie użytkownika ze spójnym językiem wizualnym inspirowanym archetypami
 
-- **Equipment Messages System**: Complete overhaul of equipment-related chat messages
-  - **Equipment-Message CSS Class**: New archetype-inspired styling with steampunk gradient background
-  - **Backpack Icon**: Added fa-backpack icons for all equipment messages
-  - **Color-Coded Information**: Agent names (blue), equipment names (green), costs (red)
-  - **Both Sheet Versions**: V1 and V2 actor sheets fully supported with custom callbacks
-  - **Multilingual Support**: Enhanced PL/EN translations with HTML formatting
+- **Equipment Messages System | System Komunikatów Ekwipunku**: Complete overhaul of equipment-related chat messages | Kompletna przebudowa komunikatów czatu związanych z ekwipunkiem
+  - **Equipment-Message CSS Class | Klasa CSS Equipment-Message**: New archetype-inspired styling with steampunk gradient background | Nowa stylizacja inspirowana archetypami ze steampunkowym gradientem tła
+  - **Backpack Icon | Ikona Plecaka**: Added fa-backpack icons for all equipment messages | Dodano ikony fa-backpack dla wszystkich komunikatów ekwipunku
+  - **Color-Coded Information | Informacje Kolorowe**: Agent names (blue), equipment names (green), costs (red) | Nazwy agentów (niebieski), nazwy ekwipunku (zielony), koszty (czerwony)
+  - **Both Sheet Versions | Obie Wersje Karty**: V1 and V2 actor sheets fully supported with custom callbacks | Karty aktorów V1 i V2 w pełni obsługiwane z niestandardowymi callbackami
+  - **Multilingual Support | Wsparcie Wielojęzyczne**: Enhanced PL/EN translations with HTML formatting | Ulepszone tłumaczenia PL/EN z formatowaniem HTML
 
-- **Resource Message Icon Differentiation**: Specialized icons for different resource types
-  - **Gear Resources**: fa-cog (cog wheel) - maintains existing theme
-  - **Stress Resources**: fa-exclamation-triangle (warning triangle)
-  - **Trauma Resources**: fa-skull (skull icon)
-  - **Agent Names Styling**: Blue color (#3498db) for all agent names in messages
+- **Resource Message Icon Differentiation | Różnicowanie Ikon Komunikatów Zasobów**: Specialized icons for different resource types | Specjalistyczne ikony dla różnych typów zasobów
+  - **Gear Resources | Zasoby Ekwipunku**: fa-cog (cog wheel) - maintains existing theme | fa-cog (koło zębate) - zachowuje istniejący motyw
+  - **Stress Resources | Zasoby Stresu**: fa-exclamation-triangle (warning triangle) | fa-exclamation-triangle (trójkąt ostrzegawczy)
+  - **Trauma Resources | Zasoby Traumy**: fa-skull (skull icon) | fa-skull (ikona czaszki)
+  - **Agent Names Styling | Stylizacja Nazw Agentów**: Blue color (#3498db) for all agent names in messages | Niebieski kolor (#3498db) dla wszystkich nazw agentów w komunikatach
 
-- **CSS Modularization**: Extracted feat effects styling to dedicated file for better code organization
-  - **feats-effects.css**: New dedicated CSS file containing all feat effects styling
-  - **Comprehensive Extraction**: Moved `.feat-effect-message`, `.steam-booster-effect`, and `.organization-training-dialog` styles
-  - **Both Sheet Versions**: Includes styles for V1 and V2 (with `.agentv2` prefix) in single file
-  - **Clean Architecture**: Reduced cogwheel.css and agent-v2.css file size by ~200 lines total
-  - **System Integration**: Added feats-effects.css to system.json styles array for proper loading
+- **CSS Modularization | Modularyzacja CSS**: Extracted feat effects styling to dedicated file for better code organization | Wydzielono stylizację efektów atutów do dedykowanego pliku dla lepszej organizacji kodu
+  - **feats-effects.css**: New dedicated CSS file containing all feat effects styling | Nowy dedykowany plik CSS zawierający całą stylizację efektów atutów
+  - **Comprehensive Extraction | Kompleksowe Wydzielenie**: Moved `.feat-effect-message`, `.steam-booster-effect`, and `.organization-training-dialog` styles | Przeniesiono style `.feat-effect-message`, `.steam-booster-effect` i `.organization-training-dialog`
+  - **Both Sheet Versions | Obie Wersje Karty**: Includes styles for V1 and V2 (with `.agentv2` prefix) in single file | Zawiera style dla V1 i V2 (z prefiksem `.agentv2`) w jednym pliku
+  - **Clean Architecture | Czysta Architektura**: Reduced cogwheel.css and agent-v2.css file size by ~200 lines total | Zmniejszono rozmiar plików cogwheel.css i agent-v2.css o ~200 linii łącznie
+  - **System Integration | Integracja Systemowa**: Added feats-effects.css to system.json styles array for proper loading | Dodano feats-effects.css do tablicy stylów system.json dla poprawnego ładowania
 
-### Enhanced
-- **Equipment Functions**: Enhanced shared ActorEquipmentFunctions with new message formats
-  - **Add Equipment**: "{backpack icon} {agent name - bold blue} dodał {equipment name - green} za {cost - red} Punktów Ekwipunku"
-  - **Delete Equipment**: "Usunięto {equipment name - green} z karty {agent name - bold blue}"
-  - **Archetype-Style Design**: Same visual styling as character archetype sections
+### Enhanced | Ulepszone
+- **Equipment Functions | Funkcje Ekwipunku**: Enhanced shared ActorEquipmentFunctions with new message formats | Ulepszone współdzielone ActorEquipmentFunctions z nowymi formatami komunikatów
+  - **Add Equipment | Dodawanie Ekwipunku**: "{backpack icon} {agent name - bold blue} dodał {equipment name - green} za {cost - red} Punktów Ekwipunku" | "{ikona plecaka} {nazwa agenta - pogrubiony niebieski} dodał {nazwa ekwipunku - zielony} za {koszt - czerwony} Punktów Ekwipunku"
+  - **Delete Equipment | Usuwanie Ekwipunku**: "Usunięto {equipment name - green} z karty {agent name - bold blue}" | "Usunięto {nazwa ekwipunku - zielony} z karty {nazwa agenta - pogrubiony niebieski}"
+  - **Archetype-Style Design | Design w Stylu Archetypu**: Same visual styling as character archetype sections | Taka sama stylizacja wizualna jak sekcje archetypu postaci
 
-- **Resource Messages**: Improved resource increment/decrement messages with proper styling
-  - **Shared Functions**: ActorGearFunctions and ActorStressFunctions use feat-effect-message wrapper
-  - **Missing V2 Messages**: Added missing stress increment messages to V2 actor sheet
-  - **Consistent Styling**: All resource messages now use steampunk aesthetic
+- **Resource Messages | Komunikaty Zasobów**: Improved resource increment/decrement messages with proper styling | Ulepszone komunikaty zwiększania/zmniejszania zasobów z odpowiednią stylizacją
+  - **Shared Functions | Współdzielone Funkcje**: ActorGearFunctions and ActorStressFunctions use feat-effect-message wrapper | ActorGearFunctions i ActorStressFunctions używają wrappera feat-effect-message
+  - **Missing V2 Messages | Brakujące Komunikaty V2**: Added missing stress increment messages to V2 actor sheet | Dodano brakujące komunikaty zwiększania stresu do karty aktora V2
+  - **Consistent Styling | Spójna Stylizacja**: All resource messages now use steampunk aesthetic | Wszystkie komunikaty zasobów używają teraz estetyki steampunk
 
-- **Code Organization**: Improved maintainability with modular CSS approach
-  - **Dedicated Module**: All feat effects styling centralized in single location
-  - **Reduced Duplication**: Eliminated redundant CSS across multiple files
-  - **Better Structure**: Clear separation between general styles and feat-specific styling
-  - **Future-Proof**: Easy addition of new feat effects without bloating main CSS files
+- **Code Organization | Organizacja Kodu**: Improved maintainability with modular CSS approach | Ulepszona łatwość konserwacji dzięki modularnemu podejściu CSS
+  - **Dedicated Module | Dedykowany Moduł**: All feat effects styling centralized in single location | Cała stylizacja efektów atutów scentralizowana w jednym miejscu
+  - **Reduced Duplication | Zmniejszona Duplikacja**: Eliminated redundant CSS across multiple files | Wyeliminowano zbędny CSS w wielu plikach
+  - **Better Structure | Lepsza Struktura**: Clear separation between general styles and feat-specific styling | Wyraźne oddzielenie między stylami ogólnymi a stylizacją specyficzną dla atutów
+  - **Future-Proof | Przyszłościowe**: Easy addition of new feat effects without bloating main CSS files | Łatwe dodawanie nowych efektów atutów bez rozdmuchiwania głównych plików CSS
 
-- **Styled Gear Resource Chat Messages**: Enhanced visual consistency between agent sheet versions
-  - **V2 Agent Sheet**: Added missing gear resource increment/decrement chat messages
-  - **Both V1/V2**: Applied `.feat-effect-message` CSS styling with steampunk appearance
-  - **Cog Icon Integration**: Messages display with `<i class="fas fa-cog"></i>` icon matching feat effects
-  - **Unified Styling**: Both sheet versions now use identical visual formatting for gear messages
+- **Styled Gear Resource Chat Messages | Wystylizowane Komunikaty Czatu Zasobów Ekwipunku**: Enhanced visual consistency between agent sheet versions | Ulepszona spójność wizualna między wersjami karty agenta
+  - **V2 Agent Sheet | Karta Agenta V2**: Added missing gear resource increment/decrement chat messages | Dodano brakujące komunikaty czatu zwiększania/zmniejszania zasobów ekwipunku
+  - **Both V1/V2 | Oba V1/V2**: Applied `.feat-effect-message` CSS styling with steampunk appearance | Zastosowano stylizację CSS `.feat-effect-message` z wyglądem steampunk
+  - **Cog Icon Integration | Integracja Ikony Koła Zębatego**: Messages display with `<i class="fas fa-cog"></i>` icon matching feat effects | Komunikaty wyświetlane z ikoną `<i class="fas fa-cog"></i>` dopasowaną do efektów atutów
+  - **Unified Styling | Ujednolicona Stylizacja**: Both sheet versions now use identical visual formatting for gear messages | Obie wersje karty używają teraz identycznego formatowania wizualnego dla komunikatów ekwipunku
 
-### Enhanced
-- **Chat Message Consistency**: Gear resource messages now match existing feat effects visual style
-  - **Steampunk Theme**: Gold borders, gradient backgrounds, and professional typography
-  - **Multilingual Support**: Uses existing `COGSYNDICATE.ResourceAdded/ResourceSpent` translation keys
-  - **Visual Hierarchy**: Clear distinction from plain chat messages with enhanced styling
+- **Chat Message Consistency | Spójność Komunikatów Czatu**: Gear resource messages now match existing feat effects visual style | Komunikaty zasobów ekwipunku teraz odpowiadają istniejącemu stylowi wizualnemu efektów atutów
+  - **Steampunk Theme | Motyw Steampunk**: Gold borders, gradient backgrounds, and professional typography | Złote ramki, tła z gradientem i profesjonalna typografia
+  - **Multilingual Support | Wsparcie Wielojęzyczne**: Uses existing `COGSYNDICATE.ResourceAdded/ResourceSpent` translation keys | Używa istniejących kluczy tłumaczeniowych `COGSYNDICATE.ResourceAdded/ResourceSpent`
+  - **Visual Hierarchy | Hierarchia Wizualna**: Clear distinction from plain chat messages with enhanced styling | Wyraźne odróżnienie od zwykłych komunikatów czatu dzięki ulepszonej stylizacji
 
-### Fixed
-- **Resource Auto-Correction System**: Automatic correction of resource values when maximums decrease
-  - **Gear Resource**: Auto-corrects current gear points when machine attribute damage reduces maximum
-  - **Stress Resource**: Auto-corrects current stress when intrigue attribute damage reduces maximum
-  - **Equipment Points**: Always maintain maximum of 6 (independent of attributes - separate mechanic)
-  - **Prevents Invalid States**: Eliminates situations like 9/7 gear or 8/5 stress
-  - **Both Sheet Versions**: Works identically in V1 (secondary attribute damage) and V2 (direct attribute damage)
-  - **Automatic Activation**: Triggers every time actor sheet refreshes, no manual intervention required
-  - **Console Logging**: Transparently logs when auto-corrections are applied
+### Fixed | Naprawione
+- **Resource Auto-Correction System | System Automatycznej Korekty Zasobów**: Automatic correction of resource values when maximums decrease | Automatyczna korekta wartości zasobów gdy maksima maleją
+  - **Gear Resource | Zasób Ekwipunku**: Auto-corrects current gear points when machine attribute damage reduces maximum | Automatycznie koryguje bieżące punkty ekwipunku gdy uszkodzenie atrybutu maszyna zmniejsza maksimum
+  - **Stress Resource | Zasób Stresu**: Auto-corrects current stress when intrigue attribute damage reduces maximum | Automatycznie koryguje bieżący stres gdy uszkodzenie atrybutu intryga zmniejsza maksimum
+  - **Equipment Points | Punkty Ekwipunku**: Always maintain maximum of 6 (independent of attributes - separate mechanic) | Zawsze utrzymują maksimum 6 (niezależnie od atrybutów - oddzielna mechanika)
+  - **Prevents Invalid States | Zapobiega Nieprawidłowym Stanom**: Eliminates situations like 9/7 gear or 8/5 stress | Eliminuje sytuacje jak 9/7 ekwipunku lub 8/5 stresu
+  - **Both Sheet Versions | Obie Wersje Karty**: Works identically in V1 (secondary attribute damage) and V2 (direct attribute damage) | Działa identycznie w V1 (uszkodzenia atrybutów wtórnych) i V2 (bezpośrednie uszkodzenia atrybutów)
+  - **Automatic Activation | Automatyczna Aktywacja**: Triggers every time actor sheet refreshes, no manual intervention required | Uruchamia się za każdym razem gdy karta aktora się odświeża, nie wymaga ręcznej interwencji
+  - **Console Logging | Logowanie Konsoli**: Transparently logs when auto-corrections are applied | Transparentnie loguje kiedy automatyczne korekty są stosowane
 
 ## [0.7.7] - 2025-09-04
 
-### Added
-- **Complete Equipment Functions Deduplication System**: Revolutionary shared function architecture
-  - **ActorEquipmentFunctions Module**: Comprehensive equipment management with add/edit/delete operations
-  - **Flexible Customization System**: 10+ customization hooks allowing per-sheet version behavior modification
-  - **Full V1/V2 Compatibility**: Both agent sheet versions maintain identical behavior while using shared code
-  - **Future-Proof Architecture**: Easy integration for future agent sheet versions (V3, V4, etc.)
+### Added | Dodano
+- **Complete Equipment Functions Deduplication System | Kompletny System Deduplikacji Funkcji Ekwipunku**: Revolutionary shared function architecture | Rewolucyjna architektura współdzielonych funkcji
+  - **ActorEquipmentFunctions Module | Moduł ActorEquipmentFunctions**: Comprehensive equipment management with add/edit/delete operations | Kompleksowe zarządzanie ekwipunkiem z operacjami dodawania/edycji/usuwania
+  - **Flexible Customization System | Elastyczny System Dostosowywania**: 10+ customization hooks allowing per-sheet version behavior modification | 10+ hooków dostosowywania pozwalających na modyfikację zachowania per wersja karty
+  - **Full V1/V2 Compatibility | Pełna Kompatybilność V1/V2**: Both agent sheet versions maintain identical behavior while using shared code | Obie wersje karty agenta zachowują identyczne zachowanie używając współdzielonego kodu
+  - **Future-Proof Architecture | Architektura na Przyszłość**: Easy integration for future agent sheet versions (V3, V4, etc.) | Łatwa integracja dla przyszłych wersji karty agenta (V3, V4, itd.)
 
-### Enhanced
-- **Massive Code Reduction**: Eliminated 300+ lines of duplicated equipment code per sheet version
-  - **Total Savings**: ~500+ lines of duplicated code removed across gear/stress/equipment functions
-  - **Maintainability**: Bug fixes now require changes in single location instead of multiple files
-  - **Consistency**: All equipment operations work identically unless explicitly customized
-- **Advanced Customization Options**: Comprehensive callback system for equipment operations
-  - **Validation Hooks**: Custom input validation, cost validation, and error handling per sheet version
-  - **Processing Hooks**: Custom data processing and equipment defaults configuration
-  - **Success Callbacks**: Customizable success/error handling with version-specific behaviors
-  - **Refund System**: Configurable equipment deletion refund calculation
-- **Documentation Excellence**: Comprehensive examples and implementation guides
-  - **EQUIPMENT-EXAMPLES.js**: 7+ detailed implementation scenarios for different sheet versions
-  - **Shared Function Architecture Documentation**: Complete system overview and usage patterns
-  - **Customization Recipes**: Step-by-step guides for extending functionality
+### Enhanced | Ulepszone
+- **Massive Code Reduction | Masywne Zmniejszenie Kodu**: Eliminated 300+ lines of duplicated equipment code per sheet version | Wyeliminowano 300+ linii zduplikowanego kodu ekwipunku na wersję karty
+  - **Total Savings | Całkowite Oszczędności**: ~500+ lines of duplicated code removed across gear/stress/equipment functions | ~500+ linii zduplikowanego kodu usunięto z funkcji gear/stress/equipment
+  - **Maintainability | Łatwość Konserwacji**: Bug fixes now require changes in single location instead of multiple files | Naprawienie błędów wymaga teraz zmian w jednym miejscu zamiast w wielu plikach
+  - **Consistency | Spójność**: All equipment operations work identically unless explicitly customized | Wszystkie operacje ekwipunku działają identycznie chyba że są jawnie dostosowane
+- **Advanced Customization Options | Zaawansowane Opcje Dostosowywania**: Comprehensive callback system for equipment operations | Kompleksowy system callbacków dla operacji ekwipunku
+  - **Validation Hooks | Hooki Walidacji**: Custom input validation, cost validation, and error handling per sheet version | Niestandardowa walidacja wejścia, walidacja kosztów i obsługa błędów per wersja karty
+  - **Processing Hooks | Hooki Przetwarzania**: Custom data processing and equipment defaults configuration | Niestandardowe przetwarzanie danych i konfiguracja domyślnych ustawień ekwipunku
+  - **Success Callbacks | Callbacki Sukcesu**: Customizable success/error handling with version-specific behaviors | Dostosowywalna obsługa sukcesu/błędów z zachowaniami specyficznymi dla wersji
+  - **Refund System | System Zwrotów**: Configurable equipment deletion refund calculation | Konfigurowalne obliczanie zwrotu za usunięcie ekwipunku
+- **Documentation Excellence | Doskonała Dokumentacja**: Comprehensive examples and implementation guides | Kompleksowe przykłady i przewodniki implementacji
+  - **EQUIPMENT-EXAMPLES.js**: 7+ detailed implementation scenarios for different sheet versions | 7+ szczegółowych scenariuszy implementacji dla różnych wersji karty
+  - **Shared Function Architecture Documentation | Dokumentacja Architektury Współdzielonych Funkcji**: Complete system overview and usage patterns | Kompletny przegląd systemu i wzorce użytkowania
+  - **Customization Recipes | Przepisy Dostosowywania**: Step-by-step guides for extending functionality | Przewodniki krok po kroku do rozszerzania funkcjonalności
 
-### Technical
-- **Shared Function Architecture**: Complete modularization of equipment operations
-  - **handleAddEquipment()**: Universal equipment addition with validation and callbacks
-  - **handleEditEquipment()**: Equipment modification with cost difference handling
-  - **handleDeleteEquipment()**: Equipment removal with optional confirmation and refund calculation
-- **Backward Compatibility**: All existing functionality preserved with zero breaking changes
-  - **V1 Behavior**: Strict validation with trimming and dialog error display maintained
-  - **V2 Behavior**: Simplified validation with notification-based errors maintained
-  - **Integration**: Seamless replacement of original functions without API changes
-- **Error Handling**: Comprehensive error management with fallback mechanisms
-  - **Validation Pipeline**: Multi-stage validation with custom override capabilities
-  - **Exception Safety**: Robust error handling prevents system crashes during equipment operations
-  - **Debug Support**: Enhanced logging and error reporting for troubleshooting
-- **Module System**: Clean separation of concerns with shared function modules
-  - **ActorGearFunctions**: Gear spending operations (v0.7.6)
-  - **ActorStressFunctions**: Stress spending operations (v0.7.6)  
-  - **ActorEquipmentFunctions**: Equipment management operations (v0.7.7)
-  - **Example Documentation**: Comprehensive usage examples for all shared functions
+### Technical | Techniczne
+- **Shared Function Architecture | Architektura Współdzielonych Funkcji**: Complete modularization of equipment operations | Kompletna modularyzacja operacji ekwipunku
+  - **handleAddEquipment()**: Universal equipment addition with validation and callbacks | Uniwersalne dodawanie ekwipunku z walidacją i callbackami
+  - **handleEditEquipment()**: Equipment modification with cost difference handling | Modyfikacja ekwipunku z obsługą różnic kosztów
+  - **handleDeleteEquipment()**: Equipment removal with optional confirmation and refund calculation | Usuwanie ekwipunku z opcjonalnym potwierdzeniem i obliczaniem zwrotu
+- **Backward Compatibility | Kompatybilność Wsteczna**: All existing functionality preserved with zero breaking changes | Wszystkie istniejące funkcjonalności zachowane bez żadnych zmian łamiących
+  - **V1 Behavior | Zachowanie V1**: Strict validation with trimming and dialog error display maintained | Zachowana ścisła walidacja z obcinaniem i wyświetlaniem błędów w dialogach
+  - **V2 Behavior | Zachowanie V2**: Simplified validation with notification-based errors maintained | Zachowana uproszczona walidacja z błędami opartymi na powiadomieniach
+  - **Integration | Integracja**: Seamless replacement of original functions without API changes | Bezproblemowa zamiana oryginalnych funkcji bez zmian API
+- **Error Handling | Obsługa Błędów**: Comprehensive error management with fallback mechanisms | Kompleksowe zarządzanie błędami z mechanizmami fallback
+  - **Validation Pipeline | Rurociąg Walidacji**: Multi-stage validation with custom override capabilities | Wieloetapowa walidacja z możliwościami niestandardowego nadpisywania
+  - **Exception Safety | Bezpieczeństwo Wyjątków**: Robust error handling prevents system crashes during equipment operations | Solidna obsługa błędów zapobiega awariom systemu podczas operacji ekwipunku
+  - **Debug Support | Wsparcie Debugowania**: Enhanced logging and error reporting for troubleshooting | Ulepszone logowanie i raportowanie błędów do rozwiązywania problemów
+- **Module System | System Modułów**: Clean separation of concerns with shared function modules | Czyste rozdzielenie odpowiedzialności z modułami współdzielonych funkcji
+  - **ActorGearFunctions**: Gear spending operations (v0.7.6) | Operacje wydawania ekwipunku (v0.7.6)
+  - **ActorStressFunctions**: Stress spending operations (v0.7.6) | Operacje wydawania stresu (v0.7.6)
+  - **ActorEquipmentFunctions**: Equipment management operations (v0.7.7) | Operacje zarządzania ekwipunkiem (v0.7.7)
+  - **Example Documentation | Dokumentacja Przykładów**: Comprehensive usage examples for all shared functions | Kompleksowe przykłady użytkowania dla wszystkich współdzielonych funkcji
 
-### Refactored
-- **Actor Sheet V1 Equipment Functions**: Complete replacement with shared function calls
-  - **_onAddEquipment()**: Now uses ActorEquipmentFunctions.handleAddEquipment() with V1-specific options
-  - **_onEditEquipment()**: Utilizes shared editing with strict validation preservation
-  - **_onDeleteEquipment()**: Shared deletion with V1-style chat messages and rendering
-- **Actor Sheet V2 Equipment Functions**: Full migration to shared function architecture
-  - **_onAddEquipment()**: Uses shared functions with V2-simplified validation approach
-  - **_onEditEquipment()**: Shared editing with notification-based error handling
-  - **_onDeleteEquipment()**: Shared deletion with V2-style immediate execution
-- **System Configuration**: Updated module loading for new shared functions
-  - **system.json**: Added actor-equipment-functions.js to esmodules array
-  - **Import Structure**: Clean ES6 module imports across all affected files
-  - **Loading Order**: Optimized module loading sequence for dependency resolution
+### Refactored | Refaktoryzowane
+- **Actor Sheet V1 Equipment Functions | Funkcje Ekwipunku Karty Aktora V1**: Complete replacement with shared function calls | Kompletna zamiana na wywołania współdzielonych funkcji
+  - **_onAddEquipment()**: Now uses ActorEquipmentFunctions.handleAddEquipment() with V1-specific options | Teraz używa ActorEquipmentFunctions.handleAddEquipment() z opcjami specyficznymi dla V1
+  - **_onEditEquipment()**: Utilizes shared editing with strict validation preservation | Wykorzystuje współdzieloną edycję z zachowaniem ścisłej walidacji
+  - **_onDeleteEquipment()**: Shared deletion with V1-style chat messages and rendering | Współdzielone usuwanie z komunikatami czatu i renderowaniem w stylu V1
+- **Actor Sheet V2 Equipment Functions | Funkcje Ekwipunku Karty Aktora V2**: Full migration to shared function architecture | Pełna migracja do architektury współdzielonych funkcji
+  - **_onAddEquipment()**: Uses shared functions with V2-simplified validation approach | Używa współdzielonych funkcji z uproszczonym podejściem walidacji V2
+  - **_onEditEquipment()**: Shared editing with notification-based error handling | Współdzielona edycja z obsługą błędów opartą na powiadomieniach
+  - **_onDeleteEquipment()**: Shared deletion with V2-style immediate execution | Współdzielone usuwanie z natychmiastowym wykonaniem w stylu V2
+- **System Configuration | Konfiguracja Systemu**: Updated module loading for new shared functions | Zaktualizowane ładowanie modułów dla nowych współdzielonych funkcji
+  - **system.json**: Added actor-equipment-functions.js to esmodules array | Dodano actor-equipment-functions.js do tablicy esmodules
+  - **Import Structure | Struktura Importów**: Clean ES6 module imports across all affected files | Czyste importy modułów ES6 we wszystkich dotkniętych plikach
+  - **Loading Order | Kolejność Ładowania**: Optimized module loading sequence for dependency resolution | Zoptymalizowana sekwencja ładowania modułów dla rozwiązywania zależności
 
 ## [0.7.6] - 2025-09-04
 
@@ -341,34 +344,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.7.0] - 2025-08-26
 
-### Added
-- **Czarci Targ (Devil's Bargain) - Nowa mechanika rzutów**:
-  - Nowy checkbox "Czarci Targ - Dodaj 2 Punkty Nemezis do puli, by dodać 1d12 do rzutu" w oknie rzutu
-  - Umieszczony między checkboxem Steam Die a Trauma
-  - Dodaje 2 Punkty Nemezis do puli MG i dodatkową kość d12 ("devil dice") do rzutu
-  - Wzajemne wykluczanie się z Steam Die - można używać maksymalnie jednego z nich na rzut
-  - Maksymalna liczba kości pozostaje na poziomie 4d12: (2d12 + stress + steam) OR (2d12 + stress + devil)
-  - Pełna kompatybilność z mechanikami krytycznych sukcesów i porażek
-  - Devil dice uwzględniana we wszystkich obliczeniach (11s/12s, krytyczne sukces/porażka)
+### Added | Dodano
+- **Czarci Targ (Devil's Bargain) - New Roll Mechanics | Czarci Targ - Nowa Mechanika Rzutów**:
+  - **New Checkbox | Nowy Checkbox**: "Czarci Targ - Dodaj 2 Punkty Nemezis do puli, by dodać 1d12 do rzutu" in roll window | "Czarci Targ - Dodaj 2 Punkty Nemezis do puli, by dodać 1d12 do rzutu" w oknie rzutu
+  - **Placement | Umieszczenie**: Positioned between Steam Die checkbox and Trauma | Umieszczony między checkboxem Steam Die a Trauma
+  - **Mechanics | Mechanika**: Adds 2 Nemesis Points to GM pool and additional d12 ("devil dice") to roll | Dodaje 2 Punkty Nemezis do puli MG i dodatkową kość d12 ("devil dice") do rzutu
+  - **Mutual Exclusion | Wzajemne Wykluczanie**: Mutually exclusive with Steam Die - maximum one per roll | Wzajemne wykluczanie się z Steam Die - można używać maksymalnie jednego na rzut
+  - **Dice Limit | Limit Kości**: Maximum dice count remains 4d12: (2d12 + stress + steam) OR (2d12 + stress + devil) | Maksymalna liczba kości pozostaje na poziomie 4d12: (2d12 + stress + steam) OR (2d12 + stress + devil)
+  - **Full Compatibility | Pełna Kompatybilność**: Complete compatibility with critical success and failure mechanics | Pełna kompatybilność z mechanikami krytycznych sukcesów i porażek
+  - **Calculation Integration | Integracja Obliczeń**: Devil dice included in all calculations (11s/12s, critical success/failure) | Devil dice uwzględniana we wszystkich obliczeniach (11s/12s, krytyczne sukces/porażka)
 
-### Enhanced
-- **Wizualne wskazywanie wzajemnego wykluczania**:
-  - Zaznaczenie Devil Die wizualnie przekreśla Steam Die (i na odwrót)
-  - Efekty wizualne: przygaszenie (opacity 0.5), line-through, czerwona linia przekreślająca
-  - Tło zmienia się na szare, checkbox staje się nieaktywny z odpowiednim kursorem
-  - Automatyczne przywracanie normalnego wyglądu po odznaczeniu
-  - Charakterystyczna czerwona stylistyka dla checkbox Devil Die
+### Enhanced | Ulepszone
+- **Visual Mutual Exclusion Indicators | Wizualne Wskazywanie Wzajemnego Wykluczania**:
+  - **Cross-out Effect | Efekt Przekreślenia**: Selecting Devil Die visually crosses out Steam Die (and vice versa) | Zaznaczenie Devil Die wizualnie przekreśla Steam Die (i na odwrót)
+  - **Visual Effects | Efekty Wizualne**: Dimming (opacity 0.5), line-through, red striking line | Przygaszenie (opacity 0.5), line-through, czerwona linia przekreślająca
+  - **Background Change | Zmiana Tła**: Background turns grey, checkbox becomes inactive with appropriate cursor | Tło zmienia się na szare, checkbox staje się nieaktywny z odpowiednim kursorem
+  - **Auto Restoration | Automatyczne Przywracanie**: Automatic restoration of normal appearance when unchecked | Automatyczne przywracanie normalnego wyglądu po odznaczeniu
+  - **Distinctive Styling | Charakterystyczna Stylizacja**: Distinctive red styling for Devil Die checkbox | Charakterystyczna czerwona stylistyka dla checkbox Devil Die
 
-- **Mechanika Reroll z Devil Die**:
-  - Devil dice jest dołączana za darmo przy przerzucie testu (3PP)
-  - Punkty Nemezis NIE są dodawane ponownie przy reroll (analogicznie do Steam Die)
-  - Komunikaty wyraźnie oznaczają darmowe kości: "(za darmo)" / "(for free)"
-  - Pełna integracja z istniejącym systemem przerzutów
+- **Reroll Mechanics with Devil Die | Mechanika Reroll z Devil Die**:
+  - **Free Inclusion | Bezpłatne Dołączenie**: Devil dice included for free during test reroll (3PP) | Devil dice jest dołączana za darmo przy przerzucie testu (3PP)
+  - **No Double Cost | Brak Podwójnego Kosztu**: Nemesis Points NOT added again during reroll (analogous to Steam Die) | Punkty Nemezis NIE są dodawane ponownie przy reroll (analogicznie do Steam Die)
+  - **Clear Messaging | Wyraźne Komunikaty**: Messages clearly mark free dice: "(za darmo)" / "(for free)" | Komunikaty wyraźnie oznaczają darmowe kości: "(za darmo)" / "(for free)"
+  - **Full Integration | Pełna Integracja**: Complete integration with existing reroll system | Pełna integracja z istniejącym systemem przerzutów
 
-- **Komunikaty na czacie**:
-  - "Agent {imię} dodał do puli MG 2 Punkty Nemezis, by dodać kość Diabelskiego Targu"
-  - Devil dice wyświetlana w sekcji szczegółowych wyników rzutu
-  - Spójne formatowanie z resztą komunikatów o rzutach
+- **Chat Messages | Komunikaty na Czacie**:
+  - **Action Messages | Komunikaty Akcji**: "Agent {name} dodał do puli MG 2 Punkty Nemezis, by dodać kość Diabelskiego Targu" | "Agent {imię} dodał do puli MG 2 Punkty Nemezis, by dodać kość Diabelskiego Targu"
+  - **Result Display | Wyświetlanie Wyników**: Devil dice displayed in detailed roll results section | Devil dice wyświetlana w sekcji szczegółowych wyników rzutu
+  - **Consistent Formatting | Spójne Formatowanie**: Consistent formatting with rest of roll messages | Spójne formatowanie z resztą komunikatów o rzutach
 
 ### Enhanced - Stylizacja Archetypu
 - **Jednolite style sekcji archetypu na kartach agenta i agenta v2**:
@@ -386,13 +389,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Naprawiono sekcję Notatki: struktura HTML, CSS klasy, layout flexbox
   - Wszystkie sekcje Agent v2 teraz mają identyczną funkcjonalność z oryginalną kartą agenta
 
-### Technical
-- Dodano tłumaczenia PL/EN dla Devil's Bargain functionality
-- Rozszerzono `roll-mechanics.js` o obsługę Devil Die w obu głównych funkcjach
-- Dodano dedykowane style CSS dla Devil Die w `rolldialog.css`
-- Zaktualizowano logikę przypisywania wyników kości dla wszystkich kombinacji (3, 4, 5 kości)
-- Poprawiono funkcję `executeRollWithData` dla prawidłowej obsługi Devil Die w reroll
-- Stylizacja archetypu w plikach `cogwheel.css` i `agent-v2.css`
+### Technical | Techniczne
+- **Translations | Tłumaczenia**: Added PL/EN translations for Devil's Bargain functionality | Dodano tłumaczenia PL/EN dla funkcjonalności Devil's Bargain
+- **Roll Mechanics Extension | Rozszerzenie Mechaniki Rzutów**: Extended `roll-mechanics.js` with Devil Die support in both main functions | Rozszerzono `roll-mechanics.js` o obsługę Devil Die w obu głównych funkcjach
+- **CSS Styling | Stylizacja CSS**: Added dedicated Devil Die styles in `rolldialog.css` | Dodano dedykowane style CSS dla Devil Die w `rolldialog.css`
+- **Dice Logic Update | Aktualizacja Logiki Kości**: Updated dice assignment logic for all combinations (3, 4, 5 dice) | Zaktualizowano logikę przypisywania wyników kości dla wszystkich kombinacji (3, 4, 5 kości)
+- **Reroll Function Fix | Naprawa Funkcji Reroll**: Fixed `executeRollWithData` function for proper Devil Die handling in reroll | Poprawiono funkcję `executeRollWithData` dla prawidłowej obsługi Devil Die w reroll
+- **Archetype Styling | Stylizacja Archetypu**: Archetype styling in `cogwheel.css` and `agent-v2.css` files | Stylizacja archetypu w plikach `cogwheel.css` i `agent-v2.css`
 
 ## [0.6.9] - 2025-08-25
 
@@ -479,24 +482,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.5] - 2025-07-02
 
-### Added
-- **Kompletny system wydawania punktów Nemezis (PN)**:
-  - Okno dialogowe "Wydaj PN" z trzema sekcjami: "Akcje za 1 PN", "Akcje za 2 PN", "Akcje za 3 PN"
-  - 10 różnych akcji do wyboru z radiobuttonami zgodnie z mechaniką gry
-  - Automatyczne sprawdzanie stanu puli PN przed wydatkowaniem
-  - Dialog błędu "Za mało Punktów Nemezis w Puli" z czerwonym, pogrubionym tekstem
-  - Automatyczne odejmowanie punktów z puli po wykonaniu akcji
-  - Komunikaty na czacie z nazwą użytkownika, ilością wydanych punktów i opisem akcji (z pogrubieniami i kolorami)
+### Added | Dodano
+- **Complete Nemesis Points Spending System | Kompletny System Wydawania Punktów Nemezis (PN)**:
+  - **Spend NP Dialog | Dialog Wydawania PN**: "Wydaj PN" window with three sections: "Akcje za 1 PN", "Akcje za 2 PN", "Akcje za 3 PN" | Okno "Wydaj PN" z trzema sekcjami: "Akcje za 1 PN", "Akcje za 2 PN", "Akcje za 3 PN"
+  - **10 Different Actions | 10 Różnych Akcji**: Various actions to choose from with radio buttons according to game mechanics | 10 różnych akcji do wyboru z radiobuttonami zgodnie z mechaniką gry
+  - **Pool State Checking | Sprawdzanie Stanu Puli**: Automatic pool state verification before spending | Automatyczne sprawdzanie stanu puli PN przed wydatkowaniem
+  - **Error Dialog | Dialog Błędu**: "Za mało Punktów Nemezis w Puli" with red, bold text | Dialog błędu "Za mało Punktów Nemezis w Puli" z czerwonym, pogrubionym tekstem
+  - **Automatic Deduction | Automatyczne Odejmowanie**: Automatic point deduction from pool after action execution | Automatyczne odejmowanie punktów z puli po wykonaniu akcji
+  - **Chat Messages | Komunikaty na Czacie**: Chat messages with username, spent points amount and action description (with bold and colors) | Komunikaty na czacie z nazwą użytkownika, ilością wydanych punktów i opisem akcji (z pogrubieniami i kolorami)
 
-- **Przyciski wydawania metawalut w oknie metawalut**: 
-  - Dodano przycisk "Wydaj PN" (Punkty Nemezis) - dostępny tylko dla GM i Assistant GM
-  - Dodano przycisk "Wydaj PP" (Punkty Pary) - dostępny dla wszystkich użytkowników
-  - **Kontrola uprawnień**: Przycisk "Wydaj PN" automatycznie wyłączany dla użytkowników bez odpowiednich uprawnień
+- **Meta Currency Spending Buttons | Przyciski Wydawania Metawalut**: 
+  - **Spend NP Button | Przycisk "Wydaj PN"**: "Spend NP" (Nemesis Points) button - available only for GM and Assistant GM | Dodano przycisk "Wydaj PN" (Punkty Nemezis) - dostępny tylko dla GM i Assistant GM
+  - **Spend SP Button | Przycisk "Wydaj PP"**: "Spend SP" (Steam Points) button - available for all users | Dodano przycisk "Wydaj PP" (Punkty Pary) - dostępny dla wszystkich użytkowników
+  - **Permission Control | Kontrola Uprawnień**: "Spend NP" button automatically disabled for users without appropriate permissions | Przycisk "Wydaj PN" automatycznie wyłączany dla użytkowników bez odpowiednich uprawnień
 
-- **Automatyczne dostosowanie rozmiarów okien**:
-  - Okna dialogowe używają flexbox dla płynnego dopasowania do zawartości
-  - Usunięto niepotrzebne paski przewijania
-  - Przyciski "Anuluj" i "Wydaj punkty" umieszczone obok siebie (Anuluj po lewej)
+- **Automatic Window Sizing | Automatyczne Dostosowanie Rozmiarów Okien**:
+  - **Flexbox Layout | Layout Flexbox**: Dialog windows use flexbox for fluid content adaptation | Okna dialogowe używają flexbox dla płynnego dopasowania do zawartości
+  - **No Scrollbars | Brak Pasków Przewijania**: Removed unnecessary scrollbars | Usunięto niepotrzebne paski przewijania
+  - **Button Layout | Layout Przycisków**: "Cancel" and "Spend Points" buttons placed side by side (Cancel on left) | Przyciski "Anuluj" i "Wydaj punkty" umieszczone obok siebie (Anuluj po lewej)
 
 ### Fixed
 - **Poprawiona matematyka pul metawalut**: Zmieniono `||` na `??` w getData() aby wartości mogły zejść do 0
