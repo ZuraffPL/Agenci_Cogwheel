@@ -255,7 +255,7 @@
     </div>
     
       {{#each system.equipments as |equipment index|}}
-        <div class="equipment-item {{#if (or equipment.usedDestroyed equipment.droppedDamaged)}}disabled{{/if}}" data-index="{{index}}">
+        <div class="equipment-item {{#if (or equipment.usedDestroyed equipment.droppedDamaged)}}disabled{{/if}}" data-index="{{index}}" data-equipment-type="{{equipment.type}}">
           <div class="equipment-header">
             {{equipment.name}} ({{localize (concat 'COGSYNDICATE.EquipmentType' (capitalize equipment.type))}})
           </div>

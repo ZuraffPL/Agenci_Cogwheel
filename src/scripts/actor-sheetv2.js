@@ -794,9 +794,20 @@ class CogwheelActorSheetV2 extends ActorSheet {
 
   _assignEquipmentColors(html) {
     const equipmentItems = html.find('.equipment-item');
+    
+    // Mapowanie typów ekwipunku na steampunkowe kolory
+    const steampunkColors = {
+      'weapon': 'steampunk-weapon',
+      'armor': 'steampunk-armor', 
+      'tool': 'steampunk-tool',
+      'gadget': 'steampunk-gadget',
+      'other': 'steampunk-other'
+    };
+    
+    // Kolory fallback dla kompatybilności wstecznej
     const pastelColors = [
       'pastel-pink',
-      'pastel-blue',
+      'pastel-blue', 
       'pastel-green',
       'pastel-yellow',
       'pastel-purple',
@@ -804,14 +815,41 @@ class CogwheelActorSheetV2 extends ActorSheet {
     ];
 
     equipmentItems.each((index, element) => {
-      const randomColorClass = pastelColors[Math.floor(Math.random() * pastelColors.length)];
-      $(element).addClass(randomColorClass);
+      const $element = $(element);
+      
+      // Próbujemy znaleźć typ ekwipunku z danych data-*
+      let equipmentType = $element.attr('data-equipment-type');
+      
+      // Jeśli nie ma data-equipment-type, próbujemy z innerHTML
+      if (!equipmentType) {
+        const typeElement = $element.find('.equipment-type');
+        if (typeElement.length > 0) {
+          equipmentType = typeElement.text().toLowerCase().trim();
+        }
+      }
+      
+      // Jeśli nadal nie ma typu, próbujemy z zawartości tekstowej
+      if (!equipmentType) {
+        const content = $element.text().toLowerCase();
+        if (content.includes('weapon') || content.includes('broń')) equipmentType = 'weapon';
+        else if (content.includes('armor') || content.includes('pancerz')) equipmentType = 'armor';
+        else if (content.includes('tool') || content.includes('narzędzie')) equipmentType = 'tool';
+        else if (content.includes('gadget') || content.includes('gadżet')) equipmentType = 'gadget';
+        else equipmentType = 'other';
+      }
+      
+      // Przypisz odpowiednią klasę steampunkową lub losowy pastelowy kolor
+      let colorClass;
+      if (equipmentType && steampunkColors[equipmentType]) {
+        colorClass = steampunkColors[equipmentType];
+      } else {
+        colorClass = pastelColors[Math.floor(Math.random() * pastelColors.length)];
+      }
+      
+      $element.addClass(colorClass);
 
-      const bgColor = window.getComputedStyle(element).backgroundColor;
-      const rgb = bgColor.match(/\d+/g).map(Number);
-      const brightness = (rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000;
-      const textColor = brightness > 128 ? '#000000' : '#FFFFFF';      
-      $(element).find('.equipment-header, .equipment-details').css('color', textColor);
+      // Nie ustawiamy już kolorów tekstu w JS - kolory są teraz w CSS
+      // Steampunkowe style mają już odpowiednie kolory tekstu z text-shadow
     });
   }
 

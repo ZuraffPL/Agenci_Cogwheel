@@ -6,7 +6,43 @@
   padding: 10px;
 }
 
-/* Definicje pastelowych kolorów tła */
+/* Steampunkowe kolory tła dla różnych typów ekwipunku */
+/* Broń - stal i żelazo z czerwonymi akcentami */
+.steampunk-weapon { 
+  background: linear-gradient(135deg, #8B7355 0%, #6B5B47 30%, #4A3F35 70%, #2C2117 100%);
+  border: 2px solid #A0522D;
+  box-shadow: inset 0 1px 3px rgba(160, 82, 45, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Pancerz - ciemna stal z niebieskimi odblaskami */
+.steampunk-armor { 
+  background: linear-gradient(135deg, #556B8B 0%, #47596B 30%, #35404A 70%, #17212C 100%);
+  border: 2px solid #4682B4;
+  box-shadow: inset 0 1px 3px rgba(70, 130, 180, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Narzędzie - miedź i brąz */
+.steampunk-tool { 
+  background: linear-gradient(135deg, #CD853F 0%, #B8860B 30%, #8B6914 70%, #654321 100%);
+  border: 2px solid #DAA520;
+  box-shadow: inset 0 1px 3px rgba(218, 165, 32, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Gadżet - zielonkawe metale z mosiężnymi akcentami */
+.steampunk-gadget { 
+  background: linear-gradient(135deg, #6B8B47 0%, #556B2F 30%, #3F4A1F 70%, #2F3517 100%);
+  border: 2px solid #9ACD32;
+  box-shadow: inset 0 1px 3px rgba(154, 205, 50, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Inne - neutralne szare metale */
+.steampunk-other { 
+  background: linear-gradient(135deg, #708090 0%, #556B83 30%, #3F4A5A 70%, #2F3A4A 100%);
+  border: 2px solid #696969;
+  box-shadow: inset 0 1px 3px rgba(105, 105, 105, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Stare pastelowe kolory - zachowujemy dla kompatybilności wstecznej */
 .pastel-pink { background-color: #FFD1DC; }
 .pastel-blue { background-color: #B3E5FC; }
 .pastel-green { background-color: #C8E6C9; }
@@ -14,28 +50,44 @@
 .pastel-purple { background-color: #E1BEE7; }
 .pastel-orange { background-color: #FFE0B2; }
 
-/* Styl dla elementu ekwipunku */
+/* Styl dla elementu ekwipunku z efektami steampunk */
 .equipment-item {
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 10px;
-  margin-bottom: 5px;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  /* color ustawiony w JS */
-  color: #000;
+  gap: 4px;
+  position: relative;
+  color: #FFFFFF;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  transition: all 0.3s ease;
 }
 
-/* Styl dla dezaktywowanego elementu */
+/* Efekt metalicznego połysku */
+.equipment-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0) 100%);
+  border-radius: 8px 8px 0 0;
+  pointer-events: none;
+}
+
+/* Styl dla dezaktywowanego elementu - wyszarzenie bez zmiany kolorów */
 .equipment-item.disabled {
-  opacity: 0.5;
-  /* Usuwamy pointer-events: none, aby umożliwić interakcje z przyciskami akcji */
+  filter: grayscale(100%) brightness(0.7) contrast(0.8);
+  opacity: 0.6;
+  transition: all 0.3s ease;
 }
 
-/* Umożliwiamy interakcje z przyciskami akcji w dezaktywowanym elemencie */
+/* Zachowanie interakcji z przyciskami w dezaktywowanych elementach */
 .equipment-item.disabled .equipment-actions a {
   pointer-events: auto;
+  filter: none;
   opacity: 1;
   cursor: pointer;
 }
@@ -87,56 +139,52 @@
 .cogsyndicate .dialog .equipment-dialog .form-group {
   margin-bottom: 15px !important;
   display: flex !important;
-  !flex-direction: row !important;
+  flex-direction: row !important;
   align-items: center !important;
   justify-content: flex-start !important;
-
 }
 
 .cogsyndicate .dialog .equipment-dialog .form-group .input-container {
   display: flex;
   flex: 1;
   justify-content: center !important;
-
 }
 
 .cogsyndicate .dialog .equipment-dialog .label {
   display: inline-block !important;
   visibility: visible !important;
-  opacity: !important;
+  opacity: 1 !important;
   width: 120px !important;
   margin-right: 10px !important;
   color: #000000 !important;
   text-align: left !important;
-
 }
 
 .cogsyndicate .dialog .equipment-dialog input[type="text"],
-              .cogsyndicate .dialog .equipment-dialog textarea {
-                width: auto !important;
-                padding: 5px !important;
-                background-color: #3a3a3a !important;
-                border: 1px solid #555 !important;
-                border-radius: 3px !important;
-                color: !important;ddd;
-                box-sizing: border-box;
-                resize: vertical !important;
-                min-height: 30px !important;
-              }
+.cogsyndicate .dialog .equipment-dialog textarea {
+  width: auto !important;
+  padding: 5px !important;
+  background-color: #3a3a3a !important;
+  border: 1px solid #555 !important;
+  border-radius: 3px !important;
+  color: #ddd !important;
+  box-sizing: border-box;
+  resize: vertical !important;
+  min-height: 30px !important;
+}
 
 .cogsyndicate .dialog .equipment-dialog textarea {
-                min-height: 60px !important;
-
-              }
+  min-height: 60px !important;
+}
 
 .cogsyndicate .dialog .equipment-dialog .error-message {
-                display: none !important;
-                color: #ff6666 !important;
-                font-size: 0.9em !important;
-                text-align: center !important;
-                margin-top: 10px !important;
-              }
+  display: none !important;
+  color: #ff6666 !important;
+  font-size: 0.9em !important;
+  text-align: center !important;
+  margin-top: 10px !important;
+}
 
 .cogsyndicate .dialog .equipment-dialog .error-message.show {
-                display: block !important;
-              }
+  display: block !important;
+}
