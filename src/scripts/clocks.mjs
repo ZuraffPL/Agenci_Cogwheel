@@ -33,6 +33,7 @@ export class DoomClocksDialog extends Application {
     
     // Debug: pokaż wszystkie zegary i ich kategorie
     console.log('Clock categories:', migratedClocks.map(c => ({name: c.name, category: c.category})));
+    console.log(`getData() - returning activeCategory: ${this.activeCategory}`); // Debug aktywnej kategorii
     
     // Zapisz zmiany jeśli dokonano migracji
     if (migratedClocks.some((clock, index) => !this.clocks[index].category)) {
@@ -226,6 +227,7 @@ export class DoomClocksDialog extends Application {
   async _updateClocks() {
     console.log(`Updating clocks - total count: ${this.clocks.length}`);
     console.log(`Clock categories:`, this.clocks.map(c => ({name: c.name, category: c.category})));
+    console.log(`Current activeCategory before render: ${this.activeCategory}`);
     
     // Zapis zegarów do ustawień świata
     await game.settings.set("cogwheel-syndicate", "doomClocks", this.clocks);
@@ -239,8 +241,23 @@ export class DoomClocksDialog extends Application {
     // Wywołanie hooka lokalnie
     Hooks.call("cogwheelSyndicateClocksUpdated");
     
-    // Odświeżenie bieżącego okna
+    // Odświeżenie bieżącego okna - zachowaj aktywną kategorię
+    const currentCategory = this.activeCategory;
     this.render(true);
+    
+    // Po renderowaniu, przywróć aktywną kategorię
+    setTimeout(() => {
+      if (currentCategory !== 'mission') {
+        console.log(`Restoring category to: ${currentCategory}`);
+        this.activeCategory = currentCategory;
+        
+        // Znajdź i kliknij właściwą zakładkę
+        const targetTab = this.element.find(`.tab-btn[data-category="${currentCategory}"]`);
+        if (targetTab.length) {
+          targetTab.trigger('click');
+        }
+      }
+    }, 100);
   }
 
   // Metoda do aktualizacji lokalnych zegarów w instancji dialogu
@@ -259,6 +276,7 @@ export class DoomClocksDialog extends Application {
     
     // Zapisz aktywną kategorię w instancji
     this.activeCategory = category;
+    console.log(`this.activeCategory set to: ${this.activeCategory}`); // Debug
     
     // Usuń klasę active z wszystkich przycisków
     const tabs = this.element.find('.tab-btn');
