@@ -13,6 +13,14 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.7.9] - 2025-09-06
 
+- **Fixed preventDefault Error**: Added safe call to preventDefault() in _onTabChange to handle both real and programmatic events
+- **Enhanced Fake Event**: Improved fake event object with preventDefault method to prevent TypeError
+- **Better Event Handling**: Tab restoration now works without console errors
+
+
+
+## [0.7.9] - 2025-09-06
+
 - **Fixed State Reset**: activateListeners now uses this.activeCategory instead of defaulting to mission
 - **Fixed Tab Restoration**: _updateClocks now properly calls _onTabChange to update DOM after render
 - **Removed Duplicate Events**: Eliminated duplicate click trigger to prevent double tab switching
@@ -816,6 +824,7 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Comprehensive README.md with installation instructions
 - MIT License included
 - GitHub repository integration for easy updates
+
 
 
 

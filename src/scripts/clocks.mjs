@@ -255,7 +255,10 @@ export class DoomClocksDialog extends Application {
         const targetTab = this.element.find(`.tab-btn[data-category="${currentCategory}"]`);
         if (targetTab.length > 0) {
           // Wywołaj _onTabChange aby rzeczywiście przełączyć widok
-          const fakeEvent = { currentTarget: targetTab[0] };
+          const fakeEvent = { 
+            currentTarget: targetTab[0],
+            preventDefault: () => {} // Empty function to prevent errors
+          };
           this._onTabChange(fakeEvent);
         }
       }
@@ -273,7 +276,11 @@ export class DoomClocksDialog extends Application {
     const isProgrammatic = event.currentTarget && event.currentTarget.tagName === undefined;
     console.log(`_onTabChange called - programmatic: ${isProgrammatic}`);
     
-    event.preventDefault();
+    // Bezpiecznie wywołaj preventDefault tylko jeśli metoda istnieje
+    if (event.preventDefault) {
+      event.preventDefault();
+    }
+    
     const button = event.currentTarget;
     const category = button.dataset.category;
     
