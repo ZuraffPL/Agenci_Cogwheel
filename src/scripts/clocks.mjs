@@ -20,8 +20,22 @@ export class DoomClocksDialog extends Application {
   }
 
   getData() {
+    // Migracj starych zegarów - dodaj kategorię "mission" jeśli nie ma
+    const migratedClocks = this.clocks.map(clock => {
+      if (!clock.category) {
+        clock.category = 'mission';
+      }
+      return clock;
+    });
+    
+    // Zapisz zmiany jeśli dokonano migracji
+    if (migratedClocks.some((clock, index) => !this.clocks[index].category)) {
+      this.clocks = migratedClocks;
+      this._updateClocks(); // Zapisz do ustawień
+    }
+    
     return {
-      clocks: this.clocks,
+      clocks: migratedClocks,
       isGM: game.user.isGM
     };
   }
@@ -208,6 +222,8 @@ export class DoomClocksDialog extends Application {
     const button = event.currentTarget;
     const category = button.dataset.category;
     
+    console.log(`Switching to category: ${category}`); // Debug
+    
     // Usuń klasę active z wszystkich przycisków
     const tabs = this.element.find('.tab-btn');
     tabs.removeClass('active');
@@ -216,7 +232,10 @@ export class DoomClocksDialog extends Application {
     button.classList.add('active');
     
     // Zaktualizuj atrybut kategorii kontenera
-    this.element.find('.doom-clocks-content').attr('data-active-category', category);
+    const container = this.element.find('.doom-clocks-content');
+    container.attr('data-active-category', category);
+    
+    console.log(`Container category set to: ${container.attr('data-active-category')}`); // Debug
     
     // Zaktualizuj przycisk "Dodaj zegar" aby dodawał do aktywnej kategorii
     this.element.find('.add-clock').attr('data-category', category);

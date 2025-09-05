@@ -13,6 +13,15 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.7.9] - 2025-09-05
 
+- **Clock Categories Bug Fix**: Fixed filtering logic to properly show only clocks from active category
+- **Data Migration**: Added automatic category assignment for existing clocks (defaults to 'mission')
+- **CSS Improvements**: Simplified and fixed conflicting display rules for clock categories
+- **Debug Support**: Added console logging for troubleshooting category switches
+
+
+
+## [0.7.9] - 2025-09-05
+
 - **Git Configuration**: Fixed push automation and added safety measures
 - **Enhanced Scripts**: Added -Push parameter to update-docs-and-commit.ps1
 - **New Script**: Added push-changes.ps1 for interactive push management
@@ -764,6 +773,7 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Comprehensive README.md with installation instructions
 - MIT License included
 - GitHub repository integration for easy updates
+
 
 
 
