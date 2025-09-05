@@ -255,7 +255,7 @@
     </div>
     
       {{#each system.equipments as |equipment index|}}
-        <div class="equipment-item {{#if (or equipment.used equipment.droppedDamaged equipment.destroyed)}}disabled{{/if}}" data-index="{{index}}">
+        <div class="equipment-item {{#if (or equipment.usedDestroyed equipment.droppedDamaged)}}disabled{{/if}}" data-index="{{index}}">
           <div class="equipment-header">
             {{equipment.name}} ({{localize (concat 'COGSYNDICATE.EquipmentType' (capitalize equipment.type))}})
           </div>
@@ -273,9 +273,8 @@
             </div>
           </div>
           <div class="equipment-status">
-            <label><input type="checkbox" class="equipment-status-checkbox" data-index="{{index}}" data-status="used" {{#if equipment.used}}checked{{/if}} /> {{localize "COGSYNDICATE.EquipmentUsed"}}</label>
+            <label><input type="checkbox" class="equipment-status-checkbox" data-index="{{index}}" data-status="usedDestroyed" {{#if equipment.usedDestroyed}}checked{{/if}} /> {{localize "COGSYNDICATE.EquipmentUsedDestroyed"}}</label>
             <label><input type="checkbox" class="equipment-status-checkbox" data-index="{{index}}" data-status="droppedDamaged" {{#if equipment.droppedDamaged}}checked{{/if}} /> {{localize "COGSYNDICATE.EquipmentDroppedDamaged"}}</label>
-            <label><input type="checkbox" class="equipment-status-checkbox" data-index="{{index}}" data-status="destroyed" {{#if equipment.destroyed}}checked{{/if}} /> {{localize "COGSYNDICATE.EquipmentDestroyed"}}</label>
           </div>
         </div>
     {{/each}}

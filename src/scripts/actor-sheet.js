@@ -92,6 +92,9 @@ class CogwheelActorSheet extends ActorSheet {
     data.system.resources.trauma.max = 4;
     data.system.resources.development.max = 12;
 
+    // Migrate equipment status fields from old format to new format
+    this._migrateEquipmentStatus(data);
+
     // Auto-correct current values if they exceed new maximums due to attribute damage
     const updates = {};
     
@@ -169,28 +172,24 @@ class CogwheelActorSheet extends ActorSheet {
     const actorName = this.actor.name;
 
     if (isChecked && equipment[status]) {
-      equipment.used = false;
+      equipment.usedDestroyed = false;
       equipment.droppedDamaged = false;
-      equipment.destroyed = false;
 
       await ChatMessage.create({
         content: `<p>${game.i18n.format("COGSYNDICATE.EquipmentRestored", { name: equipmentName, actorName: actorName })}</p>`,
         speaker: { actor: this.actor.id }
       });
     } else {
-      equipment.used = false;
+      equipment.usedDestroyed = false;
       equipment.droppedDamaged = false;
-      equipment.destroyed = false;
 
       if (isChecked) {
         equipment[status] = true;
         let messageKey;
-        if (status === "used") {
-          messageKey = "COGSYNDICATE.EquipmentUsedMessage";
+        if (status === "usedDestroyed") {
+          messageKey = "COGSYNDICATE.EquipmentUsedDestroyedMessage";
         } else if (status === "droppedDamaged") {
           messageKey = "COGSYNDICATE.EquipmentDroppedDamagedMessage";
-        } else if (status === "destroyed") {
-          messageKey = "COGSYNDICATE.EquipmentDestroyedMessage";
         }
 
         await ChatMessage.create({
@@ -1171,6 +1170,38 @@ class CogwheelActorSheet extends ActorSheet {
     await ActorStressFunctions.handleSpendStress(this.actor, this, {
       // v1 uses default behavior, but can be customized here if needed
     });
+  }
+
+  // Migrate equipment status from old format (used/destroyed separate) to new format (usedDestroyed combined)
+  async _migrateEquipmentStatus(data) {
+    if (!data.system.equipments || data.system.equipments.length === 0) return;
+    
+    let needsUpdate = false;
+    const updates = {};
+    const migratedEquipments = data.system.equipments.map((equipment, index) => {
+      const migratedEquipment = { ...equipment };
+      
+      // If equipment has old format fields, migrate them
+      if (equipment.hasOwnProperty('used') || equipment.hasOwnProperty('destroyed')) {
+        // Combine 'used' and 'destroyed' into 'usedDestroyed'
+        migratedEquipment.usedDestroyed = equipment.used || equipment.destroyed || false;
+        
+        // Remove old fields
+        delete migratedEquipment.used;
+        delete migratedEquipment.destroyed;
+        
+        needsUpdate = true;
+        console.log(`Cogwheel: Migrated equipment "${equipment.name}" from old status format to new format`);
+      }
+      
+      return migratedEquipment;
+    });
+    
+    if (needsUpdate) {
+      updates["system.equipments"] = migratedEquipments;
+      await this.actor.update(updates);
+      console.log(`Cogwheel: Successfully migrated ${migratedEquipments.length} equipment items for actor "${this.actor.name}"`);
+    }
   }
 }
 
