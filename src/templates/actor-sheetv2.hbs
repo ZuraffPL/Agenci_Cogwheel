@@ -1,7 +1,14 @@
 <form class="{{cssClass}}" autocomplete="off">
   <header class="sheet-header">
     <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{localize 'COGSYNDICATE.EditImage'}}" />
-    <h1><input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'COGSYNDICATE.CharacterName'}}" class="centered" /></h1>
+    <h1><input name="name" ty            {{#each system.equipments as |equipment index|}}
+              <div class="equipment-item collapsed {{#if (or equipment.usedDestroyed equipment.droppedDamaged)}}disabled{{/if}}" data-index="{{index}}" data-equipment-type="{{equipment.type}}">
+                <div class="equipment-toggle">
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="equipment-header">
+                  {{equipment.name}} ({{localize (concat 'COGSYNDICATE.EquipmentType' (capitalize equipment.type))}})
+                </div>ext" value="{{actor.name}}" placeholder="{{localize 'COGSYNDICATE.CharacterName'}}" class="centered" /></h1>
   </header>
 
   <section class="sheet-body">

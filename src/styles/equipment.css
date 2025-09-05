@@ -35,11 +35,11 @@
   box-shadow: inset 0 1px 3px rgba(154, 205, 50, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
-/* Inne - neutralne szare metale */
+/* Inne - fioletowe metale z fioletowymi akcentami */
 .steampunk-other { 
-  background: linear-gradient(135deg, #708090 0%, #556B83 30%, #3F4A5A 70%, #2F3A4A 100%);
-  border: 2px solid #696969;
-  box-shadow: inset 0 1px 3px rgba(105, 105, 105, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4);
+  background: linear-gradient(135deg, #8B4A8B 0%, #6B356B 30%, #4A1F4A 70%, #2C172C 100%);
+  border: 2px solid #9370DB;
+  box-shadow: inset 0 1px 3px rgba(147, 112, 219, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* Stare pastelowe kolory - zachowujemy dla kompatybilności wstecznej */
@@ -62,6 +62,66 @@
   color: #FFFFFF;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   transition: all 0.3s ease;
+}
+
+/* Przycisk toggle do zwijania/rozwijania ekwipunku */
+.equipment-toggle {
+  position: absolute;
+  left: 8px;
+  top: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #FFFFFF;
+  font-size: 12px;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.equipment-toggle:hover {
+  background: rgba(0, 0, 0, 0.8);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: scale(1.1);
+}
+
+/* Przesunięcie nagłówka, żeby zrobić miejsce na przycisk toggle */
+.equipment-header {
+  font-weight: bold;
+  font-size: 1.1em;
+  border-bottom: 1px dashed #555;
+  padding-bottom: 2px;
+  padding-left: 35px; /* Miejsce na przycisk toggle */
+  position: relative;
+}
+
+/* Style dla zwiniętego ekwipunku */
+.equipment-item.collapsed .equipment-details,
+.equipment-item.collapsed .equipment-status {
+  display: none;
+}
+
+.equipment-item.collapsed {
+  padding: 8px 12px; /* Mniejsze padding dla zwiniętego stanu */
+}
+
+.equipment-item.collapsed .equipment-header {
+  border-bottom: none; /* Usunięcie dolnej linii dla zwiniętego stanu */
+  margin-bottom: 0;
+}
+
+/* Rotacja ikony toggle */
+.equipment-toggle .fa-chevron-right {
+  transition: transform 0.2s ease;
+}
+
+.equipment-toggle .fa-chevron-down {
+  transition: transform 0.2s ease;
 }
 
 /* Efekt metalicznego połysku */
@@ -90,14 +150,6 @@
   filter: none;
   opacity: 1;
   cursor: pointer;
-}
-
-/* Styl nagłówka ekwipunku */
-.equipment-header {
-  font-weight: bold;
-  font-size: 1.1em;
-  border-bottom: 1px dashed #555;
-  padding-bottom: 2px;
 }
 
 /* Styl szczegółów ekwipunku */

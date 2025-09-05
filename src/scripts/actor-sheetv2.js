@@ -136,6 +136,7 @@ class CogwheelActorSheetV2 extends ActorSheet {
     html.find('.edit-equipment').click(this._onEditEquipment.bind(this));
     html.find('.delete-equipment').click(this._onDeleteEquipment.bind(this));
     html.find('.equipment-status-checkbox').click(this._onEquipmentStatusChange.bind(this));
+    html.find('.equipment-toggle').click(this._onToggleEquipment.bind(this));
     html.find('.add-trauma-btn').click(this._onAddTrauma.bind(this));
     html.find('.edit-trauma').click(this._onEditTrauma.bind(this));
     html.find('.delete-trauma').click(this._onDeleteTrauma.bind(this));
@@ -851,6 +852,21 @@ class CogwheelActorSheetV2 extends ActorSheet {
       // Nie ustawiamy już kolorów tekstu w JS - kolory są teraz w CSS
       // Steampunkowe style mają już odpowiednie kolory tekstu z text-shadow
     });
+  }
+
+  _onToggleEquipment(event) {
+    event.preventDefault();
+    const toggle = $(event.currentTarget);
+    const equipmentItem = toggle.closest('.equipment-item');
+    const icon = toggle.find('i');
+    
+    equipmentItem.toggleClass('collapsed');
+    
+    if (equipmentItem.hasClass('collapsed')) {
+      icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+    } else {
+      icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+    }
   }
 
   async _onSpendGear(event) {
