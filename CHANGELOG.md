@@ -20,6 +20,13 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - **Steampunk Styling | Styling Steampunkowy**: Purple gradient backgrounds with metallic effects for all trauma types | Fioletowe gradienty tła z metalicznymi efektami dla wszystkich typów traum
   - **Inline Actions | Akcje w Linii**: Moved edit/delete buttons to trauma header with "|" separator for compact layout | Przeniesiono przyciski edycji/usuwania do nagłówka traumy z separatorem "|" dla kompaktowego układu
 
+- **Progress Clocks Visual Overhaul | Przebudowa Wizualna Zegarów Postępu**: Complete steampunk redesign of the Progress Clocks application | Kompletna przebudowa steampunkowa aplikacji Zegarów Postępu
+  - **Steampunk Dialog Background | Steampunkowe Tło Dialogu**: Brown-gold gradient background with metallic shine effects | Brązowo-złoty gradient tła z metalicznymi efektami połysku
+  - **Enhanced Add Button | Ulepszony Przycisk Dodawania**: Clock icon, increased width (180px), steampunk gradient styling with hover effects | Ikona zegara, zwiększona szerokość (180px), steampunkowy gradient z efektami hover
+  - **Multi-Color Clock Backgrounds | Wielokolorowe Tła Zegarów**: 8 different steampunk gradient backgrounds for visual distinction | 8 różnych steampunkowych gradientów tła dla wizualnego rozróżnienia
+    - **Color Variants | Warianty Kolorystyczne**: Bronze, Purple-Gold, Green-Olive, Orange-Rust, Mystical Purple, Red-Brown, Steel Blue, Military Khaki | Brązowy, Fioletowo-Złoty, Zielono-Oliwkowy, Pomarańczowo-Rdzawy, Mistyczny Fioletowy, Czerwono-Brązowy, Stalowo-Niebieski, Khaki Militarny
+  - **Enhanced Typography | Ulepszona Typografia**: Color-matched text with enhanced text-shadow for better readability | Dopasowane kolory tekstu z wzmocnionymi cieniami dla lepszej czytelności
+
 ### Changed | Zmieniono
 - **Trauma Details Layout | Layout Szczegółów Traumy**: Restructured trauma description and effect display | Przestrukturyzowano wyświetlanie opisu i efektu traumy
   - **Separate Sections | Osobne Sekcje**: Description and effect now in individual labeled sections with frames | Opis i efekt teraz w osobnych oznakowanych sekcjach z ramkami

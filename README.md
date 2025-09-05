@@ -23,7 +23,14 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
   - **Visual Distinction**: Different colored left borders (purple accents) and hover effects for better organization
   - **Improved Readability**: Clear section labels with dashed underlines and proper spacing
 
-- **🔧 Dialog & UX Improvements**: Fixed trauma type dropdown and enhanced user experience
+- **� Progress Clocks Visual Overhaul**: Complete steampunk redesign of the Progress Clocks application
+  - **Steampunk Dialog Background**: Brown-gold gradient background with metallic shine effects matching system aesthetic
+  - **Enhanced Add Button**: Clock icon (fa-clock), increased width to 180px, professional steampunk gradient styling
+  - **Multi-Color Clock Backgrounds**: 8 different steampunk gradient backgrounds for easy visual distinction between clocks
+  - **Color Palette**: Bronze, Purple-Gold, Green-Olive, Orange-Rust, Mystical Purple, Red-Brown, Steel Blue, Military Khaki
+  - **Typography Improvements**: Color-matched text with enhanced shadows for optimal readability on all background variants
+
+- **�🔧 Dialog & UX Improvements**: Fixed trauma type dropdown and enhanced user experience
   - **Better Dropdown Display**: Fixed trauma type selection dropdown with improved height and visibility
   - **Enhanced Styling**: Better font sizing, line-height, and Foundry VTT dialog compatibility
   - **V1/V2 Consistency**: All trauma enhancements implemented uniformly across both actor sheet versions
