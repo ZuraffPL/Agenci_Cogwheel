@@ -1,17 +1,47 @@
-/* Style dla różnych typów traum */
+/* Podstawowy styl dla wszystkich elementów traumy - steampunkowy fioletowy gradient */
+.trauma-item {
+  background: linear-gradient(135deg, #8B4A8B 0%, #6B356B 30%, #4A1F4A 70%, #2C172C 100%);
+  border: 2px solid #9370DB;
+  box-shadow: inset 0 1px 3px rgba(147, 112, 219, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+  position: relative;
+  color: #FFFFFF;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  transition: all 0.3s ease;
+}
+
+/* Efekt metalicznego połysku dla traumy */
+.trauma-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0) 100%);
+  border-radius: 8px 8px 0 0;
+  pointer-events: none;
+}
+
+/* Style dla różnych typów traum - różne odcienie fioletowego steampunk */
 .trauma-item.trauma-type-physical {
-  background-color: #cc4444 !important; /* Czerwony dla fizycznej */
-  border-color: #aa3333 !important;
+  background: linear-gradient(135deg, #8B4A6B 0%, #6B3556 30%, #4A1F3A 70%, #2C1722 100%);
+  border-color: #9370BB;
+  box-shadow: inset 0 1px 3px rgba(147, 112, 187, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .trauma-item.trauma-type-mental {
-  background-color: #b8860b !important; /* Ciemne złoto dla umysłowej */
-  border-color: #9a7209 !important;
+  background: linear-gradient(135deg, #7A4A8B 0%, #5B356B 30%, #3A1F4A 70%, #22172C 100%);
+  border-color: #8370DB;
+  box-shadow: inset 0 1px 3px rgba(131, 112, 219, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .trauma-item.trauma-type-psychological {
-  background-color: #8b4b9b !important; /* Fioletowy dla psychicznej */
-  border-color: #743d82 !important;
+  background: linear-gradient(135deg, #9B4A8B 0%, #7B356B 30%, #5A1F4A 70%, #3C172C 100%);
+  border-color: #A370DB;
+  box-shadow: inset 0 1px 3px rgba(163, 112, 219, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* Style dla nagłówka traumy z poziomem i typem */
@@ -21,71 +51,119 @@
   align-items: center !important;
   font-weight: bold !important;
   font-size: 1.1em !important;
-  border-bottom: 1px dashed #555 !important;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.3) !important;
   padding-bottom: 4px !important;
-  margin-bottom: 4px !important;
+  margin-bottom: 8px !important;
 }
 
 .trauma-name {
   flex: 2 !important;
   color: #ffffff !important;
   font-weight: bold !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
 }
 
 .trauma-level {
   flex: 0 0 auto !important;
-  background-color: rgba(0, 0, 0, 0.3) !important;
+  background: rgba(0, 0, 0, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
   color: #ffffff !important;
-  padding: 2px 6px !important;
-  border-radius: 3px !important;
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
   font-size: 0.9em !important;
   font-weight: bold !important;
   margin: 0 5px !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
 }
 
 .trauma-type-label {
   flex: 0 0 auto !important;
-  background-color: rgba(255, 255, 255, 0.2) !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
   color: #ffffff !important;
-  padding: 2px 6px !important;
-  border-radius: 3px !important;
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
   font-size: 0.8em !important;
   font-weight: normal !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Detale traumy */
+.trauma-details {
+  margin-top: 8px;
+  line-height: 1.4;
 }
 
 /* Poprawka dla tekstów w traumach - zapewnienie czytelności */
 .trauma-item .trauma-description,
 .trauma-item .trauma-effect {
   color: #ffffff !important;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5) !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+  display: block;
+  margin-bottom: 4px;
 }
 
-/* Style dla dialogu traumy - dodanie select */
+/* Akcje traumy - przyciski steampunkowe */
+.trauma-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.trauma-actions .trauma-action-btn {
+  background: rgba(0, 0, 0, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 50% !important;
+  width: 28px !important;
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #ffffff !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+.trauma-actions .trauma-action-btn:hover {
+  background: rgba(0, 0, 0, 0.8) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Style dla dialogu traumy - steampunkowy wygląd */
 .trauma-dialog select {
   width: 250px !important;
-  padding: 5px !important;
-  background-color: #3a3a3a !important;
-  border: 1px solid #555 !important;
-  border-radius: 3px !important;
+  padding: 8px !important;
+  background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%) !important;
+  border: 2px solid #666 !important;
+  border-radius: 4px !important;
   color: #ddd !important;
   box-sizing: border-box !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
 }
 
 .trauma-dialog select:focus {
   outline: none !important;
-  border-color: #007acc !important;
-  box-shadow: 0 0 5px rgba(0, 122, 204, 0.3) !important;
+  border-color: #9370DB !important;
+  box-shadow: 0 0 8px rgba(147, 112, 219, 0.4) !important;
 }
 
-/* Hover efekty dla przycisków w traumach */
-.trauma-actions .trauma-action-btn:hover {
-  background-color: rgba(255, 255, 255, 0.2) !important;
-  transform: scale(1.05) !important;
+.trauma-dialog input[type="text"],
+.trauma-dialog textarea {
+  background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%) !important;
+  border: 2px solid #666 !important;
+  border-radius: 4px !important;
+  color: #ddd !important;
+  padding: 8px !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
 }
 
-/* Zapewnienie widoczności przycisków na kolorowych tłach */
-.trauma-actions .trauma-action-btn {
-  background-color: rgba(0, 0, 0, 0.3) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+.trauma-dialog input[type="text"]:focus,
+.trauma-dialog textarea:focus {
+  border-color: #9370DB !important;
+  box-shadow: 0 0 8px rgba(147, 112, 219, 0.4) !important;
+  outline: none !important;
 }
