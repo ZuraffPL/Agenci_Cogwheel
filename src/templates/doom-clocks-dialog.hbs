@@ -1,19 +1,19 @@
-<div class="doom-clocks-content" data-active-category="mission">
+<div class="doom-clocks-content" data-active-category="{{activeCategory}}">
   {{#if isGM}}
-    <button class="add-clock steampunk-clock-btn" title="{{localize 'COGSYNDICATE.AddDoomClock'}}" data-category="mission">
+    <button class="add-clock steampunk-clock-btn" title="{{localize 'COGSYNDICATE.AddDoomClock'}}" data-category="{{activeCategory}}">
       <i class="fas fa-clock"></i> {{localize "COGSYNDICATE.AddDoomClock"}}
     </button>
   {{/if}}
   
   <!-- Zakładki kategorii zegarów -->
   <div class="clocks-tabs">
-    <button class="tab-btn active" data-category="mission" title="Zegary postępu misji">
+    <button class="tab-btn {{#if (eq activeCategory 'mission')}}active{{/if}}" data-category="mission" title="Zegary postępu misji">
       <i class="fas fa-bullseye"></i> Misja
     </button>
-    <button class="tab-btn" data-category="combat" title="Zegary walki">
+    <button class="tab-btn {{#if (eq activeCategory 'combat')}}active{{/if}}" data-category="combat" title="Zegary walki">
       <i class="fas fa-fist-raised"></i> Walka
     </button>
-    <button class="tab-btn" data-category="other" title="Inne zegary">
+    <button class="tab-btn {{#if (eq activeCategory 'other')}}active{{/if}}" data-category="other" title="Inne zegary">
       <i class="fas fa-cogs"></i> Inne
     </button>
   </div>

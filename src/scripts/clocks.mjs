@@ -3,6 +3,8 @@ export class DoomClocksDialog extends Application {
     super(options);
     // Odczyt zegarów z ustawień świata
     this.clocks = game.settings.get("cogwheel-syndicate", "doomClocks") || [];
+    // Zachowaj aktualną kategorię między renderowaniami
+    this.activeCategory = 'mission';
   }
 
   static get defaultOptions() {
@@ -40,7 +42,8 @@ export class DoomClocksDialog extends Application {
     
     return {
       clocks: migratedClocks,
-      isGM: game.user.isGM
+      isGM: game.user.isGM,
+      activeCategory: this.activeCategory
     };
   }
 
@@ -53,11 +56,13 @@ export class DoomClocksDialog extends Application {
     console.log(`Initial active category: ${activeCategory}`);
     
     // Debug: sprawdź wszystkie zegary i ich kategorie w DOM
+    console.log(`Total clock items found: ${html.find('.clock-item').length}`);
     html.find('.clock-item').each(function() {
       const category = $(this).attr('data-category');
       const name = $(this).find('.clock-name').text();
       const isVisible = $(this).is(':visible');
-      console.log(`Clock "${name}" - category: ${category}, visible: ${isVisible}`);
+      const displayStyle = $(this).css('display');
+      console.log(`Clock "${name}" - category: ${category}, visible: ${isVisible}, display: ${displayStyle}`);
     });
 
     // Obsługa zakładek kategorii
@@ -125,6 +130,7 @@ export class DoomClocksDialog extends Application {
               category: category 
             };
             this.clocks.push(newClock);
+            console.log(`Added clock "${newClock.name}" to category "${newClock.category}"`);
             await this._updateClocks();
           }
         }
@@ -240,6 +246,9 @@ export class DoomClocksDialog extends Application {
     const category = button.dataset.category;
     
     console.log(`Switching to category: ${category}`); // Debug
+    
+    // Zapisz aktywną kategorię w instancji
+    this.activeCategory = category;
     
     // Usuń klasę active z wszystkich przycisków
     const tabs = this.element.find('.tab-btn');
