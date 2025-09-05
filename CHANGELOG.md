@@ -11,6 +11,14 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.7.9] - 2025-09-06
+
+- **CSS Fix**: Completely rewrote clock filtering CSS with !important rules for proper category visibility
+- **Debug Enhancement**: Added comprehensive console logging to track clock categories and visibility
+- **Logic Improvement**: Simplified CSS rules - show only active category, hide others explicitly
+
+
+
 ## [0.7.9] - 2025-09-05
 
 - **Clock Categories Bug Fix**: Fixed filtering logic to properly show only clocks from active category
@@ -773,6 +781,7 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Comprehensive README.md with installation instructions
 - MIT License included
 - GitHub repository integration for easy updates
+
 
 
 

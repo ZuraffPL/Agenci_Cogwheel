@@ -135,34 +135,31 @@
   transition: all 0.3s ease;
 }
 
-/* Ukrywaj wszystkie zegary domyślnie, oprócz kategorii mission */
+/* Domyślnie ukryj Combat i Other (Mission jest domyślnie widoczna) */
 .doom-clocks .clock-item[data-category="combat"],
 .doom-clocks .clock-item[data-category="other"] {
-  display: none;
+  display: none !important;
 }
 
-/* Pokaż zegary według aktywnej kategorii */
-.doom-clocks[data-active-category="mission"] .clock-item[data-category="combat"],
-.doom-clocks[data-active-category="mission"] .clock-item[data-category="other"] {
-  display: none;
+/* Gdy aktywna jest Mission - pokaż tylko Mission */
+.doom-clocks[data-active-category="mission"] .clock-item[data-category="mission"] {
+  display: flex !important;
 }
 
-.doom-clocks[data-active-category="combat"] .clock-item[data-category="mission"],
-.doom-clocks[data-active-category="combat"] .clock-item[data-category="other"] {
-  display: none;
-}
-
+/* Gdy aktywna jest Combat - pokaż tylko Combat */
 .doom-clocks[data-active-category="combat"] .clock-item[data-category="combat"] {
-  display: flex;
+  display: flex !important;
+}
+.doom-clocks[data-active-category="combat"] .clock-item[data-category="mission"] {
+  display: none !important;
 }
 
-.doom-clocks[data-active-category="other"] .clock-item[data-category="mission"],
-.doom-clocks[data-active-category="other"] .clock-item[data-category="combat"] {
-  display: none;
-}
-
+/* Gdy aktywna jest Other - pokaż tylko Other */
 .doom-clocks[data-active-category="other"] .clock-item[data-category="other"] {
-  display: flex;
+  display: flex !important;
+}
+.doom-clocks[data-active-category="other"] .clock-item[data-category="mission"] {
+  display: none !important;
 }
 
 /* Steampunkowe kolory tła dla różnych zegarów */

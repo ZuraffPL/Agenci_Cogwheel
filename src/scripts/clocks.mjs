@@ -23,10 +23,14 @@ export class DoomClocksDialog extends Application {
     // Migracj starych zegarów - dodaj kategorię "mission" jeśli nie ma
     const migratedClocks = this.clocks.map(clock => {
       if (!clock.category) {
+        console.log(`Migrating clock "${clock.name}" to mission category`);
         clock.category = 'mission';
       }
       return clock;
     });
+    
+    // Debug: pokaż wszystkie zegary i ich kategorie
+    console.log('Clock categories:', migratedClocks.map(c => ({name: c.name, category: c.category})));
     
     // Zapisz zmiany jeśli dokonano migracji
     if (migratedClocks.some((clock, index) => !this.clocks[index].category)) {
@@ -42,6 +46,19 @@ export class DoomClocksDialog extends Application {
 
   activateListeners(html) {
     super.activateListeners(html);
+
+    // Debug: sprawdź początkowy stan
+    const container = html.find('.doom-clocks-content');
+    const activeCategory = container.attr('data-active-category') || 'mission';
+    console.log(`Initial active category: ${activeCategory}`);
+    
+    // Debug: sprawdź wszystkie zegary i ich kategorie w DOM
+    html.find('.clock-item').each(function() {
+      const category = $(this).attr('data-category');
+      const name = $(this).find('.clock-name').text();
+      const isVisible = $(this).is(':visible');
+      console.log(`Clock "${name}" - category: ${category}, visible: ${isVisible}`);
+    });
 
     // Obsługa zakładek kategorii
     html.find(".tab-btn").click(this._onTabChange.bind(this));
@@ -236,6 +253,16 @@ export class DoomClocksDialog extends Application {
     container.attr('data-active-category', category);
     
     console.log(`Container category set to: ${container.attr('data-active-category')}`); // Debug
+    
+    // Debug: sprawdź które zegary są teraz widoczne
+    setTimeout(() => {
+      this.element.find('.clock-item').each(function() {
+        const itemCategory = $(this).attr('data-category');
+        const name = $(this).find('.clock-name').text();
+        const isVisible = $(this).is(':visible');
+        console.log(`After switch - Clock "${name}" (${itemCategory}): visible = ${isVisible}`);
+      });
+    }, 100);
     
     // Zaktualizuj przycisk "Dodaj zegar" aby dodawał do aktywnej kategorii
     this.element.find('.add-clock').attr('data-category', category);
