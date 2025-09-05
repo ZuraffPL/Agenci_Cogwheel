@@ -13,6 +13,14 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.7.9] - 2025-09-06
 
+- **Fixed Tab State**: activateListeners now properly sets active tab based on this.activeCategory
+- **Fixed Container Attribute**: DOM container now gets correct data-active-category after render
+- **Visual Consistency**: Active tab button now correctly highlighted after render operations
+
+
+
+## [0.7.9] - 2025-09-06
+
 - **Fixed preventDefault Error**: Added safe call to preventDefault() in _onTabChange to handle both real and programmatic events
 - **Enhanced Fake Event**: Improved fake event object with preventDefault method to prevent TypeError
 - **Better Event Handling**: Tab restoration now works without console errors
@@ -824,6 +832,7 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Comprehensive README.md with installation instructions
 - MIT License included
 - GitHub repository integration for easy updates
+
 
 
 

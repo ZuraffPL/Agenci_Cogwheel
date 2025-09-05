@@ -56,6 +56,13 @@ export class DoomClocksDialog extends Application {
     // Użyj aktualnej wartości this.activeCategory zamiast zawsze defaultować do mission
     console.log(`Initial active category: ${this.activeCategory}`);
     
+    // Ustaw właściwą zakładkę jako aktywną
+    html.find('.tab-btn').removeClass('active');
+    html.find(`.tab-btn[data-category="${this.activeCategory}"]`).addClass('active');
+    
+    // Ustaw właściwy atrybut kontenera
+    container.attr('data-active-category', this.activeCategory);
+    
     // Debug: sprawdź wszystkie zegary i ich kategorie w DOM
     console.log(`Total clock items found: ${html.find('.clock-item').length}`);
     html.find('.clock-item').each(function() {
