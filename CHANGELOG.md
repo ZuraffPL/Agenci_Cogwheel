@@ -13,6 +13,12 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.7.9] - 2025-09-05
 
+- **Development Tools**: Added PowerShell automation scripts for consistent documentation updates and release management
+
+
+
+## [0.7.9] - 2025-09-05
+
 ### Added | Dodano
 - **Trauma Toggle & Collapse System | System Zwijania/Rozwijania Traum**: Implemented collapsible trauma sections matching equipment functionality | Zaimplementowano zwijanie sekcji traum odpowiadające funkcjonalności ekwipunku
   - **Toggle Buttons | Przyciski Toggle**: Added chevron icons for expand/collapse trauma details with smooth animations | Dodano ikony chevron do rozwijania/zwijania szczegółów traum z płynnymi animacjami
@@ -741,3 +747,4 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Comprehensive README.md with installation instructions
 - MIT License included
 - GitHub repository integration for easy updates
+
