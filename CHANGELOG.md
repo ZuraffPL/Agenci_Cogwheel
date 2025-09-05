@@ -11,6 +11,31 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.7.9] - 2025-09-05
+
+### Added | Dodano
+- **Trauma Toggle & Collapse System | System Zwijania/Rozwijania Traum**: Implemented collapsible trauma sections matching equipment functionality | Zaimplementowano zwijanie sekcji traum odpowiadające funkcjonalności ekwipunku
+  - **Toggle Buttons | Przyciski Toggle**: Added chevron icons for expand/collapse trauma details with smooth animations | Dodano ikony chevron do rozwijania/zwijania szczegółów traum z płynnymi animacjami
+  - **Type-Specific Icons | Ikony Specyficzne dla Typów**: FontAwesome icons for trauma types: `fa-heart-broken` (Physical), `fa-head-side-virus` (Psychological), `fa-brain` (Mental) | Ikony FontAwesome dla typów traum: `fa-heart-broken` (Fizyczna), `fa-head-side-virus` (Psychiczna), `fa-brain` (Umysłowa)
+  - **Steampunk Styling | Styling Steampunkowy**: Purple gradient backgrounds with metallic effects for all trauma types | Fioletowe gradienty tła z metalicznymi efektami dla wszystkich typów traum
+  - **Inline Actions | Akcje w Linii**: Moved edit/delete buttons to trauma header with "|" separator for compact layout | Przeniesiono przyciski edycji/usuwania do nagłówka traumy z separatorem "|" dla kompaktowego układu
+
+### Changed | Zmieniono
+- **Trauma Details Layout | Layout Szczegółów Traumy**: Restructured trauma description and effect display | Przestrukturyzowano wyświetlanie opisu i efektu traumy
+  - **Separate Sections | Osobne Sekcje**: Description and effect now in individual labeled sections with frames | Opis i efekt teraz w osobnych oznakowanych sekcjach z ramkami
+  - **Visual Distinction | Wizualne Rozróżnienie**: Different colored left borders (purple accents) and hover effects | Różne kolorowe lewe ramki (fioletowe akcenty) i efekty hover
+  - **Bold Labels | Pogrubione Etykiety**: Clear section labels with dashed underlines for better organization | Wyraźne etykiety sekcji z przerywanym podkreśleniem dla lepszej organizacji
+
+### Fixed | Naprawiono
+- **Dialog Dropdown Height | Wysokość Dropdown w Dialogu**: Fixed trauma type dropdown options display in add/edit dialog | Naprawiono wyświetlanie opcji dropdown typu traumy w dialogu dodawania/edycji
+  - **Improved Visibility | Lepsza Widoczność**: Increased option height and padding for better text visibility | Zwiększono wysokość opcji i padding dla lepszej widoczności tekstu
+  - **Enhanced Styling | Lepszy Styling**: Better font size, line-height, and Foundry VTT compatibility | Lepszy rozmiar czcionki, line-height i kompatybilność z Foundry VTT
+
+### Technical | Techniczne
+- **V1/V2 Consistency | Spójność V1/V2**: All trauma enhancements implemented consistently across both actor sheet versions | Wszystkie ulepszenia traumy zaimplementowane spójnie w obu wersjach kart aktora
+- **Event Handlers | Obsługa Wydarzeń**: Added `_onToggleTrauma()` JavaScript functions for collapse functionality | Dodano funkcje JavaScript `_onToggleTrauma()` dla funkcjonalności zwijania
+- **CSS Organization | Organizacja CSS**: Enhanced trauma-types.css with modular styling for better maintainability | Ulepszono trauma-types.css z modułowym stylingiem dla lepszej łatwości utrzymania
+
 ## [0.7.8] - 2025-09-04
 
 ### Added | Dodano

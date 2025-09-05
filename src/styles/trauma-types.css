@@ -10,6 +10,75 @@
   color: #FFFFFF;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+/* Collapsed state for trauma items */
+.trauma-item.collapsed .trauma-details {
+  display: none;
+}
+
+.trauma-item.collapsed .trauma-toggle i {
+  transform: rotate(0deg);
+}
+
+.trauma-item:not(.collapsed) .trauma-toggle i {
+  transform: rotate(90deg);
+}
+
+/* Trauma toggle button */
+.trauma-toggle {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.trauma-toggle:hover {
+  background: rgba(0, 0, 0, 0.8);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: scale(1.1);
+}
+
+.trauma-toggle i {
+  color: #ffffff;
+  font-size: 0.75rem;
+  transition: transform 0.3s ease;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Trauma type icons */
+.trauma-type-icon {
+  margin-right: 8px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.trauma-type-icon i {
+  font-size: 1rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.trauma-type-physical .trauma-type-icon i {
+  color: #ff6b6b;
+}
+
+.trauma-type-psychological .trauma-type-icon i {
+  color: #6bb6ff;
+}
+
+.trauma-type-mental .trauma-type-icon i {
+  color: #c4b5d4;
 }
 
 /* Efekt metalicznego połysku dla traumy */
@@ -54,6 +123,47 @@
   border-bottom: 1px dashed rgba(255, 255, 255, 0.3) !important;
   padding-bottom: 4px !important;
   margin-bottom: 8px !important;
+  margin-left: 35px !important; /* Space for toggle button */
+}
+
+.trauma-actions-inline {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+.trauma-separator {
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-weight: normal !important;
+  margin: 0 6px !important;
+  font-size: 0.9em !important;
+}
+
+.trauma-actions-inline .trauma-action-btn {
+  background: rgba(0, 0, 0, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 50% !important;
+  width: 24px !important;
+  height: 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: #ffffff !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+  margin: 0 2px !important;
+}
+
+.trauma-actions-inline .trauma-action-btn:hover {
+  background: rgba(0, 0, 0, 0.8) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.trauma-actions-inline .trauma-action-btn i {
+  font-size: 0.8em !important;
 }
 
 .trauma-name {
@@ -92,9 +202,67 @@
 .trauma-details {
   margin-top: 8px;
   line-height: 1.4;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-/* Poprawka dla tekstów w traumach - zapewnienie czytelności */
+.trauma-description-section,
+.trauma-effect-section {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 4px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.trauma-description-section:hover,
+.trauma-effect-section:hover {
+  background: rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Different styling for description vs effect sections */
+.trauma-description-section {
+  border-left: 3px solid #8a6fb8; /* Purple accent for description */
+}
+
+.trauma-effect-section {
+  border-left: 3px solid #b8a9c8; /* Lighter purple accent for effect */
+}
+
+.trauma-field-label {
+  display: block !important;
+  color: #ffffff !important;
+  font-weight: bold !important;
+  font-size: 0.9em !important;
+  margin-bottom: 4px !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+  padding-bottom: 2px;
+}
+
+.trauma-field-content {
+  color: #b8a9c8 !important;
+  font-size: 0.875rem !important;
+  line-height: 1.4 !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+  min-height: 18px;
+  padding: 2px 0;
+}
+
+.trauma-description-section .trauma-field-content {
+  color: #b8a9c8 !important;
+}
+
+.trauma-effect-section .trauma-field-content {
+  color: #8a6fb8 !important;
+  font-style: italic !important;
+}
+
+/* Legacy styles for backwards compatibility */
 .trauma-item .trauma-description,
 .trauma-item .trauma-effect {
   color: #ffffff !important;
@@ -103,12 +271,9 @@
   margin-bottom: 4px;
 }
 
-/* Akcje traumy - przyciski steampunkowe */
+/* Akcje traumy - przyciski steampunkowe (legacy - now moved to header) */
 .trauma-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 8px;
+  display: none !important; /* Hidden as actions moved to header */
 }
 
 .trauma-actions .trauma-action-btn {
@@ -135,14 +300,38 @@
 
 /* Style dla dialogu traumy - steampunkowy wygląd */
 .trauma-dialog select {
-  width: 250px !important;
-  padding: 8px !important;
+  width: 280px !important;
+  padding: 10px 12px !important;
   background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%) !important;
   border: 2px solid #666 !important;
   border-radius: 4px !important;
   color: #ddd !important;
   box-sizing: border-box !important;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+  line-height: 1.5 !important;
+  min-height: 42px !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+}
+
+.trauma-dialog select option {
+  background: #2a2a2a !important;
+  color: #ddd !important;
+  padding: 10px 12px !important;
+  line-height: 1.6 !important;
+  min-height: 36px !important;
+  height: auto !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+  font-size: 14px !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+}
+
+/* Alternative styling for better compatibility */
+.trauma-dialog select {
+  -webkit-appearance: menulist !important;
+  -moz-appearance: menulist !important;
+  appearance: menulist !important;
 }
 
 .trauma-dialog select:focus {
@@ -166,4 +355,24 @@
   border-color: #9370DB !important;
   box-shadow: 0 0 8px rgba(147, 112, 219, 0.4) !important;
   outline: none !important;
+}
+
+/* Additional fixes for dropdown height issues */
+.dialog .trauma-dialog select {
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.dialog .trauma-dialog select[size] {
+  size: auto !important;
+}
+
+/* Ensure dropdown shows properly in Foundry dialogs */
+.dialog-content .trauma-dialog select option {
+  padding: 8px 12px !important;
+  line-height: 1.4 !important;
+  display: block !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-overflow: ellipsis !important;
 }

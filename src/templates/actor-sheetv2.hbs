@@ -277,19 +277,40 @@
           
           <div class="traumas-list">
             {{#each system.traumas as |trauma index|}}
-              <div class="trauma-item trauma-type-{{trauma.type}}" data-index="{{index}}">
-               <div class="trauma-header">
+              <div class="trauma-item collapsed trauma-type-{{trauma.type}}" data-index="{{index}}">
+                <div class="trauma-toggle">
+                  <i class="fas fa-chevron-right"></i>
+                </div>
+                <div class="trauma-header">
                   <span class="trauma-name">{{trauma.name}}</span>
                   <span class="trauma-level">{{localize "COGSYNDICATE.TraumaLevel"}} {{inc index}}</span>
-                  <span class="trauma-type-label">{{localize (concat "COGSYNDICATE.TraumaType" (capitalize trauma.type))}}</span>
+                  <span class="trauma-type-label">
+                    <span class="trauma-type-icon">
+                      {{#if (eq trauma.type "physical")}}
+                        <i class="fas fa-heart-broken" title="{{localize 'COGSYNDICATE.TraumaTypePhysical'}}"></i>
+                      {{else if (eq trauma.type "psychological")}}
+                        <i class="fas fa-head-side-virus" title="{{localize 'COGSYNDICATE.TraumaTypePsychological'}}"></i>
+                      {{else if (eq trauma.type "mental")}}
+                        <i class="fas fa-brain" title="{{localize 'COGSYNDICATE.TraumaTypeMental'}}"></i>
+                      {{/if}}
+                    </span>
+                    {{localize (concat "COGSYNDICATE.TraumaType" (capitalize trauma.type))}}
+                  </span>
+                  <span class="trauma-actions-inline">
+                    <span class="trauma-separator"> | </span>
+                    <button type="button" class="edit-trauma trauma-action-btn" title="{{localize 'COGSYNDICATE.EditTrauma'}}"><i class="fas fa-edit"></i></button>
+                    <button type="button" class="delete-trauma trauma-action-btn" title="{{localize 'COGSYNDICATE.DeleteTrauma'}}"><i class="fas fa-trash"></i></button>
+                  </span>
                 </div>
                 <div class="trauma-details">
-                 <span class="trauma-description">{{trauma.description}}</span>
-                  <span class="trauma-effect">{{trauma.effect}}</span>
-                </div>
-                <div class="trauma-actions">
-                  <button type="button" class="edit-trauma trauma-action-btn" title="{{localize 'COGSYNDICATE.EditTrauma'}}"><i class="fas fa-edit"></i></button>
-                  <button type="button" class="delete-trauma trauma-action-btn" title="{{localize 'COGSYNDICATE.DeleteTrauma'}}"><i class="fas fa-trash"></i></button>
+                  <div class="trauma-description-section">
+                    <label class="trauma-field-label">{{localize "COGSYNDICATE.TraumaDescription"}}</label>
+                    <div class="trauma-field-content">{{trauma.description}}</div>
+                  </div>
+                  <div class="trauma-effect-section">
+                    <label class="trauma-field-label">{{localize "COGSYNDICATE.TraumaEffect"}}</label>
+                    <div class="trauma-field-content">{{trauma.effect}}</div>
+                  </div>
                 </div>
               </div>
             {{/each}}

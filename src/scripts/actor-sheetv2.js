@@ -140,6 +140,7 @@ class CogwheelActorSheetV2 extends ActorSheet {
     html.find('.add-trauma-btn').click(this._onAddTrauma.bind(this));
     html.find('.edit-trauma').click(this._onEditTrauma.bind(this));
     html.find('.delete-trauma').click(this._onDeleteTrauma.bind(this));
+    html.find('.trauma-toggle').click(this._onToggleTrauma.bind(this));
     html.find('.spend-gear-btn').click(this._onSpendGear.bind(this));
     html.find('.spend-stress-btn').click(this._onSpendStress.bind(this));
     this._assignGearBackgrounds(html);
@@ -863,6 +864,21 @@ class CogwheelActorSheetV2 extends ActorSheet {
     equipmentItem.toggleClass('collapsed');
     
     if (equipmentItem.hasClass('collapsed')) {
+      icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+    } else {
+      icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+    }
+  }
+
+  _onToggleTrauma(event) {
+    event.preventDefault();
+    const toggle = $(event.currentTarget);
+    const traumaItem = toggle.closest('.trauma-item');
+    const icon = toggle.find('i');
+    
+    traumaItem.toggleClass('collapsed');
+    
+    if (traumaItem.hasClass('collapsed')) {
       icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
     } else {
       icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');

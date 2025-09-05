@@ -2,13 +2,31 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.7.8**
+**Current System Version: 0.7.9**
 
 ## Description
 
 Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysłowej.
 
 *A game about secret agents who fight threats of the industrial revolution era.*
+
+## 🔥 What's New in v0.7.9
+
+- **🧠 Trauma Toggle & Collapse System**: Implemented collapsible trauma sections with full interactivity
+  - **Toggle Functionality**: Added chevron icons for expand/collapse trauma details with smooth animations
+  - **Type-Specific Icons**: FontAwesome icons for trauma types - heart-broken (Physical), head-side-virus (Psychological), brain (Mental)
+  - **Steampunk Styling**: Purple gradient backgrounds with metallic effects across all trauma types
+  - **Inline Actions**: Moved edit/delete buttons to trauma header with "|" separator for compact, professional layout
+
+- **📝 Enhanced Trauma Details Layout**: Complete restructuring of trauma information display
+  - **Separate Labeled Sections**: Description and effect now in individual sections with bold labels and frames
+  - **Visual Distinction**: Different colored left borders (purple accents) and hover effects for better organization
+  - **Improved Readability**: Clear section labels with dashed underlines and proper spacing
+
+- **🔧 Dialog & UX Improvements**: Fixed trauma type dropdown and enhanced user experience
+  - **Better Dropdown Display**: Fixed trauma type selection dropdown with improved height and visibility
+  - **Enhanced Styling**: Better font sizing, line-height, and Foundry VTT dialog compatibility
+  - **V1/V2 Consistency**: All trauma enhancements implemented uniformly across both actor sheet versions
 
 ## 🔥 What's New in v0.7.8
 
@@ -18,17 +36,6 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
   - **Steampunk Button Design**: "Dodaj traumę" button with professional gradient styling and hover animations
   - **Visual Consistency**: Trauma sections now match equipment section elegance with unified archetype-inspired styling
   - **Template Updates**: Both V1 and V2 actor sheets updated with `.archetype-section` class and `.steampunk-btn` components
-
-- **🎒 Equipment Section UI Overhaul**: Complete modernization of equipment interface
-  - **Archetype-Style Background**: Applied steampunk gradient backgrounds with golden borders to equipment sections  
-  - **Backpack Icons**: Added fa-backpack icons throughout equipment sections for thematic consistency
-  - **Steampunk Button Design**: "Dodaj Ekwipunek" button with professional gradient styling and animations
-  - **Interface Cleanup**: Removed "Brak ekwipunku do dodania" placeholder messages for cleaner UI
-  - **Visual Polish**: Enhanced user experience with consistent archetype-inspired design language
-
-- **🎒 Enhanced Equipment Messaging System**: Complete overhaul of equipment chat messages
-  - **Archetype-Style Design**: Equipment messages now match character archetype visual styling
-  - **Equipment-Message CSS Class**: Steampunk gradient backgrounds with golden borders and shadows
   - **Visual Differentiation**: Color-coded agent names (blue), equipment names (green), and costs (red)
   - **Backpack Icons**: fa-backpack icons for all equipment add/delete operations
   - **Both Sheet Support**: V1 and V2 actor sheets fully integrated with custom message callbacks
