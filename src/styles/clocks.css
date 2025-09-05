@@ -1,67 +1,92 @@
-/* Style dla głównego okna Zegary Postępu */
+/* Style dla głównego okna Zegary Postępu - steampunkowe tło */
 .doom-clocks .doom-clocks-content {
-  padding: 10px;
-  min-width: 400px; /* Minimalna szerokość okna */
+  padding: 15px;
+  min-width: 450px; /* Zwiększona minimalna szerokość okna */
+  background: linear-gradient(135deg, #3d2817 0%, #4a321d 30%, #5a4a3a 70%, #2c1810 100%);
+  border: 2px solid #cd7f32;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 3px rgba(205, 127, 50, 0.3), 0 4px 8px rgba(0, 0, 0, 0.4);
+  position: relative;
+  color: #f4a460;
 }
 
-/* Styl dla przycisku "Dodaj Zegar Postępu" */
-.doom-clocks .add-clock {
-  white-space: nowrap; /* Zapobiega zawijaniu tekstu */
-  min-width: 150px; /* Minimalna szerokość, aby pomieścić tekst */
-  padding: 5px 10px; /* Większy padding dla lepszej czytelności */
-  display: inline-flex; /* Użyj flex, aby ikona i tekst były w jednej linii */
-  align-items: center; /* Wyrównanie w pionie */
-  gap: 5px; /* Odstęp między ikoną a tekstem */
-  background-color: #444;
-  border: 1px solid #666;
-  border-radius: 3px;
-  color: #fff;
-  cursor: pointer;
+/* Efekt metalicznego połysku dla tła okna */
+.doom-clocks .doom-clocks-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0) 100%);
+  border-radius: 8px 8px 0 0;
+  pointer-events: none;
 }
 
-.doom-clocks .add-clock:hover {
-  background-color: #555;
+/* Steampunkowy styl dla przycisku "Dodaj Zegar Postępu" */
+.doom-clocks .steampunk-clock-btn {
+  background: linear-gradient(135deg, #3d2817 0%, #4a321d 50%, #2c1810 100%);
+  border: 2px solid #cd7f32;
+  border-radius: 6px;
+  color: #f4a460 !important;
+  padding: 8px 16px !important;
+  font-weight: bold !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+  box-shadow: inset 0 1px 3px rgba(205, 127, 50, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4);
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  white-space: nowrap;
+  min-width: 180px; /* Zwiększona szerokość dla lepszego dopasowania tekstu */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.doom-clocks .steampunk-clock-btn:hover {
+  background: linear-gradient(135deg, #4a321d 0%, #5a4a3a 50%, #3d2817 100%);
+  border-color: #e8a057;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 3px rgba(232, 160, 87, 0.4), 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.doom-clocks .steampunk-clock-btn:active {
+  transform: translateY(0px);
+  box-shadow: inset 0 1px 3px rgba(205, 127, 50, 0.6), 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.doom-clocks .steampunk-clock-btn i {
+  font-size: 1.1em;
+  color: inherit;
 }
 
 .doom-clocks .clocks-list {
-  margin-top: 10px;
+  margin-top: 15px;
+  position: relative;
+  z-index: 1;
 }
 
 .doom-clocks .clock-item {
   display: flex;
   align-items: center;
-  border: 1px solid #666;
-  border-radius: 4px;
-  padding: 5px;
-  margin-bottom: 5px;
-  min-height: 60px; /* Minimalna wysokość wiersza */
+  border: 2px solid #8B4513;
+  border-radius: 6px;
+  padding: 8px;
+  margin-bottom: 8px;
+  min-height: 70px;
+  background: linear-gradient(135deg, rgba(61, 40, 23, 0.9) 0%, rgba(74, 50, 29, 0.9) 50%, rgba(44, 24, 16, 0.9) 100%);
+  box-shadow: inset 0 1px 2px rgba(205, 127, 50, 0.2), 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
-/* Cykliczne kolory tła dla elementów clock-item */
-.doom-clocks .clock-item:nth-child(8n+1) {
-  background-color: #4a5d6b; /* Stonowany niebiesko-szary */
+.doom-clocks .clock-item:hover {
+  border-color: #cd7f32;
+  box-shadow: inset 0 1px 2px rgba(205, 127, 50, 0.3), 0 3px 6px rgba(0, 0, 0, 0.4);
 }
-.doom-clocks .clock-item:nth-child(8n+2) {
-  background-color: #5a4a5d; /* Stonowany fioletowo-szary */
-}
-.doom-clocks .clock-item:nth-child(8n+3) {
-  background-color: #4a5d4a; /* Stonowany zielono-szary */
-}
-.doom-clocks .clock-item:nth-child(8n+4) {
-  background-color: #5d5a4a; /* Stonowany brązowo-szary */
-}
-.doom-clocks .clock-item:nth-child(8n+5) {
-  background-color: #4a4a5d; /* Stonowany granatowy */
-}
-.doom-clocks .clock-item:nth-child(8n+6) {
-  background-color: #5d4a4a; /* Stonowany czerwono-szary */
-}
-.doom-clocks .clock-item:nth-child(8n+7) {
-  background-color: #4a5d5d; /* Stonowany morski */
-}
-.doom-clocks .clock-item:nth-child(8n+8) {
-  background-color: #5d5d4a; /* Stonowany oliwkowy */
-}
+
+/* Usunięte cykliczne kolory tła - zastąpione przez steampunkowy gradient */
 
 .doom-clocks .clock-visual {
   margin-right: 10px;
@@ -89,29 +114,34 @@
 }
 
 .doom-clocks .clock-name {
-  color: #e0e0e0;
-  max-width: 200px; /* Ograniczenie szerokości nazwy */
+  color: #f4a460 !important;
+  max-width: 200px;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* Skracanie nazwy z "..." */
+  text-overflow: ellipsis;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .doom-clocks .clock-progress {
-  color: #aaccff;
+  color: #e8a057 !important;
   white-space: nowrap;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .doom-clocks .clock-description {
-  color: #c0c0c0;
+  color: #d4a574 !important;
   font-size: 0.9em;
-  max-width: 100%; /* Ograniczenie szerokości opisu */
-  word-wrap: break-word; /* Zawijanie tekstu */
+  max-width: 100%;
+  word-wrap: break-word;
   overflow: hidden;
-  text-overflow: ellipsis; /* Skracanie opisu z "..." */
+  text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* Maksymalnie 2 linie */
-  line-clamp: 2; /* Standard property for compatibility */
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .doom-clocks .clock-actions {
@@ -123,9 +153,13 @@
 
 .doom-clocks .no-clocks-placeholder {
   text-align: center;
-  color: #c0c0c0;
+  color: #d4a574 !important;
   font-style: italic;
-  padding: 10px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px dashed #cd7f32;
+  border-radius: 4px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 /* Style dla dialogu dodawania/edytowania zegara */
