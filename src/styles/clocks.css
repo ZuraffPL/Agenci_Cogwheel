@@ -81,9 +81,91 @@
   transition: all 0.3s ease;
 }
 
-.doom-clocks .clock-item:hover {
+/* Steampunkowe kolory tła dla różnych zegarów */
+.doom-clocks .clock-item:nth-child(8n+1) {
+  background: linear-gradient(135deg, rgba(61, 40, 23, 0.9) 0%, rgba(84, 56, 32, 0.9) 50%, rgba(44, 24, 16, 0.9) 100%);
   border-color: #cd7f32;
+}
+
+.doom-clocks .clock-item:nth-child(8n+2) {
+  background: linear-gradient(135deg, rgba(58, 35, 50, 0.9) 0%, rgba(78, 48, 68, 0.9) 50%, rgba(40, 22, 35, 0.9) 100%);
+  border-color: #b8860b;
+}
+
+.doom-clocks .clock-item:nth-child(8n+3) {
+  background: linear-gradient(135deg, rgba(45, 55, 35, 0.9) 0%, rgba(65, 75, 50, 0.9) 50%, rgba(30, 40, 22, 0.9) 100%);
+  border-color: #daa520;
+}
+
+.doom-clocks .clock-item:nth-child(8n+4) {
+  background: linear-gradient(135deg, rgba(55, 45, 30, 0.9) 0%, rgba(75, 65, 45, 0.9) 50%, rgba(40, 30, 18, 0.9) 100%);
+  border-color: #d2691e;
+}
+
+.doom-clocks .clock-item:nth-child(8n+5) {
+  background: linear-gradient(135deg, rgba(45, 35, 60, 0.9) 0%, rgba(65, 50, 85, 0.9) 50%, rgba(30, 22, 45, 0.9) 100%);
+  border-color: #9370db;
+}
+
+.doom-clocks .clock-item:nth-child(8n+6) {
+  background: linear-gradient(135deg, rgba(60, 35, 35, 0.9) 0%, rgba(85, 50, 50, 0.9) 50%, rgba(45, 22, 22, 0.9) 100%);
+  border-color: #cd853f;
+}
+
+.doom-clocks .clock-item:nth-child(8n+7) {
+  background: linear-gradient(135deg, rgba(35, 55, 55, 0.9) 0%, rgba(50, 75, 75, 0.9) 50%, rgba(22, 40, 40, 0.9) 100%);
+  border-color: #5f9ea0;
+}
+
+.doom-clocks .clock-item:nth-child(8n+8) {
+  background: linear-gradient(135deg, rgba(55, 55, 35, 0.9) 0%, rgba(80, 80, 50, 0.9) 50%, rgba(40, 40, 22, 0.9) 100%);
+  border-color: #bdb76b;
+}
+
+.doom-clocks .clock-item:hover {
+  transform: translateY(-1px);
   box-shadow: inset 0 1px 2px rgba(205, 127, 50, 0.3), 0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Hover effects dla różnych kolorów zegarów */
+.doom-clocks .clock-item:nth-child(8n+1):hover {
+  border-color: #e8a057;
+  box-shadow: inset 0 1px 2px rgba(232, 160, 87, 0.4), 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.doom-clocks .clock-item:nth-child(8n+2):hover {
+  border-color: #daa520;
+  box-shadow: inset 0 1px 2px rgba(218, 165, 32, 0.4), 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.doom-clocks .clock-item:nth-child(8n+3):hover {
+  border-color: #ffd700;
+  box-shadow: inset 0 1px 2px rgba(255, 215, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.doom-clocks .clock-item:nth-child(8n+4):hover {
+  border-color: #ff8c00;
+  box-shadow: inset 0 1px 2px rgba(255, 140, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.doom-clocks .clock-item:nth-child(8n+5):hover {
+  border-color: #ba55d3;
+  box-shadow: inset 0 1px 2px rgba(186, 85, 211, 0.4), 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.doom-clocks .clock-item:nth-child(8n+6):hover {
+  border-color: #f4a460;
+  box-shadow: inset 0 1px 2px rgba(244, 164, 96, 0.4), 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.doom-clocks .clock-item:nth-child(8n+7):hover {
+  border-color: #87ceeb;
+  box-shadow: inset 0 1px 2px rgba(135, 206, 235, 0.4), 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.doom-clocks .clock-item:nth-child(8n+8):hover {
+  border-color: #daa520;
+  box-shadow: inset 0 1px 2px rgba(218, 165, 32, 0.4), 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
 /* Usunięte cykliczne kolory tła - zastąpione przez steampunkowy gradient */
@@ -142,6 +224,32 @@
   line-clamp: 2;
   -webkit-box-orient: vertical;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Różne kolory tekstu dla lepszego kontrastu z różnymi tłami */
+.doom-clocks .clock-item:nth-child(8n+2) .clock-name,
+.doom-clocks .clock-item:nth-child(8n+2) .clock-progress {
+  color: #e6b8ff !important;
+}
+
+.doom-clocks .clock-item:nth-child(8n+3) .clock-name,
+.doom-clocks .clock-item:nth-child(8n+3) .clock-progress {
+  color: #c8ff8c !important;
+}
+
+.doom-clocks .clock-item:nth-child(8n+5) .clock-name,
+.doom-clocks .clock-item:nth-child(8n+5) .clock-progress {
+  color: #d8b5ff !important;
+}
+
+.doom-clocks .clock-item:nth-child(8n+6) .clock-name,
+.doom-clocks .clock-item:nth-child(8n+6) .clock-progress {
+  color: #ffb8b8 !important;
+}
+
+.doom-clocks .clock-item:nth-child(8n+7) .clock-name,
+.doom-clocks .clock-item:nth-child(8n+7) .clock-progress {
+  color: #b8e8ff !important;
 }
 
 .doom-clocks .clock-actions {
