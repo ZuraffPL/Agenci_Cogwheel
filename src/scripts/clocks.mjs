@@ -53,8 +53,8 @@ export class DoomClocksDialog extends Application {
 
     // Debug: sprawdź początkowy stan
     const container = html.find('.doom-clocks-content');
-    const activeCategory = container.attr('data-active-category') || 'mission';
-    console.log(`Initial active category: ${activeCategory}`);
+    // Użyj aktualnej wartości this.activeCategory zamiast zawsze defaultować do mission
+    console.log(`Initial active category: ${this.activeCategory}`);
     
     // Debug: sprawdź wszystkie zegary i ich kategorie w DOM
     console.log(`Total clock items found: ${html.find('.clock-item').length}`);
@@ -251,10 +251,12 @@ export class DoomClocksDialog extends Application {
         console.log(`Restoring category to: ${currentCategory}`);
         this.activeCategory = currentCategory;
         
-        // Znajdź i kliknij właściwą zakładkę
+        // Znajdź i kliknij właściwą zakładkę aby przełączyć widok
         const targetTab = this.element.find(`.tab-btn[data-category="${currentCategory}"]`);
-        if (targetTab.length) {
-          targetTab.trigger('click');
+        if (targetTab.length > 0) {
+          // Wywołaj _onTabChange aby rzeczywiście przełączyć widok
+          const fakeEvent = { currentTarget: targetTab[0] };
+          this._onTabChange(fakeEvent);
         }
       }
     }, 100);
@@ -268,6 +270,9 @@ export class DoomClocksDialog extends Application {
 
   // Obsługa zmiany zakładek kategorii
   _onTabChange(event) {
+    const isProgrammatic = event.currentTarget && event.currentTarget.tagName === undefined;
+    console.log(`_onTabChange called - programmatic: ${isProgrammatic}`);
+    
     event.preventDefault();
     const button = event.currentTarget;
     const category = button.dataset.category;

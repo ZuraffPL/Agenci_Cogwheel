@@ -13,6 +13,15 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.7.9] - 2025-09-06
 
+- **Fixed State Reset**: activateListeners now uses this.activeCategory instead of defaulting to mission
+- **Fixed Tab Restoration**: _updateClocks now properly calls _onTabChange to update DOM after render
+- **Removed Duplicate Events**: Eliminated duplicate click trigger to prevent double tab switching
+- **Enhanced Debug**: Added programmatic event detection in _onTabChange
+
+
+
+## [0.7.9] - 2025-09-06
+
 - **State Restoration**: Active category is now properly restored after adding new clocks
 - **Enhanced Debug**: Added detailed logging for category state changes and restoration
 - **UX Fix**: Clocks added in non-mission categories now stay visible in their correct tabs
@@ -807,6 +816,7 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Comprehensive README.md with installation instructions
 - MIT License included
 - GitHub repository integration for easy updates
+
 
 
 
