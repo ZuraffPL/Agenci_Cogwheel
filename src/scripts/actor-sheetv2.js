@@ -170,26 +170,41 @@ class CogwheelActorSheetV2 extends ActorSheet {
     const equipmentName = equipment.name;
     const actorName = this.actor.name;
 
-    if (isChecked && equipment[status]) {
-      equipment[status] = true;
+    // If unchecking and equipment has this status, restore to normal
+    if (!isChecked && equipment[status]) {
+      equipment.used = false;
+      equipment.droppedDamaged = false;
+      equipment.destroyed = false;
 
-      let messageKey = "";
-      if (status === "used") {
-        messageKey = "COGSYNDICATE.EquipmentUsed";
-      } else if (status === "droppedDamaged") {
-        messageKey = "COGSYNDICATE.EquipmentDroppedDamaged";
-      } else if (status === "destroyed") {
-        messageKey = "COGSYNDICATE.EquipmentDestroyed";
-      }
-
-      if (messageKey) {
-        await ChatMessage.create({
-          content: `<p>${game.i18n.format(messageKey, { name: equipmentName, actorName: actorName })}</p>`,
-          speaker: { actor: this.actor.id }
-        });
-      }
+      await ChatMessage.create({
+        content: `<p>${game.i18n.format("COGSYNDICATE.EquipmentRestored", { name: equipmentName, actorName: actorName })}</p>`,
+        speaker: { actor: this.actor.id }
+      });
     } else {
-      equipment[status] = false;
+      // Reset all states first
+      equipment.used = false;
+      equipment.droppedDamaged = false;
+      equipment.destroyed = false;
+
+      // If checking, set new status and send appropriate message
+      if (isChecked) {
+        equipment[status] = true;
+        let messageKey;
+        if (status === "used") {
+          messageKey = "COGSYNDICATE.EquipmentUsedMessage";
+        } else if (status === "droppedDamaged") {
+          messageKey = "COGSYNDICATE.EquipmentDroppedDamagedMessage";
+        } else if (status === "destroyed") {
+          messageKey = "COGSYNDICATE.EquipmentDestroyedMessage";
+        }
+
+        if (messageKey) {
+          await ChatMessage.create({
+            content: `<p>${game.i18n.format(messageKey, { name: equipmentName, actorName: actorName })}</p>`,
+            speaker: { actor: this.actor.id }
+          });
+        }
+      }
     }
 
     await this.actor.update({
