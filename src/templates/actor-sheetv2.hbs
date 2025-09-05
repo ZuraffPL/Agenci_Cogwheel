@@ -229,6 +229,19 @@
                   <i class="fas fa-chevron-right"></i>
                 </div>
                 <div class="equipment-header">
+                  <span class="equipment-type-icon">
+                    {{#if (eq equipment.type "weapon")}}
+                      <i class="fas fa-sword" title="{{localize 'COGSYNDICATE.EquipmentTypeWeapon'}}"></i>
+                    {{else if (eq equipment.type "armor")}}
+                      <i class="fas fa-shield-alt" title="{{localize 'COGSYNDICATE.EquipmentTypeArmor'}}"></i>
+                    {{else if (eq equipment.type "tool")}}
+                      <i class="fas fa-wrench" title="{{localize 'COGSYNDICATE.EquipmentTypeTool'}}"></i>
+                    {{else if (eq equipment.type "gadget")}}
+                      <i class="fas fa-cog" title="{{localize 'COGSYNDICATE.EquipmentTypeGadget'}}"></i>
+                    {{else}}
+                      <i class="fas fa-cube" title="{{localize 'COGSYNDICATE.EquipmentTypeOther'}}"></i>
+                    {{/if}}
+                  </span>
                   {{equipment.name}} ({{localize (concat 'COGSYNDICATE.EquipmentType' (capitalize equipment.type))}})
                 </div>
                 <div class="equipment-details">

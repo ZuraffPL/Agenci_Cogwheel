@@ -100,6 +100,46 @@
   position: relative;
 }
 
+/* Style dla ikon typów ekwipunku */
+.equipment-type-icon {
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 1em;
+  opacity: 0.9;
+  vertical-align: middle;
+}
+
+/* Kolory ikon według typu steampunk */
+.steampunk-weapon .equipment-type-icon .fa-sword {
+  color: #D2691E; /* Ciepły brązowy - stal */
+}
+
+.steampunk-armor .equipment-type-icon .fa-shield-alt {
+  color: #87CEEB; /* Stalowy niebieski */
+}
+
+.steampunk-tool .equipment-type-icon .fa-wrench {
+  color: #DAA520; /* Złoty - mosiądz */
+}
+
+.steampunk-gadget .equipment-type-icon .fa-cog {
+  color: #9ACD32; /* Zielonkawy - mechanizmy */
+}
+
+.steampunk-other .equipment-type-icon .fa-cube {
+  color: #DDA0DD; /* Jasny fiolet */
+}
+
+/* Efekty dla ikon w pastelowych kolorach (fallback) */
+.pastel-pink .equipment-type-icon,
+.pastel-blue .equipment-type-icon,
+.pastel-green .equipment-type-icon,
+.pastel-yellow .equipment-type-icon,
+.pastel-purple .equipment-type-icon,
+.pastel-orange .equipment-type-icon {
+  color: #333; /* Ciemne ikony na jasłym tle */
+}
+
 /* Style dla zwiniętego ekwipunku */
 .equipment-item.collapsed .equipment-details,
 .equipment-item.collapsed .equipment-status {
