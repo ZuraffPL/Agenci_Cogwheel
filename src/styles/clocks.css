@@ -142,23 +142,23 @@
 }
 
 /* Gdy aktywna jest Mission - pokaż tylko Mission */
-.doom-clocks[data-active-category="mission"] .clock-item[data-category="mission"] {
+.doom-clocks .doom-clocks-content[data-active-category="mission"] .clock-item[data-category="mission"] {
   display: flex !important;
 }
 
 /* Gdy aktywna jest Combat - pokaż tylko Combat */
-.doom-clocks[data-active-category="combat"] .clock-item[data-category="combat"] {
+.doom-clocks .doom-clocks-content[data-active-category="combat"] .clock-item[data-category="combat"] {
   display: flex !important;
 }
-.doom-clocks[data-active-category="combat"] .clock-item[data-category="mission"] {
+.doom-clocks .doom-clocks-content[data-active-category="combat"] .clock-item[data-category="mission"] {
   display: none !important;
 }
 
 /* Gdy aktywna jest Other - pokaż tylko Other */
-.doom-clocks[data-active-category="other"] .clock-item[data-category="other"] {
+.doom-clocks .doom-clocks-content[data-active-category="other"] .clock-item[data-category="other"] {
   display: flex !important;
 }
-.doom-clocks[data-active-category="other"] .clock-item[data-category="mission"] {
+.doom-clocks .doom-clocks-content[data-active-category="other"] .clock-item[data-category="mission"] {
   display: none !important;
 }
 

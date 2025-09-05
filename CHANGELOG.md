@@ -13,6 +13,14 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.7.9] - 2025-09-06
 
+- **Critical Fix**: CSS selectors now target correct DOM element (.doom-clocks-content instead of .doom-clocks)
+- **Category Filtering**: Clock visibility now properly controlled by data-active-category attribute
+- **CSS Structure**: Fixed CSS hierarchy to match actual DOM structure from Handlebars template
+
+
+
+## [0.7.9] - 2025-09-06
+
 - **Fixed Tab State**: activateListeners now properly sets active tab based on this.activeCategory
 - **Fixed Container Attribute**: DOM container now gets correct data-active-category after render
 - **Visual Consistency**: Active tab button now correctly highlighted after render operations
@@ -832,6 +840,7 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Comprehensive README.md with installation instructions
 - MIT License included
 - GitHub repository integration for easy updates
+
 
 
 
