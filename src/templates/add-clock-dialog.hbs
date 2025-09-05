@@ -8,6 +8,14 @@
     <textarea name="description" placeholder="{{localize 'COGSYNDICATE.ClockDescriptionPlaceholder'}}">{{clock.description}}</textarea>
   </div>
   <div class="clock-form-group">
+    <label>Kategoria</label>
+    <select name="category">
+      <option value="mission" {{#if (eq clock.category "mission")}}selected{{/if}}>Misja</option>
+      <option value="combat" {{#if (eq clock.category "combat")}}selected{{/if}}>Walka</option>
+      <option value="other" {{#if (eq clock.category "other")}}selected{{/if}}>Inne</option>
+    </select>
+  </div>
+  <div class="clock-form-group">
     <label>{{localize "COGSYNDICATE.ClockMax"}}</label>
     <select name="max">
       <option value="2" {{#if (eq clock.max 2)}}selected{{/if}}>2</option>

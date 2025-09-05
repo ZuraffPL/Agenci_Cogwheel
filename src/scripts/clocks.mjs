@@ -29,6 +29,9 @@ export class DoomClocksDialog extends Application {
   activateListeners(html) {
     super.activateListeners(html);
 
+    // Obsługa zakładek kategorii
+    html.find(".tab-btn").click(this._onTabChange.bind(this));
+
     if (game.user.isGM) {
       html.find(".add-clock").click(this._onAddClock.bind(this));
       html.find(".increment-clock").click(this._onIncrementClock.bind(this));
@@ -53,9 +56,13 @@ export class DoomClocksDialog extends Application {
 
   async _onAddClock(event) {
     event.preventDefault();
+    
+    // Pobierz aktualnie aktywną kategorię
+    const activeCategory = event.currentTarget.dataset.category || 'mission';
+    
     const dialogContent = await renderTemplate(
       "systems/cogwheel-syndicate/src/templates/add-clock-dialog.hbs",
-      { clock: { name: "", description: "", max: 4 } }
+      { clock: { name: "", description: "", max: 4, category: activeCategory } }
     );
 
     new Dialog({
@@ -72,13 +79,20 @@ export class DoomClocksDialog extends Application {
             const name = html.find('[name="name"]').val().trim();
             const description = html.find('[name="description"]').val().trim();
             const max = parseInt(html.find('[name="max"]').val()) || 4;
+            const category = html.find('[name="category"]').val() || activeCategory;
 
             if (!name) {
               ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
               return;
             }
 
-            const newClock = { name, description, value: 0, max: Math.clamp(max, 2, 12) };
+            const newClock = { 
+              name, 
+              description, 
+              value: 0, 
+              max: Math.clamp(max, 2, 12),
+              category: category 
+            };
             this.clocks.push(newClock);
             await this._updateClocks();
           }
@@ -186,6 +200,26 @@ export class DoomClocksDialog extends Application {
   updateClocks(clocks) {
     this.clocks = clocks;
     this.render(true);
+  }
+
+  // Obsługa zmiany zakładek kategorii
+  _onTabChange(event) {
+    event.preventDefault();
+    const button = event.currentTarget;
+    const category = button.dataset.category;
+    
+    // Usuń klasę active z wszystkich przycisków
+    const tabs = this.element.find('.tab-btn');
+    tabs.removeClass('active');
+    
+    // Dodaj klasę active do klikniętego przycisku
+    button.classList.add('active');
+    
+    // Zaktualizuj atrybut kategorii kontenera
+    this.element.find('.doom-clocks-content').attr('data-active-category', category);
+    
+    // Zaktualizuj przycisk "Dodaj zegar" aby dodawał do aktywnej kategorii
+    this.element.find('.add-clock').attr('data-category', category);
   }
 }
 
