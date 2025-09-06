@@ -13,6 +13,15 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.7.9] - 2025-09-06
 
+- **Dynamic Height**: Window height now automatically adjusts based on number of visible clocks in active category
+- **Smart Sizing**: Base height 250px, grows by 86px per clock, maximum 600px
+- **Better UX**: Compact view for few clocks, expanded view for many clocks
+- **Auto-Adjustment**: Height updates when switching tabs or adding/removing clocks
+
+
+
+## [0.7.9] - 2025-09-06
+
 - **Critical Fix**: CSS selectors now target correct DOM element (.doom-clocks-content instead of .doom-clocks)
 - **Category Filtering**: Clock visibility now properly controlled by data-active-category attribute
 - **CSS Structure**: Fixed CSS hierarchy to match actual DOM structure from Handlebars template
@@ -840,6 +849,7 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Comprehensive README.md with installation instructions
 - MIT License included
 - GitHub repository integration for easy updates
+
 
 
 

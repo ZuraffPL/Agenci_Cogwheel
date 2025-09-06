@@ -86,6 +86,9 @@ export class DoomClocksDialog extends Application {
 
     // Ustaw pozycję w prawym górnym rogu po wyrenderowaniu
     this._updatePosition();
+    
+    // Dopasuj wysokość okna do ilości widocznych zegarów
+    setTimeout(() => this._adjustWindowHeight(), 50);
   }
 
   _updatePosition() {
@@ -268,6 +271,9 @@ export class DoomClocksDialog extends Application {
           };
           this._onTabChange(fakeEvent);
         }
+      } else {
+        // Jeśli zostajemy na mission, i tak dopasuj wysokość po dodaniu zegara
+        setTimeout(() => this._adjustWindowHeight(), 150);
       }
     }, 100);
   }
@@ -318,10 +324,34 @@ export class DoomClocksDialog extends Application {
         const isVisible = $(this).is(':visible');
         console.log(`After switch - Clock "${name}" (${itemCategory}): visible = ${isVisible}`);
       });
+      
+      // Dopasuj wysokość okna do ilości widocznych zegarów
+      this._adjustWindowHeight();
     }, 100);
     
     // Zaktualizuj przycisk "Dodaj zegar" aby dodawał do aktywnej kategorii
     this.element.find('.add-clock').attr('data-category', category);
+  }
+
+  // Dopasowuje wysokość okna do ilości widocznych zegarów
+  _adjustWindowHeight() {
+    const visibleClocks = this.element.find('.clock-item:visible').length;
+    const baseHeight = 200; // Podstawowa wysokość dla UI (przyciski, zakładki)
+    const clockHeight = 86; // Wysokość jednego zegara (70px + 8px margin + padding)
+    const maxHeight = 600; // Maksymalna wysokość okna
+    
+    // Oblicz optymalną wysokość
+    let targetHeight = baseHeight + (visibleClocks * clockHeight);
+    targetHeight = Math.min(targetHeight, maxHeight);
+    
+    // Ustaw minimalną wysokość żeby okno nie było za małe
+    targetHeight = Math.max(targetHeight, 250);
+    
+    console.log(`Adjusting window height: ${visibleClocks} clocks, target height: ${targetHeight}px`);
+    
+    // Zastosuj nową wysokość
+    this.element.css('height', targetHeight + 'px');
+    this.setPosition({ height: targetHeight });
   }
 }
 
