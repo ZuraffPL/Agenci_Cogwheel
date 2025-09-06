@@ -2,7 +2,7 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.7.9**
+**Current System Version: 0.8.0**
 
 ## Description
 
@@ -10,7 +10,21 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 
 *A game about secret agents who fight threats of the industrial revolution era.*
 
-## 🔥 What's New in v0.7.9
+## � What's New in v0.8.0
+
+### 🎯 Progress Clocks Revolution
+- **📋 Tab Categorization System**: Complete redesign with three independent tabs (Mission/Combat/Other) for perfect clock organization
+- **📏 Dynamic Window Height**: Smart auto-resizing based on visible clocks - compact for few clocks, expanded for many (250px-600px range)
+- **🎨 Category-Specific Filtering**: Each tab shows only its own clocks with proper CSS hierarchy and DOM synchronization
+- **🔄 Smart State Management**: Active category preserved through all operations - add clocks to current tab and stay there
+
+### 🛠️ Technical Excellence
+- **🎮 Enhanced User Experience**: Streamlined workflow for managing categorized progress clocks with intuitive tab switching
+- **🔧 Robust Event Handling**: Improved programmatic events with safe preventDefault calls and proper DOM restoration
+- **📊 Advanced Debug System**: Comprehensive logging for troubleshooting category and state management
+- **⚡ Performance Optimizations**: Efficient DOM updates and state synchronization for smooth user interactions
+
+### 📈 Previous Features (v0.7.9)
 
 - **🧠 Trauma Toggle & Collapse System**: Implemented collapsible trauma sections with full interactivity
   - **Toggle Functionality**: Added chevron icons for expand/collapse trauma details with smooth animations
