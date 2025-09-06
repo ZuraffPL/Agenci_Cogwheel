@@ -13,6 +13,15 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.8.0] - 2025-09-06
 
+- **Code Cleanup**: Removed extensive debug logging from Progress Clocks system (75 lines reduced)
+- **Production Ready**: Kept only essential logs for migration and error handling
+- **Performance**: Improved performance by removing verbose console output
+- **Maintainability**: Cleaner codebase with focused logging strategy
+
+
+
+## [0.8.0] - 2025-09-06
+
 **MAJOR RELEASE v0.8.0 - Progress Clocks Revolution**
 
 ### 🎯 New Features:
@@ -91,4 +100,5 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - **Bug Fixes**: Fixed various issues with clock persistence and display | **Naprawy Błędów**: Naprawiono różne problemy z trwałością i wyświetlaniem zegarów
 - **Stability**: Improved overall system stability and error handling | **Stabilność**: Poprawiono ogólną stabilność systemu i obsługę błędów
+
 

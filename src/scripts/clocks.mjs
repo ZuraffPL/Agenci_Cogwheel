@@ -31,10 +31,6 @@ export class DoomClocksDialog extends Application {
       return clock;
     });
     
-    // Debug: pokaż wszystkie zegary i ich kategorie
-    console.log('Clock categories:', migratedClocks.map(c => ({name: c.name, category: c.category})));
-    console.log(`getData() - returning activeCategory: ${this.activeCategory}`); // Debug aktywnej kategorii
-    
     // Zapisz zmiany jeśli dokonano migracji
     if (migratedClocks.some((clock, index) => !this.clocks[index].category)) {
       this.clocks = migratedClocks;
@@ -51,27 +47,13 @@ export class DoomClocksDialog extends Application {
   activateListeners(html) {
     super.activateListeners(html);
 
-    // Debug: sprawdź początkowy stan
-    const container = html.find('.doom-clocks-content');
-    // Użyj aktualnej wartości this.activeCategory zamiast zawsze defaultować do mission
-    console.log(`Initial active category: ${this.activeCategory}`);
-    
     // Ustaw właściwą zakładkę jako aktywną
+    const container = html.find('.doom-clocks-content');
     html.find('.tab-btn').removeClass('active');
     html.find(`.tab-btn[data-category="${this.activeCategory}"]`).addClass('active');
     
     // Ustaw właściwy atrybut kontenera
     container.attr('data-active-category', this.activeCategory);
-    
-    // Debug: sprawdź wszystkie zegary i ich kategorie w DOM
-    console.log(`Total clock items found: ${html.find('.clock-item').length}`);
-    html.find('.clock-item').each(function() {
-      const category = $(this).attr('data-category');
-      const name = $(this).find('.clock-name').text();
-      const isVisible = $(this).is(':visible');
-      const displayStyle = $(this).css('display');
-      console.log(`Clock "${name}" - category: ${category}, visible: ${isVisible}, display: ${displayStyle}`);
-    });
 
     // Obsługa zakładek kategorii
     html.find(".tab-btn").click(this._onTabChange.bind(this));
@@ -107,8 +89,6 @@ export class DoomClocksDialog extends Application {
     // Pobierz aktualnie aktywną kategorię z instancji
     const activeCategory = this.activeCategory || 'mission';
     
-    console.log(`Adding clock to category: ${activeCategory}`); // Debug
-    
     const dialogContent = await renderTemplate(
       "systems/cogwheel-syndicate/src/templates/add-clock-dialog.hbs",
       { clock: { name: "", description: "", max: 4, category: activeCategory } }
@@ -130,8 +110,6 @@ export class DoomClocksDialog extends Application {
             const max = parseInt(html.find('[name="max"]').val()) || 4;
             const category = html.find('[name="category"]').val() || activeCategory;
 
-            console.log(`Form values - name: "${name}", category: "${category}", activeCategory fallback: "${activeCategory}"`);
-
             if (!name) {
               ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
               return;
@@ -145,10 +123,7 @@ export class DoomClocksDialog extends Application {
               category: category 
             };
             
-            console.log(`Creating clock:`, newClock);
             this.clocks.push(newClock);
-            console.log(`Total clocks after add:`, this.clocks.length);
-            console.log(`Added clock "${newClock.name}" to category "${newClock.category}"`);
             await this._updateClocks();
           }
         }
@@ -235,10 +210,6 @@ export class DoomClocksDialog extends Application {
   }
 
   async _updateClocks() {
-    console.log(`Updating clocks - total count: ${this.clocks.length}`);
-    console.log(`Clock categories:`, this.clocks.map(c => ({name: c.name, category: c.category})));
-    console.log(`Current activeCategory before render: ${this.activeCategory}`);
-    
     // Zapis zegarów do ustawień świata
     await game.settings.set("cogwheel-syndicate", "doomClocks", this.clocks);
     
@@ -258,7 +229,6 @@ export class DoomClocksDialog extends Application {
     // Po renderowaniu, przywróć aktywną kategorię
     setTimeout(() => {
       if (currentCategory !== 'mission') {
-        console.log(`Restoring category to: ${currentCategory}`);
         this.activeCategory = currentCategory;
         
         // Znajdź i kliknij właściwą zakładkę aby przełączyć widok
@@ -287,8 +257,6 @@ export class DoomClocksDialog extends Application {
   // Obsługa zmiany zakładek kategorii
   _onTabChange(event) {
     const isProgrammatic = event.currentTarget && event.currentTarget.tagName === undefined;
-    console.log(`_onTabChange called - programmatic: ${isProgrammatic}`);
-    
     // Bezpiecznie wywołaj preventDefault tylko jeśli metoda istnieje
     if (event.preventDefault) {
       event.preventDefault();
@@ -297,11 +265,8 @@ export class DoomClocksDialog extends Application {
     const button = event.currentTarget;
     const category = button.dataset.category;
     
-    console.log(`Switching to category: ${category}`); // Debug
-    
     // Zapisz aktywną kategorię w instancji
     this.activeCategory = category;
-    console.log(`this.activeCategory set to: ${this.activeCategory}`); // Debug
     
     // Usuń klasę active z wszystkich przycisków
     const tabs = this.element.find('.tab-btn');
@@ -314,18 +279,8 @@ export class DoomClocksDialog extends Application {
     const container = this.element.find('.doom-clocks-content');
     container.attr('data-active-category', category);
     
-    console.log(`Container category set to: ${container.attr('data-active-category')}`); // Debug
-    
-    // Debug: sprawdź które zegary są teraz widoczne
+    // Dopasuj wysokość okna do ilości widocznych zegarów
     setTimeout(() => {
-      this.element.find('.clock-item').each(function() {
-        const itemCategory = $(this).attr('data-category');
-        const name = $(this).find('.clock-name').text();
-        const isVisible = $(this).is(':visible');
-        console.log(`After switch - Clock "${name}" (${itemCategory}): visible = ${isVisible}`);
-      });
-      
-      // Dopasuj wysokość okna do ilości widocznych zegarów
       this._adjustWindowHeight();
     }, 100);
     
@@ -346,8 +301,6 @@ export class DoomClocksDialog extends Application {
     
     // Ustaw minimalną wysokość żeby okno nie było za małe
     targetHeight = Math.max(targetHeight, 250);
-    
-    console.log(`Adjusting window height: ${visibleClocks} clocks, target height: ${targetHeight}px`);
     
     // Zastosuj nową wysokość
     this.element.css('height', targetHeight + 'px');
