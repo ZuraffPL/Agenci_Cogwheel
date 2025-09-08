@@ -437,21 +437,21 @@
 
 .agentv2 .damage-radio-item label {
   font-size: 12px; /* Zwiększony rozmiar z 11px */
-  color: #f4a460; /* Piaskowy kolor */
+  color: #ff4444 !important; /* Czerwony kolor zamiast piaskowego */
   cursor: pointer;
   user-select: none;
   min-width: 20px;
   text-align: center;
   order: 2;
   margin-top: 2px;
-  font-weight: normal;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+  font-weight: bold !important; /* Pogrubienie */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6) !important;
 }
 
 .agentv2 .damage-radio-item input[type="radio"]:checked + label {
-  color: #cd7f32 !important; /* Jasna miedź dla zaznaczonych */
+  color: #ff6666 !important; /* Jaśniejszy czerwony dla zaznaczonych */
   font-weight: bold !important;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6) !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important; /* Mocniejszy cień */
 }
 
 /* Hide secondary attributes section in Agent v2 */
@@ -909,3 +909,75 @@
   color: #9b59b6 !important;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
 }
+
+/* ===== DAMAGE SYSTEM STYLING - AGENT V2 ===== */
+
+/* V2 damage-radio-group specific styling */
+.damage-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.damage-radio-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 2px;
+}
+
+.damage-radio-item input[type="radio"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  background: #fff;
+}
+
+.damage-radio-item input[type="radio"]:checked::before {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  background: #000 !important;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.damage-radio-item label {
+  margin-top: 2px;
+  font-size: 11px !important;
+  text-align: center;
+  color: #ff4444 !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6) !important;
+  font-weight: bold !important;
+}
+
+.damage-radio-item input[type="radio"]:checked + label {
+  color: #ff6666 !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Red styling for damage labels in v2 */
+.agentv2 .damage-section .damage-label {
+  font-size: 12px !important;
+  font-weight: bold !important;
+  color: #ff4444 !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+  margin-bottom: 4px !important;
+  display: block !important;
+  text-align: center;
+}
+
+/* ===== END OF AGENT V2 STYLES =====

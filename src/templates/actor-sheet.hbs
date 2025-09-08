@@ -76,6 +76,10 @@
                     <input type="radio" id="machine-damage-3" name="system.secondaryAttributes.endurance.value" value="-3" {{#if (eq system.secondaryAttributes.endurance.value "-3")}}checked{{/if}}>
                     <label for="machine-damage-3">-3</label>
                   </div>
+                  <div class="radio-item">
+                    <input type="radio" id="machine-damage-t" name="system.secondaryAttributes.endurance.value" value="T" {{#if (eq system.secondaryAttributes.endurance.value "T")}}checked{{/if}}>
+                    <label for="machine-damage-t" title="{{localize 'COGSYNDICATE.Trauma'}}">T</label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -105,6 +109,10 @@
                     <input type="radio" id="engineering-damage-3" name="system.secondaryAttributes.control.value" value="-3" {{#if (eq system.secondaryAttributes.control.value "-3")}}checked{{/if}}>
                     <label for="engineering-damage-3">-3</label>
                   </div>
+                  <div class="radio-item">
+                    <input type="radio" id="engineering-damage-t" name="system.secondaryAttributes.control.value" value="T" {{#if (eq system.secondaryAttributes.control.value "T")}}checked{{/if}}>
+                    <label for="engineering-damage-t" title="{{localize 'COGSYNDICATE.Trauma'}}">T</label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -133,6 +141,10 @@
                   <div class="radio-item">
                     <input type="radio" id="intrigue-damage-3" name="system.secondaryAttributes.determination.value" value="-3" {{#if (eq system.secondaryAttributes.determination.value "-3")}}checked{{/if}}>
                     <label for="intrigue-damage-3">-3</label>
+                  </div>
+                  <div class="radio-item">
+                    <input type="radio" id="intrigue-damage-t" name="system.secondaryAttributes.determination.value" value="T" {{#if (eq system.secondaryAttributes.determination.value "T")}}checked{{/if}}>
+                    <label for="intrigue-damage-t" title="{{localize 'COGSYNDICATE.Trauma'}}">T</label>
                   </div>
                 </div>
               </div>

@@ -67,6 +67,10 @@
                       <label for="machine-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
                     </div>
                   {{/times}}
+                  <div class="damage-radio-item">
+                    <input type="radio" id="machine-damage-t" name="system.attributes.machine.damage" value="T" {{#if (eq system.attributes.machine.damage "T")}}checked{{/if}}>
+                    <label for="machine-damage-t" title="{{localize 'COGSYNDICATE.Trauma'}}">T</label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -87,6 +91,10 @@
                       <label for="engineering-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
                     </div>
                   {{/times}}
+                  <div class="damage-radio-item">
+                    <input type="radio" id="engineering-damage-t" name="system.attributes.engineering.damage" value="T" {{#if (eq system.attributes.engineering.damage "T")}}checked{{/if}}>
+                    <label for="engineering-damage-t" title="{{localize 'COGSYNDICATE.Trauma'}}">T</label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -107,6 +115,10 @@
                       <label for="intrigue-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
                     </div>
                   {{/times}}
+                  <div class="damage-radio-item">
+                    <input type="radio" id="intrigue-damage-t" name="system.attributes.intrigue.damage" value="T" {{#if (eq system.attributes.intrigue.damage "T")}}checked{{/if}}>
+                    <label for="intrigue-damage-t" title="{{localize 'COGSYNDICATE.Trauma'}}">T</label>
+                  </div>
                 </div>
               </div>
             </div>
