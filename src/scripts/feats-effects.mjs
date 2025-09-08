@@ -1058,89 +1058,42 @@ export class FeatsEffects {
    * Should be called after feat changes
    */
   static updateSteamPointsForSupportEffects() {
-    console.log('Cogwheel Syndicate | updateSteamPointsForSupportEffects() called');
     try {
-      // Check how many Steam Agents have Support feat
-      const allAgents = game.actors.filter(actor => actor.type === 'agent' || actor.type === 'agentv2');
-      console.log(`Cogwheel Syndicate | Found ${allAgents.length} total agents`);
-      
-      for (const actor of allAgents) {
-        console.log(`Cogwheel Syndicate | Agent ${actor.name}:`);
-        console.log(`  - Type: ${actor.type}`);
-        console.log(`  - hasPlayerOwner: ${actor.hasPlayerOwner}`);
-        console.log(`  - ownership:`, actor.ownership);
-        console.log(`  - archetype:`, actor.system.archetype?.name);
+      // Get all active non-GM users
+      const activeUsers = game.users.filter(user => user.active && !user.isGM);
+      if (activeUsers.length === 0) {
+        return; // No active players
       }
-      
-      // Filter for Steam Agents with active (connected) player owners
+
+      // Get all Steam Agents with active owners
       const activeSteamAgents = game.actors.filter(actor => {
-        // Must be agent type
+        // Must be agent type  
         if (!(actor.type === 'agent' || actor.type === 'agentv2')) return false;
         
         // Must be Steam Agent archetype
         if (!actor.system.archetype?.name?.toLowerCase().includes('agent pary')) return false;
         
         // Check if any active user owns this actor
-        const hasActiveOwner = game.users.filter(user => user.active && !user.isGM).some(user => {
+        const hasActiveOwner = activeUsers.some(user => {
           const ownership = actor.ownership[user.id];
           return ownership === CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER;
         });
         
         return hasActiveOwner;
       });
-      
-      console.log(`Cogwheel Syndicate | Found ${activeSteamAgents.length} Steam Agents with active player owners`);
-      
-      // Debug active users
-      const activeUsers = game.users.filter(user => user.active && !user.isGM);
-      console.log(`Cogwheel Syndicate | Active players: ${activeUsers.map(u => u.name).join(', ')}`);
-      
-      activeSteamAgents.forEach(agent => {
-        const activeOwner = activeUsers.find(user => {
-          const ownership = agent.ownership[user.id];
-          return ownership === CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER;
-        });
-        console.log(`Cogwheel Syndicate | Active Steam Agent ${agent.name} owned by: ${activeOwner?.name || 'NONE'}`);
-      });
-      
-      // Try without hasPlayerOwner filter to debug
-      const allSteamAgents = game.actors.filter(actor => 
-        (actor.type === 'agent' || actor.type === 'agentv2') && 
-        actor.system.archetype?.name?.toLowerCase().includes('agent pary')
-      );
-      
-      console.log(`Cogwheel Syndicate | Found ${allSteamAgents.length} Steam Agents total (without hasPlayerOwner filter)`);
-      
-      // Count how many ACTIVE Steam Agents have Support feat
+
+      // Count Steam Agents with Support feat
       const supportCount = activeSteamAgents.filter(agent => {
-        console.log(`Cogwheel Syndicate | Checking feats for ${agent.name}:`);
-        console.log(`  - agent.system.feats:`, agent.system.feats);
-        
         const feats = agent.system.feats || [];
-        console.log(`  - feats array length: ${feats.length}`);
-        
-        // Debug each feat ID and resolve to item
-        feats.forEach((featId, index) => {
-          const featItem = game.items.get(featId);
-          console.log(`  - feat[${index}]: ID=${featId}, Item=`, featItem?.name || 'NOT FOUND');
-        });
-        
         const hasSupport = feats.some(featId => {
           const featItem = game.items.get(featId);
           const itemName = featItem?.name?.toLowerCase() || '';
-          const matches = itemName.includes('wsparcie');
-          console.log(`  - checking feat ID ${featId}: name="${featItem?.name}", matches="wsparcie": ${matches}`);
-          return matches;
+          return itemName.includes('wsparcie');
         });
-        
-        console.log(`Cogwheel Syndicate | Steam Agent ${agent.name} has Support: ${hasSupport}`);
         return hasSupport;
       }).length;
       
-      // Base Steam Points (1) + 1 for each Steam Agent with Support
       const targetSteamPoints = 1 + supportCount;
-      
-      console.log(`Cogwheel Syndicate | Support count: ${supportCount}, Target Steam Points: ${targetSteamPoints}, Current: ${game.cogwheelSyndicate.steamPoints}`);
       
       if (game.cogwheelSyndicate.steamPoints !== targetSteamPoints) {
         const oldValue = game.cogwheelSyndicate.steamPoints;
@@ -1155,7 +1108,7 @@ export class FeatsEffects {
           });
         }
         
-        console.log(`Cogwheel Syndicate | Support effects (${supportCount}x) updated Steam Points: ${oldValue} → ${targetSteamPoints}`);
+        Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
         ui.notifications.info(`${game.i18n.localize("COGSYNDICATE.SteamPoints")}: ${oldValue} → ${targetSteamPoints} (${supportCount}x ${game.i18n.localize("COGSYNDICATE.Support")})`);
       }
     } catch (error) {

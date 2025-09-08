@@ -878,7 +878,7 @@ class CogwheelActorSheet extends ActorSheet {
             const steamCost = parseInt(selectedOption.data('steam'), 10);            const currentGear = actorRef.system.resources.gear.value || 0;
             const currentSteam = game.cogwheelSyndicate?.steamPoints || 0;
 
-            console.log("Dane sprzętu:", { gearType, gearCost, steamCost, currentGear, currentSteam });            // Sprawdź czy agent ma wystarczająco punktów sprzętu
+            // Sprawdź czy agent ma wystarczająco punktów sprzętu
             if (currentGear < gearCost) {
               console.log("Za mało punktów sprzętu");
               new Dialog({

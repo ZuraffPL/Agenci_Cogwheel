@@ -2,7 +2,7 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.8.0**
+**Current System Version: 0.8.1**
 
 ## Description
 
@@ -10,7 +10,28 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 
 *A game about secret agents who fight threats of the industrial revolution era.*
 
-## � What's New in v0.8.0
+## 🔥 What's New in v0.8.1
+
+### 🤝 Support Feat System
+- **🎯 Steam Agent Support Effect**: Complete implementation of Support feat for Steam Agent archetype
+- **📊 Stacking Steam Points**: Each active Steam Agent with Support feat increases starting Steam Points by +1
+- **👥 Active Player Detection**: Only counts Steam Agents with active (logged-in) player owners for balance
+- **🎮 Multi-Agent Support**: Multiple Steam Agents with Support feat properly stack effects (2 agents = +2 points)
+- **🌐 Real-Time Synchronization**: Steam Points automatically update when feats are added/removed or players connect/disconnect
+
+### 🧹 Code Quality Improvements  
+- **🐛 Debug Cleanup**: Removed redundant debug logs for cleaner console output
+- **⚡ Performance Optimization**: Streamlined Support feat detection and Steam Points calculation
+- **🔧 Error Handling**: Enhanced error handling for feat system operations
+- **📝 Code Documentation**: Improved inline documentation for Support feat functionality
+
+### 🎨 User Experience Enhancements
+- **✨ Visual Feedback**: Clear notifications when Support effects modify Steam Points pool
+- **📢 Chat Integration**: Automatic chat messages announcing Support feat application/removal
+- **🎭 Thematic Icons**: FontAwesome hands-helping icon for Support feat effects
+- **🌍 Full Internationalization**: Complete Polish/English support for all Support feat messages
+
+## 🔥 What's New in v0.8.0
 
 ### 🎯 Progress Clocks Revolution
 - **📋 Tab Categorization System**: Complete redesign with three independent tabs (Mission/Combat/Other) for perfect clock organization
@@ -322,7 +343,22 @@ If you encounter any issues or have questions about this system, please:
 
 ## Changelog
 
-### Version 0.7.8 (2025-09-04) - Latest
+### Version 0.8.1 (2025-09-08) - Latest
+- **Support Feat System for Steam Agent Archetype**:
+  - Complete implementation of Support feat effect increasing starting Steam Points pool
+  - Intelligent active player detection - only counts Steam Agents with connected players
+  - Stacking system for multiple Support feats (each active Steam Agent with Support adds +1 to base pool)
+  - Real-time Steam Points synchronization when feats are added/removed or players connect/disconnect
+- **Code Quality & Performance**:
+  - Removed redundant debug logs for cleaner console output and better performance
+  - Enhanced error handling and streamlined Support feat detection algorithms  
+  - Improved inline documentation for better code maintainability
+- **User Experience Enhancements**:
+  - Visual notifications and chat integration for Support feat effects with thematic icons
+  - Complete internationalization support with Polish/English translations
+  - Clear feedback when Support effects modify Steam Points pool
+
+### Version 0.8.0 (2025-09-07)
 - **Complete UI Enhancement System**:
   - Trauma Section UI Modernization with archetype-style backgrounds and purple skull icons
   - Equipment Section UI Overhaul with steampunk gradient styling and backpack iconography

@@ -11,6 +11,26 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.8.1] - 2025-09-08
+
+**SUPPORT FEAT SYSTEM RELEASE**
+
+### 🤝 New Features | Nowe Funkcje:
+- **Support Feat System**: Complete implementation of Support feat effect for Steam Agent archetype | **System Atutu Wsparcie**: Kompletna implementacja efektu atutu Wsparcie dla archetypu Agent Pary
+- **Stacking Steam Points**: Each active Steam Agent with Support feat increases starting Steam Points by +1 | **Kumulowanie Punktów Pary**: Każdy aktywny Agent Pary z atutem Wsparcie zwiększa startowe Punkty Pary o +1
+- **Active Player Detection**: Only counts Steam Agents with active (logged-in) player owners for balance | **Detekcja Aktywnych Graczy**: Liczy tylko Agentów Pary z aktywnymi (zalogowanymi) właścicielami dla balansu
+- **Real-Time Synchronization**: Steam Points automatically update when feats are added/removed | **Synchronizacja w Czasie Rzeczywistym**: Punkty Pary automatycznie aktualizują się przy dodawaniu/usuwaniu atutów
+
+### 🧹 Code Quality | Jakość Kodu:
+- **Debug Cleanup**: Removed redundant debug logs for cleaner console output | **Oczyszczenie Debugów**: Usunięto nadmiarowe logi debugowania dla czystszego wyjścia konsoli
+- **Performance Optimization**: Streamlined Support feat detection algorithms | **Optymalizacja Wydajności**: Usprawnienie algorytmów detekcji atutu Wsparcie
+- **Enhanced Error Handling**: Improved error handling for feat system operations | **Ulepszona Obsługa Błędów**: Poprawiona obsługa błędów dla operacji systemu atutów
+
+### 🎨 User Experience | Doświadczenie Użytkownika:
+- **Visual Feedback**: Clear notifications when Support effects modify Steam Points | **Wizualny Feedback**: Wyraźne powiadomienia gdy efekty Wsparcia modyfikują Punkty Pary
+- **Chat Integration**: Automatic chat messages for Support feat application/removal | **Integracja z Czatem**: Automatyczne wiadomości czatu dla zastosowania/usunięcia atutu Wsparcie
+- **Full Internationalization**: Complete Polish/English support for Support feat messages | **Pełna Internacjonalizacja**: Kompletne wsparcie polsko/angielskie dla wiadomości atutu Wsparcie
+
 ## [0.8.0] - 2025-09-06
 
 - **Code Cleanup**: Removed extensive debug logging from Progress Clocks system (75 lines reduced)

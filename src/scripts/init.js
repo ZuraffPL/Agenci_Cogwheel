@@ -81,8 +81,6 @@ Hooks.once("ready", async () => {
       return hasActiveOwner;
     });
     
-    console.log(`Cogwheel Syndicate Init | Found ${activeSteamAgents.length} Steam Agents with active player owners`);
-    
     // Count Steam Agents with Support feat
     const supportCount = activeSteamAgents.filter(agent => {
       const feats = agent.system.feats || [];
@@ -91,7 +89,6 @@ Hooks.once("ready", async () => {
         const itemName = featItem?.name?.toLowerCase() || '';
         return itemName.includes('wsparcie');
       });
-      console.log(`Cogwheel Syndicate Init | Steam Agent ${agent.name} has Support: ${hasSupport}`);
       return hasSupport;
     }).length;
     
@@ -99,10 +96,6 @@ Hooks.once("ready", async () => {
     const startingSteamPoints = 1 + supportCount;
     
     game.cogwheelSyndicate.steamPoints = startingSteamPoints;
-    
-    if (supportCount > 0) {
-      console.log(`Cogwheel Syndicate | ${supportCount} Steam Agent(s) have Support feat - starting Steam Points: ${startingSteamPoints}`);
-    }
 
     // Synchronizacja metawalut przez socket
     game.socket.emit("system.cogwheel-syndicate", {
