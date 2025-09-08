@@ -46,6 +46,13 @@ export class FeatsEffects {
       return await this._applyOrganizationTrainingEffect(actor, feat);
     }
 
+    // Steam Agent + Support effect  
+    if (archetypeName.includes('agent pary') && featName.includes('wsparcie')) {
+      const result = await this._applySupportEffect(actor, feat);
+      this.updateSteamPointsForSupportEffects();
+      return result;
+    }
+
     // Add more archetype-feat combinations here as needed
     // Example structure:
     // if (archetypeName.includes('other archetype') && featName.includes('other feat')) {
@@ -293,6 +300,13 @@ export class FeatsEffects {
     // Steam Agent + Organization Training removal
     if (archetypeName.includes('agent pary') && featName.includes('szkolenie organizacji')) {
       return await this._removeOrganizationTrainingEffect(actor, feat);
+    }
+
+    // Steam Agent + Support removal
+    if (archetypeName.includes('agent pary') && featName.includes('wsparcie')) {
+      const result = await this._removeSupportEffect(actor, feat);
+      this.updateSteamPointsForSupportEffects();
+      return result;
     }
 
     // Add more removal effects here as needed
@@ -861,6 +875,11 @@ export class FeatsEffects {
       return `Umożliwi wybór głównego atrybutu do wzmocnienia (zwiększenie bazowej wartości o 1)`;
     }
 
+    // Steam Agent + Support
+    if (archetypeName.includes('agent pary') && featName.includes('wsparcie')) {
+      return game.i18n.localize("COGSYNDICATE.SupportFeatDescription");
+    }
+
     // Add more descriptions here as needed
 
     return null;
@@ -943,6 +962,204 @@ export class FeatsEffects {
     } catch (error) {
       console.error(`Error in applySteamBoosterEffect:`, error);
       return { steamPoints: originalSteamPoints, message: null };
+    }
+  }
+
+  /**
+   * Apply Support effect to Steam Agent
+   * Increases starting Steam Points pool from 1 to 2
+   * @param {Actor} actor - The Steam Agent actor
+   * @param {Item} feat - The Support feat
+   * @returns {Promise<boolean>} - Whether the effect was applied
+   */
+  static async _applySupportEffect(actor, feat) {
+    // Show notification
+    ui.notifications.info(
+      game.i18n.format("COGSYNDICATE.SupportEffectApplied", { agentName: actor.name })
+    );
+
+    // Log to chat
+    await ChatMessage.create({
+      content: `
+        <div class="feat-effect-message">
+          <h3><i class="fas fa-hands-helping"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectAppliedTitle")}</h3>
+          <p><strong>${actor.name}</strong> ${game.i18n.localize("COGSYNDICATE.SupportFeatReceived")} <strong>${feat.name}</strong></p>
+          <p><strong>${game.i18n.localize("COGSYNDICATE.Effect")}:</strong> ${game.i18n.localize("COGSYNDICATE.SupportFeatEffect")}</p>
+          <hr>
+          <p><em>${game.i18n.localize("COGSYNDICATE.Archetype")}: ${actor.system.archetype.name}</em></p>
+        </div>
+      `,
+      speaker: { actor: actor.id }
+    });
+
+    return true;
+  }
+
+  /**
+   * Remove Support effect from Steam Agent
+   * Returns starting Steam Points pool to 1 from 2
+   * @param {Actor} actor - The Steam Agent actor
+   * @param {Item} feat - The Support feat
+   * @returns {Promise<boolean>} - Whether the effect was removed
+   */
+  static async _removeSupportEffect(actor, feat) {
+    // Show notification
+    ui.notifications.info(
+      game.i18n.format("COGSYNDICATE.SupportEffectRemoved", { agentName: actor.name })
+    );
+
+    // Log to chat
+    await ChatMessage.create({
+      content: `
+        <div class="feat-effect-message">
+          <h3><i class="fas fa-hands-helping"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectRemovedTitle")}</h3>
+          <p><strong>${actor.name}</strong> ${game.i18n.localize("COGSYNDICATE.SupportFeatLost")} <strong>${feat.name}</strong></p>
+          <p><strong>${game.i18n.localize("COGSYNDICATE.Effect")}:</strong> ${game.i18n.localize("COGSYNDICATE.SupportFeatEffectRemoved")}</p>
+          <hr>
+          <p><em>${game.i18n.localize("COGSYNDICATE.Archetype")}: ${actor.system.archetype.name}</em></p>
+        </div>
+      `,
+      speaker: { actor: actor.id }
+    });
+
+    return true;
+  }
+
+  /**
+   * Check if actor has Support effect active
+   * (Steam Agent archetype with Support feat)
+   * @param {Actor} actor - The actor to check
+   * @returns {boolean} - Whether Support effect is active
+   */
+  static hasSupportEffect(actor) {
+    try {
+      if (!actor || !actor.system.archetype?.name) {
+        return false;
+      }
+
+      const archetypeName = actor.system.archetype.name.toLowerCase();
+      
+      // Check archetype
+      if (!archetypeName.includes('agent pary')) {
+        return false;
+      }
+
+      // Check for Support feat (Wsparcie) in feats array
+      const feats = actor.system.feats || [];
+      return feats.some(feat => feat.name?.toLowerCase().includes('wsparcie'));
+    } catch (error) {
+      console.error('Error checking Support effect:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Update Steam Points based on current Support effects
+   * Should be called after feat changes
+   */
+  static updateSteamPointsForSupportEffects() {
+    console.log('Cogwheel Syndicate | updateSteamPointsForSupportEffects() called');
+    try {
+      // Check how many Steam Agents have Support feat
+      const allAgents = game.actors.filter(actor => actor.type === 'agent' || actor.type === 'agentv2');
+      console.log(`Cogwheel Syndicate | Found ${allAgents.length} total agents`);
+      
+      for (const actor of allAgents) {
+        console.log(`Cogwheel Syndicate | Agent ${actor.name}:`);
+        console.log(`  - Type: ${actor.type}`);
+        console.log(`  - hasPlayerOwner: ${actor.hasPlayerOwner}`);
+        console.log(`  - ownership:`, actor.ownership);
+        console.log(`  - archetype:`, actor.system.archetype?.name);
+      }
+      
+      // Filter for Steam Agents with active (connected) player owners
+      const activeSteamAgents = game.actors.filter(actor => {
+        // Must be agent type
+        if (!(actor.type === 'agent' || actor.type === 'agentv2')) return false;
+        
+        // Must be Steam Agent archetype
+        if (!actor.system.archetype?.name?.toLowerCase().includes('agent pary')) return false;
+        
+        // Check if any active user owns this actor
+        const hasActiveOwner = game.users.filter(user => user.active && !user.isGM).some(user => {
+          const ownership = actor.ownership[user.id];
+          return ownership === CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER;
+        });
+        
+        return hasActiveOwner;
+      });
+      
+      console.log(`Cogwheel Syndicate | Found ${activeSteamAgents.length} Steam Agents with active player owners`);
+      
+      // Debug active users
+      const activeUsers = game.users.filter(user => user.active && !user.isGM);
+      console.log(`Cogwheel Syndicate | Active players: ${activeUsers.map(u => u.name).join(', ')}`);
+      
+      activeSteamAgents.forEach(agent => {
+        const activeOwner = activeUsers.find(user => {
+          const ownership = agent.ownership[user.id];
+          return ownership === CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER;
+        });
+        console.log(`Cogwheel Syndicate | Active Steam Agent ${agent.name} owned by: ${activeOwner?.name || 'NONE'}`);
+      });
+      
+      // Try without hasPlayerOwner filter to debug
+      const allSteamAgents = game.actors.filter(actor => 
+        (actor.type === 'agent' || actor.type === 'agentv2') && 
+        actor.system.archetype?.name?.toLowerCase().includes('agent pary')
+      );
+      
+      console.log(`Cogwheel Syndicate | Found ${allSteamAgents.length} Steam Agents total (without hasPlayerOwner filter)`);
+      
+      // Count how many ACTIVE Steam Agents have Support feat
+      const supportCount = activeSteamAgents.filter(agent => {
+        console.log(`Cogwheel Syndicate | Checking feats for ${agent.name}:`);
+        console.log(`  - agent.system.feats:`, agent.system.feats);
+        
+        const feats = agent.system.feats || [];
+        console.log(`  - feats array length: ${feats.length}`);
+        
+        // Debug each feat ID and resolve to item
+        feats.forEach((featId, index) => {
+          const featItem = game.items.get(featId);
+          console.log(`  - feat[${index}]: ID=${featId}, Item=`, featItem?.name || 'NOT FOUND');
+        });
+        
+        const hasSupport = feats.some(featId => {
+          const featItem = game.items.get(featId);
+          const itemName = featItem?.name?.toLowerCase() || '';
+          const matches = itemName.includes('wsparcie');
+          console.log(`  - checking feat ID ${featId}: name="${featItem?.name}", matches="wsparcie": ${matches}`);
+          return matches;
+        });
+        
+        console.log(`Cogwheel Syndicate | Steam Agent ${agent.name} has Support: ${hasSupport}`);
+        return hasSupport;
+      }).length;
+      
+      // Base Steam Points (1) + 1 for each Steam Agent with Support
+      const targetSteamPoints = 1 + supportCount;
+      
+      console.log(`Cogwheel Syndicate | Support count: ${supportCount}, Target Steam Points: ${targetSteamPoints}, Current: ${game.cogwheelSyndicate.steamPoints}`);
+      
+      if (game.cogwheelSyndicate.steamPoints !== targetSteamPoints) {
+        const oldValue = game.cogwheelSyndicate.steamPoints;
+        game.cogwheelSyndicate.steamPoints = targetSteamPoints;
+        
+        // Sync with other clients
+        if (game.user.isGM) {
+          game.socket.emit("system.cogwheel-syndicate", {
+            type: "updateMetaCurrencies",
+            nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
+            steamPoints: game.cogwheelSyndicate.steamPoints
+          });
+        }
+        
+        console.log(`Cogwheel Syndicate | Support effects (${supportCount}x) updated Steam Points: ${oldValue} → ${targetSteamPoints}`);
+        ui.notifications.info(`${game.i18n.localize("COGSYNDICATE.SteamPoints")}: ${oldValue} → ${targetSteamPoints} (${supportCount}x ${game.i18n.localize("COGSYNDICATE.Support")})`);
+      }
+    } catch (error) {
+      console.error('Error updating Steam Points for Support effects:', error);
     }
   }
 }

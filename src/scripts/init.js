@@ -61,9 +61,48 @@ Hooks.once("init", () => {
 
 Hooks.once("ready", async () => {
   if (game.user.isGM) {
-    // Reset metawalut
+    // Reset metawalut - sprawdź ile aktywnych agentów pary ma atut Wsparcie
     game.cogwheelSyndicate.nemesisPoints = 1;
-    game.cogwheelSyndicate.steamPoints = 1;
+    
+    // Check how many Steam Agents with active player owners have Support feat
+    const activeSteamAgents = game.actors.filter(actor => {
+      // Must be agent type
+      if (!(actor.type === 'agent' || actor.type === 'agentv2')) return false;
+      
+      // Must be Steam Agent archetype
+      if (!actor.system.archetype?.name?.toLowerCase().includes('agent pary')) return false;
+      
+      // Check if any active user owns this actor
+      const hasActiveOwner = game.users.filter(user => user.active && !user.isGM).some(user => {
+        const ownership = actor.ownership[user.id];
+        return ownership === CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER;
+      });
+      
+      return hasActiveOwner;
+    });
+    
+    console.log(`Cogwheel Syndicate Init | Found ${activeSteamAgents.length} Steam Agents with active player owners`);
+    
+    // Count Steam Agents with Support feat
+    const supportCount = activeSteamAgents.filter(agent => {
+      const feats = agent.system.feats || [];
+      const hasSupport = feats.some(featId => {
+        const featItem = game.items.get(featId);
+        const itemName = featItem?.name?.toLowerCase() || '';
+        return itemName.includes('wsparcie');
+      });
+      console.log(`Cogwheel Syndicate Init | Steam Agent ${agent.name} has Support: ${hasSupport}`);
+      return hasSupport;
+    }).length;
+    
+    // Base Steam Points (1) + 1 for each Steam Agent with Support
+    const startingSteamPoints = 1 + supportCount;
+    
+    game.cogwheelSyndicate.steamPoints = startingSteamPoints;
+    
+    if (supportCount > 0) {
+      console.log(`Cogwheel Syndicate | ${supportCount} Steam Agent(s) have Support feat - starting Steam Points: ${startingSteamPoints}`);
+    }
 
     // Synchronizacja metawalut przez socket
     game.socket.emit("system.cogwheel-syndicate", {
