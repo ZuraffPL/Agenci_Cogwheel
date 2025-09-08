@@ -31,4 +31,44 @@
       <option value="12" {{#if (eq clock.max 12)}}selected{{/if}}>12</option>
     </select>
   </div>
+  <div class="clock-form-group">
+    <label>{{localize "COGSYNDICATE.ClockFillColor"}}</label>
+    <div class="clock-color-palette">
+      <input type="radio" id="color-red" name="fillColor" value="#dc2626" {{#if (eq clock.fillColor "#dc2626")}}checked{{else}}{{#unless clock.fillColor}}checked{{/unless}}{{/if}} />
+      <label for="color-red" class="color-option" style="background-color: #dc2626;" title="{{localize "COGSYNDICATE.ClockColorRed"}}"></label>
+      
+      <input type="radio" id="color-orange" name="fillColor" value="#ea580c" {{#if (eq clock.fillColor "#ea580c")}}checked{{/if}} />
+      <label for="color-orange" class="color-option" style="background-color: #ea580c;" title="{{localize "COGSYNDICATE.ClockColorOrange"}}"></label>
+      
+      <input type="radio" id="color-amber" name="fillColor" value="#d97706" {{#if (eq clock.fillColor "#d97706")}}checked{{/if}} />
+      <label for="color-amber" class="color-option" style="background-color: #d97706;" title="{{localize "COGSYNDICATE.ClockColorAmber"}}"></label>
+      
+      <input type="radio" id="color-yellow" name="fillColor" value="#ca8a04" {{#if (eq clock.fillColor "#ca8a04")}}checked{{/if}} />
+      <label for="color-yellow" class="color-option" style="background-color: #ca8a04;" title="{{localize "COGSYNDICATE.ClockColorYellow"}}"></label>
+      
+      <input type="radio" id="color-lime" name="fillColor" value="#65a30d" {{#if (eq clock.fillColor "#65a30d")}}checked{{/if}} />
+      <label for="color-lime" class="color-option" style="background-color: #65a30d;" title="{{localize "COGSYNDICATE.ClockColorLime"}}"></label>
+      
+      <input type="radio" id="color-green" name="fillColor" value="#16a34a" {{#if (eq clock.fillColor "#16a34a")}}checked{{/if}} />
+      <label for="color-green" class="color-option" style="background-color: #16a34a;" title="{{localize "COGSYNDICATE.ClockColorGreen"}}"></label>
+      
+      <input type="radio" id="color-teal" name="fillColor" value="#0d9488" {{#if (eq clock.fillColor "#0d9488")}}checked{{/if}} />
+      <label for="color-teal" class="color-option" style="background-color: #0d9488;" title="{{localize "COGSYNDICATE.ClockColorTeal"}}"></label>
+      
+      <input type="radio" id="color-blue" name="fillColor" value="#2563eb" {{#if (eq clock.fillColor "#2563eb")}}checked{{/if}} />
+      <label for="color-blue" class="color-option" style="background-color: #2563eb;" title="{{localize "COGSYNDICATE.ClockColorBlue"}}"></label>
+      
+      <input type="radio" id="color-indigo" name="fillColor" value="#4f46e5" {{#if (eq clock.fillColor "#4f46e5")}}checked{{/if}} />
+      <label for="color-indigo" class="color-option" style="background-color: #4f46e5;" title="{{localize "COGSYNDICATE.ClockColorIndigo"}}"></label>
+      
+      <input type="radio" id="color-purple" name="fillColor" value="#7c3aed" {{#if (eq clock.fillColor "#7c3aed")}}checked{{/if}} />
+      <label for="color-purple" class="color-option" style="background-color: #7c3aed;" title="{{localize "COGSYNDICATE.ClockColorPurple"}}"></label>
+      
+      <input type="radio" id="color-pink" name="fillColor" value="#db2777" {{#if (eq clock.fillColor "#db2777")}}checked{{/if}} />
+      <label for="color-pink" class="color-option" style="background-color: #db2777;" title="{{localize "COGSYNDICATE.ClockColorPink"}}"></label>
+      
+      <input type="radio" id="color-gray" name="fillColor" value="#6b7280" {{#if (eq clock.fillColor "#6b7280")}}checked{{/if}} />
+      <label for="color-gray" class="color-option" style="background-color: #6b7280;" title="{{localize "COGSYNDICATE.ClockColorGray"}}"></label>
+    </div>
+  </div>
 </form>

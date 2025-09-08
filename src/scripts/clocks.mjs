@@ -22,17 +22,21 @@ export class DoomClocksDialog extends Application {
   }
 
   getData() {
-    // Migracj starych zegarów - dodaj kategorię "mission" jeśli nie ma
+    // Migracja starych zegarów - dodaj kategorię "mission" i domyślny kolor jeśli nie ma
     const migratedClocks = this.clocks.map(clock => {
       if (!clock.category) {
         console.log(`Migrating clock "${clock.name}" to mission category`);
         clock.category = 'mission';
       }
+      if (!clock.fillColor) {
+        console.log(`Migrating clock "${clock.name}" to default red color`);
+        clock.fillColor = '#dc2626';
+      }
       return clock;
     });
     
     // Zapisz zmiany jeśli dokonano migracji
-    if (migratedClocks.some((clock, index) => !this.clocks[index].category)) {
+    if (migratedClocks.some((clock, index) => !this.clocks[index].category || !this.clocks[index].fillColor)) {
       this.clocks = migratedClocks;
       this._updateClocks(); // Zapisz do ustawień
     }
@@ -91,7 +95,7 @@ export class DoomClocksDialog extends Application {
     
     const dialogContent = await renderTemplate(
       "systems/cogwheel-syndicate/src/templates/add-clock-dialog.hbs",
-      { clock: { name: "", description: "", max: 4, category: activeCategory } }
+      { clock: { name: "", description: "", max: 4, category: activeCategory, fillColor: "#dc2626" } }
     );
 
     new Dialog({
@@ -109,6 +113,7 @@ export class DoomClocksDialog extends Application {
             const description = html.find('[name="description"]').val().trim();
             const max = parseInt(html.find('[name="max"]').val()) || 4;
             const category = html.find('[name="category"]').val() || activeCategory;
+            const fillColor = html.find('[name="fillColor"]:checked').val() || "#dc2626";
 
             if (!name) {
               ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
@@ -120,7 +125,8 @@ export class DoomClocksDialog extends Application {
               description, 
               value: 0, 
               max: Math.clamp(max, 2, 12),
-              category: category 
+              category: category,
+              fillColor: fillColor
             };
             
             this.clocks.push(newClock);
@@ -156,6 +162,7 @@ export class DoomClocksDialog extends Application {
             const name = html.find('[name="name"]').val().trim();
             const description = html.find('[name="description"]').val().trim();
             const max = parseInt(html.find('[name="max"]').val()) || clock.max;
+            const fillColor = html.find('[name="fillColor"]:checked').val() || clock.fillColor || "#dc2626";
 
             if (!name) {
               ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
@@ -166,7 +173,9 @@ export class DoomClocksDialog extends Application {
               name,
               description,
               value: Math.min(clock.value, max),
-              max: Math.clamp(max, 2, 12)
+              max: Math.clamp(max, 2, 12),
+              category: clock.category, // Zachowaj kategorię
+              fillColor: fillColor
             };
             await this._updateClocks();
           }

@@ -372,3 +372,51 @@
   border-radius: 3px;
   color: #ddd;
 }
+
+/* Style dla palety kolorów zegarów */
+.clock-dialog .clock-color-palette {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-top: 5px;
+}
+
+.clock-dialog .clock-color-palette input[type="radio"] {
+  display: none;
+}
+
+.clock-dialog .clock-color-palette .color-option {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 3px solid #555;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  display: block;
+}
+
+.clock-dialog .clock-color-palette .color-option:hover {
+  border-color: #cd7f32;
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(205, 127, 50, 0.3);
+}
+
+.clock-dialog .clock-color-palette input[type="radio"]:checked + .color-option {
+  border-color: #e8a057;
+  border-width: 4px;
+  box-shadow: 0 0 0 2px rgba(232, 160, 87, 0.3), 0 2px 8px rgba(232, 160, 87, 0.5);
+  transform: scale(1.1);
+}
+
+.clock-dialog .clock-color-palette input[type="radio"]:checked + .color-option::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
