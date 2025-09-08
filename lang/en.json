@@ -394,6 +394,8 @@
   "COGSYNDICATE.MachineDamage": "Machine Damage",
   "COGSYNDICATE.EngineeringDamage": "Engineering Damage",
   "COGSYNDICATE.IntrigueDamage": "Intrigue Damage",
+  "COGSYNDICATE.TraumaFromDamageWarning": "Agent {agentName} will receive Trauma",
+  "COGSYNDICATE.TraumaFromDamageMessage": "Agent {agentName} received Trauma",
   "pdfjs-editor-highlight-button": "Highlighter",
   "pdfjs-editor-highlight-button-label": "Highlight text with color"
 }

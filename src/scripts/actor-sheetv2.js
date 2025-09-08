@@ -143,6 +143,7 @@ class CogwheelActorSheetV2 extends ActorSheet {
     html.find('.trauma-toggle').click(this._onToggleTrauma.bind(this));
     html.find('.spend-gear-btn').click(this._onSpendGear.bind(this));
     html.find('.spend-stress-btn').click(this._onSpendStress.bind(this));
+    html.find('input[type="radio"][value="T"]').click(this._onTraumaDamageSelected.bind(this));
     this._assignGearBackgrounds(html);
     this._assignEquipmentColors(html);
     this._updateEquipmentPointsDisplay(html);
@@ -448,7 +449,7 @@ class CogwheelActorSheetV2 extends ActorSheet {
         await ChatMessage.create({
           content: `
             <div class="feat-effect-message">
-              <h3><i class="fas fa-skull"></i> ${game.i18n.format("COGSYNDICATE.TraumaIncreased", { actorName: this.actor.name })}</h3>
+              <h3><i class="fas fa-skull" style="color: #9b59b6 !important;"></i> ${game.i18n.format("COGSYNDICATE.TraumaIncreased", { actorName: this.actor.name })}</h3>
             </div>
           `,
           speaker: { actor: this.actor.id }
@@ -509,7 +510,7 @@ class CogwheelActorSheetV2 extends ActorSheet {
         await ChatMessage.create({
           content: `
             <div class="feat-effect-message">
-              <h3><i class="fas fa-skull"></i> ${game.i18n.format("COGSYNDICATE.TraumaDecreased", { actorName: actorName })}</h3>
+              <h3><i class="fas fa-skull" style="color: #9b59b6 !important;"></i> ${game.i18n.format("COGSYNDICATE.TraumaDecreased", { actorName: actorName })}</h3>
             </div>
           `,
           speaker: { actor: this.actor.id }
@@ -944,6 +945,114 @@ class CogwheelActorSheetV2 extends ActorSheet {
       updates["system.equipments"] = migratedEquipments;
       await this.actor.update(updates);
       console.log(`Cogwheel: Successfully migrated ${migratedEquipments.length} equipment items for actor "${this.actor.name}"`);
+    }
+  }
+
+  async _onTraumaDamageSelected(event) {
+    event.preventDefault();
+    
+    // Reset this radio button
+    event.currentTarget.checked = false;
+    
+    // Determine the attribute based on the damage section
+    let attributeName = "unknown";
+    const damageGroup = event.currentTarget.closest('.damage-radio-group');
+    
+    if (damageGroup) {
+      const damageSection = damageGroup.closest('[data-attribute]');
+      if (damageSection) {
+        attributeName = damageSection.dataset.attribute;
+      } else {
+        // Alternative approach - check for specific damage sections by class or content
+        const sectionElement = damageGroup.closest('.damage-system');
+        if (sectionElement) {
+          const label = sectionElement.querySelector('.damage-label');
+          if (label) {
+            const labelText = label.textContent.toLowerCase();
+            if (labelText.includes('machine') || labelText.includes('maszyn')) {
+              attributeName = "machine";
+            } else if (labelText.includes('engineering') || labelText.includes('inżynier')) {
+              attributeName = "engineering"; 
+            } else if (labelText.includes('intrigue') || labelText.includes('intryg')) {
+              attributeName = "intrigue";
+            }
+          }
+        }
+      }
+    }
+    
+    const agentName = this.actor.name;
+    
+    // Show steampunk-styled confirmation dialog
+    const confirmed = await new Promise((resolve) => {
+      new Dialog({
+        title: game.i18n.localize("COGSYNDICATE.Trauma"),
+        content: `
+          <div class="steampunk-dialog">
+            <p>${game.i18n.format("COGSYNDICATE.TraumaFromDamageWarning", { 
+              agentName: `<strong style="color: #4a90e2;">${agentName}</strong>` 
+            })} <strong style="color: #9b59b6;">${game.i18n.localize("COGSYNDICATE.Trauma")}</strong>.</p>
+          </div>
+        `,
+        buttons: {
+          cancel: {
+            label: game.i18n.localize("COGSYNDICATE.Cancel"),
+            callback: () => resolve(false)
+          },
+          confirm: {
+            label: game.i18n.localize("COGSYNDICATE.Confirm"),
+            callback: () => resolve(true)
+          }
+        },
+        default: "confirm",
+        classes: ["cogsyndicate", "dialog", "steampunk-dialog"]
+      }).render(true);
+    });
+
+    if (confirmed) {
+      // Increase trauma count using proper resource path for v2
+      const currentTrauma = this.actor.system.resources.trauma.value || 0;
+      const maxTrauma = this.actor.system.resources.trauma.max || 4;
+      
+      if (currentTrauma < maxTrauma) {
+        const newTrauma = currentTrauma + 1;
+        await this.actor.update({
+          "system.resources.trauma.value": newTrauma
+        });
+
+        // Send styled chat message
+        await ChatMessage.create({
+          content: `
+            <div class="feat-effect-message">
+              <h3><i class="fas fa-skull" style="color: #9b59b6 !important;"></i> ${game.i18n.format("COGSYNDICATE.TraumaFromDamageMessage", { 
+                agentName: `<strong style="color: #4a90e2;">${agentName}</strong>`
+              })} <strong style="color: #9b59b6;">${game.i18n.localize("COGSYNDICATE.Trauma")}</strong>.</h3>
+            </div>
+          `,
+          speaker: { actor: this.actor.id }
+        });
+
+        // Check if agent reached maximum trauma and send incapacitation message
+        if (newTrauma === maxTrauma) {
+          await ChatMessage.create({
+            content: `
+              <div class="feat-effect-message">
+                <h3><i class="fas fa-exclamation-triangle" style="color: #dc3545;"></i> ${game.i18n.localize("COGSYNDICATE.MaxTraumaReached")}</h3>
+              </div>
+            `,
+            speaker: { actor: this.actor.id }
+          });
+        }
+      } else {
+        // Trauma is already at maximum
+        ui.notifications.warn(game.i18n.localize("COGSYNDICATE.MaxTraumaReached"));
+        
+        // Uncheck the radio button since trauma cannot be increased
+        event.currentTarget.checked = false;
+      }
+    } else {
+      // User cancelled, uncheck the radio button
+      event.currentTarget.checked = false;
     }
   }
 }

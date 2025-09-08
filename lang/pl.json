@@ -392,8 +392,10 @@
   "COGSYNDICATE.ClockColorPink": "Różowy (Uczucia)",
   "COGSYNDICATE.ClockColorGray": "Szary (Neutralny)",
   "COGSYNDICATE.MachineDamage": "Obrażenia Maszyny",
-  "COGSYNDICATE.EngineeringDamage": "Obrażenia Inżynierii", 
+  "COGSYNDICATE.EngineeringDamage": "Obrażenia Inżynierii",
   "COGSYNDICATE.IntrigueDamage": "Obrażenia Intrygi",
+  "COGSYNDICATE.TraumaFromDamageWarning": "Agent {agentName} otrzyma Traumę",
+  "COGSYNDICATE.TraumaFromDamageMessage": "Agent {agentName} otrzymał(a) Traumę",
   "pdfjs-editor-highlight-button": "Zakreślacz",
   "pdfjs-editor-highlight-button-label": "Zaznacz tekst kolorem"
 }
