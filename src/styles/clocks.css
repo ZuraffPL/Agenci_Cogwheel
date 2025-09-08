@@ -278,12 +278,10 @@
 
 .doom-clocks .clock-name {
   color: #f4a460 !important;
-  max-width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  flex: 1;
   font-weight: bold;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  margin-right: 10px;
 }
 
 .doom-clocks .clock-progress {
@@ -291,6 +289,8 @@
   white-space: nowrap;
   font-weight: bold;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  flex-shrink: 0;
+  text-align: right;
 }
 
 .doom-clocks .clock-description {
