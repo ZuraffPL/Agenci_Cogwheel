@@ -273,7 +273,7 @@ h3.centered {
   font-size: 10px;
 }
 
-.main-attributes, .secondary-attributes, .agent-resources, .feats-section, .traumas-section {
+.main-attributes, .agent-resources, .feats-section, .traumas-section {
   margin-bottom: 20px;
 }
 
@@ -1026,16 +1026,6 @@ h3.centered {
   display: block !important;
 }
 
-/* Enhanced Font Sizes for Secondary Attributes Labels - Agent v1 */
-.cogwheel.sheet.actor .secondary-attributes .attribute label {
-  font-size: 15px !important;
-  font-weight: bold !important;
-  color: #f4a460 !important;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
-  margin-bottom: 4px !important;
-  display: block !important;
-}
-
 /* Icon styling in resource labels - Agent v1 */
 .cogwheel.sheet.actor .resource label i {
   margin-right: 6px !important;
@@ -1053,6 +1043,44 @@ h3.centered {
 .cogwheel.sheet.actor .resource.trauma label i {
   color: #9b59b6 !important;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* ===== DAMAGE SYSTEM STYLING - AGENT V1 ===== */
+
+/* Damage section styling */
+.damage-section {
+  margin-top: 8px;
+  padding: 6px 0;
+  border-top: 1px solid rgba(139, 69, 19, 0.3);
+}
+
+/* Damage label styling with red color and text shadow */
+.damage-label {
+  font-size: 12px !important;
+  font-weight: bold !important;
+  color: #ff4444 !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+  margin-bottom: 4px !important;
+  display: block !important;
+  text-align: center;
+}
+
+/* Enhanced radio button styling for damage */
+.damage-section .radio-group {
+  gap: 8px;
+  justify-content: center;
+}
+
+.damage-section .radio-item label {
+  color: #ff4444 !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6) !important;
+  font-weight: bold !important;
+  font-size: 11px !important;
+}
+
+.damage-section .radio-item input[type="radio"]:checked + label {
+  color: #ff6666 !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important;
 }
 
 /* ===== END OF COGWHEEL.CSS ===== */

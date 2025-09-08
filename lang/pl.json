@@ -391,6 +391,9 @@
   "COGSYNDICATE.ClockColorPurple": "Fioletowy (Misterium)",
   "COGSYNDICATE.ClockColorPink": "Różowy (Uczucia)",
   "COGSYNDICATE.ClockColorGray": "Szary (Neutralny)",
+  "COGSYNDICATE.MachineDamage": "Obrażenia Maszyny",
+  "COGSYNDICATE.EngineeringDamage": "Obrażenia Inżynierii", 
+  "COGSYNDICATE.IntrigueDamage": "Obrażenia Intrygi",
   "pdfjs-editor-highlight-button": "Zakreślacz",
   "pdfjs-editor-highlight-button-label": "Zaznacz tekst kolorem"
 }

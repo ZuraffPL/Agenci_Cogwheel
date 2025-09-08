@@ -391,6 +391,9 @@
   "COGSYNDICATE.ClockColorPurple": "Purple (Mystery)",
   "COGSYNDICATE.ClockColorPink": "Pink (Emotions)",
   "COGSYNDICATE.ClockColorGray": "Gray (Neutral)",
+  "COGSYNDICATE.MachineDamage": "Machine Damage",
+  "COGSYNDICATE.EngineeringDamage": "Engineering Damage", 
+  "COGSYNDICATE.IntrigueDamage": "Intrigue Damage",
   "pdfjs-editor-highlight-button": "Highlighter",
   "pdfjs-editor-highlight-button-label": "Highlight text with color"
 }
