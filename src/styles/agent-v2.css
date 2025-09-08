@@ -6,8 +6,8 @@
   color: #f4a460; /* Piaskowy tekst */
   border: 2px solid #cd7f32; /* Miedziany border */
   border-radius: 15px;
-  min-width: 680px; /* Zwiększona szerokość dla obrażeń */
-  width: 680px;
+  min-width: 780px; /* Zwiększona szerokość dla obrażeń */
+  width: 780px;
   box-shadow: 
     0 0 20px rgba(205, 127, 50, 0.3),
     inset 0 2px 10px rgba(0, 0, 0, 0.3);

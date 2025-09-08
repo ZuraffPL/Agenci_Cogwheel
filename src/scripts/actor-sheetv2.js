@@ -8,7 +8,7 @@ class CogwheelActorSheetV2 extends ActorSheet {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/cogwheel-syndicate/src/templates/actor-sheetv2.hbs",
       classes: ["cogwheel", "sheet", "actor", "agentv2"],
-      width: 750,
+      width: 780,
       submitOnChange: true,
       dragDrop: [{ dropSelector: ".archetype-drop, .feats-drop" }],
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-content", initial: "core" }]
