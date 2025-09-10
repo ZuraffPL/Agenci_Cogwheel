@@ -49,19 +49,19 @@
 }
 
 .meta-row label {
-  color: #ffd700;
-  font-weight: bold;
-  font-size: 14px;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+  color: #ffd700 !important;
+  font-weight: bold !important;
+  font-size: 14px !important;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9) !important;
 }
 
 .meta-value {
   min-width: 30px;
   text-align: center;
-  font-weight: bold;
-  color: #ffffff;
-  font-size: 16px;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+  font-weight: bold !important;
+  color: #ffffff !important;
+  font-size: 16px !important;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9) !important;
 }
 
 .meta-value-input {
@@ -74,7 +74,7 @@
   background: linear-gradient(135deg, rgba(44, 24, 16, 0.8) 0%, rgba(61, 40, 23, 0.8) 100%);
   font-size: inherit;
   font-family: inherit;
-  color: #ffffff;
+  color: #ffffff !important;
   padding: 2px;
   border-radius: 3px;
   transition: all 0.2s ease;
@@ -82,7 +82,7 @@
   -moz-appearance: textfield; /* Firefox - usuwa spinners */
   flex-shrink: 0;
   flex-grow: 0;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9) !important;
 }
 
 /* Usuń spinners w Webkit browsers (Chrome, Safari) */
@@ -95,14 +95,14 @@
 .meta-value-input:hover {
   background: linear-gradient(135deg, rgba(74, 50, 29, 0.9) 0%, rgba(90, 74, 58, 0.9) 100%);
   border-color: #cd7f32;
-  color: #ffd700;
+  color: #ffd700 !important;
 }
 
 .meta-value-input:focus {
   outline: none;
   background: linear-gradient(135deg, rgba(90, 74, 58, 0.9) 0%, rgba(107, 91, 75, 0.9) 100%);
   border-color: #ffd700;
-  color: #ffffff;
+  color: #ffffff !important;
   box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.5);
 }
 
