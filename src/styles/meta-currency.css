@@ -7,7 +7,7 @@
   border-radius: 8px;
   box-shadow: inset 0 1px 3px rgba(205, 127, 50, 0.3), 0 4px 8px rgba(0, 0, 0, 0.4);
   position: relative;
-  color: #f4a460;
+  color: #ffd700;
 }
 
 /* Efekt metalicznego połysku dla tła okna metawalut */
@@ -49,17 +49,19 @@
 }
 
 .meta-row label {
-  color: #f4a460;
+  color: #ffd700;
   font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  font-size: 14px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
 }
 
 .meta-value {
   min-width: 30px;
   text-align: center;
   font-weight: bold;
-  color: #e8a057;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  font-size: 16px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
 }
 
 .meta-value-input {
@@ -72,7 +74,7 @@
   background: linear-gradient(135deg, rgba(44, 24, 16, 0.8) 0%, rgba(61, 40, 23, 0.8) 100%);
   font-size: inherit;
   font-family: inherit;
-  color: #e8a057;
+  color: #ffffff;
   padding: 2px;
   border-radius: 3px;
   transition: all 0.2s ease;
@@ -80,7 +82,7 @@
   -moz-appearance: textfield; /* Firefox - usuwa spinners */
   flex-shrink: 0;
   flex-grow: 0;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
 }
 
 /* Usuń spinners w Webkit browsers (Chrome, Safari) */
@@ -93,15 +95,15 @@
 .meta-value-input:hover {
   background: linear-gradient(135deg, rgba(74, 50, 29, 0.9) 0%, rgba(90, 74, 58, 0.9) 100%);
   border-color: #cd7f32;
-  color: #f4a460;
+  color: #ffd700;
 }
 
 .meta-value-input:focus {
   outline: none;
   background: linear-gradient(135deg, rgba(90, 74, 58, 0.9) 0%, rgba(107, 91, 75, 0.9) 100%);
-  border-color: #e8a057;
+  border-color: #ffd700;
   color: #ffffff;
-  box-shadow: 0 0 0 1px rgba(232, 160, 87, 0.4);
+  box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.5);
 }
 
 /* Meta Currency Dialog specific button styles - steampunk small buttons */
@@ -110,7 +112,7 @@
   height: 25px;
   border: 2px solid #8B4513;
   background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #2c1810 100%);
-  color: #d4a574;
+  color: #ffd700;
   cursor: pointer;
   font-size: 14px;
   border-radius: 4px;
@@ -125,7 +127,7 @@
 .meta-currency-content .small-btn:hover {
   background: linear-gradient(135deg, #3d2817 0%, #4a321d 50%, #3d2817 100%);
   border-color: #cd7f32;
-  color: #f4a460;
+  color: #ffffff;
   transform: translateY(-1px);
   box-shadow: inset 0 1px 2px rgba(205, 127, 50, 0.4), 0 2px 4px rgba(0, 0, 0, 0.5);
 }
@@ -201,7 +203,7 @@
 
 .gm-control-btn {
   background: linear-gradient(135deg, #4a321d 0%, #5a4a3a 50%, #4a321d 100%);
-  color: #f4a460;
+  color: #ffd700;
   border: 2px solid #8B4513;
   padding: 8px 12px;
   border-radius: 6px;
