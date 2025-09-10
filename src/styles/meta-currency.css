@@ -1,18 +1,45 @@
-/* Me.meta-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}ency Dialog Styles */
+/* Meta Currency Dialog Styles - Steampunk Theme */
 .meta-currency-content {
-  padding: 10px;
+  padding: 15px;
+  min-width: 350px;
+  background: linear-gradient(135deg, #3d2817 0%, #4a321d 30%, #5a4a3a 70%, #2c1810 100%);
+  border: 2px solid #cd7f32;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 3px rgba(205, 127, 50, 0.3), 0 4px 8px rgba(0, 0, 0, 0.4);
+  position: relative;
+  color: #f4a460;
+}
+
+/* Efekt metalicznego połysku dla tła okna metawalut */
+.meta-currency-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0) 100%);
+  border-radius: 8px 8px 0 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Upewnienie się, że zawartość jest nad efektem połysku */
+.meta-currency-content > * {
+  position: relative;
+  z-index: 1;
 }
 
 .meta-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, rgba(61, 40, 23, 0.6) 0%, rgba(74, 50, 29, 0.6) 50%, rgba(44, 24, 16, 0.6) 100%);
+  border: 1px solid rgba(205, 127, 50, 0.4);
+  border-radius: 6px;
+  box-shadow: inset 0 1px 2px rgba(205, 127, 50, 0.2), 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .meta-controls {
@@ -21,10 +48,18 @@
   gap: 8px;
 }
 
+.meta-row label {
+  color: #f4a460;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
 .meta-value {
   min-width: 30px;
   text-align: center;
   font-weight: bold;
+  color: #e8a057;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .meta-value-input {
@@ -33,18 +68,19 @@
   max-width: 30px;
   text-align: center !important;
   font-weight: bold;
-  border: none;
-  background: transparent;
+  border: 1px solid rgba(139, 69, 19, 0.6);
+  background: linear-gradient(135deg, rgba(44, 24, 16, 0.8) 0%, rgba(61, 40, 23, 0.8) 100%);
   font-size: inherit;
   font-family: inherit;
-  color: inherit;
+  color: #e8a057;
   padding: 2px;
   border-radius: 3px;
-  transition: background-color 0.2s ease, border 0.2s ease;
+  transition: all 0.2s ease;
   appearance: textfield; /* Standard property */
   -moz-appearance: textfield; /* Firefox - usuwa spinners */
   flex-shrink: 0;
   flex-grow: 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 /* Usuń spinners w Webkit browsers (Chrome, Safari) */
@@ -55,35 +91,43 @@
 }
 
 .meta-value-input:hover {
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
+  background: linear-gradient(135deg, rgba(74, 50, 29, 0.9) 0%, rgba(90, 74, 58, 0.9) 100%);
+  border-color: #cd7f32;
+  color: #f4a460;
 }
 
 .meta-value-input:focus {
   outline: none;
-  background-color: #fff;
-  border: 1px solid #007acc;
-  box-shadow: 0 0 0 1px rgba(0, 122, 204, 0.3);
+  background: linear-gradient(135deg, rgba(90, 74, 58, 0.9) 0%, rgba(107, 91, 75, 0.9) 100%);
+  border-color: #e8a057;
+  color: #ffffff;
+  box-shadow: 0 0 0 1px rgba(232, 160, 87, 0.4);
 }
 
-/* Meta Currency Dialog specific button styles */
+/* Meta Currency Dialog specific button styles - steampunk small buttons */
 .meta-currency-content .small-btn {
   width: 30px;
   height: 25px;
-  border: 1px solid #333;
-  background: #333;
-  color: #fff;
+  border: 2px solid #8B4513;
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #2c1810 100%);
+  color: #d4a574;
   cursor: pointer;
   font-size: 14px;
-  border-radius: 3px;
+  border-radius: 4px;
   font-weight: bold;
   flex-shrink: 0;
   flex-grow: 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 1px 2px rgba(139, 69, 19, 0.3), 0 1px 3px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
 }
 
 .meta-currency-content .small-btn:hover {
-  background: #444;
-  border-color: #444;
+  background: linear-gradient(135deg, #3d2817 0%, #4a321d 50%, #3d2817 100%);
+  border-color: #cd7f32;
+  color: #f4a460;
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 2px rgba(205, 127, 50, 0.4), 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .meta-buttons-row {
@@ -136,24 +180,44 @@
   border-color: #5588bb;
 }
 
-/* GM Controls */
+/* GM Controls - steampunk style */
 .meta-gm-controls {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #ddd;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 2px solid rgba(205, 127, 50, 0.4);
+  position: relative;
+}
+
+.meta-gm-controls::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #cd7f32 50%, transparent 100%);
 }
 
 .gm-control-btn {
-  background-color: #673ab7;
-  color: white;
-  border: none;
+  background: linear-gradient(135deg, #4a321d 0%, #5a4a3a 50%, #4a321d 100%);
+  color: #f4a460;
+  border: 2px solid #8B4513;
   padding: 8px 12px;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 12px;
+  font-weight: bold;
   width: 100%;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 1px 2px rgba(139, 69, 19, 0.3), 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
 }
 
 .gm-control-btn:hover {
-  background-color: #5e35b1;
+  background: linear-gradient(135deg, #5a4a3a 0%, #6b5b4b 50%, #5a4a3a 100%);
+  border-color: #cd7f32;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 2px rgba(205, 127, 50, 0.4), 0 3px 6px rgba(0, 0, 0, 0.6);
 }
