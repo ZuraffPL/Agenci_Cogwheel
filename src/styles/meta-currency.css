@@ -48,7 +48,8 @@
   gap: 8px;
 }
 
-.meta-row label {
+.meta-row label,
+.meta-row > span {
   color: #ffd700 !important;
   font-weight: bold !important;
   font-size: 14px !important;

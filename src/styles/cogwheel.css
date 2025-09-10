@@ -882,29 +882,7 @@ h3.centered {
   margin: 5px 0;
 }
 
-.meta-controls {
-  display: flex;
-  align-items: center;
-}
 
-.meta-controls button {
-  width: 25px;
-  height: 25px;
-  margin: 0 5px;
-}
-
-.meta-value {
-  width: 30px;
-  text-align: center;
-  color: #000000; /* Czarny kolor dla wartości */
-  font-weight: bold; /* Pogrubienie dla widoczności */
-}
-
-/* Nadpisanie koloru dla etykiet w meta-row */
-.meta-row > span {
-  color: #000000; /* Czarny kolor dla etykiet */
-  font-weight: bold; /* Pogrubienie dla widoczności */
-}
 
 .form-group {
   display: flex;
