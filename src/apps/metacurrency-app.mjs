@@ -12,10 +12,10 @@ class MetaCurrencyApp extends Application {
       template: "systems/cogwheel-syndicate/src/templates/meta-currency-dialog.hbs",
       popOut: true,
       resizable: true,
-      width: 320,
-      height: 250,
+      width: 400,
+      height: 340,
       left: 20,
-      top: window.innerHeight - 270,
+      top: window.innerHeight - 340,
       classes: ["cogwheel", "metacurrency-app"],
     });
   }
