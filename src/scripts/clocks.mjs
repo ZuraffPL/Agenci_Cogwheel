@@ -17,7 +17,7 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
     },
     position: {
       width: 500,
-      height: "auto",
+      height: 400,
       left: 20,
       top: 20
     },
@@ -92,8 +92,8 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
       html.find(".delete-clock").on('click', this._onDeleteClock.bind(this));
     }
 
-    // Dopasuj wysokość okna do ilości widocznych zegarów
-    setTimeout(() => this._adjustWindowHeight(), 50);
+    // Dopasuj wysokość okna do ilości widocznych zegarów - zwiększ opóźnienie
+    setTimeout(() => this._adjustWindowHeight(), 100);
   }
 
   async _onAddClock(event) {
@@ -324,16 +324,20 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
   _adjustWindowHeight() {
     const $element = $(this.element);
     const visibleClocks = $element.find('.clock-item:visible').length;
-    const baseHeight = 200; // Podstawowa wysokość dla UI (przyciski, zakładki)
-    const clockHeight = 86; // Wysokość jednego zegara (70px + 8px margin + padding)
-    const maxHeight = 600; // Maksymalna wysokość okna
+    const baseHeight = 220; // Zwiększona podstawowa wysokość dla UI (przyciski, zakładki, padding)
+    const clockHeight = 90; // Zwiększona wysokość jednego zegara (z większym marginesem)
+    const maxHeight = 700; // Zwiększona maksymalna wysokość okna
     
-    // Oblicz optymalną wysokość
-    let targetHeight = baseHeight + (visibleClocks * clockHeight);
+    console.log(`Adjusting height for ${visibleClocks} visible clocks in category: ${this.activeCategory}`);
+    
+    // Oblicz optymalną wysokość z dodatkowym bufforem
+    let targetHeight = baseHeight + (visibleClocks * clockHeight) + 50; // +50px bufora
     targetHeight = Math.min(targetHeight, maxHeight);
     
     // Ustaw minimalną wysokość żeby okno nie było za małe
-    targetHeight = Math.max(targetHeight, 250);
+    targetHeight = Math.max(targetHeight, 300);
+    
+    console.log(`Setting window height to: ${targetHeight}px`);
     
     // W ApplicationV2 używamy tylko setPosition - nie modyfikujemy CSS bezpośrednio
     this.setPosition({ height: targetHeight });
@@ -344,13 +348,15 @@ export function openDoomClocks() {
   const dialog = new DoomClocksDialog();
   
   dialog.render(true).then(() => {
-    // Pozycjonowanie po wyrenderowaniu
+    // Pozycjonowanie po wyrenderowaniu - usuń height: auto
     dialog.setPosition({
       left: 20,
       top: 20,
-      width: 500,
-      height: "auto"
+      width: 500
     });
+    
+    // Dopasuj wysokość po wyrenderowaniu z większym opóźnieniem
+    setTimeout(() => dialog._adjustWindowHeight(), 150);
   });
 }
 
