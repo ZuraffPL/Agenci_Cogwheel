@@ -1,5 +1,17 @@
 # Installation Guide for Agenci Cogwheel
 
+## ⚠️ Important Version Information
+
+### Current Version (v0.9.0+) - Foundry v13 Required
+- **Requires**: Foundry VTT v13.348 or higher
+- **Features**: Full native DOM API, modern JavaScript
+- **Installation**: Use instructions below for latest version
+
+### Legacy Version (v0.8.1) - Foundry v12 Support  
+- **Requires**: Foundry VTT v12.331
+- **Branch**: `foundry-v12-compat`
+- **Manual URL**: Replace `main` with `foundry-v12-compat` in GitHub URLs
+
 ## Automatic Installation (Recommended)
 
 1. Open Foundry VTT
@@ -22,18 +34,26 @@
 
 ## System Requirements
 
-- **Foundry VTT**: Version 12 or higher
-- **Verified Compatibility**: Foundry VTT v12.331
+### For v0.9.0+ (Current)
+- **Foundry VTT**: Version 13.348 or higher
+- **Verified Compatibility**: Foundry VTT v13.348
+- **Languages**: English and Polish support included
+- **Modern Browser**: Required for native DOM API
+
+### For v0.8.1 (Legacy)  
+- **Foundry VTT**: Version 12.331
+- **Branch**: Use `foundry-v12-compat` branch
 - **Languages**: English and Polish support included
 
 ## Troubleshooting
 
 If you encounter any issues:
 
-1. **Check Foundry VTT version**: Ensure you're running version 12 or higher
-2. **Clear browser cache**: Sometimes cached files can cause conflicts
-3. **Check console**: Open browser developer tools (F12) and check for error messages
-4. **Report issues**: If problems persist, create an issue at: https://github.com/ZuraffPL/Agenci_Cogwheel/issues
+1. **Check Foundry VTT version**: Ensure you're running the correct version for your chosen system version
+2. **Version Mismatch**: If using Foundry v12, manually install from `foundry-v12-compat` branch
+3. **Clear browser cache**: Sometimes cached files can cause conflicts
+4. **Check console**: Open browser developer tools (F12) and check for error messages
+5. **Report issues**: If problems persist, create an issue at: https://github.com/ZuraffPL/Agenci_Cogwheel/issues
 
 ## Getting Started
 

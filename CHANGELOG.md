@@ -11,6 +11,38 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.0] - 2025-09-21
+
+**FOUNDRY VTT v13 COMPATIBILITY RELEASE**
+
+### 💥 Breaking Changes | Przełomowe Zmiany:
+- **Foundry v13 Requirement**: System now requires Foundry VTT v13.348 or higher | **Wymaganie Foundry v13**: System wymaga teraz Foundry VTT v13.348 lub wyższej
+- **jQuery Removal**: Complete migration from jQuery to native DOM API for Foundry v13 compatibility | **Usunięcie jQuery**: Kompletna migracja z jQuery na natywne API DOM dla kompatybilności z Foundry v13
+- **Legacy Compatibility**: Use `foundry-v12-compat` branch for Foundry v12.331 support | **Kompatybilność Legacy**: Użyj gałęzi `foundry-v12-compat` dla wsparcia Foundry v12.331
+
+### 🔧 Technical Modernization | Modernizacja Techniczna:
+- **Native DOM API**: Replaced all `html.find()` with `querySelector()` and `querySelectorAll()` | **Natywne API DOM**: Zastąpiono wszystkie `html.find()` z `querySelector()` i `querySelectorAll()`
+- **Event Handlers**: Converted jQuery `.click()`, `.change()` to `addEventListener()` | **Obsługa Zdarzeń**: Konwersja jQuery `.click()`, `.change()` na `addEventListener()`
+- **Property Access**: Migrated `.val()`, `.is(':checked')`, `.data()` to native properties | **Dostęp do Właściwości**: Migracja `.val()`, `.is(':checked')`, `.data()` na natywne właściwości
+- **Class Manipulation**: Replaced `.addClass()`, `.removeClass()` with `classList` API | **Manipulacja Klas**: Zastąpiono `.addClass()`, `.removeClass()` z API `classList`
+
+### 📁 Files Updated | Zaktualizowane Pliki:
+- **roll-mechanics.js**: Complete jQuery removal from dialog systems and button handlers | **roll-mechanics.js**: Kompletne usunięcie jQuery z systemów dialogów i obsługi przycisków
+- **nemesis-sheet.js**: Migrated sheet activation and dialog callbacks | **nemesis-sheet.js**: Migracja aktywacji arkusza i callbacków dialogów
+- **hq-sheet.js**: Updated headquarters management dialogs and event listeners | **hq-sheet.js**: Zaktualizowano dialogi zarządzania kwaterą główną i nasłuchiwanie zdarzeń
+- **clocks.mjs**: Converted doom clocks interface to native DOM | **clocks.mjs**: Konwersja interfejsu zegarów zagłady na natywne DOM
+- **feats-effects.mjs**: Updated feat selection dialogs | **feats-effects.mjs**: Zaktualizowano dialogi wyboru atutów
+- **Equipment Functions**: Migrated all equipment management forms | **Funkcje Wyposażenia**: Migracja wszystkich formularzy zarządzania wyposażeniem
+
+### 🌿 Branch Strategy | Strategia Gałęzi:
+- **main**: Targets Foundry v13.348+ with native DOM API | **main**: Kieruje na Foundry v13.348+ z natywnym API DOM
+- **foundry-v12-compat**: Preserves v0.8.1 for Foundry v12.331 compatibility | **foundry-v12-compat**: Zachowuje v0.8.1 dla kompatybilności z Foundry v12.331
+
+### ⚠️ Migration Guide | Przewodnik Migracji:
+- **Foundry v13 Users**: Update to this version for full compatibility | **Użytkownicy Foundry v13**: Zaktualizuj do tej wersji dla pełnej kompatybilności
+- **Foundry v12 Users**: Switch to `foundry-v12-compat` branch | **Użytkownicy Foundry v12**: Przełącz się na gałąź `foundry-v12-compat`
+- **No Data Loss**: All character data and game content remains compatible | **Brak Utraty Danych**: Wszystkie dane postaci i zawartość gry pozostają kompatybilne
+
 ## [0.8.1] - 2025-09-08
 
 **SUPPORT FEAT SYSTEM RELEASE**

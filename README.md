@@ -2,13 +2,39 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.8.1**
+**Current System Version: 0.9.0**
+
+## ⚠️ Important Version Notice | Ważne Informacje o Wersji
+
+### Foundry VTT v13+ (Current/Latest)
+- **Version 0.9.0+**: Requires Foundry VTT v13.348 or higher
+- **Full native DOM API compatibility** - no jQuery dependencies
+- **Latest features and optimizations**
+
+### Foundry VTT v12 (Legacy Support)
+- **Version 0.8.1**: Available on `foundry-v12-compat` branch
+- **Compatible with Foundry VTT v12.331**
+- **Maintained for users not ready to upgrade Foundry**
 
 ## Description
 
 Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysłowej.
 
 *A game about secret agents who fight threats of the industrial revolution era.*
+
+## 🔥 What's New in v0.9.0
+
+### 💥 Foundry v13 Compatibility
+- **🎯 Native DOM API**: Complete migration from jQuery to modern DOM API for Foundry v13 compatibility
+- **⚡ Performance**: Improved performance with native JavaScript event handling
+- **🔧 Future-Proof**: Ready for future Foundry VTT updates and modern web standards
+- **🌿 Branch Strategy**: Maintained legacy support on separate branch for v12 users
+
+### 🛠️ Technical Modernization
+- **📝 Event Handlers**: All dialog forms converted from jQuery to `addEventListener()`
+- **🔍 Element Selection**: Replaced `html.find()` with native `querySelector()` methods
+- **🎛️ Property Access**: Modern `.value`, `.checked`, `.dataset` instead of jQuery equivalents
+- **🎨 Class Management**: Native `classList` API for all CSS class manipulations
 
 ## 🔥 What's New in v0.8.1
 
@@ -268,8 +294,15 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 
 ## System Requirements
 
-- **Foundry VTT**: Version 12 or higher
-- **Verified Compatibility**: Foundry VTT v12.331
+### For v0.9.0+ (Current Version)
+- **Foundry VTT**: Version 13.348 or higher
+- **Verified Compatibility**: Foundry VTT v13.348
+- **Modern Browser**: Required for native DOM API support
+
+### For v0.8.1 (Legacy Support)
+- **Foundry VTT**: Version 12.331
+- **Branch**: Use `foundry-v12-compat` branch
+- **jQuery Support**: Included for older Foundry versions
 
 ## 🎮 Core Mechanics
 
