@@ -159,10 +159,21 @@ Hooks.on("renderSidebarTab", (app, html) => {
 
 // Dodaj kontrolki do paska narzędzi po lewej stronie
 Hooks.on("getSceneControlButtons", (controls) => {
-  // Usunięto warunek if (game.user.isGM) - teraz widoczne dla wszystkich
+  // Upewnij się, że pracujemy z tablicą controls
+  if (!Array.isArray(controls)) {
+    console.warn("getSceneControlButtons: controls is not an array, attempting to use as object");
+    // W przypadku gdy controls to object, konwertuj na tablicę
+    if (typeof controls === 'object') {
+      const controlsArray = Object.values(controls);
+      controls = controlsArray;
+    } else {
+      console.error("getSceneControlButtons: unexpected controls type:", typeof controls);
+      return;
+    }
+  }
   
-  // W Foundry v13 controls to object, nie array - sprawdź czy grupa już istnieje
-  let cogwheelControls = controls.cogwheel;
+  // Znajdź lub utwórz grupę Cogwheel
+  let cogwheelControls = controls.find(c => c.name === "cogwheel");
   
   if (!cogwheelControls) {
     cogwheelControls = {
@@ -173,8 +184,8 @@ Hooks.on("getSceneControlButtons", (controls) => {
       tools: [],
       visible: true
     };
-    // Dodaj grupę do controls object
-    controls.cogwheel = cogwheelControls;
+    // Dodaj grupę do controls array
+    controls.push(cogwheelControls);
   }
   
   // Sprawdź czy narzędzia już nie zostały dodane (żeby uniknąć duplikatów)
@@ -207,8 +218,8 @@ Hooks.on("getSceneControlButtons", (controls) => {
     });
   }
   
-  // Zwróć kontrolki bez modyfikacji (ważne!)
-  return controls;
+  // Dla tablicy controls nie potrzebujemy zwracać niczego
+  // Foundry automatycznie użyje zmodyfikowanej tablicy
 });
 
 // Hook do odświeżania metawalut

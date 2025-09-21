@@ -321,8 +321,7 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
     // Ustaw minimalną wysokość żeby okno nie było za małe
     targetHeight = Math.max(targetHeight, 250);
     
-    // Zastosuj nową wysokość
-    $element.css('height', targetHeight + 'px');
+    // W ApplicationV2 używamy tylko setPosition - nie modyfikujemy CSS bezpośrednio
     this.setPosition({ height: targetHeight });
   }
 }
