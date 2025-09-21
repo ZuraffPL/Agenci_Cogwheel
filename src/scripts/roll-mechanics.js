@@ -29,24 +29,24 @@ function canUserInteractWithButton(authorUserId) {
 // Funkcja do wyłączania wszystkich starszych przycisków dla danego agenta
 function disableAllUpgradeButtonsForActor(actorId) {
   // Znajdź wszystkie przyciski podnoszenia sukcesu dla tego agenta i wyłącz je
-  $('.success-upgrade-button').each(function() {
-    const button = $(this);
-    const buttonActorId = button.data('actor-id');
+  document.querySelectorAll('.success-upgrade-button').forEach(function(button) {
+    const buttonActorId = button.dataset.actorId;
     if (buttonActorId === actorId) {
-      button.prop('disabled', true);
-      button.removeClass('success-upgrade-button').addClass('success-upgrade-button-outdated');
-      button.text(game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton") + " (Przestarzałe)");
+      button.disabled = true;
+      button.classList.remove('success-upgrade-button');
+      button.classList.add('success-upgrade-button-outdated');
+      button.textContent = game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton") + " (Przestarzałe)";
     }
   });
 
   // Znajdź wszystkie przyciski przerzutu dla tego agenta i wyłącz je
-  $('.test-reroll-button').each(function() {
-    const button = $(this);
-    const buttonActorId = button.data('actor-id');
+  document.querySelectorAll('.test-reroll-button').forEach(function(button) {
+    const buttonActorId = button.dataset.actorId;
     if (buttonActorId === actorId) {
-      button.prop('disabled', true);
-      button.removeClass('test-reroll-button').addClass('test-reroll-button-outdated');
-      button.text(game.i18n.localize("COGSYNDICATE.RerollTestButton") + " (Przestarzałe)");
+      button.disabled = true;
+      button.classList.remove('test-reroll-button');
+      button.classList.add('test-reroll-button-outdated');
+      button.textContent = game.i18n.localize("COGSYNDICATE.RerollTestButton") + " (Przestarzałe)";
     }
   });
 }
@@ -215,12 +215,12 @@ export async function performAttributeRoll(actor, attribute) {
         roll: {
           label: game.i18n.localize("COGSYNDICATE.Roll2d12"),
           callback: async (html) => {
-            const position = html.find('[name="position"]').val();
-            const useStressDie = html.find('[name="stressDie"]').is(":checked");
-            const useSteamDie = html.find('[name="steamDie"]').is(":checked");
-            const useDevilDie = html.find('[name="devilDie"]').is(":checked");
-            const applyTrauma = html.find('[name="applyTrauma"]').is(":checked");
-            const rollModifier = parseInt(html.find('[name="rollModifier"]').val(), 10) || 0;
+            const position = html[0].querySelector('[name="position"]').value;
+            const useStressDie = html[0].querySelector('[name="stressDie"]').checked;
+            const useSteamDie = html[0].querySelector('[name="steamDie"]').checked;
+            const useDevilDie = html[0].querySelector('[name="devilDie"]').checked;
+            const applyTrauma = html[0].querySelector('[name="applyTrauma"]').checked;
+            const rollModifier = parseInt(html[0].querySelector('[name="rollModifier"]').value, 10) || 0;
             const positionModifiers = { desperate: -3, risky: 0, controlled: 3 };
             const positionModifier = positionModifiers[position];
             const positionLabel = {
@@ -587,28 +587,28 @@ export async function performAttributeRoll(actor, attribute) {
       width: 450,
       render: html => {
         // Dodanie logiki wzajemnego wykluczania się checkboxów
-        const steamDieCheckbox = html.find('[name="steamDie"]');
-        const devilDieCheckbox = html.find('[name="devilDie"]');
-        const steamDieGroup = html.find('.steam-die-group');
-        const devilDieGroup = html.find('.devil-die-group');
+        const steamDieCheckbox = html[0].querySelector('[name="steamDie"]');
+        const devilDieCheckbox = html[0].querySelector('[name="devilDie"]');
+        const steamDieGroup = html[0].querySelector('.steam-die-group');
+        const devilDieGroup = html[0].querySelector('.devil-die-group');
         
-        steamDieCheckbox.change(function() {
+        steamDieCheckbox.addEventListener('change', function() {
           if (this.checked) {
-            devilDieCheckbox.prop('checked', false);
-            devilDieGroup.addClass('disabled-option');
-            steamDieGroup.removeClass('disabled-option');
+            devilDieCheckbox.checked = false;
+            devilDieGroup.classList.add('disabled-option');
+            steamDieGroup.classList.remove('disabled-option');
           } else {
-            devilDieGroup.removeClass('disabled-option');
+            devilDieGroup.classList.remove('disabled-option');
           }
         });
         
-        devilDieCheckbox.change(function() {
+        devilDieCheckbox.addEventListener('change', function() {
           if (this.checked) {
-            steamDieCheckbox.prop('checked', false);
-            steamDieGroup.addClass('disabled-option');
-            devilDieGroup.removeClass('disabled-option');
+            steamDieCheckbox.checked = false;
+            steamDieGroup.classList.add('disabled-option');
+            devilDieGroup.classList.remove('disabled-option');
           } else {
-            steamDieGroup.removeClass('disabled-option');
+            steamDieGroup.classList.remove('disabled-option');
           }
         });
       }
@@ -1084,39 +1084,37 @@ async function executeRollWithData(actor, data, isReroll = false) {
 // Hook do obsługi renderowania wiadomości czatu i kliknięć przycisków
 Hooks.on("renderChatMessage", (message, html, data) => {
   // Sprawdzenie uprawnień dla przycisków podnoszenia sukcesu
-  html.find('.success-upgrade-button').each(function() {
-    const button = $(this);
-    const authorUserId = button.data('user-id');
+  html[0].querySelectorAll('.success-upgrade-button').forEach(function(button) {
+    const authorUserId = button.dataset.userId;
     
     if (!canUserInteractWithButton(authorUserId)) {
-      button.prop('disabled', true);
-      button.addClass('disabled-for-user');
-      button.attr('title', game.i18n.localize("COGSYNDICATE.UpgradeButtonNoPermission"));
+      button.disabled = true;
+      button.classList.add('disabled-for-user');
+      button.setAttribute('title', game.i18n.localize("COGSYNDICATE.UpgradeButtonNoPermission"));
     }
   });
   
   // Sprawdzenie uprawnień dla przycisków przerzutu
-  html.find('.test-reroll-button').each(function() {
-    const button = $(this);
-    const authorUserId = button.data('user-id');
+  html[0].querySelectorAll('.test-reroll-button').forEach(function(button) {
+    const authorUserId = button.dataset.userId;
     
     if (!canUserInteractWithButton(authorUserId)) {
-      button.prop('disabled', true);
-      button.addClass('disabled-for-user');
-      button.attr('title', game.i18n.localize("COGSYNDICATE.RerollButtonNoPermission"));
+      button.disabled = true;
+      button.classList.add('disabled-for-user');
+      button.setAttribute('title', game.i18n.localize("COGSYNDICATE.RerollButtonNoPermission"));
     }
   });
 
   // Obsługa przycisków podnoszenia sukcesu
-  html.find('.success-upgrade-button').click(async function(event) {
+  html[0].querySelectorAll('.success-upgrade-button').forEach(function(button) {
+    button.addEventListener('click', async function(event) {
     event.preventDefault();
     
-    const button = $(this);
-    const buttonId = button.attr('id');
-    const actorId = button.data('actor-id');
-    const resultType = button.data('result-type');
-    const testedAttribute = button.data('tested-attribute');
-    const authorUserId = button.data('user-id');
+    const buttonId = this.getAttribute('id');
+    const actorId = this.dataset.actorId;
+    const resultType = this.dataset.resultType;
+    const testedAttribute = this.dataset.testedAttribute;
+    const authorUserId = this.dataset.userId;
     
     // Sprawdzenie uprawnień użytkownika
     if (!canUserInteractWithButton(authorUserId)) {
@@ -1149,23 +1147,25 @@ Hooks.on("renderChatMessage", (message, html, data) => {
     await upgradeSuccessLevel(actor, resultType, testedAttribute);
     
     // Wyłączenie przycisku po użyciu i usunięcie z rejestru aktualnych przycisków
-    button.prop('disabled', true);
-    button.removeClass('success-upgrade-button').addClass('success-upgrade-button-used');
-    button.text(game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton") + " (Użyte)");
+    this.disabled = true;
+    this.classList.remove('success-upgrade-button');
+    this.classList.add('success-upgrade-button-used');
+    this.textContent = game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton") + " (Użyte)";
     
     // Usunięcie z rejestru aktualnych przycisków
     delete window.cogwheelSyndicate.currentUpgradeButtons[actorId];
+    });
   });
 
   // Obsługa przycisków przerzutu testu
-  html.find('.test-reroll-button').click(async function(event) {
+  html[0].querySelectorAll('.test-reroll-button').forEach(function(button) {
+    button.addEventListener('click', async function(event) {
     event.preventDefault();
     
-    const button = $(this);
-    const buttonId = button.attr('id');
-    const actorId = button.data('actor-id');
-    const rollDataKey = button.data('roll-data-key');
-    const authorUserId = button.data('user-id');
+    const buttonId = this.getAttribute('id');
+    const actorId = this.dataset.actorId;
+    const rollDataKey = this.dataset.rollDataKey;
+    const authorUserId = this.dataset.userId;
     
     // Sprawdzenie uprawnień użytkownika
     if (!canUserInteractWithButton(authorUserId)) {
@@ -1188,9 +1188,10 @@ Hooks.on("renderChatMessage", (message, html, data) => {
         buttonId !== currentRerollButtonData.buttonId || 
         currentRerollButtonData.timestamp !== lastRollTimestamp) {
       ui.notifications.warn("Ten przycisk jest nieaktualny. Można przerzucić test tylko dla ostatniego rzutu.");
-      button.prop('disabled', true);
-      button.removeClass('test-reroll-button').addClass('test-reroll-button-outdated');
-      button.text(game.i18n.localize("COGSYNDICATE.RerollTestButton") + " (Przestarzałe)");
+      this.disabled = true;
+      this.classList.remove('test-reroll-button');
+      this.classList.add('test-reroll-button-outdated');
+      this.textContent = game.i18n.localize("COGSYNDICATE.RerollTestButton") + " (Przestarzałe)";
       return;
     }
     
@@ -1198,11 +1199,13 @@ Hooks.on("renderChatMessage", (message, html, data) => {
     await rerollTest(actor, rollDataKey);
     
     // Wyłączenie przycisku po użyciu i usunięcie z rejestru aktualnych przycisków
-    button.prop('disabled', true);
-    button.removeClass('test-reroll-button').addClass('test-reroll-button-used');
-    button.text(game.i18n.localize("COGSYNDICATE.RerollTestButton") + " (Użyte)");
+    this.disabled = true;
+    this.classList.remove('test-reroll-button');
+    this.classList.add('test-reroll-button-used');
+    this.textContent = game.i18n.localize("COGSYNDICATE.RerollTestButton") + " (Użyte)";
     
     // Usunięcie z rejestru aktualnych przycisków
     delete window.cogwheelSyndicate.currentRerollButtons[actorId];
+    });
   });
 });

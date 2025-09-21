@@ -29,7 +29,7 @@ class CogwheelArchetypeSheet extends ItemSheet {
   activateListeners(html) {
     super.activateListeners(html);
     // Obsługa zmiany ikony po kliknięciu
-    html.find('.profile-img').click(async (event) => {
+    html[0].querySelector('.profile-img').addEventListener('click', async (event) => {
       const filePicker = new FilePicker({
         type: "image",
         callback: async (path) => {

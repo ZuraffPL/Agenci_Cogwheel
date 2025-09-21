@@ -92,7 +92,7 @@ class CogwheelNemesisSheet extends ActorSheet {
     super.activateListeners(html);
 
     // Obsługa zmiany obrazka awatara
-    html.find('.profile-img').click(event => {
+    html[0].querySelector('.profile-img').addEventListener('click', event => {
       const fp = new FilePicker({
         type: "image",
         current: this.actor.img,
@@ -106,16 +106,16 @@ class CogwheelNemesisSheet extends ActorSheet {
     });
 
     // Obsługa zmiany zasięgu wpływów
-    html.find('.influence-range-select').change(this._onInfluenceRangeChange.bind(this));
+    html[0].querySelector('.influence-range-select').addEventListener('change', this._onInfluenceRangeChange.bind(this));
 
     // Obsługa zegarów nemezis
-    html.find('.increment-nemesis-clock').click(this._onIncrementNemesisClock.bind(this));
-    html.find('.decrement-nemesis-clock').click(this._onDecrementNemesisClock.bind(this));
+    html[0].querySelector('.increment-nemesis-clock').addEventListener('click', this._onIncrementNemesisClock.bind(this));
+    html[0].querySelector('.decrement-nemesis-clock').addEventListener('click', this._onDecrementNemesisClock.bind(this));
 
     // Obsługa przybocznych
-    html.find('.add-minion-btn').click(this._onAddMinion.bind(this));
-    html.find('.edit-minion').click(this._onEditMinion.bind(this));
-    html.find('.delete-minion').click(this._onDeleteMinion.bind(this));
+    html[0].querySelector('.add-minion-btn').addEventListener('click', this._onAddMinion.bind(this));
+    html[0].querySelectorAll('.edit-minion').forEach(el => el.addEventListener('click', this._onEditMinion.bind(this)));
+    html[0].querySelectorAll('.delete-minion').forEach(el => el.addEventListener('click', this._onDeleteMinion.bind(this)));
   }
 
   async _onInfluenceRangeChange(event) {
@@ -186,9 +186,9 @@ class CogwheelNemesisSheet extends ActorSheet {
         add: {
           label: game.i18n.localize("COGSYNDICATE.Confirm"),
           callback: async (html) => {
-            const name = html.find('[name="name"]').val().trim();
-            const description = html.find('[name="description"]').val().trim();
-            const role = html.find('[name="role"]').val().trim();
+            const name = html[0].querySelector('[name="name"]').value.trim();
+            const description = html[0].querySelector('[name="description"]').value.trim();
+            const role = html[0].querySelector('[name="role"]').value.trim();
 
             if (!name) {
               ui.notifications.warn("Nazwa przybocznego jest wymagana.");
@@ -229,9 +229,9 @@ class CogwheelNemesisSheet extends ActorSheet {
         save: {
           label: game.i18n.localize("COGSYNDICATE.Confirm"),
           callback: async (html) => {
-            const name = html.find('[name="name"]').val().trim();
-            const description = html.find('[name="description"]').val().trim();
-            const role = html.find('[name="role"]').val().trim();
+            const name = html[0].querySelector('[name="name"]').value.trim();
+            const description = html[0].querySelector('[name="description"]').value.trim();
+            const role = html[0].querySelector('[name="role"]').value.trim();
 
             if (!name) {
               ui.notifications.warn("Nazwa przybocznego jest wymagana.");

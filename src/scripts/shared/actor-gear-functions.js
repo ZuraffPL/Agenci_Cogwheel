@@ -79,9 +79,9 @@ export class ActorGearFunctions {
   static async _processGearSpending(actor, sheet, html, options = {}) {
     const { validateGearCost, formatMessage, onSuccess, onError } = options;
     
-    const selectedOption = html.find('input[name="gearType"]:checked');
+    const selectedOption = html[0].querySelector('input[name="gearType"]:checked');
 
-    if (selectedOption.length === 0) {
+    if (!selectedOption) {
       new Dialog({
         title: game.i18n.localize("COGSYNDICATE.Error"),
         content: `<p style="color: red; font-weight: bold; text-align: center; font-size: 16px;">${game.i18n.localize("COGSYNDICATE.ErrorNoGearSelected")}</p>`,
@@ -96,8 +96,8 @@ export class ActorGearFunctions {
       return false;
     }
 
-    const gearType = selectedOption.val();
-    const gearCost = parseInt(selectedOption.data('cost'), 10);
+    const gearType = selectedOption.value;
+    const gearCost = parseInt(selectedOption.dataset.cost, 10);
     const steamCost = parseInt(selectedOption.data('steam'), 10);
 
     const currentGear = actor.system.resources.gear.value || 0;

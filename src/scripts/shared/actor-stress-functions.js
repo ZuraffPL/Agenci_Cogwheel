@@ -82,17 +82,17 @@ export class ActorStressFunctions {
   static async _processStressSpending(actor, sheet, html, parentDialog, options = {}) {
     const { validateStressCost, formatMessage, onSuccess, onError, onTraumaWarning } = options;
     
-    const selectedOption = html.find('input[name="stressAction"]:checked');
+    const selectedOption = html[0].querySelector('input[name="stressAction"]:checked');
     
-    if (selectedOption.length === 0) {
+    if (!selectedOption) {
       ActorStressFunctions._showErrorDialog(
         game.i18n.localize("COGSYNDICATE.ErrorNoStressSelected")
       );
       return false;
     }
 
-    const stressAction = selectedOption.val();
-    const stressCost = parseInt(selectedOption.data('cost'), 10);
+    const stressAction = selectedOption.value;
+    const stressCost = parseInt(selectedOption.dataset.cost, 10);
     const steamBonus = parseInt(selectedOption.data('steam') || 0, 10);
     
     const currentStress = actor.system.resources.stress.value || 0;

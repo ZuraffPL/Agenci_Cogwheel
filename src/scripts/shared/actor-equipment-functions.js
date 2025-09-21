@@ -58,11 +58,11 @@ export class ActorEquipmentFunctions {
                 try {
                   // Extract form data
                   const formData = {
-                    name: html.find('[name="name"]').val(),
-                    type: html.find('[name="type"]').val(),
-                    cost: parseInt(html.find('[name="cost"]').val(), 10),
-                    usage: html.find('[name="usage"]').val(),
-                    action: html.find('[name="action"]').val()
+                    name: html[0].querySelector('[name="name"]').value,
+                    type: html[0].querySelector('[name="type"]').value,
+                    cost: parseInt(html[0].querySelector('[name="cost"]').value, 10),
+                    usage: html[0].querySelector('[name="usage"]').value,
+                    action: html[0].querySelector('[name="action"]').value
                   };
 
                   // Validate input
@@ -167,11 +167,11 @@ export class ActorEquipmentFunctions {
               callback: async (html) => {
                 try {
                   const formData = {
-                    name: html.find('[name="name"]').val(),
-                    type: html.find('[name="type"]').val(),
-                    cost: parseInt(html.find('[name="cost"]').val(), 10),
-                    usage: html.find('[name="usage"]').val(),
-                    action: html.find('[name="action"]').val()
+                    name: html[0].querySelector('[name="name"]').value,
+                    type: html[0].querySelector('[name="type"]').value,
+                    cost: parseInt(html[0].querySelector('[name="cost"]').value, 10),
+                    usage: html[0].querySelector('[name="usage"]').value,
+                    action: html[0].querySelector('[name="action"]').value
                   };
 
                   // Validate input
@@ -321,10 +321,11 @@ export class ActorEquipmentFunctions {
 
   static _defaultShowValidationError(html, message) {
     // V1 style - show in dialog
-    const errorMessage = html.find('.error-message');
-    if (errorMessage.length) {
-      errorMessage.text(message).addClass('show');
-      setTimeout(() => errorMessage.removeClass('show'), 3000);
+    const errorMessage = html[0].querySelector('.error-message');
+    if (errorMessage) {
+      errorMessage.textContent = message;
+      errorMessage.classList.add('show');
+      setTimeout(() => errorMessage.classList.remove('show'), 3000);
     } else {
       // Fallback to notification
       ui.notifications.warn(message);

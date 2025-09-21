@@ -149,9 +149,9 @@ async _onAddEquipment(event) {
       hidden: false // Smuggler-specific field
     },
     
-    validateCost: (cost, availablePoints, actor, config) => {
+    validateCost: (cost, availablePoints, actor, config, html) => {
       // Jeśli sprzęt ma być ukryty, koszt x2
-      const isHidden = html.find('[name="hidden"]').is(':checked');
+      const isHidden = html[0].querySelector('[name="hidden"]').checked;
       const finalCost = isHidden ? cost * 2 : cost;
       
       if (finalCost > availablePoints) {

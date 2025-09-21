@@ -41,7 +41,7 @@ class CogwheelHQSheet extends ActorSheet {
     super.activateListeners(html);
 
     // Obsługa zmiany obrazka awatara
-    html.find('.profile-img').click(event => {
+    html[0].querySelector('.profile-img').addEventListener('click', event => {
       const input = document.createElement('input');
       input.type = 'file';
       input.accept = 'image/*';
@@ -56,28 +56,28 @@ class CogwheelHQSheet extends ActorSheet {
     });
 
     // Obsługa dodawania lokacji
-    html.find('.add-location-btn').click(this._onAddLocation.bind(this));
+    html[0].querySelector('.add-location-btn').addEventListener('click', this._onAddLocation.bind(this));
 
     // Obsługa edycji lokacji
-    html.find('.edit-location').click(this._onEditLocation.bind(this));
+    html[0].querySelectorAll('.edit-location').forEach(el => el.addEventListener('click', this._onEditLocation.bind(this)));
 
     // Obsługa usuwania lokacji
-    html.find('.delete-location').click(this._onDeleteLocation.bind(this));
+    html[0].querySelectorAll('.delete-location').forEach(el => el.addEventListener('click', this._onDeleteLocation.bind(this)));
 
     // Obsługa dodawania projektu rozbudowy
-    html.find('.add-project-btn').click(this._onAddExpansionProject.bind(this));
+    html[0].querySelector('.add-project-btn').addEventListener('click', this._onAddExpansionProject.bind(this));
 
     // Obsługa edycji projektu rozbudowy
-    html.find('.edit-project').click(this._onEditExpansionProject.bind(this));
+    html[0].querySelectorAll('.edit-project').forEach(el => el.addEventListener('click', this._onEditExpansionProject.bind(this)));
 
     // Obsługa usuwania projektu rozbudowy
-    html.find('.delete-project').click(this._onDeleteExpansionProject.bind(this));
+    html[0].querySelectorAll('.delete-project').forEach(el => el.addEventListener('click', this._onDeleteExpansionProject.bind(this)));
 
     // Obsługa zwiększania poziomu sekcji
-    html.find('.increase-level').click(this._onIncreaseLevel.bind(this));
+    html[0].querySelectorAll('.increase-level').forEach(el => el.addEventListener('click', this._onIncreaseLevel.bind(this)));
 
     // Obsługa zmniejszania poziomu sekcji
-    html.find('.decrease-level').click(this._onDecreaseLevel.bind(this));
+    html[0].querySelectorAll('.decrease-level').forEach(el => el.addEventListener('click', this._onDecreaseLevel.bind(this)));
 
     // Obsługa checkboxa "Lokacja zniszczona"
     html.find('.destroyed-checkbox').change(this._onToggleDestroyed.bind(this));

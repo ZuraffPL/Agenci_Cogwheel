@@ -145,12 +145,12 @@ Hooks.on("renderSidebarTab", (app, html) => {
     `<button class="doom-clocks-btn" title="${game.i18n.localize('COGSYNDICATE.DoomClocksTitle')}"><i class="fas fa-clock"></i> ${game.i18n.localize('COGSYNDICATE.DoomClocksTitle')}</button>`
   );
 
-  const header = html.find(".directory-header");
-  if (!header.find(".meta-currency-btn").length) {
-    header.append(metaButton);
+  const header = html[0].querySelector(".directory-header");
+  if (!header.querySelector(".meta-currency-btn")) {
+    header.insertAdjacentHTML('beforeend', metaButton);
   }
-  if (!header.find(".doom-clocks-btn").length) {
-    header.append(clockButton);
+  if (!header.querySelector(".doom-clocks-btn")) {
+    header.insertAdjacentHTML('beforeend', clockButton);
   }
 
   metaButton.click(() => {
