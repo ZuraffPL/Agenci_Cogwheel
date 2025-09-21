@@ -155,15 +155,16 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
   static showApp() {
     const app = new MetaCurrencyApp();
     
-    // Pozycjonowanie po wyrenderowaniu
-    app.setPosition({
-      left: 20,
-      top: window.innerHeight - 270,
-      width: 400,
-      height: 340
+    app.render(true).then(() => {
+      // Pozycjonowanie po wyrenderowaniu
+      app.setPosition({
+        left: 20,
+        top: window.innerHeight - 270,
+        width: 400,
+        height: 340
+      });
     });
     
-    app.render(true);
     return app;
   }
 

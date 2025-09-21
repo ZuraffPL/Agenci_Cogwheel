@@ -20,11 +20,13 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Fixed positioning errors in ApplicationV2 by using setPosition instead of constructor options | Naprawiono błędy pozycjonowania w ApplicationV2 używając setPosition zamiast opcji konstruktora
 - Removed deprecated _updatePosition methods that conflicted with ApplicationV2 positioning | Usunięto przestarzałe metody _updatePosition które kolidowały z pozycjonowaniem ApplicationV2
 - Fixed "Cannot read properties of undefined (reading 'width')" positioning error | Naprawiono błąd pozycjonowania "Cannot read properties of undefined (reading 'width')"
+- Fixed "Cannot read properties of undefined (reading 'style')" by positioning after render | Naprawiono błąd "Cannot read properties of undefined (reading 'style')" przez pozycjonowanie po renderze
 
 ### Technical Details | Szczegóły techniczne
 - ApplicationV2 passes native HTMLElement to _onRender, not jQuery object
-- Position settings must be done via setPosition() method after render
+- Position settings must be done via setPosition() method after render() completes
 - jQuery wrapping required for backwards compatibility with existing code
+- Element must exist before calling setPosition() in ApplicationV2
 
 **Compatibility:** Foundry VTT v13.348+ | **Kompatybilność:** Foundry VTT v13.348+
 **System Version:** 0.9.8

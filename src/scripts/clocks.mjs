@@ -329,15 +329,15 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
 export function openDoomClocks() {
   const dialog = new DoomClocksDialog();
   
-  // Pozycjonowanie po wyrenderowaniu
-  dialog.setPosition({
-    left: 20,
-    top: 20,
-    width: 500,
-    height: "auto"
+  dialog.render(true).then(() => {
+    // Pozycjonowanie po wyrenderowaniu
+    dialog.setPosition({
+      left: 20,
+      top: 20,
+      width: 500,
+      height: "auto"
+    });
   });
-  
-  dialog.render(true);
 }
 
 // Hook do odświeżania otwartych okien dialogowych zegarów
