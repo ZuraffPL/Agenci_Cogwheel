@@ -53,6 +53,11 @@ export class DoomClocksDialog extends Application {
 
     // Ustaw właściwą zakładkę jako aktywną
     const container = html[0].querySelector('.doom-clocks-content');
+    if (!container) {
+      console.warn('DoomClocksDialog: .doom-clocks-content not found in DOM');
+      return;
+    }
+    
     html[0].querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     const activeTab = html[0].querySelector(`.tab-btn[data-category="${this.activeCategory}"]`);
     if (activeTab) activeTab.classList.add('active');

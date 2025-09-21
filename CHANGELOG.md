@@ -11,6 +11,15 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.3] - 2025-01-27
+
+**FOUNDRY VTT v13 DOM ACCESS FIX** | **NAPRAWA DOSTĘPU DO DOM FOUNDRY VTT v13**
+
+### Fixed | Naprawione
+- Fixed "Cannot read properties of null (reading 'setAttribute')" error in DoomClocksDialog when DOM element is not ready | Naprawiono błąd "Cannot read properties of null (reading 'setAttribute')" w DoomClocksDialog gdy element DOM nie jest gotowy
+- Added null checks and error handling for DOM element access in clocks.mjs | Dodano sprawdzenia null i obsługę błędów dla dostępu do elementów DOM w clocks.mjs
+- Improved robustness of dialog rendering in Foundry v13 | Zwiększono odporność renderowania dialogów w Foundry v13
+
 ## [0.9.2] - 2025-09-21
 
 **FOUNDRY VTT v13 SCENE CONTROLS API FIX**
