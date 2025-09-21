@@ -12,6 +12,11 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased] | [Nieopublikowane]
 
 ### Fixed | Naprawione
+- Fixed renderSceneControls hook jQuery compatibility by wrapping html in $(html) | Naprawiono kompatybilność jQuery hooka renderSceneControls przez owinięcie html w $(html)
+- Replaced deprecated renderTemplate with foundry.applications.handlebars.renderTemplate in clocks.mjs | Zastąpiono przestarzały renderTemplate na foundry.applications.handlebars.renderTemplate w clocks.mjs
+- Migrated Dialog to DialogV2 in DoomClocksDialog for add/edit clock functionality | Zmigrowano Dialog na DialogV2 w DoomClocksDialog dla funkcjonalności dodawania/edycji zegarów
+- Fixed DialogV2 render callback errors by removing problematic target.querySelector usage | Naprawiono błędy callback render DialogV2 przez usunięcie problematycznego użycia target.querySelector
+- Removed deprecated Dialog V1 usage throughout the system for Foundry v13+ compatibility | Usunięto przestarzałe użycie Dialog V1 w całym systemie dla kompatybilności z Foundry v13+
 - Fixed scene controls onClick handlers not working by adding renderSceneControls hook | Naprawiono niedziałające handlery onClick kontrolek sceny przez dodanie hooka renderSceneControls
 - Replaced deprecated Dialog with foundry.applications.api.DialogV2 for Foundry v13+ compatibility | Zastąpiono przestarzały Dialog na foundry.applications.api.DialogV2 dla kompatybilności z Foundry v13+
 - Updated MetaCurrencyApp dialogs to use modern DialogV2.wait() pattern | Zaktualizowano dialogi MetaCurrencyApp do używania nowoczesnego wzorca DialogV2.wait()

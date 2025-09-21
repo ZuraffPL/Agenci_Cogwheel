@@ -210,8 +210,11 @@ Hooks.on("getSceneControlButtons", (controls) => {
 Hooks.on("renderSceneControls", (controls, html, data) => {
   console.log("renderSceneControls hook called");
   
+  // Konwertuj native DOM element na jQuery
+  const $html = $(html);
+  
   // Znajdź i obsłuż kliknięcia na nasze przyciski
-  html.find('[data-tool="doom-clocks"]').off('click').on('click', () => {
+  $html.find('[data-tool="doom-clocks"]').off('click').on('click', () => {
     console.log("Doom clocks button clicked via renderSceneControls!");
     try {
       openDoomClocks();
@@ -220,7 +223,7 @@ Hooks.on("renderSceneControls", (controls, html, data) => {
     }
   });
   
-  html.find('[data-tool="meta-currency"]').off('click').on('click', () => {
+  $html.find('[data-tool="meta-currency"]').off('click').on('click', () => {
     console.log("Meta currency button clicked via renderSceneControls!");
     try {
       MetaCurrencyApp.showApp();

@@ -193,34 +193,7 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
           label: game.i18n.localize("COGSYNDICATE.metacurrency.spendPoints"),
           default: true
         }
-      ],
-      render: (event, target, data) => {
-        // Dodaj event listenery dla niestandardowej akcji
-        const customAmountInput = target.querySelector('.custom-np-amount');
-        const customRadio = target.querySelector('input[name="npAction"][value="custom"]');
-        
-        if (customAmountInput && customRadio) {
-          // Automatycznie zaznacz radio button gdy użytkownik kliknie na input
-          customAmountInput.addEventListener('focus', () => {
-            customRadio.checked = true;
-          });
-          
-          customAmountInput.addEventListener('click', () => {
-            customRadio.checked = true;
-          });
-          
-          // Zaktualizuj atrybut data-cost gdy zmieni się wartość
-          customAmountInput.addEventListener('input', (e) => {
-            const value = parseInt(e.target.value) || 1;
-            customRadio.setAttribute('data-cost', value);
-          });
-          
-          customAmountInput.addEventListener('change', (e) => {
-            const value = parseInt(e.target.value) || 1;
-            customRadio.setAttribute('data-cost', value);
-          });
-        }
-      }
+      ]
     });
     
     // Obsłuż wynik dialoga

@@ -102,49 +102,56 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
     // Pobierz aktualnie aktywną kategorię z instancji
     const activeCategory = this.activeCategory || 'mission';
     
-    const dialogContent = await renderTemplate(
+    const dialogContent = await foundry.applications.handlebars.renderTemplate(
       "systems/cogwheel-syndicate/src/templates/add-clock-dialog.hbs",
       { clock: { name: "", description: "", max: 4, category: activeCategory, fillColor: "#dc2626" } }
     );
 
-    new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.AddDoomClock"),
-      content: dialogContent,
-      buttons: {
-        cancel: {
-          label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => {}
-        },
-        add: {
-          label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          callback: async (html) => {
-            const name = html[0].querySelector('[name="name"]').value.trim();
-            const description = html[0].querySelector('[name="description"]').value.trim();
-            const max = parseInt(html[0].querySelector('[name="max"]').value) || 4;
-            const category = html[0].querySelector('[name="category"]').value || activeCategory;
-            const fillColor = html[0].querySelector('[name="fillColor"]:checked').value || "#dc2626";
-
-            if (!name) {
-              ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
-              return;
-            }
-
-            const newClock = { 
-              name, 
-              description, 
-              value: 0, 
-              max: Math.clamp(max, 2, 12),
-              category: category,
-              fillColor: fillColor
-            };
-            
-            this.clocks.push(newClock);
-            await this._updateClocks();
-          }
-        }
+    const dialog = await foundry.applications.api.DialogV2.wait({
+      window: {
+        title: game.i18n.localize("COGSYNDICATE.AddDoomClock"),
+        classes: ["cogwheel", "add-clock-dialog"]
       },
-      default: "add"
-    }).render(true);
+      content: dialogContent,
+      buttons: [
+        {
+          action: "cancel",
+          label: game.i18n.localize("COGSYNDICATE.Cancel"),
+          default: false
+        },
+        {
+          action: "add",
+          label: game.i18n.localize("COGSYNDICATE.Confirm"),
+          default: true
+        }
+      ]
+    });
+
+    if (dialog?.action === "add") {
+      const element = dialog.element;
+      const name = element.querySelector('[name="name"]').value.trim();
+      const description = element.querySelector('[name="description"]').value.trim();
+      const max = parseInt(element.querySelector('[name="max"]').value) || 4;
+      const category = element.querySelector('[name="category"]').value || activeCategory;
+      const fillColor = element.querySelector('[name="fillColor"]:checked').value || "#dc2626";
+
+      if (!name) {
+        ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
+        return;
+      }
+
+      const newClock = { 
+        name, 
+        description, 
+        value: 0, 
+        max: Math.clamp(max, 2, 12),
+        category: category,
+        fillColor: fillColor
+      };
+      
+      this.clocks.push(newClock);
+      await this._updateClocks();
+    }
   }
 
   async _onEditClock(event) {
@@ -152,46 +159,53 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
     const index = parseInt(event.currentTarget.closest(".clock-item").dataset.index);
     const clock = this.clocks[index];
 
-    const dialogContent = await renderTemplate(
+    const dialogContent = await foundry.applications.handlebars.renderTemplate(
       "systems/cogwheel-syndicate/src/templates/add-clock-dialog.hbs",
       { clock }
     );
 
-    new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.EditDoomClock"),
-      content: dialogContent,
-      buttons: {
-        cancel: {
-          label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => {}
-        },
-        save: {
-          label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          callback: async (html) => {
-            const name = html[0].querySelector('[name="name"]').value.trim();
-            const description = html[0].querySelector('[name="description"]').value.trim();
-            const max = parseInt(html[0].querySelector('[name="max"]').value) || clock.max;
-            const fillColor = html[0].querySelector('[name="fillColor"]:checked').value || clock.fillColor || "#dc2626";
-
-            if (!name) {
-              ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
-              return;
-            }
-
-            this.clocks[index] = {
-              name,
-              description,
-              value: Math.min(clock.value, max),
-              max: Math.clamp(max, 2, 12),
-              category: clock.category, // Zachowaj kategorię
-              fillColor: fillColor
-            };
-            await this._updateClocks();
-          }
-        }
+    const dialog = await foundry.applications.api.DialogV2.wait({
+      window: {
+        title: game.i18n.localize("COGSYNDICATE.EditDoomClock"),
+        classes: ["cogwheel", "edit-clock-dialog"]
       },
-      default: "save"
-    }).render(true);
+      content: dialogContent,
+      buttons: [
+        {
+          action: "cancel",
+          label: game.i18n.localize("COGSYNDICATE.Cancel"),
+          default: false
+        },
+        {
+          action: "save",
+          label: game.i18n.localize("COGSYNDICATE.Confirm"),
+          default: true
+        }
+      ]
+    });
+
+    if (dialog?.action === "save") {
+      const element = dialog.element;
+      const name = element.querySelector('[name="name"]').value.trim();
+      const description = element.querySelector('[name="description"]').value.trim();
+      const max = parseInt(element.querySelector('[name="max"]').value) || clock.max;
+      const fillColor = element.querySelector('[name="fillColor"]:checked').value || clock.fillColor || "#dc2626";
+
+      if (!name) {
+        ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
+        return;
+      }
+
+      this.clocks[index] = {
+        name,
+        description,
+        value: Math.min(clock.value, max),
+        max: Math.clamp(max, 2, 12),
+        category: clock.category, // Zachowaj kategorię
+        fillColor: fillColor
+      };
+      await this._updateClocks();
+    }
   }
 
   async _onIncrementClock(event) {
