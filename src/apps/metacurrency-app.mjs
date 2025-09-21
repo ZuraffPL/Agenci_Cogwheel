@@ -178,7 +178,7 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
     // Utwórz dialog wydawania punktów Nemezis
     const dialog = new Dialog({
       title: game.i18n.localize("COGSYNDICATE.metacurrency.spendNPDialog"),
-      content: await renderTemplate("systems/cogwheel-syndicate/src/templates/spend-np-dialog.hbs", {}),
+      content: await foundry.applications.handlebars.renderTemplate("systems/cogwheel-syndicate/src/templates/spend-np-dialog.hbs", {}),
       buttons: {
         cancel: {
           label: game.i18n.localize("COGSYNDICATE.Cancel"),
@@ -333,7 +333,7 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
     // Utwórz dialog wydawania punktów Pary
     new Dialog({
       title: game.i18n.localize("COGSYNDICATE.metacurrency.spendSPDialog"),
-      content: await renderTemplate("systems/cogwheel-syndicate/src/templates/spend-sp-dialog.hbs", {
+      content: await foundry.applications.handlebars.renderTemplate("systems/cogwheel-syndicate/src/templates/spend-sp-dialog.hbs", {
         stressUsesLeft: stressUsesLeft
       }),
       buttons: {

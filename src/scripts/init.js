@@ -159,24 +159,10 @@ Hooks.on("renderSidebarTab", (app, html) => {
 
 // Dodaj kontrolki do paska narzędzi po lewej stronie
 Hooks.on("getSceneControlButtons", (controls) => {
-  // Upewnij się, że pracujemy z tablicą controls
-  if (!Array.isArray(controls)) {
-    console.warn("getSceneControlButtons: controls is not an array, attempting to use as object");
-    // W przypadku gdy controls to object, konwertuj na tablicę
-    if (typeof controls === 'object') {
-      const controlsArray = Object.values(controls);
-      controls = controlsArray;
-    } else {
-      console.error("getSceneControlButtons: unexpected controls type:", typeof controls);
-      return;
-    }
-  }
-  
-  // Znajdź lub utwórz grupę Cogwheel
-  let cogwheelControls = controls.find(c => c.name === "cogwheel");
-  
-  if (!cogwheelControls) {
-    cogwheelControls = {
+  // W Foundry v13 controls to object, nie array
+  // Znajdź lub utwórz grupę Cogwheel bezpośrednio w object
+  if (!controls.cogwheel) {
+    controls.cogwheel = {
       name: "cogwheel",
       title: "Cogwheel Syndicate",
       icon: "fas fa-cog",
@@ -184,9 +170,9 @@ Hooks.on("getSceneControlButtons", (controls) => {
       tools: [],
       visible: true
     };
-    // Dodaj grupę do controls array
-    controls.push(cogwheelControls);
   }
+  
+  const cogwheelControls = controls.cogwheel;
   
   // Sprawdź czy narzędzia już nie zostały dodane (żeby uniknąć duplikatów)
   const clockToolExists = cogwheelControls.tools.some(t => t.name === "doom-clocks");
@@ -218,8 +204,8 @@ Hooks.on("getSceneControlButtons", (controls) => {
     });
   }
   
-  // Dla tablicy controls nie potrzebujemy zwracać niczego
-  // Foundry automatycznie użyje zmodyfikowanej tablicy
+  // Dla object controls nie potrzebujemy zwracać niczego
+  // Foundry automatycznie użyje zmodyfikowanego object
 });
 
 // Hook do odświeżania metawalut
