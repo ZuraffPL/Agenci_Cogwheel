@@ -11,6 +11,26 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.1] - 2025-09-21
+
+**FOUNDRY VTT v13 API COMPATIBILITY FIX**
+
+### 🔧 Fixed | Naprawione:
+- **Deprecated API Warnings**: Fixed all remaining Foundry v13 namespace warnings | **Ostrzeżenia przestarzałego API**: Naprawiono wszystkie pozostałe ostrzeżenia namespace'ów Foundry v13
+  - Updated `ActorSheet` → `foundry.applications.sheets.ActorSheet` | Zaktualizowano `ActorSheet` → `foundry.applications.sheets.ActorSheet`
+  - Updated `ItemSheet` → `foundry.applications.sheets.ItemSheet` | Zaktualizowano `ItemSheet` → `foundry.applications.sheets.ItemSheet`
+  - Updated `Actors.registerSheet` → `foundry.documents.Actors.registerSheet` | Zaktualizowano `Actors.registerSheet` → `foundry.documents.Actors.registerSheet`
+  - Updated `Items.registerSheet` → `foundry.documents.Items.registerSheet` | Zaktualizowano `Items.registerSheet` → `foundry.documents.Items.registerSheet`
+- **Console Warnings**: Eliminated compatibility warnings in browser console | **Ostrzeżenia Konsoli**: Wyeliminowano ostrzeżenia kompatybilności w konsoli przeglądarki
+- **Future Compatibility**: Prepared for Foundry VTT v15 when backward compatibility is removed | **Kompatybilność z Przyszłością**: Przygotowano na Foundry VTT v15 gdy backward compatibility zostanie usunięta
+
+### 📁 Files Updated | Zaktualizowane Pliki:
+- `actor-sheet.js`: Main agent sheet namespace updates | Główny arkusz agenta - aktualizacje namespace'ów
+- `actor-sheetv2.js`: V2 agent sheet namespace updates | Arkusz agenta V2 - aktualizacje namespace'ów  
+- `nemesis-sheet.js`: Nemesis sheet namespace updates | Arkusz nemesis - aktualizacje namespace'ów
+- `hq-sheet.js`: HQ sheet namespace updates | Arkusz kwatery głównej - aktualizacje namespace'ów
+- `item-sheet.js`: Archetype and feat sheet namespace updates | Arkusze archetypu i umiejętności - aktualizacje namespace'ów
+
 ## [0.9.0] - 2025-09-21
 
 **FOUNDRY VTT v13 COMPATIBILITY RELEASE**
