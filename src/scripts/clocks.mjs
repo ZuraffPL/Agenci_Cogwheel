@@ -17,7 +17,7 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
     },
     position: {
       width: 500,
-      height: 400,
+      height: 430,
       left: 20,
       top: 20
     },
