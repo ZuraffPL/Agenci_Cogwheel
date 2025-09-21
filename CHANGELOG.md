@@ -11,6 +11,25 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.6] - 2025-01-27
+
+**FOUNDRY VTT v13 APPLICATION V2 FIXES** | **NAPRAWY APPLICATION V2 FOUNDRY VTT v13**
+
+### Fixed | Naprawione
+- Fixed "Cannot add property left, object is not extensible" error in ApplicationV2 | Naprawiono błąd "Cannot add property left, object is not extensible" w ApplicationV2
+- Updated position setting to use constructor options instead of direct property modification | Zaktualizowano ustawianie pozycji aby używać opcji konstruktora zamiast bezpośredniej modyfikacji właściwości
+- Removed deprecated _updatePosition method | Usunięto przestarzałą metodę _updatePosition
+- Fixed window positioning in ApplicationV2 framework | Naprawiono pozycjonowanie okien w frameworku ApplicationV2
+- Improved render method calls for ApplicationV2 compatibility | Zwiększono kompatybilność wywołań metod render dla ApplicationV2
+
+### Technical Details | Szczegóły techniczne
+- Fixed immutable options object handling in ApplicationV2
+- Removed manual DOM positioning in favor of framework positioning
+- Updated render method usage for better compatibility
+
+**Compatibility:** Foundry VTT v13.348+ | **Kompatybilność:** Foundry VTT v13.348+
+**System Version:** 0.9.6
+
 ## [0.9.5] - 2025-01-27
 
 **FOUNDRY VTT v13 APPLICATION V2 MIGRATION** | **MIGRACJA DO APPLICATION V2 FOUNDRY VTT v13**

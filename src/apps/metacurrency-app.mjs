@@ -17,7 +17,7 @@ class MetaCurrencyApp extends foundry.applications.api.ApplicationV2 {
       width: 400,
       height: 340,
       left: 20,
-      top: window.innerHeight - 340
+      top: 100
     },
     classes: ["cogwheel", "metacurrency-app"]
   };
@@ -157,7 +157,7 @@ class MetaCurrencyApp extends foundry.applications.api.ApplicationV2 {
   }
 
   _onUpdateMetaCurrencies() {
-    this.render(false); // Odśwież tylko gdy zmieniono metacurrencies
+    this.render(); // Odśwież tylko gdy zmieniono metacurrencies
   }
 
   close(options = {}) {

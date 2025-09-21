@@ -93,21 +93,8 @@ export class DoomClocksDialog extends foundry.applications.api.ApplicationV2 {
       html.find(".delete-clock").on('click', this._onDeleteClock.bind(this));
     }
 
-    // Ustaw pozycję w prawym górnym rogu po wyrenderowaniu
-    this._updatePosition();
-    
     // Dopasuj wysokość okna do ilości widocznych zegarów
     setTimeout(() => this._adjustWindowHeight(), 50);
-  }
-
-  _updatePosition() {
-    if (this.element && this.element.length > 0) {
-      const element = this.element[0];
-      if (element) {
-        element.style.left = '20px';
-        element.style.top = '20px';
-      }
-    }
   }
 
   async _onAddClock(event) {
@@ -341,11 +328,12 @@ export class DoomClocksDialog extends foundry.applications.api.ApplicationV2 {
 }
 
 export function openDoomClocks() {
-  const dialog = new DoomClocksDialog();
-  
-  // Ustaw pozycję w lewym górnym rogu
-  dialog.options.left = 20;
-  dialog.options.top = 20;
+  const dialog = new DoomClocksDialog({
+    position: {
+      left: 20,
+      top: 20
+    }
+  });
   
   dialog.render(true);
 }
