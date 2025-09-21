@@ -186,7 +186,22 @@ Hooks.on("getSceneControlButtons", (controls) => {
       icon: "fas fa-clock",
       button: true,
       visible: true,
-      onClick: () => openDoomClocks()
+      onClick: () => {
+        console.log("Doom clocks button clicked!");
+        console.log("openDoomClocks function:", typeof openDoomClocks);
+        // Spróbuj bezpośredniego importu w funkcji
+        import("./clocks.mjs").then(module => {
+          module.openDoomClocks();
+        }).catch(error => {
+          console.error("Error importing/calling openDoomClocks:", error);
+          // Fallback - spróbuj bezpośrednio
+          try {
+            openDoomClocks();
+          } catch (fallbackError) {
+            console.error("Fallback also failed:", fallbackError);
+          }
+        });
+      }
     });
   }
   
@@ -199,7 +214,20 @@ Hooks.on("getSceneControlButtons", (controls) => {
       button: true,
       visible: true,
       onClick: () => {
-        MetaCurrencyApp.showApp();
+        console.log("Meta currency button clicked!");
+        console.log("MetaCurrencyApp:", typeof MetaCurrencyApp);
+        // Spróbuj bezpośredniego importu w funkcji
+        import("../apps/metacurrency-app.mjs").then(module => {
+          module.MetaCurrencyApp.showApp();
+        }).catch(error => {
+          console.error("Error importing/calling MetaCurrencyApp:", error);
+          // Fallback - spróbuj bezpośrednio
+          try {
+            MetaCurrencyApp.showApp();
+          } catch (fallbackError) {
+            console.error("Fallback also failed:", fallbackError);
+          }
+        });
       }
     });
   }
