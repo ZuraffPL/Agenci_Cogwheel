@@ -250,7 +250,7 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
         this.activeCategory = currentCategory;
         
         // Znajdź i kliknij właściwą zakładkę aby przełączyć widok
-        const targetTab = this.element.find(`.tab-btn[data-category="${currentCategory}"]`);
+        const targetTab = $(this.element).find(`.tab-btn[data-category="${currentCategory}"]`);
         if (targetTab.length > 0) {
           // Wywołaj _onTabChange aby rzeczywiście przełączyć widok
           const fakeEvent = { 
@@ -287,14 +287,14 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
     this.activeCategory = category;
     
     // Usuń klasę active z wszystkich przycisków
-    const tabs = this.element.find('.tab-btn');
+    const tabs = $(this.element).find('.tab-btn');
     tabs.removeClass('active');
     
     // Dodaj klasę active do klikniętego przycisku
     button.classList.add('active');
     
     // Zaktualizuj atrybut kategorii kontenera
-    const container = this.element.find('.doom-clocks-content');
+    const container = $(this.element).find('.doom-clocks-content');
     container.attr('data-active-category', category);
     
     // Dopasuj wysokość okna do ilości widocznych zegarów
@@ -303,12 +303,13 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
     }, 100);
     
     // Zaktualizuj przycisk "Dodaj zegar" aby dodawał do aktywnej kategorii
-    this.element.find('.add-clock').attr('data-category', category);
+    $(this.element).find('.add-clock').attr('data-category', category);
   }
 
   // Dopasowuje wysokość okna do ilości widocznych zegarów
   _adjustWindowHeight() {
-    const visibleClocks = this.element.find('.clock-item:visible').length;
+    const $element = $(this.element);
+    const visibleClocks = $element.find('.clock-item:visible').length;
     const baseHeight = 200; // Podstawowa wysokość dla UI (przyciski, zakładki)
     const clockHeight = 86; // Wysokość jednego zegara (70px + 8px margin + padding)
     const maxHeight = 600; // Maksymalna wysokość okna
@@ -321,7 +322,7 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
     targetHeight = Math.max(targetHeight, 250);
     
     // Zastosuj nową wysokość
-    this.element.css('height', targetHeight + 'px');
+    $element.css('height', targetHeight + 'px');
     this.setPosition({ height: targetHeight });
   }
 }

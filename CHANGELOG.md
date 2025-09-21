@@ -11,6 +11,11 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+### Fixed | Naprawione
+- Fixed ApplicationV2 jQuery compatibility issues by wrapping this.element in $() for DOM queries | Naprawiono problemy kompatybilności jQuery w ApplicationV2 przez owinięcie this.element w $() dla zapytań DOM
+- Replaced deprecated renderChatMessage hook with renderChatMessageHTML for Foundry v13+ compatibility | Zastąpiono przestarzały hook renderChatMessage hookiem renderChatMessageHTML dla kompatybilności z Foundry v13+
+- Fixed "this.element.find is not a function" errors in DoomClocksDialog methods | Naprawiono błędy "this.element.find is not a function" w metodach DoomClocksDialog
+
 ## [0.9.8] - 2025-01-27
 
 **FOUNDRY VTT v13 APPLICATIONV2 DOM AND POSITIONING FIXES** | **NAPRAWY DOM I POZYCJONOWANIA APPLICATIONV2 FOUNDRY VTT v13**

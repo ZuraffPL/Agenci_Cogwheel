@@ -1082,9 +1082,10 @@ async function executeRollWithData(actor, data, isReroll = false) {
 }
 
 // Hook do obsługi renderowania wiadomości czatu i kliknięć przycisków
-Hooks.on("renderChatMessage", (message, html, data) => {
+Hooks.on("renderChatMessageHTML", (message, html, data) => {
+  // html is now an HTMLElement instead of jQuery object
   // Sprawdzenie uprawnień dla przycisków podnoszenia sukcesu
-  html[0].querySelectorAll('.success-upgrade-button').forEach(function(button) {
+  html.querySelectorAll('.success-upgrade-button').forEach(function(button) {
     const authorUserId = button.dataset.userId;
     
     if (!canUserInteractWithButton(authorUserId)) {
@@ -1095,7 +1096,7 @@ Hooks.on("renderChatMessage", (message, html, data) => {
   });
   
   // Sprawdzenie uprawnień dla przycisków przerzutu
-  html[0].querySelectorAll('.test-reroll-button').forEach(function(button) {
+  html.querySelectorAll('.test-reroll-button').forEach(function(button) {
     const authorUserId = button.dataset.userId;
     
     if (!canUserInteractWithButton(authorUserId)) {
@@ -1106,7 +1107,7 @@ Hooks.on("renderChatMessage", (message, html, data) => {
   });
 
   // Obsługa przycisków podnoszenia sukcesu
-  html[0].querySelectorAll('.success-upgrade-button').forEach(function(button) {
+  html.querySelectorAll('.success-upgrade-button').forEach(function(button) {
     button.addEventListener('click', async function(event) {
     event.preventDefault();
     
@@ -1158,7 +1159,7 @@ Hooks.on("renderChatMessage", (message, html, data) => {
   });
 
   // Obsługa przycisków przerzutu testu
-  html[0].querySelectorAll('.test-reroll-button').forEach(function(button) {
+  html.querySelectorAll('.test-reroll-button').forEach(function(button) {
     button.addEventListener('click', async function(event) {
     event.preventDefault();
     
