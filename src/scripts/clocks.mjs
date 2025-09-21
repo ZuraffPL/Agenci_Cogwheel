@@ -1,4 +1,4 @@
-export class DoomClocksDialog extends Application {
+export class DoomClocksDialog extends foundry.applications.api.ApplicationV2 {
   constructor(options = {}) {
     super(options);
     // Odczyt zegarów z ustawień świata
@@ -7,21 +7,31 @@ export class DoomClocksDialog extends Application {
     this.activeCategory = 'mission';
   }
 
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      id: "doom-clocks-dialog",
-      title: game.i18n.localize("COGSYNDICATE.DoomClocksTitle"),
-      template: "systems/cogwheel-syndicate/src/templates/doom-clocks-dialog.hbs",
+  static DEFAULT_OPTIONS = {
+    id: "doom-clocks-dialog",
+    tag: "div",
+    window: {
+      title: "COGSYNDICATE.DoomClocksTitle",
+      icon: "fas fa-clock",
+      resizable: true
+    },
+    position: {
       width: 500,
       height: "auto",
       left: 20,
-      top: 20,
-      resizable: true,
-      classes: ["cogwheel", "doom-clocks"]
-    });
-  }
+      top: 20
+    },
+    classes: ["cogwheel", "doom-clocks"]
+  };
 
-  getData() {
+  static PARTS = {
+    content: {
+      template: "systems/cogwheel-syndicate/src/templates/doom-clocks-dialog.hbs"
+    }
+  };
+
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
     // Migracja starych zegarów - dodaj kategorię "mission" i domyślny kolor jeśli nie ma
     const migratedClocks = this.clocks.map(clock => {
       if (!clock.category) {
@@ -41,28 +51,29 @@ export class DoomClocksDialog extends Application {
       this._updateClocks(); // Zapisz do ustawień
     }
     
-    return {
-      clocks: migratedClocks,
-      isGM: game.user.isGM,
-      activeCategory: this.activeCategory
-    };
+    context.clocks = migratedClocks;
+    context.isGM = game.user.isGM;
+    context.activeCategory = this.activeCategory;
+    
+    return context;
   }
 
-  activateListeners(html) {
-    super.activateListeners(html);
+  _onRender(context, options) {
+    super._onRender(context, options);
+    const html = this.element;
 
     // Znajdź kontener - może być w różnych miejscach w zależności od wersji Foundry
-    let container = html[0].querySelector('.doom-clocks-content');
+    let container = html[0]?.querySelector('.doom-clocks-content');
     if (!container) {
       // Spróbuj znaleźć w całym dokumencie jako fallback
       container = html.find('.doom-clocks-content')[0];
     }
     
     // Ustaw właściwą zakładkę jako aktywną
-    const tabBtns = html[0].querySelectorAll('.tab-btn') || html.find('.tab-btn');
+    const tabBtns = html[0]?.querySelectorAll('.tab-btn') || html.find('.tab-btn');
     tabBtns.forEach(btn => btn.classList.remove('active'));
     
-    const activeTab = html[0].querySelector(`.tab-btn[data-category="${this.activeCategory}"]`) || 
+    const activeTab = html[0]?.querySelector(`.tab-btn[data-category="${this.activeCategory}"]`) || 
                      html.find(`.tab-btn[data-category="${this.activeCategory}"]`)[0];
     if (activeTab) activeTab.classList.add('active');
     
@@ -71,37 +82,15 @@ export class DoomClocksDialog extends Application {
       container.setAttribute('data-active-category', this.activeCategory);
     }
 
-    // Obsługa zakładek kategorii - użyj fallback do jQuery jeśli querySelectorAll nie działa
-    const tabButtons = html[0].querySelectorAll(".tab-btn").length > 0 ? 
-                      html[0].querySelectorAll(".tab-btn") : 
-                      html.find(".tab-btn");
-    tabButtons.forEach(el => el.addEventListener('click', this._onTabChange.bind(this)));
+    // Obsługa zakładek kategorii
+    html.find(".tab-btn").on('click', this._onTabChange.bind(this));
 
     if (game.user.isGM) {
-      const addClockBtns = html[0].querySelectorAll(".add-clock").length > 0 ? 
-                          html[0].querySelectorAll(".add-clock") : 
-                          html.find(".add-clock");
-      addClockBtns.forEach(el => el.addEventListener('click', this._onAddClock.bind(this)));
-      
-      const incrementBtns = html[0].querySelectorAll(".increment-clock").length > 0 ? 
-                           html[0].querySelectorAll(".increment-clock") : 
-                           html.find(".increment-clock");
-      incrementBtns.forEach(el => el.addEventListener('click', this._onIncrementClock.bind(this)));
-      
-      const decrementBtns = html[0].querySelectorAll(".decrement-clock").length > 0 ? 
-                           html[0].querySelectorAll(".decrement-clock") : 
-                           html.find(".decrement-clock");
-      decrementBtns.forEach(el => el.addEventListener('click', this._onDecrementClock.bind(this)));
-      
-      const editBtns = html[0].querySelectorAll(".edit-clock").length > 0 ? 
-                      html[0].querySelectorAll(".edit-clock") : 
-                      html.find(".edit-clock");
-      editBtns.forEach(el => el.addEventListener('click', this._onEditClock.bind(this)));
-      
-      const deleteBtns = html[0].querySelectorAll(".delete-clock").length > 0 ? 
-                        html[0].querySelectorAll(".delete-clock") : 
-                        html.find(".delete-clock");
-      deleteBtns.forEach(el => el.addEventListener('click', this._onDeleteClock.bind(this)));
+      html.find(".add-clock").on('click', this._onAddClock.bind(this));
+      html.find(".increment-clock").on('click', this._onIncrementClock.bind(this));
+      html.find(".decrement-clock").on('click', this._onDecrementClock.bind(this));
+      html.find(".edit-clock").on('click', this._onEditClock.bind(this));
+      html.find(".delete-clock").on('click', this._onDeleteClock.bind(this));
     }
 
     // Ustaw pozycję w prawym górnym rogu po wyrenderowaniu

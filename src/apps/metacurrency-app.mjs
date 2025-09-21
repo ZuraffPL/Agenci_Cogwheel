@@ -1,28 +1,36 @@
-class MetaCurrencyApp extends Application {
+class MetaCurrencyApp extends foundry.applications.api.ApplicationV2 {
   constructor(options = {}) {
     super(options);
     this._onUpdateMetaCurrencies = this._onUpdateMetaCurrencies.bind(this);
     Hooks.on("cogwheelSyndicateMetaCurrenciesUpdated", this._onUpdateMetaCurrencies);
   }
 
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      id: `metacurrency-app-${Math.random().toString(36).substr(2, 9)}`,
-      title: game.i18n.localize("COGSYNDICATE.metacurrency.title"),
-      template: "systems/cogwheel-syndicate/src/templates/meta-currency-dialog.hbs",
-      popOut: true,
-      resizable: true,
+  static DEFAULT_OPTIONS = {
+    id: "metacurrency-app",
+    tag: "div",
+    window: {
+      title: "COGSYNDICATE.metacurrency.title",
+      icon: "fas fa-cogs",
+      resizable: true
+    },
+    position: {
       width: 400,
       height: 340,
       left: 20,
-      top: window.innerHeight - 340,
-      classes: ["cogwheel", "metacurrency-app"],
-    });
-  }
+      top: window.innerHeight - 340
+    },
+    classes: ["cogwheel", "metacurrency-app"]
+  };
 
-  getData() {
-    const data = super.getData();
-    data.metacurrencies = {
+  static PARTS = {
+    content: {
+      template: "systems/cogwheel-syndicate/src/templates/meta-currency-dialog.hbs"
+    }
+  };
+
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    context.metacurrencies = {
       steamPoints: { 
         value: game.cogwheelSyndicate.steamPoints ?? 1, 
         max: 100 
@@ -34,21 +42,22 @@ class MetaCurrencyApp extends Application {
     };
     
     // Sprawdź uprawnienia użytkownika - tylko GM i Assistant GM mogą wydawać punkty Nemezis
-    data.canSpendNP = game.user.isGM || game.user.role >= CONST.USER_ROLES.ASSISTANT;
+    context.canSpendNP = game.user.isGM || game.user.role >= CONST.USER_ROLES.ASSISTANT;
     
     // Dodaj informacje o użyciach redukcji stresu
-    data.stressUsesLeft = this._getStressUsesLeft();
+    context.stressUsesLeft = this._getStressUsesLeft();
     
-    return data;
+    return context;
   }
 
-  activateListeners(html) {
-    super.activateListeners(html);
-    html.find('.metacurrency-increment').click(this._onIncrement.bind(this));
-    html.find('.metacurrency-decrement').click(this._onDecrement.bind(this));
-    html.find('.spend-np-btn').click(this._onSpendNP.bind(this));
-    html.find('.spend-sp-btn').click(this._onSpendSP.bind(this));
-    html.find('.reset-stress-uses-btn').click(this._onResetStressUses.bind(this));
+  _onRender(context, options) {
+    super._onRender(context, options);
+    const html = this.element;
+    html.find('.metacurrency-increment').on('click', this._onIncrement.bind(this));
+    html.find('.metacurrency-decrement').on('click', this._onDecrement.bind(this));
+    html.find('.spend-np-btn').on('click', this._onSpendNP.bind(this));
+    html.find('.spend-sp-btn').on('click', this._onSpendSP.bind(this));
+    html.find('.reset-stress-uses-btn').on('click', this._onResetStressUses.bind(this));
     
     // Obsługa bezpośredniej edycji wartości metawalut
     html.find('.meta-value-input').on('change blur', this._onValueChange.bind(this));
@@ -157,11 +166,12 @@ class MetaCurrencyApp extends Application {
   }
 
   static showApp() {
-    const app = new MetaCurrencyApp();
-    
-    // Ustaw pozycję w lewym dolnym rogu
-    app.options.left = 20;
-    app.options.top = window.innerHeight - 270;
+    const app = new MetaCurrencyApp({
+      position: {
+        left: 20,
+        top: window.innerHeight - 270
+      }
+    });
     
     app.render(true);
     return app;

@@ -11,6 +11,27 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.5] - 2025-01-27
+
+**FOUNDRY VTT v13 APPLICATION V2 MIGRATION** | **MIGRACJA DO APPLICATION V2 FOUNDRY VTT v13**
+
+### Fixed | Naprawione
+- **BREAKING:** Migrated from deprecated Application V1 to ApplicationV2 framework | **PRZEŁOMOWE:** Zmigrowano z przestarzałego frameworka Application V1 do ApplicationV2
+- Fixed "V1 Application framework is deprecated" warnings | Naprawiono ostrzeżenia "V1 Application framework is deprecated"
+- Updated MetaCurrencyApp to use foundry.applications.api.ApplicationV2 | Zaktualizowano MetaCurrencyApp aby używało foundry.applications.api.ApplicationV2
+- Updated DoomClocksDialog to use foundry.applications.api.ApplicationV2 | Zaktualizowano DoomClocksDialog aby używało foundry.applications.api.ApplicationV2
+- Modernized event handling and DOM manipulation for V2 API | Zmodernizowano obsługę zdarzeń i manipulację DOM dla API V2
+
+### Technical Details | Szczegóły techniczne
+- Replaced `static get defaultOptions()` with `static DEFAULT_OPTIONS`
+- Replaced `getData()` with `_prepareContext()` 
+- Replaced `activateListeners()` with `_onRender()`
+- Updated template system to use `static PARTS`
+- Enhanced compatibility with Foundry VTT v13+ architecture
+
+**Compatibility:** Foundry VTT v13.348+ | **Kompatybilność:** Foundry VTT v13.348+
+**System Version:** 0.9.5
+
 ## [0.9.4] - 2025-01-27
 
 **FOUNDRY VTT v13 DIALOG COMPATIBILITY FIX** | **NAPRAWA KOMPATYBILNOŚCI DIALOGÓW FOUNDRY VTT v13**
