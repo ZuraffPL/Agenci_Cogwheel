@@ -159,6 +159,8 @@ Hooks.on("renderSidebarTab", (app, html) => {
 
 // Dodaj kontrolki do paska narzędzi po lewej stronie
 Hooks.on("getSceneControlButtons", (controls) => {
+  console.log("getSceneControlButtons hook called");
+  
   // W Foundry v13 controls to object, nie array
   // Znajdź lub utwórz grupę Cogwheel bezpośrednio w object
   if (!controls.cogwheel) {
@@ -185,55 +187,47 @@ Hooks.on("getSceneControlButtons", (controls) => {
       title: game.i18n.localize("COGSYNDICATE.DoomClocksTitle"),
       icon: "fas fa-clock",
       button: true,
-      visible: true,
-      onClick: () => {
-        console.log("Doom clocks button clicked!");
-        console.log("openDoomClocks function:", typeof openDoomClocks);
-        // Spróbuj bezpośredniego importu w funkcji
-        import("./clocks.mjs").then(module => {
-          module.openDoomClocks();
-        }).catch(error => {
-          console.error("Error importing/calling openDoomClocks:", error);
-          // Fallback - spróbuj bezpośrednio
-          try {
-            openDoomClocks();
-          } catch (fallbackError) {
-            console.error("Fallback also failed:", fallbackError);
-          }
-        });
-      }
+      visible: true
     });
   }
   
   if (!metaToolExists) {
     // Dodaj narzędzie metawalut
     cogwheelControls.tools.push({
-      name: "meta-currency",
+      name: "meta-currency", 
       title: game.i18n.localize("COGSYNDICATE.metacurrency.title"),
       icon: "fas fa-coins",
       button: true,
-      visible: true,
-      onClick: () => {
-        console.log("Meta currency button clicked!");
-        console.log("MetaCurrencyApp:", typeof MetaCurrencyApp);
-        // Spróbuj bezpośredniego importu w funkcji
-        import("../apps/metacurrency-app.mjs").then(module => {
-          module.MetaCurrencyApp.showApp();
-        }).catch(error => {
-          console.error("Error importing/calling MetaCurrencyApp:", error);
-          // Fallback - spróbuj bezpośrednio
-          try {
-            MetaCurrencyApp.showApp();
-          } catch (fallbackError) {
-            console.error("Fallback also failed:", fallbackError);
-          }
-        });
-      }
+      visible: true
     });
   }
   
   // Dla object controls nie potrzebujemy zwracać niczego
   // Foundry automatycznie użyje zmodyfikowanego object
+});
+
+// Hook do obsługi kliknięć w scene controls
+Hooks.on("renderSceneControls", (controls, html, data) => {
+  console.log("renderSceneControls hook called");
+  
+  // Znajdź i obsłuż kliknięcia na nasze przyciski
+  html.find('[data-tool="doom-clocks"]').off('click').on('click', () => {
+    console.log("Doom clocks button clicked via renderSceneControls!");
+    try {
+      openDoomClocks();
+    } catch (error) {
+      console.error("Error opening doom clocks:", error);
+    }
+  });
+  
+  html.find('[data-tool="meta-currency"]').off('click').on('click', () => {
+    console.log("Meta currency button clicked via renderSceneControls!");
+    try {
+      MetaCurrencyApp.showApp();
+    } catch (error) {
+      console.error("Error opening meta currency:", error);
+    }
+  });
 });
 
 // Hook do odświeżania metawalut

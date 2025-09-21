@@ -176,50 +176,62 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
     }
 
     // Utwórz dialog wydawania punktów Nemezis
-    const dialog = new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.metacurrency.spendNPDialog"),
-      content: await foundry.applications.handlebars.renderTemplate("systems/cogwheel-syndicate/src/templates/spend-np-dialog.hbs", {}),
-      buttons: {
-        cancel: {
-          label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => {
-            // Dialog zamknie się automatycznie
-          }
-        },
-        spend: {
-          label: game.i18n.localize("COGSYNDICATE.metacurrency.spendPoints"),
-          callback: (html) => {
-            this._handleNPSpend(html);
-          }
-        }
+    const dialog = await foundry.applications.api.DialogV2.wait({
+      window: {
+        title: game.i18n.localize("COGSYNDICATE.metacurrency.spendNPDialog"),
+        classes: ["cogwheel", "spend-points-dialog", "spend-np-dialog"]
       },
-      default: "spend",
-      render: (html) => {
+      content: await foundry.applications.handlebars.renderTemplate("systems/cogwheel-syndicate/src/templates/spend-np-dialog.hbs", {}),
+      buttons: [
+        {
+          action: "cancel",
+          label: game.i18n.localize("COGSYNDICATE.Cancel"),
+          default: false
+        },
+        {
+          action: "spend",
+          label: game.i18n.localize("COGSYNDICATE.metacurrency.spendPoints"),
+          default: true
+        }
+      ],
+      render: (event, target, data) => {
         // Dodaj event listenery dla niestandardowej akcji
-        const customAmountInput = html.find('.custom-np-amount');
-        const customRadio = html.find('input[name="npAction"][value="custom"]');
+        const customAmountInput = target.querySelector('.custom-np-amount');
+        const customRadio = target.querySelector('input[name="npAction"][value="custom"]');
         
-        // Automatycznie zaznacz radio button gdy użytkownik kliknie na input
-        customAmountInput.on('focus click', () => {
-          customRadio.prop('checked', true);
-        });
-        
-        // Zaktualizuj atrybut data-cost gdy zmieni się wartość
-        customAmountInput.on('input change', (e) => {
-          const value = parseInt(e.target.value) || 1;
-          customRadio.attr('data-cost', value);
-        });
+        if (customAmountInput && customRadio) {
+          // Automatycznie zaznacz radio button gdy użytkownik kliknie na input
+          customAmountInput.addEventListener('focus', () => {
+            customRadio.checked = true;
+          });
+          
+          customAmountInput.addEventListener('click', () => {
+            customRadio.checked = true;
+          });
+          
+          // Zaktualizuj atrybut data-cost gdy zmieni się wartość
+          customAmountInput.addEventListener('input', (e) => {
+            const value = parseInt(e.target.value) || 1;
+            customRadio.setAttribute('data-cost', value);
+          });
+          
+          customAmountInput.addEventListener('change', (e) => {
+            const value = parseInt(e.target.value) || 1;
+            customRadio.setAttribute('data-cost', value);
+          });
+        }
       }
-    }, {
-      classes: ["cogwheel", "spend-points-dialog", "spend-np-dialog"],
-      width: 600,
-      resizable: true
     });
     
-    dialog.render(true);
+    // Obsłuż wynik dialoga
+    if (dialog?.action === "spend") {
+      this._handleNPSpend(dialog.element);
+    }
   }
 
-  async _handleNPSpend(html) {
+  async _handleNPSpend(element) {
+    // Konwertuj native DOM element na jQuery dla kompatybilności
+    const html = $(element);
     const selectedAction = html.find('input[name="npAction"]:checked');
     
     if (!selectedAction.length) {
@@ -331,31 +343,32 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
     const stressUsesLeft = this._getStressUsesLeft();
     
     // Utwórz dialog wydawania punktów Pary
-    new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.metacurrency.spendSPDialog"),
+    const dialog = await foundry.applications.api.DialogV2.wait({
+      window: {
+        title: game.i18n.localize("COGSYNDICATE.metacurrency.spendSPDialog"),
+        classes: ["cogwheel", "spend-points-dialog", "spend-sp-dialog"]
+      },
       content: await foundry.applications.handlebars.renderTemplate("systems/cogwheel-syndicate/src/templates/spend-sp-dialog.hbs", {
         stressUsesLeft: stressUsesLeft
       }),
-      buttons: {
-        cancel: {
+      buttons: [
+        {
+          action: "cancel",
           label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => {
-            // Dialog zamknie się automatycznie
-          }
+          default: false
         },
-        spend: {
+        {
+          action: "spend",
           label: game.i18n.localize("COGSYNDICATE.metacurrency.spendPoints"),
-          callback: (html) => {
-            this._handleSPSpend(html);
-          }
+          default: true
         }
-      },
-      default: "spend"
-    }, {
-      classes: ["cogwheel", "spend-points-dialog", "spend-sp-dialog"],
-      width: 600,
-      resizable: true
-    }).render(true);
+      ]
+    });
+    
+    // Obsłuż wynik dialoga
+    if (dialog?.action === "spend") {
+      this._handleSPSpend(dialog.element);
+    }
   }
 
   _getStressUsesLeft() {
@@ -363,7 +376,9 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
     return Math.max(0, 3 - usedThisSession);
   }
 
-  async _handleSPSpend(html) {
+  async _handleSPSpend(element) {
+    // Konwertuj native DOM element na jQuery dla kompatybilności
+    const html = $(element);
     const selectedAction = html.find('input[name="spAction"]:checked');
     
     if (!selectedAction.length) {

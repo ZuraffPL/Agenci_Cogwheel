@@ -12,6 +12,9 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased] | [Nieopublikowane]
 
 ### Fixed | Naprawione
+- Fixed scene controls onClick handlers not working by adding renderSceneControls hook | Naprawiono niedziałające handlery onClick kontrolek sceny przez dodanie hooka renderSceneControls
+- Replaced deprecated Dialog with foundry.applications.api.DialogV2 for Foundry v13+ compatibility | Zastąpiono przestarzały Dialog na foundry.applications.api.DialogV2 dla kompatybilności z Foundry v13+
+- Updated MetaCurrencyApp dialogs to use modern DialogV2.wait() pattern | Zaktualizowano dialogi MetaCurrencyApp do używania nowoczesnego wzorca DialogV2.wait()
 - Fixed getSceneControlButtons hook to properly handle controls as object in Foundry v13 | Naprawiono hook getSceneControlButtons aby właściwie obsługiwał controls jako object w Foundry v13
 - Replaced deprecated global renderTemplate with foundry.applications.handlebars.renderTemplate | Zastąpiono przestarzały globalny renderTemplate na foundry.applications.handlebars.renderTemplate
 - Scene controls now properly register as object properties instead of array items | Kontrolki sceny teraz prawidłowo rejestrują się jako właściwości object zamiast elementów tablicy
