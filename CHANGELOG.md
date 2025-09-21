@@ -11,6 +11,16 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.4] - 2025-01-27
+
+**FOUNDRY VTT v13 DIALOG COMPATIBILITY FIX** | **NAPRAWA KOMPATYBILNOŚCI DIALOGÓW FOUNDRY VTT v13**
+
+### Fixed | Naprawione
+- Fixed DoomClocksDialog not initializing due to overly strict DOM checks | Naprawiono nieinicjalizację DoomClocksDialog z powodu zbyt restrykcyjnych sprawdzeń DOM
+- Added fallback to jQuery selectors when native DOM queries fail | Dodano fallback do selektorów jQuery gdy natywne zapytania DOM nie działają
+- Improved DOM element detection for different Foundry v13 dialog structures | Zwiększono wykrywanie elementów DOM dla różnych struktur dialogów w Foundry v13
+- Restored full functionality of doom clocks dialog | Przywrócono pełną funkcjonalność dialogu zegarów zagłady
+
 ## [0.9.3] - 2025-01-27
 
 **FOUNDRY VTT v13 DOM ACCESS FIX** | **NAPRAWA DOSTĘPU DO DOM FOUNDRY VTT v13**

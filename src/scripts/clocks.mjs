@@ -51,29 +51,57 @@ export class DoomClocksDialog extends Application {
   activateListeners(html) {
     super.activateListeners(html);
 
-    // Ustaw właściwą zakładkę jako aktywną
-    const container = html[0].querySelector('.doom-clocks-content');
+    // Znajdź kontener - może być w różnych miejscach w zależności od wersji Foundry
+    let container = html[0].querySelector('.doom-clocks-content');
     if (!container) {
-      console.warn('DoomClocksDialog: .doom-clocks-content not found in DOM');
-      return;
+      // Spróbuj znaleźć w całym dokumencie jako fallback
+      container = html.find('.doom-clocks-content')[0];
     }
     
-    html[0].querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    const activeTab = html[0].querySelector(`.tab-btn[data-category="${this.activeCategory}"]`);
+    // Ustaw właściwą zakładkę jako aktywną
+    const tabBtns = html[0].querySelectorAll('.tab-btn') || html.find('.tab-btn');
+    tabBtns.forEach(btn => btn.classList.remove('active'));
+    
+    const activeTab = html[0].querySelector(`.tab-btn[data-category="${this.activeCategory}"]`) || 
+                     html.find(`.tab-btn[data-category="${this.activeCategory}"]`)[0];
     if (activeTab) activeTab.classList.add('active');
     
-    // Ustaw właściwy atrybut kontenera
-    container.setAttribute('data-active-category', this.activeCategory);
+    // Ustaw właściwy atrybut kontenera jeśli został znaleziony
+    if (container) {
+      container.setAttribute('data-active-category', this.activeCategory);
+    }
 
-    // Obsługa zakładek kategorii
-    html[0].querySelectorAll(".tab-btn").forEach(el => el.addEventListener('click', this._onTabChange.bind(this)));
+    // Obsługa zakładek kategorii - użyj fallback do jQuery jeśli querySelectorAll nie działa
+    const tabButtons = html[0].querySelectorAll(".tab-btn").length > 0 ? 
+                      html[0].querySelectorAll(".tab-btn") : 
+                      html.find(".tab-btn");
+    tabButtons.forEach(el => el.addEventListener('click', this._onTabChange.bind(this)));
 
     if (game.user.isGM) {
-      html[0].querySelectorAll(".add-clock").forEach(el => el.addEventListener('click', this._onAddClock.bind(this)));
-      html[0].querySelectorAll(".increment-clock").forEach(el => el.addEventListener('click', this._onIncrementClock.bind(this)));
-      html[0].querySelectorAll(".decrement-clock").forEach(el => el.addEventListener('click', this._onDecrementClock.bind(this)));
-      html[0].querySelectorAll(".edit-clock").forEach(el => el.addEventListener('click', this._onEditClock.bind(this)));
-      html[0].querySelectorAll(".delete-clock").forEach(el => el.addEventListener('click', this._onDeleteClock.bind(this)));
+      const addClockBtns = html[0].querySelectorAll(".add-clock").length > 0 ? 
+                          html[0].querySelectorAll(".add-clock") : 
+                          html.find(".add-clock");
+      addClockBtns.forEach(el => el.addEventListener('click', this._onAddClock.bind(this)));
+      
+      const incrementBtns = html[0].querySelectorAll(".increment-clock").length > 0 ? 
+                           html[0].querySelectorAll(".increment-clock") : 
+                           html.find(".increment-clock");
+      incrementBtns.forEach(el => el.addEventListener('click', this._onIncrementClock.bind(this)));
+      
+      const decrementBtns = html[0].querySelectorAll(".decrement-clock").length > 0 ? 
+                           html[0].querySelectorAll(".decrement-clock") : 
+                           html.find(".decrement-clock");
+      decrementBtns.forEach(el => el.addEventListener('click', this._onDecrementClock.bind(this)));
+      
+      const editBtns = html[0].querySelectorAll(".edit-clock").length > 0 ? 
+                      html[0].querySelectorAll(".edit-clock") : 
+                      html.find(".edit-clock");
+      editBtns.forEach(el => el.addEventListener('click', this._onEditClock.bind(this)));
+      
+      const deleteBtns = html[0].querySelectorAll(".delete-clock").length > 0 ? 
+                        html[0].querySelectorAll(".delete-clock") : 
+                        html.find(".delete-clock");
+      deleteBtns.forEach(el => el.addEventListener('click', this._onDeleteClock.bind(this)));
     }
 
     // Ustaw pozycję w prawym górnym rogu po wyrenderowaniu
