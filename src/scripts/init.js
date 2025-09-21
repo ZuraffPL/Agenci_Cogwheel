@@ -161,8 +161,8 @@ Hooks.on("renderSidebarTab", (app, html) => {
 Hooks.on("getSceneControlButtons", (controls) => {
   // Usunięto warunek if (game.user.isGM) - teraz widoczne dla wszystkich
   
-  // Sprawdź czy grupa już istnieje, żeby nie duplikować
-  let cogwheelControls = controls.find(c => c.name === "cogwheel");
+  // W Foundry v13 controls to object, nie array - sprawdź czy grupa już istnieje
+  let cogwheelControls = controls.cogwheel;
   
   if (!cogwheelControls) {
     cogwheelControls = {
@@ -173,8 +173,8 @@ Hooks.on("getSceneControlButtons", (controls) => {
       tools: [],
       visible: true
     };
-    // Dodaj grupę bez nadpisywania istniejących
-    controls.push(cogwheelControls);
+    // Dodaj grupę do controls object
+    controls.cogwheel = cogwheelControls;
   }
   
   // Sprawdź czy narzędzia już nie zostały dodane (żeby uniknąć duplikatów)
