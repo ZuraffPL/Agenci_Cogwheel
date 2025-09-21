@@ -11,7 +11,10 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.9] - 2025-09-22
+
 ### Fixed | Naprawione
+- Fixed comprehensive Foundry v13 compatibility issues with complete Dialog to DialogV2 migration | Naprawiono kompleksowe problemy kompatybilności z Foundry v13 przez pełną migrację Dialog na DialogV2
 - Fixed renderSceneControls hook jQuery compatibility by wrapping html in $(html) | Naprawiono kompatybilność jQuery hooka renderSceneControls przez owinięcie html w $(html)
 - Replaced deprecated renderTemplate with foundry.applications.handlebars.renderTemplate in clocks.mjs | Zastąpiono przestarzały renderTemplate na foundry.applications.handlebars.renderTemplate w clocks.mjs
 - Migrated Dialog to DialogV2 in DoomClocksDialog for add/edit clock functionality | Zmigrowano Dialog na DialogV2 w DoomClocksDialog dla funkcjonalności dodawania/edycji zegarów
@@ -29,6 +32,8 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Fixed ApplicationV2 jQuery compatibility issues by wrapping this.element in $() for DOM queries | Naprawiono problemy kompatybilności jQuery w ApplicationV2 przez owinięcie this.element w $() dla zapytań DOM
 - Replaced deprecated renderChatMessage hook with renderChatMessageHTML for Foundry v13+ compatibility | Zastąpiono przestarzały hook renderChatMessage hookiem renderChatMessageHTML dla kompatybilności z Foundry v13+
 - Fixed "this.element.find is not a function" errors in DoomClocksDialog methods | Naprawiono błędy "this.element.find is not a function" w metodach DoomClocksDialog
+- Added extensive logging and fallback imports for better debugging of scene controls | Dodano obszerne logowanie i fallback imports dla lepszego debugowania kontrolek sceny
+- Fixed positioning of dialogs after render to prevent undefined element errors | Naprawiono pozycjonowanie dialogów po renderze aby zapobiec błędom undefined element
 
 ### Note | Uwaga
 - Dialog class deprecation warning exists but no V2 replacement available yet - will work until Foundry v16 | Ostrzeżenie deprecation klasy Dialog istnieje ale nie ma jeszcze zamiennika V2 - będzie działać do Foundry v16
