@@ -129,11 +129,40 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
 
     if (dialog?.action === "add") {
       const element = dialog.element;
-      const name = element.querySelector('[name="name"]').value.trim();
-      const description = element.querySelector('[name="description"]').value.trim();
-      const max = parseInt(element.querySelector('[name="max"]').value) || 4;
-      const category = element.querySelector('[name="category"]').value || activeCategory;
-      const fillColor = element.querySelector('[name="fillColor"]:checked').value || "#dc2626";
+      console.log("Dialog element:", element);
+      console.log("Dialog window:", dialog.window);
+      console.log("Form elements found:", element.querySelectorAll('input, select, textarea'));
+      
+      // Spróbuj znaleźć formularz w różny sposób
+      let form = element.querySelector('form.clock-dialog');
+      if (!form) {
+        form = element.querySelector('.clock-dialog');
+      }
+      if (!form) {
+        form = element; // Fallback na cały element
+      }
+      
+      console.log("Form container:", form);
+      
+      const nameInput = form.querySelector('[name="name"]');
+      const descInput = form.querySelector('[name="description"]');
+      const maxInput = form.querySelector('[name="max"]');
+      const categoryInput = form.querySelector('[name="category"]');
+      const fillColorInput = form.querySelector('[name="fillColor"]:checked');
+      
+      console.log("Name input:", nameInput, nameInput?.value);
+      console.log("Description input:", descInput, descInput?.value);
+      console.log("Max input:", maxInput, maxInput?.value);
+      console.log("Category input:", categoryInput, categoryInput?.value);
+      console.log("FillColor input:", fillColorInput, fillColorInput?.value);
+      
+      const name = nameInput?.value?.trim() || "";
+      const description = descInput?.value?.trim() || "";
+      const max = parseInt(maxInput?.value) || 4;
+      const category = categoryInput?.value || activeCategory;
+      const fillColor = fillColorInput?.value || "#dc2626";
+
+      console.log("Processed values:", { name, description, max, category, fillColor });
 
       if (!name) {
         ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
@@ -149,6 +178,7 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
         fillColor: fillColor
       };
       
+      console.log("Adding new clock:", newClock);
       this.clocks.push(newClock);
       await this._updateClocks();
     }
@@ -186,17 +216,43 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
 
     if (dialog?.action === "save") {
       const element = dialog.element;
-      const name = element.querySelector('[name="name"]').value.trim();
-      const description = element.querySelector('[name="description"]').value.trim();
-      const max = parseInt(element.querySelector('[name="max"]').value) || clock.max;
-      const fillColor = element.querySelector('[name="fillColor"]:checked').value || clock.fillColor || "#dc2626";
+      console.log("Edit dialog element:", element);
+      console.log("Edit form elements found:", element.querySelectorAll('input, select, textarea'));
+      
+      // Spróbuj znaleźć formularz w różny sposób
+      let form = element.querySelector('form.clock-dialog');
+      if (!form) {
+        form = element.querySelector('.clock-dialog');
+      }
+      if (!form) {
+        form = element; // Fallback na cały element
+      }
+      
+      console.log("Edit form container:", form);
+      
+      const nameInput = form.querySelector('[name="name"]');
+      const descInput = form.querySelector('[name="description"]');
+      const maxInput = form.querySelector('[name="max"]');
+      const fillColorInput = form.querySelector('[name="fillColor"]:checked');
+      
+      console.log("Edit - Name input:", nameInput, nameInput?.value);
+      console.log("Edit - Description input:", descInput, descInput?.value);
+      console.log("Edit - Max input:", maxInput, maxInput?.value);
+      console.log("Edit - FillColor input:", fillColorInput, fillColorInput?.value);
+      
+      const name = nameInput?.value?.trim() || "";
+      const description = descInput?.value?.trim() || "";
+      const max = parseInt(maxInput?.value) || clock.max;
+      const fillColor = fillColorInput?.value || clock.fillColor || "#dc2626";
+
+      console.log("Edit - Processed values:", { name, description, max, fillColor });
 
       if (!name) {
         ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
         return;
       }
 
-      this.clocks[index] = {
+      const updatedClock = {
         name,
         description,
         value: Math.min(clock.value, max),
@@ -204,6 +260,9 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
         category: clock.category, // Zachowaj kategorię
         fillColor: fillColor
       };
+      
+      console.log("Updating clock at index", index, "from:", clock, "to:", updatedClock);
+      this.clocks[index] = updatedClock;
       await this._updateClocks();
     }
   }
