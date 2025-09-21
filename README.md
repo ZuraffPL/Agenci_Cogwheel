@@ -2,12 +2,12 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.9.0**
+**Current System Version: 0.9.9**
 
 ## ⚠️ Important Version Notice | Ważne Informacje o Wersji
 
 ### Foundry VTT v13+ (Current/Latest)
-- **Version 0.9.0+**: Requires Foundry VTT v13.348 or higher
+- **Version 0.9.9**: Requires Foundry VTT v13.348 or higher
 - **Full native DOM API compatibility** - no jQuery dependencies
 - **Latest features and optimizations**
 
@@ -22,17 +22,17 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 
 *A game about secret agents who fight threats of the industrial revolution era.*
 
-## 🔥 What's New in v0.9.0
+## 🔥 What's New in v0.9.9
 
-### 💥 Foundry v13 Compatibility
-- **🎯 Native DOM API**: Complete migration from jQuery to modern DOM API for Foundry v13 compatibility
-- **⚡ Performance**: Improved performance with native JavaScript event handling
-- **🔧 Future-Proof**: Ready for future Foundry VTT updates and modern web standards
-- **🌿 Branch Strategy**: Maintained legacy support on separate branch for v12 users
+### 💥 Foundry v13 Complete Compatibility
+- **🎯 DialogV2 Migration**: Complete migration from Dialog to DialogV2.wait() for modern API compatibility
+- **⚡ Scene Controls**: Fixed scene controls structure for Foundry v13 object-based approach
+- **🔧 jQuery Compatibility**: Resolved all "element.find is not a function" errors with proper DOM wrapping
+- **🌿 Namespace Updates**: Updated all deprecated APIs including renderTemplate namespace fixes
 
-### 🛠️ Technical Modernization
-- **📝 Event Handlers**: All dialog forms converted from jQuery to `addEventListener()`
-- **🔍 Element Selection**: Replaced `html.find()` with native `querySelector()` methods
+### 🛠️ Technical Fixes
+- **📝 Render Callbacks**: Removed problematic DialogV2 render callback implementations
+- **🔍 Hook Updates**: Replaced deprecated hooks with modern Foundry v13 equivalents
 - **🎛️ Property Access**: Modern `.value`, `.checked`, `.dataset` instead of jQuery equivalents
 - **🎨 Class Management**: Native `classList` API for all CSS class manipulations
 
@@ -294,7 +294,7 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 
 ## System Requirements
 
-### For v0.9.0+ (Current Version)
+### For v0.9.9 (Current Version)
 - **Foundry VTT**: Version 13.348 or higher
 - **Verified Compatibility**: Foundry VTT v13.348
 - **Modern Browser**: Required for native DOM API support
