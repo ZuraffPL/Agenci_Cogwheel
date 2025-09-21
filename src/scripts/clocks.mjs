@@ -1,4 +1,4 @@
-export class DoomClocksDialog extends foundry.applications.api.ApplicationV2 {
+export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
   constructor(options = {}) {
     super(options);
     // Odczyt zegarów z ustawień świata

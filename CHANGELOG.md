@@ -11,6 +11,24 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.7] - 2025-01-27
+
+**FOUNDRY VTT v13 HANDLEBARS MIXIN FIX** | **NAPRAWA HANDLEBARS MIXIN FOUNDRY VTT v13**
+
+### Fixed | Naprawione
+- Fixed "Application class is not renderable" error by adding HandlebarsApplicationMixin | Naprawiono błąd "Application class is not renderable" przez dodanie HandlebarsApplicationMixin
+- Added required _renderHTML and _replaceHTML methods via HandlebarsApplicationMixin | Dodano wymagane metody _renderHTML i _replaceHTML przez HandlebarsApplicationMixin
+- MetaCurrencyApp now properly extends HandlebarsApplicationMixin(ApplicationV2) | MetaCurrencyApp teraz prawidłowo rozszerza HandlebarsApplicationMixin(ApplicationV2)
+- DoomClocksDialog now properly extends HandlebarsApplicationMixin(ApplicationV2) | DoomClocksDialog teraz prawidłowo rozszerza HandlebarsApplicationMixin(ApplicationV2)
+
+### Technical Details | Szczegóły techniczne
+- ApplicationV2 requires mixins to provide rendering functionality
+- HandlebarsApplicationMixin provides template rendering for ApplicationV2
+- Fixes abstract method implementation requirements
+
+**Compatibility:** Foundry VTT v13.348+ | **Kompatybilność:** Foundry VTT v13.348+
+**System Version:** 0.9.7
+
 ## [0.9.6] - 2025-01-27
 
 **FOUNDRY VTT v13 APPLICATION V2 FIXES** | **NAPRAWY APPLICATION V2 FOUNDRY VTT v13**

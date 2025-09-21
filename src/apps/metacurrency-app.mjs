@@ -1,4 +1,4 @@
-class MetaCurrencyApp extends foundry.applications.api.ApplicationV2 {
+class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
   constructor(options = {}) {
     super(options);
     this._onUpdateMetaCurrencies = this._onUpdateMetaCurrencies.bind(this);
