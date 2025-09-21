@@ -1,4 +1,4 @@
-class CogwheelArchetypeSheet extends ItemSheet {
+class CogwheelArchetypeSheet extends foundry.applications.sheets.ItemSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/cogwheel-syndicate/src/templates/archetype-sheet.hbs",
@@ -41,7 +41,7 @@ class CogwheelArchetypeSheet extends ItemSheet {
   }
 }
 
-class CogwheelFeatSheet extends ItemSheet {
+class CogwheelFeatSheet extends foundry.applications.sheets.ItemSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/cogwheel-syndicate/src/templates/feat-sheet.hbs",
@@ -89,13 +89,13 @@ class CogwheelFeatSheet extends ItemSheet {
   }
 }
 
-Items.registerSheet("cogwheel-syndicate", CogwheelArchetypeSheet, {
+foundry.documents.Items.registerSheet("cogwheel-syndicate", CogwheelArchetypeSheet, {
   types: ["archetype"],
   makeDefault: true,
   label: "Cogwheel Archetype Sheet"
 });
 
-Items.registerSheet("cogwheel-syndicate", CogwheelFeatSheet, {
+foundry.documents.Items.registerSheet("cogwheel-syndicate", CogwheelFeatSheet, {
   types: ["feat"],
   makeDefault: true,
   label: "Cogwheel Feat Sheet"

@@ -3,7 +3,7 @@ import { ActorGearFunctions } from './shared/actor-gear-functions.js';
 import { ActorStressFunctions } from './shared/actor-stress-functions.js';
 import { ActorEquipmentFunctions } from './shared/actor-equipment-functions.js';
 
-class CogwheelActorSheet extends ActorSheet {
+class CogwheelActorSheet extends foundry.applications.sheets.ActorSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/cogwheel-syndicate/src/templates/actor-sheet.hbs",
@@ -1372,7 +1372,7 @@ class CogwheelActorSheet extends ActorSheet {
   }
 }
 
-Actors.registerSheet("cogwheel-syndicate", CogwheelActorSheet, {
+foundry.documents.Actors.registerSheet("cogwheel-syndicate", CogwheelActorSheet, {
   types: ["agent"],
   makeDefault: true,
   label: "Cogwheel Actor Sheet"

@@ -1,6 +1,6 @@
 import { registerHandlebarsHelpers } from "./handlebars.mjs";
 
-class CogwheelHQSheet extends ActorSheet {
+class CogwheelHQSheet extends foundry.applications.sheets.ActorSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/cogwheel-syndicate/src/templates/hq-sheet.hbs",
@@ -367,7 +367,7 @@ class CogwheelHQSheet extends ActorSheet {
   }
 }
 
-Actors.registerSheet("cogwheel-syndicate", CogwheelHQSheet, {
+foundry.documents.Actors.registerSheet("cogwheel-syndicate", CogwheelHQSheet, {
   types: ["HQ"],
   makeDefault: true,
   label: "Cogwheel HQ Sheet"

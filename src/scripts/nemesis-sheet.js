@@ -1,4 +1,4 @@
-class CogwheelNemesisSheet extends ActorSheet {
+class CogwheelNemesisSheet extends foundry.applications.sheets.ActorSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/cogwheel-syndicate/src/templates/nemesis-sheet.hbs",
@@ -273,7 +273,7 @@ class CogwheelNemesisSheet extends ActorSheet {
   }
 }
 
-Actors.registerSheet("cogwheel-syndicate", CogwheelNemesisSheet, {
+foundry.documents.Actors.registerSheet("cogwheel-syndicate", CogwheelNemesisSheet, {
   types: ["nemesis"],
   makeDefault: true,
   label: "Cogwheel Nemesis Sheet"
