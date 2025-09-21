@@ -11,6 +11,23 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.2] - 2025-09-21
+
+**FOUNDRY VTT v13 SCENE CONTROLS API FIX**
+
+### 🔧 Fixed | Naprawione:
+- **Scene Controls Error**: Fixed critical error "controls.find is not a function" in scene controls hook | **Błąd Kontrolek Sceny**: Naprawiono krytyczny błąd "controls.find is not a function" w hook'u kontrolek sceny
+- **getSceneControlButtons Hook**: Updated for Foundry v13.332+ API changes | **Hook getSceneControlButtons**: Zaktualizowano dla zmian API Foundry v13.332+
+- **Data Structure Migration**: Migrated from array-based to object-based controls structure | **Migracja Struktury Danych**: Przemigrowano ze struktury kontrolek opartej na array na strukturę obiektową
+
+### 🔬 Technical Changes | Zmiany Techniczne:
+- **Breaking API Change**: Foundry v13.332 changed `SceneControls#controls` from Array to Record/Object | **Przełomowa Zmiana API**: Foundry v13.332 zmienił `SceneControls#controls` z Array na Record/Object
+- **Code Updates**: `controls.find()` → `controls.cogwheel`, `controls.push()` → `controls.cogwheel = {}` | **Aktualizacje Kodu**: `controls.find()` → `controls.cogwheel`, `controls.push()` → `controls.cogwheel = {}`
+
+### 🎯 Impact | Wpływ:
+- **Sidebar Controls**: Doom clocks and meta-currency tools now work correctly | **Kontrolki Sidebar**: Zegary zagłady i narzędzia meta-walut działają teraz poprawnie
+- **System Loading**: Eliminates startup errors and failed UI initialization | **Ładowanie Systemu**: Eliminuje błędy startowe i nieudaną inicjalizację UI
+
 ## [0.9.1] - 2025-09-21
 
 **FOUNDRY VTT v13 API COMPATIBILITY FIX**
