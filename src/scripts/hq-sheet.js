@@ -80,7 +80,7 @@ class CogwheelHQSheet extends ActorSheet {
     html[0].querySelectorAll('.decrease-level').forEach(el => el.addEventListener('click', this._onDecreaseLevel.bind(this)));
 
     // Obsługa checkboxa "Lokacja zniszczona"
-    html.find('.destroyed-checkbox').change(this._onToggleDestroyed.bind(this));
+    html[0].querySelectorAll('.destroyed-checkbox').forEach(el => el.addEventListener('change', this._onToggleDestroyed.bind(this)));
   }
 
   async _onImageUpload(file) {
@@ -110,13 +110,14 @@ class CogwheelHQSheet extends ActorSheet {
         add: {
           label: game.i18n.localize("COGSYNDICATE.Confirm"),
           callback: async (html) => {
-            const locationName = html.find('[name="name"]').val().trim();
-            const locationDescription = html.find('[name="description"]').val().trim();
-            const locationEffect = html.find('[name="effect"]').val().trim();
+            const locationName = html[0].querySelector('[name="name"]').value.trim();
+            const locationDescription = html[0].querySelector('[name="description"]').value.trim();
+            const locationEffect = html[0].querySelector('[name="effect"]').value.trim();
 
             // Walidacja: Nazwa i Efekt są wymagane, Opis jest opcjonalny
             if (!locationName || !locationEffect) {
-              html.find('.error-message').show();
+              const errorMessage = html[0].querySelector('.error-message');
+              if (errorMessage) errorMessage.style.display = 'block';
               return;
             }
 
@@ -162,13 +163,14 @@ class CogwheelHQSheet extends ActorSheet {
         save: {
           label: game.i18n.localize("COGSYNDICATE.Confirm"),
           callback: async (html) => {
-            const locationName = html.find('[name="name"]').val().trim();
-            const locationDescription = html.find('[name="description"]').val().trim();
-            const locationEffect = html.find('[name="effect"]').val().trim();
+            const locationName = html[0].querySelector('[name="name"]').value.trim();
+            const locationDescription = html[0].querySelector('[name="description"]').value.trim();
+            const locationEffect = html[0].querySelector('[name="effect"]').value.trim();
 
             // Walidacja: Nazwa i Efekt są wymagane, Opis jest opcjonalny
             if (!locationName || !locationEffect) {
-              html.find('.error-message').show();
+              const errorMessage = html[0].querySelector('.error-message');
+              if (errorMessage) errorMessage.style.display = 'block';
               return;
             }
 
@@ -219,13 +221,14 @@ class CogwheelHQSheet extends ActorSheet {
         add: {
           label: game.i18n.localize("COGSYNDICATE.Confirm"),
           callback: async (html) => {
-            const projectName = html.find('[name="name"]').val().trim();
-            const projectDescription = html.find('[name="description"]').val().trim();
-            const projectEffect = html.find('[name="effect"]').val().trim();
+            const projectName = html[0].querySelector('[name="name"]').value.trim();
+            const projectDescription = html[0].querySelector('[name="description"]').value.trim();
+            const projectEffect = html[0].querySelector('[name="effect"]').value.trim();
 
             // Walidacja: Nazwa i Efekt są wymagane, Opis jest opcjonalny
             if (!projectName || !projectEffect) {
-              html.find('.error-message').show();
+              const errorMessage = html[0].querySelector('.error-message');
+              if (errorMessage) errorMessage.style.display = 'block';
               return;
             }
 
@@ -271,13 +274,14 @@ class CogwheelHQSheet extends ActorSheet {
         save: {
           label: game.i18n.localize("COGSYNDICATE.Confirm"),
           callback: async (html) => {
-            const projectName = html.find('[name="name"]').val().trim();
-            const projectDescription = html.find('[name="description"]').val().trim();
-            const projectEffect = html.find('[name="effect"]').val().trim();
+            const projectName = html[0].querySelector('[name="name"]').value.trim();
+            const projectDescription = html[0].querySelector('[name="description"]').value.trim();
+            const projectEffect = html[0].querySelector('[name="effect"]').value.trim();
 
             // Walidacja: Nazwa i Efekt są wymagane, Opis jest opcjonalny
             if (!projectName || !projectEffect) {
-              html.find('.error-message').show();
+              const errorMessage = html[0].querySelector('.error-message');
+              if (errorMessage) errorMessage.style.display = 'block';
               return;
             }
 

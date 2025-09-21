@@ -52,22 +52,23 @@ export class DoomClocksDialog extends Application {
     super.activateListeners(html);
 
     // Ustaw właściwą zakładkę jako aktywną
-    const container = html.find('.doom-clocks-content');
-    html.find('.tab-btn').removeClass('active');
-    html.find(`.tab-btn[data-category="${this.activeCategory}"]`).addClass('active');
+    const container = html[0].querySelector('.doom-clocks-content');
+    html[0].querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    const activeTab = html[0].querySelector(`.tab-btn[data-category="${this.activeCategory}"]`);
+    if (activeTab) activeTab.classList.add('active');
     
     // Ustaw właściwy atrybut kontenera
-    container.attr('data-active-category', this.activeCategory);
+    container.setAttribute('data-active-category', this.activeCategory);
 
     // Obsługa zakładek kategorii
-    html.find(".tab-btn").click(this._onTabChange.bind(this));
+    html[0].querySelectorAll(".tab-btn").forEach(el => el.addEventListener('click', this._onTabChange.bind(this)));
 
     if (game.user.isGM) {
-      html.find(".add-clock").click(this._onAddClock.bind(this));
-      html.find(".increment-clock").click(this._onIncrementClock.bind(this));
-      html.find(".decrement-clock").click(this._onDecrementClock.bind(this));
-      html.find(".edit-clock").click(this._onEditClock.bind(this));
-      html.find(".delete-clock").click(this._onDeleteClock.bind(this));
+      html[0].querySelectorAll(".add-clock").forEach(el => el.addEventListener('click', this._onAddClock.bind(this)));
+      html[0].querySelectorAll(".increment-clock").forEach(el => el.addEventListener('click', this._onIncrementClock.bind(this)));
+      html[0].querySelectorAll(".decrement-clock").forEach(el => el.addEventListener('click', this._onDecrementClock.bind(this)));
+      html[0].querySelectorAll(".edit-clock").forEach(el => el.addEventListener('click', this._onEditClock.bind(this)));
+      html[0].querySelectorAll(".delete-clock").forEach(el => el.addEventListener('click', this._onDeleteClock.bind(this)));
     }
 
     // Ustaw pozycję w prawym górnym rogu po wyrenderowaniu
@@ -109,11 +110,11 @@ export class DoomClocksDialog extends Application {
         add: {
           label: game.i18n.localize("COGSYNDICATE.Confirm"),
           callback: async (html) => {
-            const name = html.find('[name="name"]').val().trim();
-            const description = html.find('[name="description"]').val().trim();
-            const max = parseInt(html.find('[name="max"]').val()) || 4;
-            const category = html.find('[name="category"]').val() || activeCategory;
-            const fillColor = html.find('[name="fillColor"]:checked').val() || "#dc2626";
+            const name = html[0].querySelector('[name="name"]').value.trim();
+            const description = html[0].querySelector('[name="description"]').value.trim();
+            const max = parseInt(html[0].querySelector('[name="max"]').value) || 4;
+            const category = html[0].querySelector('[name="category"]').value || activeCategory;
+            const fillColor = html[0].querySelector('[name="fillColor"]:checked').value || "#dc2626";
 
             if (!name) {
               ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
@@ -159,10 +160,10 @@ export class DoomClocksDialog extends Application {
         save: {
           label: game.i18n.localize("COGSYNDICATE.Confirm"),
           callback: async (html) => {
-            const name = html.find('[name="name"]').val().trim();
-            const description = html.find('[name="description"]').val().trim();
-            const max = parseInt(html.find('[name="max"]').val()) || clock.max;
-            const fillColor = html.find('[name="fillColor"]:checked').val() || clock.fillColor || "#dc2626";
+            const name = html[0].querySelector('[name="name"]').value.trim();
+            const description = html[0].querySelector('[name="description"]').value.trim();
+            const max = parseInt(html[0].querySelector('[name="max"]').value) || clock.max;
+            const fillColor = html[0].querySelector('[name="fillColor"]:checked').value || clock.fillColor || "#dc2626";
 
             if (!name) {
               ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));

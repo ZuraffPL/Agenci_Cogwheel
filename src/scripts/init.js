@@ -138,12 +138,8 @@ Hooks.once("ready", async () => {
 Hooks.on("renderSidebarTab", (app, html) => {
   if (app.tabName !== "actors") return;
 
-  const metaButton = $(
-    `<button class="meta-currency-btn" title="${game.i18n.localize('COGSYNDICATE.metacurrency.title')}"><i class="fas fa-coins"></i> ${game.i18n.localize('COGSYNDICATE.metacurrency.open')}</button>`
-  );
-  const clockButton = $(
-    `<button class="doom-clocks-btn" title="${game.i18n.localize('COGSYNDICATE.DoomClocksTitle')}"><i class="fas fa-clock"></i> ${game.i18n.localize('COGSYNDICATE.DoomClocksTitle')}</button>`
-  );
+  const metaButton = `<button class="meta-currency-btn" title="${game.i18n.localize('COGSYNDICATE.metacurrency.title')}"><i class="fas fa-coins"></i> ${game.i18n.localize('COGSYNDICATE.metacurrency.open')}</button>`;
+  const clockButton = `<button class="doom-clocks-btn" title="${game.i18n.localize('COGSYNDICATE.DoomClocksTitle')}"><i class="fas fa-clock"></i> ${game.i18n.localize('COGSYNDICATE.DoomClocksTitle')}</button>`;
 
   const header = html[0].querySelector(".directory-header");
   if (!header.querySelector(".meta-currency-btn")) {

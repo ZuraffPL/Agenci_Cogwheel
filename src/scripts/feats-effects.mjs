@@ -593,7 +593,7 @@ export class FeatsEffects {
           confirm: {
             label: game.i18n.localize("COGSYNDICATE.Confirm") || "Zatwierdź",
             callback: async (html) => {
-              const chosenAttribute = html.find('[name="chosenAttribute"]').val();
+              const chosenAttribute = html[0].querySelector('[name="chosenAttribute"]').value;
               const attributeData = attributes[chosenAttribute];
               
               if (!attributeData) {
@@ -724,7 +724,7 @@ export class FeatsEffects {
           confirm: {
             label: game.i18n.localize("COGSYNDICATE.Confirm") || "Zatwierdź",
             callback: async (html) => {
-              const chosenAttribute = html.find('[name="chosenAttribute"]').val();
+              const chosenAttribute = html[0].querySelector('[name="chosenAttribute"]').value;
               const attributeData = attributes[chosenAttribute];
               
               if (!attributeData) {
