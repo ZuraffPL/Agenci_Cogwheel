@@ -17,7 +17,7 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
     },
     position: {
       width: 500,
-      height: 430,
+      height: 630,
       left: 20,
       top: 20
     },
@@ -92,8 +92,8 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
       html.find(".delete-clock").on('click', this._onDeleteClock.bind(this));
     }
 
-    // Dopasuj wysokość okna do ilości widocznych zegarów - zwiększ opóźnienie
-    setTimeout(() => this._adjustWindowHeight(), 100);
+    // Dopasuj wysokość okna do ilości widocznych zegarów - wyłączone dla stałej wysokości 630px
+    // setTimeout(() => this._adjustWindowHeight(), 100);
   }
 
   async _onAddClock(event) {
@@ -274,8 +274,8 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
           this._onTabChange(fakeEvent);
         }
       } else {
-        // Jeśli zostajemy na mission, i tak dopasuj wysokość po dodaniu zegara
-        setTimeout(() => this._adjustWindowHeight(), 150);
+        // Wyłączone automatyczne dopasowywanie wysokości po dodaniu zegara
+        // setTimeout(() => this._adjustWindowHeight(), 150);
       }
     }, 100);
   }
@@ -311,10 +311,10 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
     const container = $(this.element).find('.doom-clocks-content');
     container.attr('data-active-category', category);
     
-    // Dopasuj wysokość okna do ilości widocznych zegarów
-    setTimeout(() => {
-      this._adjustWindowHeight();
-    }, 100);
+    // Dopasuj wysokość okna do ilości widocznych zegarów - wyłączone dla stałej wysokości
+    // setTimeout(() => {
+    //   this._adjustWindowHeight();
+    // }, 100);
     
     // Zaktualizuj przycisk "Dodaj zegar" aby dodawał do aktywnej kategorii
     $(this.element).find('.add-clock').attr('data-category', category);
@@ -348,15 +348,16 @@ export function openDoomClocks() {
   const dialog = new DoomClocksDialog();
   
   dialog.render(true).then(() => {
-    // Pozycjonowanie po wyrenderowaniu - usuń height: auto
+    // Pozycjonowanie po wyrenderowaniu - zachowaj stałą wysokość 630px
     dialog.setPosition({
       left: 20,
       top: 20,
-      width: 500
+      width: 500,
+      height: 630
     });
     
-    // Dopasuj wysokość po wyrenderowaniu z większym opóźnieniem
-    setTimeout(() => dialog._adjustWindowHeight(), 150);
+    // Wyłączone automatyczne dopasowywanie dla stałej wysokości
+    // setTimeout(() => dialog._adjustWindowHeight(), 150);
   });
 }
 
