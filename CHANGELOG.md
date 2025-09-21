@@ -11,6 +11,24 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.8] - 2025-01-27
+
+**FOUNDRY VTT v13 APPLICATIONV2 DOM AND POSITIONING FIXES** | **NAPRAWY DOM I POZYCJONOWANIA APPLICATIONV2 FOUNDRY VTT v13**
+
+### Fixed | Naprawione
+- Fixed "html.find is not a function" error by wrapping this.element in jQuery | Naprawiono błąd "html.find is not a function" przez owinięcie this.element w jQuery
+- Fixed positioning errors in ApplicationV2 by using setPosition instead of constructor options | Naprawiono błędy pozycjonowania w ApplicationV2 używając setPosition zamiast opcji konstruktora
+- Removed deprecated _updatePosition methods that conflicted with ApplicationV2 positioning | Usunięto przestarzałe metody _updatePosition które kolidowały z pozycjonowaniem ApplicationV2
+- Fixed "Cannot read properties of undefined (reading 'width')" positioning error | Naprawiono błąd pozycjonowania "Cannot read properties of undefined (reading 'width')"
+
+### Technical Details | Szczegóły techniczne
+- ApplicationV2 passes native HTMLElement to _onRender, not jQuery object
+- Position settings must be done via setPosition() method after render
+- jQuery wrapping required for backwards compatibility with existing code
+
+**Compatibility:** Foundry VTT v13.348+ | **Kompatybilność:** Foundry VTT v13.348+
+**System Version:** 0.9.8
+
 ## [0.9.7] - 2025-01-27
 
 **FOUNDRY VTT v13 HANDLEBARS MIXIN FIX** | **NAPRAWA HANDLEBARS MIXIN FOUNDRY VTT v13**

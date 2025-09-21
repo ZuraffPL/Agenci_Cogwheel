@@ -52,7 +52,7 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
 
   _onRender(context, options) {
     super._onRender(context, options);
-    const html = this.element;
+    const html = $(this.element); // Zawinięcie w jQuery dla kompatybilności
     html.find('.metacurrency-increment').on('click', this._onIncrement.bind(this));
     html.find('.metacurrency-decrement').on('click', this._onDecrement.bind(this));
     html.find('.spend-np-btn').on('click', this._onSpendNP.bind(this));
@@ -62,19 +62,6 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
     // Obsługa bezpośredniej edycji wartości metawalut
     html.find('.meta-value-input').on('change blur', this._onValueChange.bind(this));
     html.find('.meta-value-input').on('keydown', this._onValueKeydown.bind(this));
-    
-    // Ustaw pozycję w lewym dolnym rogu po wyrenderowaniu
-    this._updatePosition();
-  }
-
-  _updatePosition() {
-    if (this.element && this.element.length > 0) {
-      const element = this.element[0];
-      if (element) {
-        element.style.left = '20px';
-        element.style.top = `${window.innerHeight - 270}px`;
-      }
-    }
   }
 
   async _onIncrement(event) {
@@ -166,11 +153,14 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
   }
 
   static showApp() {
-    const app = new MetaCurrencyApp({
-      position: {
-        left: 20,
-        top: window.innerHeight - 270
-      }
+    const app = new MetaCurrencyApp();
+    
+    // Pozycjonowanie po wyrenderowaniu
+    app.setPosition({
+      left: 20,
+      top: window.innerHeight - 270,
+      width: 400,
+      height: 340
     });
     
     app.render(true);

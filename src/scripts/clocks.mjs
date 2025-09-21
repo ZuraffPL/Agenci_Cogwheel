@@ -60,21 +60,20 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
 
   _onRender(context, options) {
     super._onRender(context, options);
-    const html = this.element;
+    const html = $(this.element); // Zawinięcie w jQuery dla kompatybilności
 
     // Znajdź kontener - może być w różnych miejscach w zależności od wersji Foundry
-    let container = html[0]?.querySelector('.doom-clocks-content');
+    let container = this.element.querySelector('.doom-clocks-content');
     if (!container) {
       // Spróbuj znaleźć w całym dokumencie jako fallback
       container = html.find('.doom-clocks-content')[0];
     }
     
     // Ustaw właściwą zakładkę jako aktywną
-    const tabBtns = html[0]?.querySelectorAll('.tab-btn') || html.find('.tab-btn');
+    const tabBtns = this.element.querySelectorAll('.tab-btn');
     tabBtns.forEach(btn => btn.classList.remove('active'));
     
-    const activeTab = html[0]?.querySelector(`.tab-btn[data-category="${this.activeCategory}"]`) || 
-                     html.find(`.tab-btn[data-category="${this.activeCategory}"]`)[0];
+    const activeTab = this.element.querySelector(`.tab-btn[data-category="${this.activeCategory}"]`);
     if (activeTab) activeTab.classList.add('active');
     
     // Ustaw właściwy atrybut kontenera jeśli został znaleziony
@@ -328,11 +327,14 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
 }
 
 export function openDoomClocks() {
-  const dialog = new DoomClocksDialog({
-    position: {
-      left: 20,
-      top: 20
-    }
+  const dialog = new DoomClocksDialog();
+  
+  // Pozycjonowanie po wyrenderowaniu
+  dialog.setPosition({
+    left: 20,
+    top: 20,
+    width: 500,
+    height: "auto"
   });
   
   dialog.render(true);
