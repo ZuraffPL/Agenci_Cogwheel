@@ -243,8 +243,7 @@ Hooks.on("cogwheelSyndicateMetaCurrenciesUpdated", () => {
   }
 });
 
-// Hook do debugowania przewijania czatu - WYŁĄCZONY TYMCZASOWO
-/*
+// Hook do debugowania przewijania czatu - WŁĄCZONY
 Hooks.on("ready", () => {
   console.log("Cogwheel Syndicate: System ready");
   
@@ -252,7 +251,10 @@ Hooks.on("ready", () => {
   setTimeout(() => {
     console.log("Cogwheel Syndicate: Sprawdzanie przewijania czatu");
     
-    const chatLog = document.getElementById('chat-log');
+    // Foundry v13 changed chat-log selector
+    const chatLog = document.getElementById('chat-log') || 
+                   document.querySelector('.chat-scroll') ||
+                   document.querySelector('[data-application-part="log"]');
     if (chatLog) {
       console.log("Chat log found:", chatLog);
       console.log("Chat log styles:", {
@@ -283,21 +285,42 @@ Hooks.on("ready", () => {
       // Spróbuj znaleźć alternatywne selektory
       const chatAlternatives = [
         '#chat',
-        '.chat-log',
+        '.chat-log', 
         '#sidebar #chat',
-        '#ui-right #chat'
+        '#ui-right #chat',
+        '#sidebar .chat',
+        '.sidebar .chat-log',
+        '[data-tab="chat"]',
+        '.app.sidebar #chat'
       ];
       
       chatAlternatives.forEach(selector => {
         const element = document.querySelector(selector);
         if (element) {
           console.log(`Found chat element with selector: ${selector}`, element);
+          console.log(`Element styles:`, {
+            display: window.getComputedStyle(element).display,
+            visibility: window.getComputedStyle(element).visibility,
+            opacity: window.getComputedStyle(element).opacity,
+            overflow: window.getComputedStyle(element).overflow,
+            overflowY: window.getComputedStyle(element).overflowY,
+            pointerEvents: window.getComputedStyle(element).pointerEvents
+          });
         }
       });
+      
+      // Spróbuj też znaleźć chat-log jako dziecko
+      const chatContainer = document.querySelector('#chat');
+      if (chatContainer) {
+        console.log("Chat container found:", chatContainer);
+        const chatLogChild = chatContainer.querySelector('[id*="log"], [class*="log"], ol, ul');
+        if (chatLogChild) {
+          console.log("Chat log child found:", chatLogChild);
+        }
+      }
     }
   }, 2000); // 2 sekundy opóźnienia
 });
-*/
 
 // Synchronizacja przez socket (usuwamy synchronizację zegarów)
 Hooks.once("setup", () => {

@@ -25,6 +25,7 @@
     "src/apps/metacurrency-app.mjs"
   ],
   "styles": [
+    "src/styles/chat-scroll-fix.css",
     "src/styles/cogwheel.css",
     "src/styles/agent-v2.css",
     "src/styles/feats-effects.css",
