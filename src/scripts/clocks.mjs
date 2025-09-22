@@ -1,4 +1,4 @@
-export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
+export class DoomClocksDialog extends foundry.applications.api.ApplicationV2 {
   constructor(options = {}) {
     super(options);
     // Odczyt zegarów z ustawień świata
@@ -44,6 +44,9 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
       left: 20,
       top: 20
     },
+    form: {
+      preventEscapeClose: true,
+    },
     classes: ["cogwheel", "doom-clocks"]
   };
 
@@ -62,9 +65,23 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
     
     return context;
   }
+  async _renderHTML() {
+    try {
+      const html = await foundry.applications.handlebars.renderTemplate(
+        "systems/cogwheel-syndicate/src/templates/doom-clocks-dialog.hbs",
+      );
+      return html;
+    } catch (e) {
+      console.error("_renderHTML error:", e);
+      throw e;
+    }
+  }
 
-  _onRender(context, options) {
-    super._onRender(context, options);
+  async _replaceHTML(result, html) {
+    html.innerHTML = result;
+  }
+  async render(force = false, options = {}) {
+    await super.render(force, options);
     const html = $(this.element); // Zawinięcie w jQuery dla kompatybilności
 
     // Znajdź kontener - może być w różnych miejscach w zależności od wersji Foundry
@@ -100,7 +117,12 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
     // Dopasuj wysokość okna do ilości widocznych zegarów - wyłączone dla stałej wysokości 630px
     // setTimeout(() => this._adjustWindowHeight(), 100);
   }
-
+  async close(options = {}) {
+    if (options.closeKey) {
+      return false;
+    }
+    return super.close(options);
+  }
   async _onAddClock(event) {
     event.preventDefault();
     console.log("=== _onAddClock START ===");
@@ -631,8 +653,8 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
   }
 }
 
-export function openDoomClocks() {
-  const dialog = new DoomClocksDialog();
+export async function openDoomClocks() {
+  const dialog = await new DoomClocksDialog();
   
   dialog.render(true).then(() => {
     // Pozycjonowanie po wyrenderowaniu - zachowaj stałą wysokość 630px
