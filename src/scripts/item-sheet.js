@@ -1,4 +1,12 @@
-class CogwheelArchetypeSheet extends foundry.applications.sheets.ItemSheet {
+// Foundry v13 compatibility - use same pattern as chlopcy-rpg
+const BaseItemSheet =
+  typeof foundry?.appv1?.sheets?.ItemSheet !== "undefined"
+    ? foundry.appv1.sheets.ItemSheet
+    : ItemSheet;
+
+console.log("Cogwheel Archetype: Selected BaseItemSheet:", BaseItemSheet.name);
+
+class CogwheelArchetypeSheet extends BaseItemSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/cogwheel-syndicate/src/templates/archetype-sheet.hbs",
@@ -41,7 +49,7 @@ class CogwheelArchetypeSheet extends foundry.applications.sheets.ItemSheet {
   }
 }
 
-class CogwheelFeatSheet extends foundry.applications.sheets.ItemSheet {
+class CogwheelFeatSheet extends BaseItemSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/cogwheel-syndicate/src/templates/feat-sheet.hbs",
@@ -89,13 +97,24 @@ class CogwheelFeatSheet extends foundry.applications.sheets.ItemSheet {
   }
 }
 
-foundry.documents.Items.registerSheet("cogwheel-syndicate", CogwheelArchetypeSheet, {
+// Foundry v13 compatibility for registration - use same pattern as chlopcy-rpg
+const CHLOPCYCONFIG_ITEMS = {
+  Items: typeof foundry?.documents?.collections?.Items !== "undefined" 
+    ? foundry.documents.collections.Items 
+    : Items,
+  ItemSheet: typeof foundry?.appv1?.sheets?.ItemSheet !== "undefined"
+    ? foundry.appv1.sheets.ItemSheet
+    : ItemSheet
+};
+
+// Rejestracja arkuszy z kompatybilnością
+CHLOPCYCONFIG_ITEMS.Items.registerSheet("cogwheel-syndicate", CogwheelArchetypeSheet, {
   types: ["archetype"],
   makeDefault: true,
   label: "Cogwheel Archetype Sheet"
 });
 
-foundry.documents.Items.registerSheet("cogwheel-syndicate", CogwheelFeatSheet, {
+CHLOPCYCONFIG_ITEMS.Items.registerSheet("cogwheel-syndicate", CogwheelFeatSheet, {
   types: ["feat"],
   makeDefault: true,
   label: "Cogwheel Feat Sheet"

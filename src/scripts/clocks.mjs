@@ -98,6 +98,7 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
 
   async _onAddClock(event) {
     event.preventDefault();
+    console.log("=== _onAddClock START ===");
     
     // Pobierz aktualnie aktywną kategorię z instancji
     const activeCategory = this.activeCategory || 'mission';
@@ -107,114 +108,109 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
       { clock: { name: "", description: "", max: 4, category: activeCategory, fillColor: "#dc2626" } }
     );
 
-    const dialog = await foundry.applications.api.DialogV2.wait({
-      window: {
-        title: game.i18n.localize("COGSYNDICATE.AddDoomClock"),
-        classes: ["cogwheel", "add-clock-dialog"]
-      },
-      content: dialogContent,
-      buttons: [
-        {
-          action: "cancel",
-          label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          default: false
-        },
-        {
-          action: "add",
-          label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          default: true
-        }
-      ]
-    });
-
-    if (dialog?.action === "add") {
-      console.log("Add dialog result:", dialog);
-      console.log("Dialog element:", dialog.element);
-      
-      // Alternatywne podejście - użyj FormData do pobrania danych
-      const form = dialog.element.querySelector('form') || dialog.element;
-      console.log("Found form:", form);
-      
-      if (form instanceof HTMLFormElement) {
-        const formData = new FormData(form);
-        console.log("FormData entries:");
-        for (let [key, value] of formData.entries()) {
-          console.log(`  ${key}: ${value}`);
-        }
-        
-        const name = formData.get('name')?.toString().trim() || "";
-        const description = formData.get('description')?.toString().trim() || "";
-        const max = parseInt(formData.get('max')?.toString()) || 4;
-        const category = formData.get('category')?.toString() || activeCategory;
-        const fillColor = formData.get('fillColor')?.toString() || "#dc2626";
-        
-        console.log("FormData processed values:", { name, description, max, category, fillColor });
-        
-        if (!name) {
-          ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
-          return;
-        }
-
-        const newClock = { 
-          name, 
-          description, 
-          value: 0, 
-          max: Math.clamp(max, 2, 12),
-          category: category,
-          fillColor: fillColor
+    // Używamy klasy DialogV2 wzorowanej na kodzie kolegi bb46003
+    class AddClockDialog extends foundry.applications.api.DialogV2 {
+      constructor(clocksApp, activeCategory) {
+        const options = {
+          window: { 
+            title: game.i18n.localize("COGSYNDICATE.AddDoomClock"),
+            classes: ["cogwheel", "add-clock-dialog"]
+          },
+          content: dialogContent,
+          buttons: [
+            {
+              action: "cancel",
+              label: game.i18n.localize("COGSYNDICATE.Cancel"),
+              default: false
+            },
+            {
+              action: "add",
+              label: game.i18n.localize("COGSYNDICATE.Confirm"),
+              default: true,
+              callback: async (event, button, html) => {
+                console.log("Dialog callback triggered");
+                await this.handleAddClock();
+              }
+            }
+          ],
+          rejectClose: false
         };
         
-        console.log("Adding new clock:", newClock);
-        this.clocks.push(newClock);
-        await this._updateClocks();
-        ui.notifications.info(`Dodano nowy zegar: ${name}`);
-      } else {
-        // Fallback na bezpośrednie selektory
-        console.log("Form is not HTMLFormElement, using direct selectors");
-        const element = dialog.element;
-        
-        const nameInput = element.querySelector('[name="name"]');
-        const descInput = element.querySelector('[name="description"]');
-        const maxInput = element.querySelector('[name="max"]');
-        const categoryInput = element.querySelector('[name="category"]');
-        const fillColorInput = element.querySelector('[name="fillColor"]:checked');
-        
-        console.log("Direct selector results:", {
-          nameInput, descInput, maxInput, categoryInput, fillColorInput
-        });
-        
-        const name = nameInput?.value?.trim() || "";
-        const description = descInput?.value?.trim() || "";
-        const max = parseInt(maxInput?.value) || 4;
-        const category = categoryInput?.value || activeCategory;
-        const fillColor = fillColorInput?.value || "#dc2626";
+        super(options);
+        this.clocksApp = clocksApp;
+        this.activeCategory = activeCategory;
+      }
 
-        console.log("Direct selector processed values:", { name, description, max, category, fillColor });
+      _onRender() {
+        console.log("AddClockDialog _onRender called");
+        // Event listenery mogą być dodane tutaj jeśli potrzeba
+      }
 
-        if (!name) {
-          ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
-          return;
+      async handleAddClock() {
+        console.log("handleAddClock called");
+        
+        try {
+          // Używamy element z dialogu, wzorując się na kodzie kolegi
+          const element = this.element;
+          console.log("Dialog element:", element);
+          
+          const nameInput = element.querySelector('[name="name"]');
+          const descInput = element.querySelector('[name="description"]');
+          const maxInput = element.querySelector('[name="max"]');
+          const categoryInput = element.querySelector('[name="category"]');
+          const fillColorInput = element.querySelector('[name="fillColor"]:checked');
+          
+          console.log("Form inputs found:", {
+            nameInput: nameInput?.value,
+            descInput: descInput?.value,
+            maxInput: maxInput?.value,
+            categoryInput: categoryInput?.value,
+            fillColorInput: fillColorInput?.value
+          });
+          
+          const name = nameInput?.value?.trim() || "";
+          const description = descInput?.value?.trim() || "";
+          const max = parseInt(maxInput?.value) || 4;
+          const category = categoryInput?.value || this.activeCategory;
+          const fillColor = fillColorInput?.value || "#dc2626";
+
+          console.log("Processed form values:", { name, description, max, category, fillColor });
+
+          if (!name) {
+            ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
+            return;
+          }
+
+          const newClock = { 
+            name, 
+            description, 
+            value: 0, 
+            max: Math.clamp(max, 2, 12),
+            category: category,
+            fillColor: fillColor
+          };
+          
+          console.log("Adding new clock:", newClock);
+          this.clocksApp.clocks.push(newClock);
+          await this.clocksApp._updateClocks();
+          ui.notifications.info(`Dodano nowy zegar: ${name}`);
+        } catch (error) {
+          console.error("Error in handleAddClock:", error);
+          ui.notifications.error("Błąd podczas dodawania zegara");
         }
-
-        const newClock = { 
-          name, 
-          description, 
-          value: 0, 
-          max: Math.clamp(max, 2, 12),
-          category: category,
-          fillColor: fillColor
-        };
-        
-        console.log("Adding new clock (fallback):", newClock);
-        this.clocks.push(newClock);
-        await this._updateClocks();
-        ui.notifications.info(`Dodano nowy zegar: ${name}`);
       }
     }
+
+    const dialog = new AddClockDialog(this, activeCategory);
+    dialog.render(true, { height: 630 });
+
+    console.log("=== _onAddClock END ===");
   }
 
   async _onEditClock(event) {
     event.preventDefault();
+    console.log("=== _onEditClock START ===");
+    
     const index = parseInt(event.currentTarget.closest(".clock-item").dataset.index);
     const clock = this.clocks[index];
 
@@ -223,107 +219,101 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
       { clock }
     );
 
-    const dialog = await foundry.applications.api.DialogV2.wait({
-      window: {
-        title: game.i18n.localize("COGSYNDICATE.EditDoomClock"),
-        classes: ["cogwheel", "edit-clock-dialog"]
-      },
-      content: dialogContent,
-      buttons: [
-        {
-          action: "cancel",
-          label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          default: false
-        },
-        {
-          action: "save",
-          label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          default: true
-        }
-      ]
-    });
-
-    if (dialog?.action === "save") {
-      console.log("Edit dialog result:", dialog);
-      console.log("Edit dialog element:", dialog.element);
-      
-      // Alternatywne podejście - użyj FormData do pobrania danych
-      const form = dialog.element.querySelector('form') || dialog.element;
-      console.log("Edit found form:", form);
-      
-      if (form instanceof HTMLFormElement) {
-        const formData = new FormData(form);
-        console.log("Edit FormData entries:");
-        for (let [key, value] of formData.entries()) {
-          console.log(`  ${key}: ${value}`);
-        }
-        
-        const name = formData.get('name')?.toString().trim() || "";
-        const description = formData.get('description')?.toString().trim() || "";
-        const max = parseInt(formData.get('max')?.toString()) || clock.max;
-        const fillColor = formData.get('fillColor')?.toString() || clock.fillColor || "#dc2626";
-        
-        console.log("Edit FormData processed values:", { name, description, max, fillColor });
-        
-        if (!name) {
-          ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
-          return;
-        }
-
-        const updatedClock = {
-          name,
-          description,
-          value: Math.min(clock.value, max),
-          max: Math.clamp(max, 2, 12),
-          category: clock.category, // Zachowaj kategorię
-          fillColor: fillColor
+    // Używamy klasy DialogV2 wzorowanej na kodzie kolegi bb46003
+    class EditClockDialog extends foundry.applications.api.DialogV2 {
+      constructor(clocksApp, clock, index) {
+        const options = {
+          window: { 
+            title: game.i18n.localize("COGSYNDICATE.EditDoomClock"),
+            classes: ["cogwheel", "edit-clock-dialog"]
+          },
+          content: dialogContent,
+          buttons: [
+            {
+              action: "cancel",
+              label: game.i18n.localize("COGSYNDICATE.Cancel"),
+              default: false
+            },
+            {
+              action: "save",
+              label: game.i18n.localize("COGSYNDICATE.Confirm"),
+              default: true,
+              callback: async (event, button, html) => {
+                console.log("Edit dialog callback triggered");
+                await this.handleEditClock();
+              }
+            }
+          ],
+          rejectClose: false
         };
         
-        console.log("Updating clock at index", index, "from:", clock, "to:", updatedClock);
-        this.clocks[index] = updatedClock;
-        await this._updateClocks();
-        ui.notifications.info(`Zaktualizowano zegar: ${name}`);
-      } else {
-        // Fallback na bezpośrednie selektory
-        console.log("Edit form is not HTMLFormElement, using direct selectors");
-        const element = dialog.element;
-        
-        const nameInput = element.querySelector('[name="name"]');
-        const descInput = element.querySelector('[name="description"]');
-        const maxInput = element.querySelector('[name="max"]');
-        const fillColorInput = element.querySelector('[name="fillColor"]:checked');
-        
-        console.log("Edit direct selector results:", {
-          nameInput, descInput, maxInput, fillColorInput
-        });
-        
-        const name = nameInput?.value?.trim() || "";
-        const description = descInput?.value?.trim() || "";
-        const max = parseInt(maxInput?.value) || clock.max;
-        const fillColor = fillColorInput?.value || clock.fillColor || "#dc2626";
+        super(options);
+        this.clocksApp = clocksApp;
+        this.clock = clock;
+        this.index = index;
+      }
 
-        console.log("Edit direct selector processed values:", { name, description, max, fillColor });
+      _onRender() {
+        console.log("EditClockDialog _onRender called");
+        // Event listenery mogą być dodane tutaj jeśli potrzeba
+      }
 
-        if (!name) {
-          ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
-          return;
+      async handleEditClock() {
+        console.log("handleEditClock called");
+        
+        try {
+          // Używamy element z dialogu, wzorując się na kodzie kolegi
+          const element = this.element;
+          console.log("Edit dialog element:", element);
+          
+          const nameInput = element.querySelector('[name="name"]');
+          const descInput = element.querySelector('[name="description"]');
+          const maxInput = element.querySelector('[name="max"]');
+          const fillColorInput = element.querySelector('[name="fillColor"]:checked');
+          
+          console.log("Edit form inputs found:", {
+            nameInput: nameInput?.value,
+            descInput: descInput?.value,
+            maxInput: maxInput?.value,
+            fillColorInput: fillColorInput?.value
+          });
+          
+          const name = nameInput?.value?.trim() || "";
+          const description = descInput?.value?.trim() || "";
+          const max = parseInt(maxInput?.value) || this.clock.max;
+          const fillColor = fillColorInput?.value || this.clock.fillColor || "#dc2626";
+
+          console.log("Edit processed form values:", { name, description, max, fillColor });
+
+          if (!name) {
+            ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
+            return;
+          }
+
+          const updatedClock = {
+            name,
+            description,
+            value: Math.min(this.clock.value, max),
+            max: Math.clamp(max, 2, 12),
+            category: this.clock.category, // Zachowaj kategorię
+            fillColor: fillColor
+          };
+          
+          console.log("Updating clock at index", this.index, "from:", this.clock, "to:", updatedClock);
+          this.clocksApp.clocks[this.index] = updatedClock;
+          await this.clocksApp._updateClocks();
+          ui.notifications.info(`Zaktualizowano zegar: ${name}`);
+        } catch (error) {
+          console.error("Error in handleEditClock:", error);
+          ui.notifications.error("Błąd podczas edytowania zegara");
         }
-
-        const updatedClock = {
-          name,
-          description,
-          value: Math.min(clock.value, max),
-          max: Math.clamp(max, 2, 12),
-          category: clock.category, // Zachowaj kategorię
-          fillColor: fillColor
-        };
-        
-        console.log("Updating clock at index (fallback)", index, "from:", clock, "to:", updatedClock);
-        this.clocks[index] = updatedClock;
-        await this._updateClocks();
-        ui.notifications.info(`Zaktualizowano zegar: ${name}`);
       }
     }
+
+    const dialog = new EditClockDialog(this, clock, index);
+    dialog.render(true, { height: 630 });
+
+    console.log("=== _onEditClock END ===");
   }
 
   async _onIncrementClock(event) {

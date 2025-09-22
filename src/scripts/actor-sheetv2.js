@@ -3,7 +3,15 @@ import { ActorGearFunctions } from './shared/actor-gear-functions.js';
 import { ActorStressFunctions } from './shared/actor-stress-functions.js';
 import { ActorEquipmentFunctions } from './shared/actor-equipment-functions.js';
 
-class CogwheelActorSheetV2 extends foundry.applications.sheets.ActorSheet {
+// Foundry v13 compatibility - use same pattern as chlopcy-rpg
+const BaseActorSheet =
+  typeof foundry?.appv1?.sheets?.ActorSheet !== "undefined"
+    ? foundry.appv1.sheets.ActorSheet
+    : ActorSheet;
+
+console.log("Cogwheel v2: Selected BaseActorSheet:", BaseActorSheet.name);
+
+class CogwheelActorSheetV2 extends BaseActorSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/cogwheel-syndicate/src/templates/actor-sheetv2.hbs",
@@ -1057,7 +1065,18 @@ class CogwheelActorSheetV2 extends foundry.applications.sheets.ActorSheet {
   }
 }
 
-foundry.documents.Actors.registerSheet("cogwheel-syndicate", CogwheelActorSheetV2, {
+// Foundry v13 compatibility for registration - use same pattern as chlopcy-rpg
+const CHLOPCYCONFIG_V2 = {
+  Actors: typeof foundry?.documents?.collections?.Actors !== "undefined" 
+    ? foundry.documents.collections.Actors 
+    : Actors,
+  ActorSheet: typeof foundry?.appv1?.sheets?.ActorSheet !== "undefined"
+    ? foundry.appv1.sheets.ActorSheet
+    : ActorSheet
+};
+
+// Rejestracja arkusza z kompatybilnością
+CHLOPCYCONFIG_V2.Actors.registerSheet("cogwheel-syndicate", CogwheelActorSheetV2, {
   types: ["agentv2"],
   makeDefault: true,
   label: "Cogwheel Agent v2 Sheet"
