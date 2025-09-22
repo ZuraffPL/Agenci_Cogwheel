@@ -67,8 +67,9 @@ export class DoomClocksDialog extends foundry.applications.api.ApplicationV2 {
   }
   async _renderHTML() {
     try {
+    
       const html = await foundry.applications.handlebars.renderTemplate(
-        "systems/cogwheel-syndicate/src/templates/doom-clocks-dialog.hbs",
+        "systems/cogwheel-syndicate/src/templates/doom-clocks-dialog.hbs", {isGM:game.user.isGM, clocks:this.clocks}
       );
       return html;
     } catch (e) {
