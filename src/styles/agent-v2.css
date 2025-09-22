@@ -8,6 +8,7 @@
   border-radius: 15px;
   min-width: 790px; /* Zwiększona szerokość dla obrażeń */
   width: 790px;
+  min-height: 1100px;
   box-shadow: 
     0 0 20px rgba(205, 127, 50, 0.3),
     inset 0 2px 10px rgba(0, 0, 0, 0.3);
