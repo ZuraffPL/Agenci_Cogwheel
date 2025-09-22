@@ -635,13 +635,9 @@ h3.centered {
 }
 
 /* Ukrywanie nieaktywnych zakładek */
-.tab {
-  display: none;
-}
 
-.tab.active {
-  display: block;
-}
+
+
 
 /* Style dla zakładki notatki w Agent v1 - steampunkowa kolorystyka jak w sekcji archetyp */
 .cogwheel.sheet.actor .notes-section {
