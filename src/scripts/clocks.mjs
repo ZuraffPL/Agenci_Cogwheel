@@ -128,59 +128,88 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
     });
 
     if (dialog?.action === "add") {
-      const element = dialog.element;
-      console.log("Dialog element:", element);
-      console.log("Dialog window:", dialog.window);
-      console.log("Form elements found:", element.querySelectorAll('input, select, textarea'));
+      console.log("Add dialog result:", dialog);
+      console.log("Dialog element:", dialog.element);
       
-      // Spróbuj znaleźć formularz w różny sposób
-      let form = element.querySelector('form.clock-dialog');
-      if (!form) {
-        form = element.querySelector('.clock-dialog');
-      }
-      if (!form) {
-        form = element; // Fallback na cały element
-      }
+      // Alternatywne podejście - użyj FormData do pobrania danych
+      const form = dialog.element.querySelector('form') || dialog.element;
+      console.log("Found form:", form);
       
-      console.log("Form container:", form);
-      
-      const nameInput = form.querySelector('[name="name"]');
-      const descInput = form.querySelector('[name="description"]');
-      const maxInput = form.querySelector('[name="max"]');
-      const categoryInput = form.querySelector('[name="category"]');
-      const fillColorInput = form.querySelector('[name="fillColor"]:checked');
-      
-      console.log("Name input:", nameInput, nameInput?.value);
-      console.log("Description input:", descInput, descInput?.value);
-      console.log("Max input:", maxInput, maxInput?.value);
-      console.log("Category input:", categoryInput, categoryInput?.value);
-      console.log("FillColor input:", fillColorInput, fillColorInput?.value);
-      
-      const name = nameInput?.value?.trim() || "";
-      const description = descInput?.value?.trim() || "";
-      const max = parseInt(maxInput?.value) || 4;
-      const category = categoryInput?.value || activeCategory;
-      const fillColor = fillColorInput?.value || "#dc2626";
+      if (form instanceof HTMLFormElement) {
+        const formData = new FormData(form);
+        console.log("FormData entries:");
+        for (let [key, value] of formData.entries()) {
+          console.log(`  ${key}: ${value}`);
+        }
+        
+        const name = formData.get('name')?.toString().trim() || "";
+        const description = formData.get('description')?.toString().trim() || "";
+        const max = parseInt(formData.get('max')?.toString()) || 4;
+        const category = formData.get('category')?.toString() || activeCategory;
+        const fillColor = formData.get('fillColor')?.toString() || "#dc2626";
+        
+        console.log("FormData processed values:", { name, description, max, category, fillColor });
+        
+        if (!name) {
+          ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
+          return;
+        }
 
-      console.log("Processed values:", { name, description, max, category, fillColor });
+        const newClock = { 
+          name, 
+          description, 
+          value: 0, 
+          max: Math.clamp(max, 2, 12),
+          category: category,
+          fillColor: fillColor
+        };
+        
+        console.log("Adding new clock:", newClock);
+        this.clocks.push(newClock);
+        await this._updateClocks();
+        ui.notifications.info(`Dodano nowy zegar: ${name}`);
+      } else {
+        // Fallback na bezpośrednie selektory
+        console.log("Form is not HTMLFormElement, using direct selectors");
+        const element = dialog.element;
+        
+        const nameInput = element.querySelector('[name="name"]');
+        const descInput = element.querySelector('[name="description"]');
+        const maxInput = element.querySelector('[name="max"]');
+        const categoryInput = element.querySelector('[name="category"]');
+        const fillColorInput = element.querySelector('[name="fillColor"]:checked');
+        
+        console.log("Direct selector results:", {
+          nameInput, descInput, maxInput, categoryInput, fillColorInput
+        });
+        
+        const name = nameInput?.value?.trim() || "";
+        const description = descInput?.value?.trim() || "";
+        const max = parseInt(maxInput?.value) || 4;
+        const category = categoryInput?.value || activeCategory;
+        const fillColor = fillColorInput?.value || "#dc2626";
 
-      if (!name) {
-        ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
-        return;
+        console.log("Direct selector processed values:", { name, description, max, category, fillColor });
+
+        if (!name) {
+          ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
+          return;
+        }
+
+        const newClock = { 
+          name, 
+          description, 
+          value: 0, 
+          max: Math.clamp(max, 2, 12),
+          category: category,
+          fillColor: fillColor
+        };
+        
+        console.log("Adding new clock (fallback):", newClock);
+        this.clocks.push(newClock);
+        await this._updateClocks();
+        ui.notifications.info(`Dodano nowy zegar: ${name}`);
       }
-
-      const newClock = { 
-        name, 
-        description, 
-        value: 0, 
-        max: Math.clamp(max, 2, 12),
-        category: category,
-        fillColor: fillColor
-      };
-      
-      console.log("Adding new clock:", newClock);
-      this.clocks.push(newClock);
-      await this._updateClocks();
     }
   }
 
@@ -215,55 +244,85 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
     });
 
     if (dialog?.action === "save") {
-      const element = dialog.element;
-      console.log("Edit dialog element:", element);
-      console.log("Edit form elements found:", element.querySelectorAll('input, select, textarea'));
+      console.log("Edit dialog result:", dialog);
+      console.log("Edit dialog element:", dialog.element);
       
-      // Spróbuj znaleźć formularz w różny sposób
-      let form = element.querySelector('form.clock-dialog');
-      if (!form) {
-        form = element.querySelector('.clock-dialog');
-      }
-      if (!form) {
-        form = element; // Fallback na cały element
-      }
+      // Alternatywne podejście - użyj FormData do pobrania danych
+      const form = dialog.element.querySelector('form') || dialog.element;
+      console.log("Edit found form:", form);
       
-      console.log("Edit form container:", form);
-      
-      const nameInput = form.querySelector('[name="name"]');
-      const descInput = form.querySelector('[name="description"]');
-      const maxInput = form.querySelector('[name="max"]');
-      const fillColorInput = form.querySelector('[name="fillColor"]:checked');
-      
-      console.log("Edit - Name input:", nameInput, nameInput?.value);
-      console.log("Edit - Description input:", descInput, descInput?.value);
-      console.log("Edit - Max input:", maxInput, maxInput?.value);
-      console.log("Edit - FillColor input:", fillColorInput, fillColorInput?.value);
-      
-      const name = nameInput?.value?.trim() || "";
-      const description = descInput?.value?.trim() || "";
-      const max = parseInt(maxInput?.value) || clock.max;
-      const fillColor = fillColorInput?.value || clock.fillColor || "#dc2626";
+      if (form instanceof HTMLFormElement) {
+        const formData = new FormData(form);
+        console.log("Edit FormData entries:");
+        for (let [key, value] of formData.entries()) {
+          console.log(`  ${key}: ${value}`);
+        }
+        
+        const name = formData.get('name')?.toString().trim() || "";
+        const description = formData.get('description')?.toString().trim() || "";
+        const max = parseInt(formData.get('max')?.toString()) || clock.max;
+        const fillColor = formData.get('fillColor')?.toString() || clock.fillColor || "#dc2626";
+        
+        console.log("Edit FormData processed values:", { name, description, max, fillColor });
+        
+        if (!name) {
+          ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
+          return;
+        }
 
-      console.log("Edit - Processed values:", { name, description, max, fillColor });
+        const updatedClock = {
+          name,
+          description,
+          value: Math.min(clock.value, max),
+          max: Math.clamp(max, 2, 12),
+          category: clock.category, // Zachowaj kategorię
+          fillColor: fillColor
+        };
+        
+        console.log("Updating clock at index", index, "from:", clock, "to:", updatedClock);
+        this.clocks[index] = updatedClock;
+        await this._updateClocks();
+        ui.notifications.info(`Zaktualizowano zegar: ${name}`);
+      } else {
+        // Fallback na bezpośrednie selektory
+        console.log("Edit form is not HTMLFormElement, using direct selectors");
+        const element = dialog.element;
+        
+        const nameInput = element.querySelector('[name="name"]');
+        const descInput = element.querySelector('[name="description"]');
+        const maxInput = element.querySelector('[name="max"]');
+        const fillColorInput = element.querySelector('[name="fillColor"]:checked');
+        
+        console.log("Edit direct selector results:", {
+          nameInput, descInput, maxInput, fillColorInput
+        });
+        
+        const name = nameInput?.value?.trim() || "";
+        const description = descInput?.value?.trim() || "";
+        const max = parseInt(maxInput?.value) || clock.max;
+        const fillColor = fillColorInput?.value || clock.fillColor || "#dc2626";
 
-      if (!name) {
-        ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
-        return;
+        console.log("Edit direct selector processed values:", { name, description, max, fillColor });
+
+        if (!name) {
+          ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
+          return;
+        }
+
+        const updatedClock = {
+          name,
+          description,
+          value: Math.min(clock.value, max),
+          max: Math.clamp(max, 2, 12),
+          category: clock.category, // Zachowaj kategorię
+          fillColor: fillColor
+        };
+        
+        console.log("Updating clock at index (fallback)", index, "from:", clock, "to:", updatedClock);
+        this.clocks[index] = updatedClock;
+        await this._updateClocks();
+        ui.notifications.info(`Zaktualizowano zegar: ${name}`);
       }
-
-      const updatedClock = {
-        name,
-        description,
-        value: Math.min(clock.value, max),
-        max: Math.clamp(max, 2, 12),
-        category: clock.category, // Zachowaj kategorię
-        fillColor: fillColor
-      };
-      
-      console.log("Updating clock at index", index, "from:", clock, "to:", updatedClock);
-      this.clocks[index] = updatedClock;
-      await this._updateClocks();
     }
   }
 
@@ -301,21 +360,28 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
   }
 
   async _updateClocks() {
-    // Zapis zegarów do ustawień świata
-    await game.settings.set("cogwheel-syndicate", "doomClocks", this.clocks);
+    console.log("_updateClocks called with clocks:", this.clocks);
     
-    // Wysłanie aktualizacji przez socket do wszystkich użytkowników
-    await game.socket.emit("system.cogwheel-syndicate", {
-      type: "updateClocks",
-      clocks: this.clocks
-    });
+    try {
+      // Zapis zegarów do ustawień świata
+      await game.settings.set("cogwheel-syndicate", "doomClocks", this.clocks);
+      console.log("Successfully saved clocks to world settings");
+      
+      // Wysłanie aktualizacji przez socket do wszystkich użytkowników
+      await game.socket.emit("system.cogwheel-syndicate", {
+        type: "updateClocks",
+        clocks: this.clocks
+      });
+      console.log("Successfully emitted socket update");
 
-    // Wywołanie hooka lokalnie
-    Hooks.call("cogwheelSyndicateClocksUpdated");
-    
-    // Odświeżenie bieżącego okna - zachowaj aktywną kategorię
-    const currentCategory = this.activeCategory;
-    this.render(true);
+      // Wywołanie hooka lokalnie
+      Hooks.call("cogwheelSyndicateClocksUpdated");
+      console.log("Successfully called cogwheelSyndicateClocksUpdated hook");
+      
+      // Odświeżenie bieżącego okna - zachowaj aktywną kategorię
+      const currentCategory = this.activeCategory;
+      console.log("Rendering with current category:", currentCategory);
+      this.render(true);
     
     // Po renderowaniu, przywróć aktywną kategorię
     setTimeout(() => {
@@ -337,6 +403,11 @@ export class DoomClocksDialog extends foundry.applications.api.HandlebarsApplica
         // setTimeout(() => this._adjustWindowHeight(), 150);
       }
     }, 100);
+    
+    } catch (error) {
+      console.error("Error in _updateClocks:", error);
+      ui.notifications.error("Błąd podczas aktualizacji zegarów");
+    }
   }
 
   // Metoda do aktualizacji lokalnych zegarów w instancji dialogu
