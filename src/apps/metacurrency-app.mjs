@@ -19,7 +19,11 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
       left: 20,
       top: 100
     },
-    classes: ["cogwheel", "metacurrency-app"]
+    classes: ["cogwheel", "metacurrency-app"], 
+    form: {
+      preventEscapeClose: true,
+    },
+ 
   };
 
   static PARTS = {
@@ -27,7 +31,12 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
       template: "systems/cogwheel-syndicate/src/templates/meta-currency-dialog.hbs"
     }
   };
-
+  async close(options = {}) {
+    if (options.closeKey) {
+      return false;
+    }
+    return super.close(options);
+  }
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     context.metacurrencies = {
