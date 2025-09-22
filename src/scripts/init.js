@@ -243,6 +243,62 @@ Hooks.on("cogwheelSyndicateMetaCurrenciesUpdated", () => {
   }
 });
 
+// Hook do debugowania przewijania czatu - WYŁĄCZONY TYMCZASOWO
+/*
+Hooks.on("ready", () => {
+  console.log("Cogwheel Syndicate: System ready");
+  
+  // Opóźnij sprawdzenie chat-log, żeby UI się w pełni załadowało
+  setTimeout(() => {
+    console.log("Cogwheel Syndicate: Sprawdzanie przewijania czatu");
+    
+    const chatLog = document.getElementById('chat-log');
+    if (chatLog) {
+      console.log("Chat log found:", chatLog);
+      console.log("Chat log styles:", {
+        overflow: window.getComputedStyle(chatLog).overflow,
+        overflowY: window.getComputedStyle(chatLog).overflowY,
+        height: window.getComputedStyle(chatLog).height,
+        maxHeight: window.getComputedStyle(chatLog).maxHeight,
+        pointerEvents: window.getComputedStyle(chatLog).pointerEvents
+      });
+      
+      // Dodaj test event listener na wheel
+      chatLog.addEventListener('wheel', function(e) {
+        console.log("Wheel event on chat log:", e);
+        console.log("Delta Y:", e.deltaY);
+        console.log("Scroll top before:", chatLog.scrollTop);
+        console.log("Scroll height:", chatLog.scrollHeight);
+        console.log("Client height:", chatLog.clientHeight);
+      });
+      
+      // Test kliknięcia w chat
+      chatLog.addEventListener('click', function(e) {
+        console.log("Click event on chat log:", e);
+      });
+      
+    } else {
+      console.warn("Chat log still not found after timeout!");
+      
+      // Spróbuj znaleźć alternatywne selektory
+      const chatAlternatives = [
+        '#chat',
+        '.chat-log',
+        '#sidebar #chat',
+        '#ui-right #chat'
+      ];
+      
+      chatAlternatives.forEach(selector => {
+        const element = document.querySelector(selector);
+        if (element) {
+          console.log(`Found chat element with selector: ${selector}`, element);
+        }
+      });
+    }
+  }, 2000); // 2 sekundy opóźnienia
+});
+*/
+
 // Synchronizacja przez socket (usuwamy synchronizację zegarów)
 Hooks.once("setup", () => {
   game.socket.on("system.cogwheel-syndicate", async (data) => {

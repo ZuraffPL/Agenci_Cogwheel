@@ -352,11 +352,15 @@
 }
 
 /* Style dla dialogu dodawania/edytowania zegara */
-.clock-dialog .clock-form-group {
+.clock-dialog .clock-form-group,
+.edit-clock-dialog .clock-form-group,
+.add-clock-dialog .clock-form-group {
   margin-bottom: 10px;
 }
 
-.clock-dialog .clock-form-group label {
+.clock-dialog .clock-form-group label,
+.edit-clock-dialog .clock-form-group label,
+.add-clock-dialog .clock-form-group label {
   display: block;
   margin-bottom: 5px;
   color: #e0e0e0;
@@ -364,7 +368,13 @@
 
 .clock-dialog .clock-form-group input[type="text"],
 .clock-dialog .clock-form-group textarea,
-.clock-dialog .clock-form-group select {
+.clock-dialog .clock-form-group select,
+.edit-clock-dialog .clock-form-group input[type="text"],
+.edit-clock-dialog .clock-form-group textarea,
+.edit-clock-dialog .clock-form-group select,
+.add-clock-dialog .clock-form-group input[type="text"],
+.add-clock-dialog .clock-form-group textarea,
+.add-clock-dialog .clock-form-group select {
   width: 100%;
   padding: 5px;
   background-color: #3a3a3a;
@@ -373,50 +383,86 @@
   color: #ddd;
 }
 
-/* Style dla palety kolorów zegarów */
-.clock-dialog .clock-color-palette {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 8px;
-  margin-top: 5px;
+/* Style dla palety kolorów zegarów - agresywne selektory */
+.clock-dialog .clock-color-palette,
+.edit-clock-dialog .clock-color-palette,
+.add-clock-dialog .clock-color-palette,
+.edit-clock-dialog form .clock-color-palette,
+.add-clock-dialog form .clock-color-palette,
+.cogwheel .clock-color-palette,
+[class*="clock-dialog"] .clock-color-palette {
+  display: grid !important;
+  grid-template-columns: repeat(6, 1fr) !important;
+  gap: 8px !important;
+  margin-top: 5px !important;
 }
 
-.clock-dialog .clock-color-palette input[type="radio"] {
-  display: none;
+.clock-dialog .clock-color-palette input[type="radio"],
+.edit-clock-dialog .clock-color-palette input[type="radio"],
+.add-clock-dialog .clock-color-palette input[type="radio"],
+.edit-clock-dialog form .clock-color-palette input[type="radio"],
+.add-clock-dialog form .clock-color-palette input[type="radio"],
+.cogwheel .clock-color-palette input[type="radio"],
+[class*="clock-dialog"] .clock-color-palette input[type="radio"] {
+  display: none !important;
 }
 
-.clock-dialog .clock-color-palette .color-option {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 3px solid #555;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
-  display: block;
+.clock-dialog .clock-color-palette .color-option,
+.edit-clock-dialog .clock-color-palette .color-option,
+.add-clock-dialog .clock-color-palette .color-option,
+.edit-clock-dialog form .clock-color-palette .color-option,
+.add-clock-dialog form .clock-color-palette .color-option,
+.cogwheel .clock-color-palette .color-option,
+[class*="clock-dialog"] .clock-color-palette .color-option {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  border: 3px solid #555 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  position: relative !important;
+  display: block !important;
 }
 
-.clock-dialog .clock-color-palette .color-option:hover {
-  border-color: #cd7f32;
-  transform: scale(1.1);
-  box-shadow: 0 2px 8px rgba(205, 127, 50, 0.3);
+.clock-dialog .clock-color-palette .color-option:hover,
+.edit-clock-dialog .clock-color-palette .color-option:hover,
+.add-clock-dialog .clock-color-palette .color-option:hover,
+.edit-clock-dialog form .clock-color-palette .color-option:hover,
+.add-clock-dialog form .clock-color-palette .color-option:hover,
+.cogwheel .clock-color-palette .color-option:hover,
+[class*="clock-dialog"] .clock-color-palette .color-option:hover {
+  border-color: #cd7f32 !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 2px 8px rgba(205, 127, 50, 0.3) !important;
 }
 
-.clock-dialog .clock-color-palette input[type="radio"]:checked + .color-option {
-  border-color: #e8a057;
-  border-width: 4px;
-  box-shadow: 0 0 0 2px rgba(232, 160, 87, 0.3), 0 2px 8px rgba(232, 160, 87, 0.5);
-  transform: scale(1.1);
+.clock-dialog .clock-color-palette input[type="radio"]:checked + .color-option,
+.edit-clock-dialog .clock-color-palette input[type="radio"]:checked + .color-option,
+.add-clock-dialog .clock-color-palette input[type="radio"]:checked + .color-option,
+.edit-clock-dialog form .clock-color-palette input[type="radio"]:checked + .color-option,
+.add-clock-dialog form .clock-color-palette input[type="radio"]:checked + .color-option,
+.cogwheel .clock-color-palette input[type="radio"]:checked + .color-option,
+[class*="clock-dialog"] .clock-color-palette input[type="radio"]:checked + .color-option {
+  border-color: #e8a057 !important;
+  border-width: 4px !important;
+  box-shadow: 0 0 0 2px rgba(232, 160, 87, 0.3), 0 2px 8px rgba(232, 160, 87, 0.5) !important;
+  transform: scale(1.1) !important;
 }
 
-.clock-dialog .clock-color-palette input[type="radio"]:checked + .color-option::after {
-  content: '✓';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  font-weight: bold;
-  font-size: 14px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+.clock-dialog .clock-color-palette input[type="radio"]:checked + .color-option::after,
+.edit-clock-dialog .clock-color-palette input[type="radio"]:checked + .color-option::after,
+.add-clock-dialog .clock-color-palette input[type="radio"]:checked + .color-option::after,
+.edit-clock-dialog form .clock-color-palette input[type="radio"]:checked + .color-option::after,
+.add-clock-dialog form .clock-color-palette input[type="radio"]:checked + .color-option::after,
+.cogwheel .clock-color-palette input[type="radio"]:checked + .color-option::after,
+[class*="clock-dialog"] .clock-color-palette input[type="radio"]:checked + .color-option::after {
+  content: '✓' !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  color: white !important;
+  font-weight: bold !important;
+  font-size: 14px !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
 }

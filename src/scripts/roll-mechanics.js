@@ -368,13 +368,16 @@ export async function performAttributeRoll(actor, attribute) {
             if (useSteamDie) diceCount += 1;
             if (useDevilDie) diceCount += 1;
 
-            const rollFormula = `${diceCount}d12 + @attrMod + @positionMod + @rollMod`;
-            const roll = new Roll(rollFormula, {
-              attrMod: effectiveAttrValue,
-              positionMod: positionModifier,
-              rollMod: rollModifier
-            });
+            // Foundry v13 compatible roll formula
+            const rollFormula = `${diceCount}d12 + ${effectiveAttrValue} + ${positionModifier} + ${rollModifier}`;
+            console.log("Roll formula:", rollFormula);
+            
+            const roll = new Roll(rollFormula);
             await roll.evaluate();
+            
+            console.log("Roll after evaluate:", roll);
+            console.log("Roll.class:", roll.constructor.name);
+            console.log("Roll properties:", Object.keys(roll));
 
             const diceResults = roll.terms[0].results.map(r => r.result);
             let die1, die2, stressDie, steamDie, devilDie;
@@ -862,12 +865,11 @@ async function executeRollWithData(actor, data, isReroll = false) {
   if (useSteamDie) diceCount += 1;
   if (useDevilDie) diceCount += 1;
 
-  const rollFormula = `${diceCount}d12 + @attrMod + @positionMod + @rollMod`;
-  const roll = new Roll(rollFormula, {
-    attrMod: effectiveAttrValue,
-    positionMod: positionModifier,
-    rollMod: rollModifier
-  });
+  // Foundry v13 compatible roll formula
+  const rollFormula = `${diceCount}d12 + ${effectiveAttrValue} + ${positionModifier} + ${rollModifier}`;
+  console.log("Reroll formula:", rollFormula);
+  
+  const roll = new Roll(rollFormula);
   await roll.evaluate();
 
   const diceResults = roll.terms[0].results.map(r => r.result);
