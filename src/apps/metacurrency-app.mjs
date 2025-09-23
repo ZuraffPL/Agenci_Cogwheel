@@ -15,9 +15,9 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
     },
     position: {
       width: 400,
-      height: 340,
-      left: 20,
-      top: 100
+      height: 320,
+      left: 40,
+      top: 80
     },
     classes: ["cogwheel", "metacurrency-app"], 
     form: {
@@ -61,16 +61,18 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
 
   _onRender(context, options) {
     super._onRender(context, options);
-    const html = $(this.element); // Zawinięcie w jQuery dla kompatybilności
-    html.find('.metacurrency-increment').on('click', this._onIncrement.bind(this));
-    html.find('.metacurrency-decrement').on('click', this._onDecrement.bind(this));
-    html.find('.spend-np-btn').on('click', this._onSpendNP.bind(this));
-    html.find('.spend-sp-btn').on('click', this._onSpendSP.bind(this));
-    html.find('.reset-stress-uses-btn').on('click', this._onResetStressUses.bind(this));
-    
+    const root = this.element instanceof HTMLElement ? this.element : (this.element[0] || this.element);
+    root.querySelectorAll('.metacurrency-increment').forEach(el => el.addEventListener('click', this._onIncrement.bind(this)));
+    root.querySelectorAll('.metacurrency-decrement').forEach(el => el.addEventListener('click', this._onDecrement.bind(this)));
+    root.querySelectorAll('.spend-np-btn').forEach(el => el.addEventListener('click', this._onSpendNP.bind(this)));
+    root.querySelectorAll('.spend-sp-btn').forEach(el => el.addEventListener('click', this._onSpendSP.bind(this)));
+    root.querySelectorAll('.reset-stress-uses-btn').forEach(el => el.addEventListener('click', this._onResetStressUses.bind(this)));
     // Obsługa bezpośredniej edycji wartości metawalut
-    html.find('.meta-value-input').on('change blur', this._onValueChange.bind(this));
-    html.find('.meta-value-input').on('keydown', this._onValueKeydown.bind(this));
+    root.querySelectorAll('.meta-value-input').forEach(el => {
+      el.addEventListener('change', this._onValueChange.bind(this));
+      el.addEventListener('blur', this._onValueChange.bind(this));
+      el.addEventListener('keydown', this._onValueKeydown.bind(this));
+    });
   }
 
   async _onIncrement(event) {
@@ -167,10 +169,10 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
     app.render(true).then(() => {
       // Pozycjonowanie po wyrenderowaniu
       app.setPosition({
-        left: 20,
-        top: window.innerHeight - 270,
+        left: 40,
+        top: window.innerHeight - 200,
         width: 400,
-        height: 340
+        height: 300
       });
     });
     
@@ -212,32 +214,26 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
   }
 
   async _handleNPSpend(element) {
-    // Konwertuj native DOM element na jQuery dla kompatybilności
-    const html = $(element);
-    const selectedAction = html.find('input[name="npAction"]:checked');
-    
-    if (!selectedAction.length) {
+    // Native DOM version
+    const selectedAction = element.querySelector('input[name="npAction"]:checked');
+    if (!selectedAction) {
       ui.notifications.warn(game.i18n.localize("COGSYNDICATE.metacurrency.selectAction"));
       return;
     }
-
-    const actionValue = selectedAction.val();
+    const actionValue = selectedAction.value;
     let cost;
-    
     // Obsługa akcji niestandardowej
     if (actionValue === "custom") {
-      const customAmountInput = html.find('.custom-np-amount');
-      const customAmount = parseInt(customAmountInput.val());
-      
+      const customAmountInput = element.querySelector('.custom-np-amount');
+      const customAmount = parseInt(customAmountInput?.value);
       // Walidacja liczby punktów
       if (!customAmount || customAmount < 1 || customAmount > 10) {
         ui.notifications.warn(game.i18n.localize("COGSYNDICATE.metacurrency.invalidCustomAmount"));
         return;
       }
-      
       cost = customAmount;
     } else {
-      cost = parseInt(selectedAction.data('cost'));
+      cost = parseInt(selectedAction.dataset.cost);
     }
     
     const currentNP = game.cogwheelSyndicate.nemesisPoints || 0;
@@ -359,17 +355,14 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
   }
 
   async _handleSPSpend(element) {
-    // Konwertuj native DOM element na jQuery dla kompatybilności
-    const html = $(element);
-    const selectedAction = html.find('input[name="spAction"]:checked');
-    
-    if (!selectedAction.length) {
+    // Native DOM version
+    const selectedAction = element.querySelector('input[name="spAction"]:checked');
+    if (!selectedAction) {
       ui.notifications.warn(game.i18n.localize("COGSYNDICATE.metacurrency.selectAction"));
       return;
     }
-
-    const actionValue = selectedAction.val();
-    const cost = parseInt(selectedAction.data('cost'));
+    const actionValue = selectedAction.value;
+    const cost = parseInt(selectedAction.dataset.cost);
     const currentSP = game.cogwheelSyndicate.steamPoints || 0;
 
     // Sprawdź czy jest wystarczająco punktów
