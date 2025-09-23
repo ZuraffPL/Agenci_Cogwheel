@@ -1,3 +1,5 @@
+import cogwheel_syndicate_Utility from "../scripts/utiliti.mjs"
+
 export class DoomClocksDialog extends foundry.applications.api.ApplicationV2 {
 
 constructor(options = {}) {
@@ -43,8 +45,8 @@ constructor(options = {}) {
     },
     position: {
      
-width: 500,
-      height: 750,
+      width: "auto",
+      height: "auto",
       left: 40,
       top: 20
     },
@@ -88,20 +90,26 @@ width: 500,
   }
   async render(force = false, options = {}) {
     await super.render(force, options);
-    const html = $(this.element); // Zawinięcie w jQuery dla kompatybilności
+    let html; // Zawinięcie w jQuery dla kompatybilności
+    if (this.element && this.element.jquery) {
+        html = this.element[0]
+      }
+    else{
+      html = this.element
+    }
 
     // Znajdź kontener - może być w różnych miejscach w zależności od wersji Foundry
-    let container = this.element.querySelector('.doom-clocks-content');
+    let container = html.querySelector('.doom-clocks-content');
     if (!container) {
       // Spróbuj znaleźć w całym dokumencie jako fallback
-      container = html.find('.doom-clocks-content')[0];
+      container = html.querySelector('.doom-clocks-content');
     }
     
     // Ustaw właściwą zakładkę jako aktywną
-    const tabBtns = this.element.querySelectorAll('.tab-btn');
+    const tabBtns = html.querySelectorAll('.tab-btn');
     tabBtns.forEach(btn => btn.classList.remove('active'));
     
-    const activeTab = this.element.querySelector(`.tab-btn[data-category="${this.activeCategory}"]`);
+    const activeTab = html.querySelector(`.tab-btn[data-category="${this.activeCategory}"]`);
     if (activeTab) activeTab.classList.add('active');
     
     // Ustaw właściwy atrybut kontenera jeśli został znaleziony
@@ -109,16 +117,22 @@ width: 500,
       container.setAttribute('data-active-category', this.activeCategory);
     }
 
-    // Obsługa zakładek kategorii
-    html.find(".tab-btn").on('click', this._onTabChange.bind(this));
+ // Obsługa zakładek kategorii
+html.querySelector(".tab-btn")
+    .addEventListener("click", this._onTabChange.bind(this));
 
-    if (game.user.isGM) {
-      html.find(".add-clock").on('click', this._onAddClock.bind(this));
-      html.find(".increment-clock").on('click', this._onIncrementClock.bind(this));
-      html.find(".decrement-clock").on('click', this._onDecrementClock.bind(this));
-      html.find(".edit-clock").on('click', this._onEditClock.bind(this));
-      html.find(".delete-clock").on('click', this._onDeleteClock.bind(this));
-    }
+if (game.user.isGM) {
+  html.querySelector(".add-clock")
+      .addEventListener("click", this._onAddClock.bind(this));
+  html.querySelector(".increment-clock")
+      ?.addEventListener("click", this._onIncrementClock.bind(this));
+  html.querySelector(".decrement-clock")
+      ?.addEventListener("click", this._onDecrementClock.bind(this));
+  html.querySelector(".edit-clock")
+      ?.addEventListener("click", this._onEditClock.bind(this));
+  html.querySelector(".delete-clock")
+      ?.addEventListener("click", this._onDeleteClock.bind(this));
+}
 
     // Automatyczne dopasowanie wysokości okna do liczby zegarów
     this._autoAdjustHeight();
@@ -157,7 +171,7 @@ width: 500,
     // Pobierz aktualnie aktywną kategorię z instancji
     const activeCategory = this.activeCategory || 'mission';
     
-    const dialogContent = await foundry.applications.handlebars.renderTemplate(
+    const dialogContent = await cogwheel_syndicate_Utility.renderTemplate(
       "systems/cogwheel-syndicate/src/templates/add-clock-dialog.hbs",
       { clock: { name: "", description: "", max: 4, category: activeCategory, fillColor: "#dc2626" } }
     );
@@ -686,8 +700,8 @@ export async function openDoomClocks() {
     dialog.setPosition({
       left: 40,
       top: 20,
-      width: 500,
-      height: 750
+      width: "auto",
+      height: "auto"
     });
     // Wyłączone automatyczne dopasowywanie dla stałej wysokości
     // setTimeout(() => dialog._adjustWindowHeight(), 150);

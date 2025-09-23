@@ -1,4 +1,6 @@
-class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
+import cogwheel_syndicate_Utility from "../scripts/utiliti.mjs"
+
+class MetaCurrencyApp extends foundry.applications.api.ApplicationV2 {
   constructor(options = {}) {
     super(options);
     this._onUpdateMetaCurrencies = this._onUpdateMetaCurrencies.bind(this);
@@ -14,15 +16,16 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
       resizable: true
     },
     position: {
-      width: 400,
-      height: 320,
+      width: "auto",
+      height: "auto",
       left: 40,
       top: 80
     },
-    classes: ["cogwheel", "metacurrency-app"], 
     form: {
       preventEscapeClose: true,
     },
+    classes: ["cogwheel", "metacurrency-app"]
+  
  
   };
 
@@ -31,12 +34,7 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
       template: "systems/cogwheel-syndicate/src/templates/meta-currency-dialog.hbs"
     }
   };
-  async close(options = {}) {
-    if (options.closeKey) {
-      return false;
-    }
-    return super.close(options);
-  }
+
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     context.metacurrencies = {
@@ -59,16 +57,38 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
     return context;
   }
 
-  _onRender(context, options) {
-    super._onRender(context, options);
-    const root = this.element instanceof HTMLElement ? this.element : (this.element[0] || this.element);
-    root.querySelectorAll('.metacurrency-increment').forEach(el => el.addEventListener('click', this._onIncrement.bind(this)));
-    root.querySelectorAll('.metacurrency-decrement').forEach(el => el.addEventListener('click', this._onDecrement.bind(this)));
-    root.querySelectorAll('.spend-np-btn').forEach(el => el.addEventListener('click', this._onSpendNP.bind(this)));
-    root.querySelectorAll('.spend-sp-btn').forEach(el => el.addEventListener('click', this._onSpendSP.bind(this)));
-    root.querySelectorAll('.reset-stress-uses-btn').forEach(el => el.addEventListener('click', this._onResetStressUses.bind(this)));
+  async _renderHTML() {
+    try {
+      const data = await this._prepareContext()
+      const html = await cogwheel_syndicate_Utility.renderTemplate(
+        "systems/cogwheel-syndicate/src/templates/meta-currency-dialog.hbs", {metacurrencies:data.metacurrencies, canSpendNP:data.canSpendNP,stressUsesLeft:data.stressUsesLeft}
+      );
+      return html;
+    } catch (e) {
+      console.error("_renderHTML error:", e);
+      throw e;
+    }
+  }
+  
+  async _replaceHTML(result, html) {
+    html.innerHTML = result;
+  }
+  async render(force = false, options = {}) {
+    await super.render(force, options);
+     let html; // Zawinięcie w jQuery dla kompatybilności
+    if (this.element && this.element.jquery) {
+        html = this.element[0]
+      }
+    else{
+      html = this.element
+    }
+    html.querySelectorAll('.metacurrency-increment').forEach(el => el.addEventListener('click', this._onIncrement.bind(this)));
+    html.querySelectorAll('.metacurrency-decrement').forEach(el => el.addEventListener('click', this._onDecrement.bind(this)));
+    html.querySelectorAll('.spend-np-btn').forEach(el => el.addEventListener('click', this._onSpendNP.bind(this)));
+    html.querySelectorAll('.spend-sp-btn').forEach(el => el.addEventListener('click', this._onSpendSP.bind(this)));
+    html.querySelectorAll('.reset-stress-uses-btn').forEach(el => el.addEventListener('click', this._onResetStressUses.bind(this)));
     // Obsługa bezpośredniej edycji wartości metawalut
-    root.querySelectorAll('.meta-value-input').forEach(el => {
+    html.querySelectorAll('.meta-value-input').forEach(el => {
       el.addEventListener('change', this._onValueChange.bind(this));
       el.addEventListener('blur', this._onValueChange.bind(this));
       el.addEventListener('keydown', this._onValueKeydown.bind(this));
@@ -115,6 +135,13 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
     }
   }
 
+  async close(options = {}) {
+    if (options.closeKey) {
+      return false;
+    }
+    return super.close(options);
+  }
+
   async _onDecrement(event) {
     const key = event.currentTarget.dataset.key;
     const currentValue = game.cogwheelSyndicate[key] || 0;
@@ -158,10 +185,7 @@ class MetaCurrencyApp extends foundry.applications.api.HandlebarsApplicationMixi
     this.render(); // Odśwież tylko gdy zmieniono metacurrencies
   }
 
-  close(options = {}) {
-    Hooks.off("cogwheelSyndicateMetaCurrenciesUpdated", this._onUpdateMetaCurrencies);
-    return super.close(options);
-  }
+ 
 
   static showApp() {
     const app = new MetaCurrencyApp();
