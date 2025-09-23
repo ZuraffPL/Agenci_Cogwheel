@@ -1,5 +1,6 @@
 export class DoomClocksDialog extends foundry.applications.api.ApplicationV2 {
-  constructor(options = {}) {
+
+constructor(options = {}) {
     super(options);
     // Odczyt zegarów z ustawień świata
     this.clocks = game.settings.get("cogwheel-syndicate", "doomClocks") || [];
@@ -31,21 +32,25 @@ export class DoomClocksDialog extends foundry.applications.api.ApplicationV2 {
   }
 
   static DEFAULT_OPTIONS = {
-    id: "doom-clocks-dialog",
+    id:
+"doom-clocks-dialog",
     tag: "div",
     window: {
       title: "COGSYNDICATE.DoomClocksTitle",
-      icon: "fas fa-clock",
+
+     icon: "fas fa-clock",
       resizable: true
     },
     position: {
-      width: 500,
-      height: 630,
-      left: 20,
+     
+width: 500,
+      height: 750,
+      left: 40,
       top: 20
     },
     form: {
-      preventEscapeClose: true,
+ 
+    preventEscapeClose: true,
     },
     classes: ["cogwheel", "doom-clocks"]
   };
@@ -115,8 +120,29 @@ export class DoomClocksDialog extends foundry.applications.api.ApplicationV2 {
       html.find(".delete-clock").on('click', this._onDeleteClock.bind(this));
     }
 
-    // Dopasuj wysokość okna do ilości widocznych zegarów - wyłączone dla stałej wysokości 630px
-    // setTimeout(() => this._adjustWindowHeight(), 100);
+    // Automatyczne dopasowanie wysokości okna do liczby zegarów
+    this._autoAdjustHeight();
+  }
+
+  /**
+   * Automatycznie dopasowuje wysokość okna do liczby widocznych zegarów
+   * z zachowaniem ograniczeń min/max, zgodnie z natywnym DOM i AppV2
+   */
+  _autoAdjustHeight() {
+    const $element = $(this.element);
+    // Szukaj tylko widocznych zegarów w aktualnej kategorii
+    const visibleClocks = $element.find('.clock-item:visible').length;
+    const baseHeight = 220; // UI, przyciski, zakładki, padding
+    const clockHeight = 110; // Większa wysokość jednego zegara
+    const maxHeight = 750; // Maksymalna wysokość okna (zgodnie z DEFAULT_OPTIONS)
+    const minHeight = 300;
+    let targetHeight = baseHeight + (visibleClocks * clockHeight) + 70; // +70px bufora
+    targetHeight = Math.min(targetHeight, maxHeight);
+    targetHeight = Math.max(targetHeight, minHeight);
+    // Ustaw wysokość tylko jeśli różni się od obecnej
+    if (this.position?.height !== targetHeight) {
+      this.setPosition({ height: targetHeight });
+    }
   }
   async close(options = {}) {
     if (options.closeKey) {
@@ -621,10 +647,8 @@ export class DoomClocksDialog extends foundry.applications.api.ApplicationV2 {
     const container = $(this.element).find('.doom-clocks-content');
     container.attr('data-active-category', category);
     
-    // Dopasuj wysokość okna do ilości widocznych zegarów - wyłączone dla stałej wysokości
-    // setTimeout(() => {
-    //   this._adjustWindowHeight();
-    // }, 100);
+    // Automatycznie dopasuj wysokość po zmianie zakładki
+    this._autoAdjustHeight();
     
     // Zaktualizuj przycisk "Dodaj zegar" aby dodawał do aktywnej kategorii
     $(this.element).find('.add-clock').attr('data-category', category);
@@ -658,14 +682,13 @@ export async function openDoomClocks() {
   const dialog = await new DoomClocksDialog();
   
   dialog.render(true).then(() => {
-    // Pozycjonowanie po wyrenderowaniu - zachowaj stałą wysokość 630px
+    // Pozycjonowanie po wyrenderowaniu - użyj wartości z DEFAULT_OPTIONS.position
     dialog.setPosition({
-      left: 20,
+      left: 40,
       top: 20,
       width: 500,
-      height: 630
+      height: 750
     });
-    
     // Wyłączone automatyczne dopasowywanie dla stałej wysokości
     // setTimeout(() => dialog._adjustWindowHeight(), 150);
   });
