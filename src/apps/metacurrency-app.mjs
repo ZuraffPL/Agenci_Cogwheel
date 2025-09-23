@@ -226,6 +226,9 @@ class MetaCurrencyApp extends foundry.applications.api.ApplicationV2 {
         {
           action: "spend",
           label: game.i18n.localize("COGSYNDICATE.metacurrency.spendPoints"),
+          callback: async (html) => {
+            await this._handleNPSpend(html);
+          },
           default: true
         }
       ]
@@ -237,7 +240,8 @@ class MetaCurrencyApp extends foundry.applications.api.ApplicationV2 {
     }
   }
 
-  async _handleNPSpend(element) {
+  async _handleNPSpend(html) {
+    const element = html.currentTarget;
     // Native DOM version
     const selectedAction = element.querySelector('input[name="npAction"]:checked');
     if (!selectedAction) {
@@ -362,15 +366,15 @@ class MetaCurrencyApp extends foundry.applications.api.ApplicationV2 {
         {
           action: "spend",
           label: game.i18n.localize("COGSYNDICATE.metacurrency.spendPoints"),
-          default: true
+          default: true,
+          callback: async (html) => {
+            await this._handleSPSpend(html.currentTarget);
+          }
+
         }
       ]
     });
-    
-    // Obsłuż wynik dialoga
-    if (dialog?.action === "spend") {
-      this._handleSPSpend(dialog.element);
-    }
+ 
   }
 
   _getStressUsesLeft() {

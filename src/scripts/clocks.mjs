@@ -118,20 +118,34 @@ constructor(options = {}) {
     }
 
  // Obsługa zakładek kategorii
-html.querySelector(".tab-btn")
-    .addEventListener("click", this._onTabChange.bind(this));
+  const buttons = html.querySelectorAll(".tab-btn");
+
+   buttons.forEach(button =>{
+    button.addEventListener("click", this._onTabChange.bind(this));
+   }) 
 
 if (game.user.isGM) {
   html.querySelector(".add-clock")
       .addEventListener("click", this._onAddClock.bind(this));
-  html.querySelector(".increment-clock")
-      ?.addEventListener("click", this._onIncrementClock.bind(this));
-  html.querySelector(".decrement-clock")
-      ?.addEventListener("click", this._onDecrementClock.bind(this));
-  html.querySelector(".edit-clock")
-      ?.addEventListener("click", this._onEditClock.bind(this));
-  html.querySelector(".delete-clock")
-      ?.addEventListener("click", this._onDeleteClock.bind(this));
+  html.querySelectorAll(".increment-clock").forEach(element => {
+  element.addEventListener("click", this._onIncrementClock.bind(this));
+});
+
+// Decrement buttons
+html.querySelectorAll(".decrement-clock").forEach(element => {
+  element.addEventListener("click", this._onDecrementClock.bind(this));
+});
+
+// Edit buttons
+html.querySelectorAll(".edit-clock").forEach(element => {
+  element.addEventListener("click", this._onEditClock.bind(this));
+});
+
+// Delete buttons
+html.querySelectorAll(".delete-clock").forEach(element => {
+  element.addEventListener("click", this._onDeleteClock.bind(this));
+});
+
 }
 
     // Automatyczne dopasowanie wysokości okna do liczby zegarów
@@ -209,11 +223,6 @@ if (game.user.isGM) {
         this.activeCategory = activeCategory;
       }
 
-      _onRender() {
-        console.log("AddClockDialog _onRender called");
-        // Wymuś ustawienie kolorów w palecie
-        this._forceColorStyles();
-      }
       
       _forceColorStyles() {
         const element = this.element;
@@ -304,7 +313,7 @@ if (game.user.isGM) {
 
     const dialog = new AddClockDialog(this, activeCategory);
     dialog.render(true, { height: 630 });
-
+    
     console.log("=== _onAddClock END ===");
   }
 
