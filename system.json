@@ -40,7 +40,8 @@
       "src/styles/feats-effects.css",
       "src/styles/equipment.css", 
       "src/styles/equipment-points.css", 
-      "src/styles/agent-v2.css"
+      "src/styles/agent-v2.css",
+      "src/styles/cogwheel.css"
   ],
   "socket": true,
   "packs": [

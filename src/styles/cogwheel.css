@@ -1,7 +1,11 @@
-.cogwheel.sheet.actor {
+ .cogwheel.sheet.actor {
   font-family: Arial, sans-serif;
   background: linear-gradient(135deg, #3d2817 0%, #4a321d 35%, #2c1810 100%); /* Steampunk węglowe tło */
   color: #f4a460; /* Piaskowy tekst */
+  min-height: auto !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
   border: 2px solid #cd7f32; /* Miedziany border */
   border-radius: 15px;
   box-shadow: 
@@ -83,6 +87,10 @@ h3.centered {
 
  .sheet-body {
   padding: 15px;
+  min-height: auto !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
   background: linear-gradient(135deg, rgba(44, 24, 16, 0.3) 0%, rgba(74, 50, 29, 0.2) 100%);
   border-radius: 0 0 12px 12px;
 }
