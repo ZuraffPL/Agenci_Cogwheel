@@ -24,7 +24,7 @@
     "src/scripts/handlebars.mjs",
     "src/apps/metacurrency-app.mjs"
   ],
-  "styles": [
+   "styles": [
       "src/styles/trauma-types.css",
       "src/styles/meta-currency.css",
       "src/styles/clocks.css",

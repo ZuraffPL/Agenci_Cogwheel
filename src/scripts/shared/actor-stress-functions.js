@@ -35,7 +35,7 @@ export class ActorStressFunctions {
         currentSteam: game.cogwheelSyndicate?.steamPoints || 0
       };
 
-      const dialogContent = await renderTemplate(
+      const dialogContent = await foundry.applications.handlebars.renderTemplate(
         "systems/cogwheel-syndicate/src/templates/spend-stress-dialog.hbs", 
         templateData
       );
@@ -93,7 +93,7 @@ export class ActorStressFunctions {
 
     const stressAction = selectedOption.value;
     const stressCost = parseInt(selectedOption.dataset.cost, 10);
-    const steamBonus = parseInt(selectedOption.data('steam') || 0, 10);
+    const steamBonus = parseInt(selectedOption.dataset.steam || 0, 10);
     
     const currentStress = actor.system.resources.stress.value || 0;
     const maxStress = actor.system.resources.stress.max || 12;

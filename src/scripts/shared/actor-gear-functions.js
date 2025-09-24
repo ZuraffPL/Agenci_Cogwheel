@@ -32,7 +32,7 @@ export class ActorGearFunctions {
         currentSteam: game.cogwheelSyndicate?.steamPoints || 0
       };
 
-      const dialogContent = await renderTemplate(
+      const dialogContent = await foundry.applications.handlebars.renderTemplate(
         "systems/cogwheel-syndicate/src/templates/spend-gear-dialog.hbs", 
         templateData
       );
@@ -98,7 +98,7 @@ export class ActorGearFunctions {
 
     const gearType = selectedOption.value;
     const gearCost = parseInt(selectedOption.dataset.cost, 10);
-    const steamCost = parseInt(selectedOption.data('steam'), 10);
+    const steamCost = parseInt(selectedOption.dataset.steam, 10);
 
     const currentGear = actor.system.resources.gear.value || 0;
     const currentSteam = game.cogwheelSyndicate?.steamPoints || 0;
