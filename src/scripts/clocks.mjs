@@ -224,37 +224,7 @@ html.querySelectorAll(".delete-clock").forEach(element => {
       }
 
       
-      _forceColorStyles() {
-        const element = this.element;
-        const allColorOptions = element.querySelectorAll(`.color-option`);
-        
-        const colorMap = {
-          "#dc2626": "Red (Threat)",
-          "#ea580c": "Orange (Warning)", 
-          "#d97706": "Amber (Caution)",
-          "#ca8a04": "Yellow (Time)",
-          "#65a30d": "Lime (Progress)",
-          "#16a34a": "Green (Success)",
-          "#0d9488": "Teal (Water)",
-          "#2563eb": "Blue (Cold)",
-          "#4338ca": "Indigo (Magic)",
-          "#7c3aed": "Purple (Mystery)",
-          "#db2777": "Pink (Emotions)",
-          "#6b7280": "Gray (Neutral)"
-        };
-        
-        console.log("Forcing color styles for", allColorOptions.length, "options");
-        
-        allColorOptions.forEach((option, index) => {
-          const associatedInput = option.previousElementSibling;
-          if (associatedInput && associatedInput.type === 'radio') {
-            const colorValue = associatedInput.value;
-            option.style.backgroundColor = colorValue;
-            option.title = colorMap[colorValue] || colorValue;
-            console.log(`Forced color ${index}: ${colorValue}`);
-          }
-        });
-      }
+
 
       async handleAddClock() {
         console.log("handleAddClock called");
@@ -309,6 +279,7 @@ html.querySelectorAll(".delete-clock").forEach(element => {
           ui.notifications.error("Błąd podczas dodawania zegara");
         }
       }
+
     }
 
     const dialog = new AddClockDialog(this, activeCategory);
@@ -316,6 +287,8 @@ html.querySelectorAll(".delete-clock").forEach(element => {
     
     console.log("=== _onAddClock END ===");
   }
+
+
 
   async _onEditClock(event) {
     event.preventDefault();
@@ -376,125 +349,22 @@ html.querySelectorAll(".delete-clock").forEach(element => {
         console.log("EditClockDialog _onRender called");
         // Upewnij się, że poprawny kolor jest zaznaczony
         this._setCorrectColorSelection();
-        // Wymuś ustawienie kolorów w palecie
-        this._forceColorStyles();
+
       }
       
-      _forceColorStyles() {
-        const element = this.element;
-        const allColorOptions = element.querySelectorAll(`.color-option`);
-        
-        const colorMap = {
-          "#dc2626": "Red (Threat)",
-          "#ea580c": "Orange (Warning)", 
-          "#d97706": "Amber (Caution)",
-          "#ca8a04": "Yellow (Time)",
-          "#65a30d": "Lime (Progress)",
-          "#16a34a": "Green (Success)",
-          "#0d9488": "Teal (Water)",
-          "#2563eb": "Blue (Cold)",
-          "#4338ca": "Indigo (Magic)",
-          "#7c3aed": "Purple (Mystery)",
-          "#db2777": "Pink (Emotions)",
-          "#6b7280": "Gray (Neutral)"
-        };
-        
-        console.log("Forcing color styles for", allColorOptions.length, "options");
-        
-        allColorOptions.forEach((option, index) => {
-          const associatedInput = option.previousElementSibling;
-          if (associatedInput && associatedInput.type === 'radio') {
-            const colorValue = associatedInput.value;
-            option.style.backgroundColor = colorValue;
-            option.title = colorMap[colorValue] || colorValue;
-            console.log(`Forced color ${index}: ${colorValue}`);
-          }
-        });
-      }
       
       _setCorrectColorSelection() {
         const element = this.element;
         const currentColor = this.clock.fillColor || "#dc2626";
-        
-        console.log("=== DEBUG COLOR SELECTION ===");
-        console.log("Setting correct color selection to:", currentColor);
-        console.log("Dialog element:", element);
-        console.log("Dialog element classes:", element.className);
-        
-        // Sprawdź całą strukturę DOM
-        const paletteContainer = element.querySelector('.clock-color-palette');
-        console.log("Palette container found:", paletteContainer);
-        
-        if (paletteContainer) {
-          console.log("Palette container HTML:", paletteContainer.outerHTML.substring(0, 500));
+         const radio = element.querySelector(
+          `input[name="fillColor"][value="${currentColor}"]`
+        );
+        if (radio) {
+            radio.checked = true;
         }
+
         
-        // Znajdź odpowiedni radio button i zaznacz go
-        const colorInput = element.querySelector(`input[name="fillColor"][value="${currentColor}"]`);
-        const allColorInputs = element.querySelectorAll(`input[name="fillColor"]`);
-        const allColorOptions = element.querySelectorAll(`.color-option`);
-        
-        console.log("Found color inputs:", allColorInputs.length);
-        console.log("Found color options:", allColorOptions.length);
-        console.log("Target color input:", colorInput);
-        
-        // WYMUŚ ustawienie kolorów tła dla wszystkich opcji
-        const colorMap = {
-          "#dc2626": "Red (Threat)",
-          "#ea580c": "Orange (Warning)", 
-          "#d97706": "Amber (Caution)",
-          "#ca8a04": "Yellow (Time)",
-          "#65a30d": "Lime (Progress)",
-          "#16a34a": "Green (Success)",
-          "#0d9488": "Teal (Water)",
-          "#2563eb": "Blue (Cold)",
-          "#4338ca": "Indigo (Magic)",
-          "#7c3aed": "Purple (Mystery)",
-          "#db2777": "Pink (Emotions)",
-          "#6b7280": "Gray (Neutral)"
-        };
-        
-        // Debug wszystkich opcji kolorów i wymuś kolory
-        allColorOptions.forEach((option, index) => {
-          const associatedInput = option.previousElementSibling;
-          if (associatedInput && associatedInput.type === 'radio') {
-            const colorValue = associatedInput.value;
-            
-            // WYMUŚ kolor tła
-            option.style.backgroundColor = colorValue;
-            option.title = colorMap[colorValue] || colorValue;
-            
-            console.log(`Color option ${index}:`, {
-              element: option,
-              classes: option.className,
-              originalStyle: option.getAttribute('style'),
-              forcedBg: colorValue,
-              computedBg: window.getComputedStyle(option).backgroundColor,
-              title: option.getAttribute('title')
-            });
-          }
-        });
-        
-        if (colorInput) {
-          colorInput.checked = true;
-          console.log("Successfully set color selection:", currentColor);
-          
-          // Sprawdź czy visual feedback działa
-          const colorOption = colorInput.nextElementSibling;
-          if (colorOption && colorOption.classList.contains('color-option')) {
-            console.log("Color option element:", colorOption);
-            console.log("Color option background:", window.getComputedStyle(colorOption).backgroundColor);
-          }
-        } else {
-          console.warn("Could not find color input for:", currentColor);
-          // Fallback - zaznacz domyślny czerwony
-          const defaultInput = element.querySelector(`input[name="fillColor"][value="#dc2626"]`);
-          if (defaultInput) {
-            defaultInput.checked = true;
-            console.log("Set fallback color selection to red");
-          }
-        }
-        console.log("=== END DEBUG COLOR SELECTION ===");
+
       }
 
       async handleEditClock() {
