@@ -192,6 +192,18 @@
   cursor: pointer;
 }
 
+/* Zachowanie interakcji z checkboxami statusu w dezaktywowanych elementach */
+.equipment-item.disabled .equipment-status input[type="checkbox"] {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* Zachowanie interakcji z przyciskiem toggle w dezaktywowanych elementach */
+.equipment-item.disabled .equipment-toggle {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
 /* Styl szczegółów ekwipunku */
 .equipment-details {
   display: flex;
