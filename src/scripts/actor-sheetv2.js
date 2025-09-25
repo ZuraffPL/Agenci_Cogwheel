@@ -190,7 +190,14 @@ class CogwheelActorSheetV2 extends BaseActorSheet {
       equipment.droppedDamaged = false;
 
       await ChatMessage.create({
-        content: `<p>${game.i18n.format("COGSYNDICATE.EquipmentRestored", { name: equipmentName, actorName: actorName })}</p>`,
+        content: `
+          <div class="equipment-message">
+            <h3><i class="fas fa-tools"></i> ${game.i18n.format("COGSYNDICATE.EquipmentRestored", { 
+              name: `<span class="equipment-name">${equipmentName}</span>`, 
+              actorName: `<strong style="color: #4a90e2;">${actorName}</strong>` 
+            })}</h3>
+          </div>
+        `,
         speaker: { actor: this.actor.id }
       });
     } else {
@@ -210,7 +217,14 @@ class CogwheelActorSheetV2 extends BaseActorSheet {
 
         if (messageKey) {
           await ChatMessage.create({
-            content: `<p>${game.i18n.format(messageKey, { name: equipmentName, actorName: actorName })}</p>`,
+            content: `
+              <div class="equipment-message">
+                <h3><i class="fas fa-exclamation-triangle"></i> ${game.i18n.format(messageKey, { 
+                  name: `<span class="equipment-name">${equipmentName}</span>`, 
+                  actorName: `<strong style="color: #4a90e2;">${actorName}</strong>` 
+                })}</h3>
+              </div>
+            `,
             speaker: { actor: this.actor.id }
           });
         }

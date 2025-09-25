@@ -1,7 +1,0 @@
-2025/09/23-08:10:37.349 2424 Recovering log #593
-2025/09/23-08:10:37.366 2424 Delete type=0 #593
-2025/09/23-08:10:37.366 2424 Delete type=3 #591
-2025/09/23-08:22:05.167 5aac Level-0 table #598: started
-2025/09/23-08:22:05.167 5aac Level-0 table #598: 0 bytes OK
-2025/09/23-08:22:05.175 5aac Delete type=0 #596
-2025/09/23-08:22:05.196 5aac Manual compaction at level-0 from 'undefined' @ 72057594037927935 : 1 .. 'undefined' @ 0 : 0; will stop at (end)

@@ -233,11 +233,6 @@ class MetaCurrencyApp extends foundry.applications.api.ApplicationV2 {
         }
       ]
     });
-    
-    // Obsłuż wynik dialoga
-    if (dialog?.action === "spend") {
-      this._handleNPSpend(dialog.element);
-    }
   }
 
   async _handleNPSpend(html) {

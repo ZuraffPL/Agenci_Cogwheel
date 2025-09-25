@@ -182,18 +182,28 @@ class CogwheelActorSheet extends BaseActorSheet {
     const equipmentName = equipment.name;
     const actorName = this.actor.name;
 
-    if (isChecked && equipment[status]) {
+    // If unchecking and equipment has this status, restore to normal
+    if (!isChecked && equipment[status]) {
       equipment.usedDestroyed = false;
       equipment.droppedDamaged = false;
 
       await ChatMessage.create({
-        content: `<p>${game.i18n.format("COGSYNDICATE.EquipmentRestored", { name: equipmentName, actorName: actorName })}</p>`,
+        content: `
+          <div class="equipment-message">
+            <h3><i class="fas fa-tools"></i> ${game.i18n.format("COGSYNDICATE.EquipmentRestored", { 
+              name: `<span class="equipment-name">${equipmentName}</span>`, 
+              actorName: `<strong style="color: #4a90e2;">${actorName}</strong>` 
+            })}</h3>
+          </div>
+        `,
         speaker: { actor: this.actor.id }
       });
     } else {
+      // Reset all states first
       equipment.usedDestroyed = false;
       equipment.droppedDamaged = false;
 
+      // If checking, set new status and send appropriate message
       if (isChecked) {
         equipment[status] = true;
         let messageKey;
@@ -204,7 +214,14 @@ class CogwheelActorSheet extends BaseActorSheet {
         }
 
         await ChatMessage.create({
-          content: `<p>${game.i18n.format(messageKey, { name: equipmentName, actorName: actorName })}</p>`,
+          content: `
+            <div class="equipment-message">
+              <h3><i class="fas fa-exclamation-triangle"></i> ${game.i18n.format(messageKey, { 
+                name: `<span class="equipment-name">${equipmentName}</span>`, 
+                actorName: `<strong style="color: #4a90e2;">${actorName}</strong>` 
+              })}</h3>
+            </div>
+          `,
           speaker: { actor: this.actor.id }
         });
       }
