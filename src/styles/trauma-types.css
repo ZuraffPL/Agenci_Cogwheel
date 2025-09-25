@@ -119,7 +119,7 @@
   justify-content: space-between !important;
   align-items: center !important;
   font-weight: bold !important;
-  font-size: 1.1em !important;
+  font-size: 1.2em !important;
   border-bottom: 1px dashed rgba(255, 255, 255, 0.3) !important;
   padding-bottom: 4px !important;
   margin-bottom: 8px !important;
@@ -246,7 +246,7 @@
 
 .trauma-field-content {
   color: #b8a9c8 !important;
-  font-size: 0.875rem !important;
+  font-size: 0.9rem !important;
   line-height: 1.4 !important;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
   min-height: 18px;
