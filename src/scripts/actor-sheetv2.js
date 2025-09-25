@@ -221,7 +221,13 @@ class CogwheelActorSheetV2 extends BaseActorSheet {
       "system.equipments": currentEquipments
     });
 
-    this.render();
+    // Update visual state without full re-render to preserve expanded/collapsed state
+    const equipmentItem = $(event.currentTarget).closest('.equipment-item');
+    if (isChecked) {
+      equipmentItem.addClass('disabled');
+    } else {
+      equipmentItem.removeClass('disabled');
+    }
   }
 
   async _onAttributeChange(event) {
