@@ -11,6 +11,51 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.18] - 2025-10-03
+
+**INTERACTIVE CONSEQUENCE SELECTION SYSTEM** | **INTERAKTYWNY SYSTEM WYBORU KONSEKWENCJI**
+
+### Added | Dodano
+- **Interactive Consequence Selection Dialog** | **Interaktywny Dialog Wyboru Konsekwencji**
+  - Added "Select Consequences" button below consequence messages in roll results | Dodano przycisk "Wybierz konsekwencje" pod komunikatami konsekwencji w wynikach rzutów
+  - Implemented DialogV2-based selection interface with 10 predefined consequence types | Zaimplementowano interfejs wyboru oparty na DialogV2 z 10 predefiniowanymi typami konsekwencji
+  - Real-time selection counter with color-coded feedback (blue/green/red) | Licznik wyboru w czasie rzeczywistym z kolorowym feedbackiem (niebieski/zielony/czerwony)
+  - Automatic checkbox disabling when selection limit is reached | Automatyczne wyłączanie checkboxów po osiągnięciu limitu wyboru
+  - Selection validation ensuring exact number of consequences chosen | Walidacja wyboru zapewniająca dokładną liczbę wybranych konsekwencji
+  - Steampunk-styled chat message displaying selected consequences | Komunikat czatu w stylu steampunk wyświetlający wybrane konsekwencje
+  - Button auto-disabling after selection to prevent duplicate choices | Automatyczne wyłączanie przycisku po wyborze aby zapobiec duplikacji
+
+- **10 Consequence Types** | **10 Typów Konsekwencji**
+  1. Attribute damage | Obrażenie w atrybut
+  2. Lower fictional position | Obniżenie pozycji fikcyjnej
+  3. Lose Gear points | Utrata punktów Sprzętu
+  4. Lose Steam Points | Utrata Punktów Pary
+  5. Increase Stress level | Podniesienie poziomu Stresu
+  6. Advance threat clock | Podbicie zegara zagrożenia
+  7. Reduce progress clock | Obniżenie zegara postępu
+  8. Damage/drop equipment | Uszkodzenie/upuszczenie ekwipunku
+  9. Negative roll modifier | Ujemny modyfikator do rzutu
+  10. Additional narrative complication | Dodatkowa komplikacja fabularna
+
+- **Consequence Selection Styling** | **Stylizacja Wyboru Konsekwencji**
+  - Added `.select-consequences-btn` with steampunk gradient and golden border | Dodano `.select-consequences-btn` z gradientem steampunk i złotą ramką
+  - Added `.selected-consequences-message` with steel/coal gradient background | Dodano `.selected-consequences-message` z tłem w gradiencie stali/węgla
+  - Copper-colored gear icon bullets (⚙) for consequence lists | Punktory w postaci ikon kół zębatych w kolorze miedzi (⚙)
+  - Blue highlighted agent names in consequence messages | Niebieskie wyróżnienie nazw agentów w komunikatach konsekwencji
+  - Font size 1.3em matching main consequence messages | Rozmiar czcionki 1.3em dopasowany do głównych komunikatów konsekwencji
+
+### Technical | Techniczne
+- Modularized consequence logic in `consequences.mjs` module | Zmodularyzowano logikę konsekwencji w module `consequences.mjs`
+- Implemented `showConsequencesSelectionDialog()` using DialogV2.wait() API | Zaimplementowano `showConsequencesSelectionDialog()` używając API DialogV2.wait()
+- Fixed DialogV2 element access using `dialog.element` for DOM manipulation | Naprawiono dostęp do elementu DialogV2 używając `dialog.element` dla manipulacji DOM
+- Fixed `currentRollTimestamp` reference error by moving declaration to callback start | Naprawiono błąd referencji `currentRollTimestamp` przez przeniesienie deklaracji na początek callbacku
+- Added comprehensive bilingual translations for all consequence UI elements | Dodano kompleksowe dwujęzyczne tłumaczenia dla wszystkich elementów UI konsekwencji
+- Enhanced consequences.css with button and message styling | Rozszerzono consequences.css o style przycisków i komunikatów
+
+### Changed | Zmieniono
+- Consequence system now interactive instead of passive display | System konsekwencji teraz interaktywny zamiast pasywnego wyświetlania
+- Roll mechanics now generate unique timestamp-based button IDs early in callback | Mechanika rzutów teraz generuje unikalne ID przycisków oparte na timestampie wcześnie w callbacku
+
 ## [0.9.9] - 2025-09-22
 
 ### Fixed | Naprawione

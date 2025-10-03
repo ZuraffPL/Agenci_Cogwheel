@@ -2,12 +2,12 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.9.9**
+**Current System Version: 0.9.18**
 
 ## ⚠️ Important Version Notice | Ważne Informacje o Wersji
 
 ### Foundry VTT v13+ (Current/Latest)
-- **Version 0.9.9**: Requires Foundry VTT v13.348 or higher
+- **Version 0.9.18**: Requires Foundry VTT v13.348 or higher
 - **Full native DOM API compatibility** - no jQuery dependencies
 - **Latest features and optimizations**
 
@@ -21,6 +21,43 @@ A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about
 Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysłowej.
 
 *A game about secret agents who fight threats of the industrial revolution era.*
+
+## 🔥 What's New in v0.9.18
+
+### 🎯 Interactive Consequence Selection System
+- **🎮 Player Choice**: Transform passive consequence display into interactive selection interface
+- **📋 10 Consequence Types**: Comprehensive list of mechanical and narrative consequences
+  1. Attribute damage | Obrażenie w atrybut
+  2. Lower fictional position | Obniżenie pozycji fikcyjnej
+  3. Lose Gear points | Utrata punktów Sprzętu
+  4. Lose Steam Points | Utrata Punktów Pary
+  5. Increase Stress level | Podniesienie poziomu Stresu
+  6. Advance threat clock | Podbicie zegara zagrożenia
+  7. Reduce progress clock | Obniżenie zegara postępu
+  8. Damage/drop equipment | Uszkodzenie/upuszczenie ekwipunku
+  9. Negative roll modifier | Ujemny modyfikator do rzutu
+  10. Additional narrative complication | Dodatkowa komplikacja fabularna
+
+### 🎨 Selection Dialog Features
+- **✅ Real-Time Counter**: Live selection tracker with color-coded feedback (blue → green → red)
+- **🔒 Smart Validation**: Automatic checkbox disabling when selection limit reached
+- **⚠️ Exact Selection**: Enforces choosing the exact number of consequences (no more, no less)
+- **🎭 Steampunk Styling**: Beautiful DialogV2 interface matching system aesthetic
+- **🌐 Full Bilingual Support**: Complete Polish/English translations for all UI elements
+
+### 💬 Chat Message Integration
+- **📨 Selected Consequences Display**: Elegant chat message showing player's choices
+- **⚙️ Gear Icon Bullets**: Copper-colored gear icons (⚙) for each consequence
+- **👤 Agent Highlighting**: Blue-colored agent names for clear attribution
+- **🎨 Steel/Coal Gradient**: Matching system's steampunk visual language
+- **📏 Consistent Typography**: 1.3em font size matching consequence messages
+
+### 🛠️ Technical Implementation
+- **🧩 Modular Architecture**: All consequence logic in `consequences.mjs` module
+- **⚡ DialogV2.wait() API**: Modern Foundry v13 dialog implementation
+- **🔄 Button State Management**: Automatic disable after selection prevents duplicates
+- **🎯 Timestamp-Based IDs**: Early generation prevents reference errors
+- **🎨 Enhanced CSS**: New `.select-consequences-btn` and `.selected-consequences-message` styles
 
 ## 🔥 What's New in v0.9.9
 

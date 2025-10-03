@@ -3,6 +3,7 @@ import { registerHandlebarsHelpers } from "./handlebars.mjs";
 import { openDoomClocks } from "./clocks.mjs"; // Import funkcji otwierającej zegary
 import { MetaCurrencyApp } from "../apps/metacurrency-app.mjs";
 import { FeatsEffects } from "./feats-effects.mjs"; // Import systemu efektów atutów
+import { getConsequencesMessage, showConsequencesSelectionDialog, POSITIONS, RESULT_TYPES } from "./consequences.mjs"; // Import systemu konsekwencji
 
 Hooks.once("init", () => {
   // Konfiguracja typów aktorów
@@ -23,6 +24,14 @@ Hooks.once("init", () => {
   game.cogwheelSyndicate.nemesisPoints = Math.clamp(game.cogwheelSyndicate.nemesisPoints, 0, 100);
   game.cogwheelSyndicate.steamPoints = Math.clamp(game.cogwheelSyndicate.steamPoints, 0, 100);
   game.cogwheelSyndicate.stressReduceUsesThisSession = game.cogwheelSyndicate.stressReduceUsesThisSession || 0;
+  
+  // Dodaj moduł konsekwencji do globalnego obiektu
+  game.cogwheelSyndicate.consequences = {
+    getConsequencesMessage,
+    showConsequencesSelectionDialog,
+    POSITIONS,
+    RESULT_TYPES
+  };
 
   // Rejestracja ustawienia dla zegarów
   game.settings.register("cogwheel-syndicate", "doomClocks", {

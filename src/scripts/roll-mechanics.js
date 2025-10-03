@@ -229,6 +229,9 @@ export async function performAttributeRoll(actor, attribute) {
               controlled: game.i18n.localize("COGSYNDICATE.PositionControlled")
             }[position];
 
+            // Generate timestamp for this roll (needed for button IDs)
+            const currentRollTimestamp = Date.now();
+
             let effectiveAttrValue = baseEffectiveAttrValue;
             let traumaModifier = 0;
             if (applyTrauma && traumaValue > 0) {
@@ -456,6 +459,57 @@ export async function performAttributeRoll(actor, attribute) {
               }
             }
 
+            // GENERATE CONSEQUENCES MESSAGE
+            let consequencesMessage = "";
+            const resultTypeMap = {
+              'AutoCriticalFailure': 'criticalFailure',
+              'FailureWithConsequence': 'failureWithConsequence',
+              'SuccessWithCost': 'successWithCost'
+            };
+            const mappedResultType = resultTypeMap[resultType];
+            
+            if (mappedResultType) {
+              const consequencesTable = {
+                'controlled': { 'successWithCost': 1, 'failureWithConsequence': 2, 'criticalFailure': 3 },
+                'risky': { 'successWithCost': 2, 'failureWithConsequence': 3, 'criticalFailure': 4 },
+                'desperate': { 'successWithCost': 3, 'failureWithConsequence': 4, 'criticalFailure': 4 }
+              };
+              const count = consequencesTable[position]?.[mappedResultType];
+              if (count) {
+                const singular = game.i18n.localize('COGWHEEL.Consequences.Singular');
+                const genitive = game.i18n.localize('COGWHEEL.Consequences.Genitive');
+                const plural = game.i18n.localize('COGWHEEL.Consequences.Plural');
+                
+                // Determine form: 1 = singular, 2-4 = genitive, 5+ = plural
+                let word;
+                if (count === 1) {
+                  word = singular;
+                } else if (count >= 2 && count <= 4) {
+                  word = genitive;
+                } else {
+                  word = plural;
+                }
+                
+                const trauma = (position === 'desperate' && mappedResultType === 'criticalFailure') ? 
+                  ` + <span class="consequence-trauma">1 ${game.i18n.localize('COGWHEEL.Consequences.Trauma')}</span>` : '';
+                
+                // Generate unique button ID for consequence selection
+                const selectBtnId = `select-consequences-${currentRollTimestamp}-${Math.random().toString(36).substr(2, 9)}`;
+                
+                consequencesMessage = `<div class="consequence-message">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <span class="consequence-count">${count}</span> ${word}${trauma}
+                </div>
+                <button class="select-consequences-btn" 
+                        id="${selectBtnId}"
+                        data-actor-id="${actor.id}" 
+                        data-consequence-count="${count}"
+                        data-message-id="">
+                  ${game.i18n.localize('COGWHEEL.Consequences.SelectButton')}
+                </button>`;
+              }
+            }
+
             // Apply Steam Booster effect if applicable
             let steamBoosterMessage = "";
             if (steamPoints > 0) {
@@ -489,8 +543,7 @@ export async function performAttributeRoll(actor, attribute) {
             // Wyłączenie wszystkich starszych przycisków dla tego agenta przy każdym nowym rzucie
             disableAllUpgradeButtonsForActor(actor.id);
             
-            // Rejestracja timestamp tego rzutu
-            const currentRollTimestamp = Date.now();
+            // Rejestracja timestamp tego rzutu (already defined at start of callback)
             window.cogwheelSyndicate.lastRollTimestamp[actor.id] = currentRollTimestamp;
 
             // Zapisanie danych rzutu dla możliwego reroll
@@ -559,6 +612,7 @@ export async function performAttributeRoll(actor, attribute) {
                 <p><strong style='color: black;'>${game.i18n.localize("COGSYNDICATE.RolledOn").replace('{attrLabel}', `<span style='color: #2563eb; font-weight: bold;'>${attrLabel}</span>`).replace('{total}', `<span style='color: red; font-weight: bold;'>${total}</span>`)}</strong></p>
                 <hr>
                 <p>${result}</p>
+                ${consequencesMessage}
                 ${useStressDie ? `<p>${game.i18n.format("COGSYNDICATE.StressDieUsed", { agentName: actor.name })}</p>` : ""}
                 ${useSteamDie ? steamDialogMessage : ""}
                 ${useDevilDie ? devilDialogMessage : ""}
@@ -948,6 +1002,63 @@ async function executeRollWithData(actor, data, isReroll = false) {
       steamPoints += 1;
     }
   }
+  
+  // Generate consequences message if applicable (comment out for now)
+  /*
+  let consequencesMessage = "";
+  
+  // Map position strings
+  const positionMap = {
+    'desperate': 'desperate',
+    'risky': 'risky',
+    'controlled': 'controlled'
+  };
+  
+  // Map result type strings
+  const resultTypeMap = {
+    'AutoCriticalFailure': 'criticalFailure',
+    'FailureWithConsequence': 'failureWithConsequence',
+    'SuccessWithCost': 'successWithCost'
+  };
+  
+  const mappedPosition = positionMap[position];
+  const mappedResultType = resultTypeMap[resultType];
+  
+  console.log('[Consequences Debug] Mapping:', { 
+    originalPosition: position, 
+    mappedPosition,
+    originalResultType: resultType,
+    mappedResultType
+  });
+  
+  if (mappedResultType && mappedPosition) {
+    // Try to get consequences from global object
+    if (game.cogwheelSyndicate?.consequences?.getConsequencesMessage) {
+      console.log('[Consequences Debug] Using global consequences object');
+      consequencesMessage = game.cogwheelSyndicate.consequences.getConsequencesMessage(mappedPosition, mappedResultType);
+      console.log('[Consequences Debug] Generated Message:', consequencesMessage);
+    } else {
+      console.warn('[Consequences Debug] Consequences system not available in game.cogwheelSyndicate');
+      // Fallback: create message manually
+      const consequencesTable = {
+        'controlled': { 'successWithCost': 1, 'failureWithConsequence': 2, 'criticalFailure': 3 },
+        'risky': { 'successWithCost': 2, 'failureWithConsequence': 3, 'criticalFailure': 4 },
+        'desperate': { 'successWithCost': 3, 'failureWithConsequence': 4, 'criticalFailure': 4 }
+      };
+      const count = consequencesTable[mappedPosition]?.[mappedResultType];
+      if (count) {
+        const word = count === 1 ? game.i18n.localize('COGWHEEL.Consequences.Singular') : game.i18n.localize('COGWHEEL.Consequences.Plural');
+        const trauma = (mappedPosition === 'desperate' && mappedResultType === 'criticalFailure') ? 
+          ` + <span class="consequence-trauma">1 ${game.i18n.localize('COGWHEEL.Consequences.Trauma')}</span>` : '';
+        consequencesMessage = `<div class="consequence-message">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span class="consequence-count">${count}</span> ${word}${trauma}
+        </div>`;
+        console.log('[Consequences Debug] Fallback message created:', consequencesMessage);
+      }
+    }
+  }
+  */
 
   // Apply Steam Booster effect if applicable
   let steamBoosterMessage = "";
@@ -1059,6 +1170,7 @@ async function executeRollWithData(actor, data, isReroll = false) {
       <p><strong style='color: black;'>${game.i18n.localize("COGSYNDICATE.RolledOn").replace('{attrLabel}', `<span style='color: #2563eb; font-weight: bold;'>${attrLabel}</span>`).replace('{total}', `<span style='color: red; font-weight: bold;'>${total}</span>`)}</strong></p>
       <hr>
       <p>${result}</p>
+      ${consequencesMessage}
       ${useStressDie ? stressDieMessage : ""}
       ${useSteamDie ? steamDialogMessage : ""}
       ${useDevilDie ? devilDialogMessage : ""}
@@ -1209,6 +1321,40 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
     
     // Usunięcie z rejestru aktualnych przycisków
     delete window.cogwheelSyndicate.currentRerollButtons[actorId];
+    });
+  });
+
+  // Obsługa przycisków wyboru konsekwencji
+  html.querySelectorAll('.select-consequences-btn').forEach(function(button) {
+    // Set message ID in button after chat message is rendered
+    button.dataset.messageId = message.id;
+
+    button.addEventListener('click', async function(event) {
+      event.preventDefault();
+      
+      const actorId = this.dataset.actorId;
+      const consequenceCount = parseInt(this.dataset.consequenceCount);
+      const messageId = this.dataset.messageId;
+      
+      // Check if button is already disabled
+      if (this.disabled) {
+        ui.notifications.info(game.i18n.localize('COGWHEEL.Consequences.AlreadySelected'));
+        return;
+      }
+      
+      const actor = game.actors.get(actorId);
+      if (!actor) {
+        ui.notifications.error("Actor nie został znaleziony");
+        return;
+      }
+      
+      // Open consequence selection dialog (from consequences module)
+      await game.cogwheelSyndicate.consequences.showConsequencesSelectionDialog(
+        actor, 
+        consequenceCount, 
+        messageId, 
+        this
+      );
     });
   });
 });

@@ -1,0 +1,308 @@
+/**
+ * Consequences System Styles
+ * Cogwheel Syndicate - Steampunk-themed consequence messages
+ */
+
+/* Main consequence message container */
+.consequence-message {
+  /* Steampunk gradient background - DARK BROWN version */
+  background: linear-gradient(135deg, 
+    rgba(50, 30, 10, 0.65) 0%,      /* Very dark brown */
+    rgba(70, 45, 10, 0.75) 50%,     /* Dark brown-gold */
+    rgba(50, 30, 10, 0.65) 100%     /* Very dark brown */
+  );
+  
+  /* Golden border with glow effect */
+  border: 2px solid #b8860b;
+  border-radius: 8px;
+  
+  /* Spacing and layout */
+  padding: 10px 15px;
+  margin: 8px 0;
+  
+  /* Typography - font-size 1.3em */
+  font-family: 'Modesto Condensed', 'Palatino Linotype', serif;
+  font-size: 1.3em;
+  font-weight: 500;
+  line-height: 1.4;
+  
+  /* Text color - warm copper */
+  color: #cd7f32;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  
+  /* Shadow effects */
+  box-shadow: 
+    0 2px 8px rgba(184, 134, 11, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  
+  /* Flexbox for icon alignment */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  
+  /* Smooth transitions */
+  transition: all 0.3s ease;
+}
+
+/* Hover effect for interactivity */
+.consequence-message:hover {
+  box-shadow: 
+    0 4px 12px rgba(184, 134, 11, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Warning triangle icon */
+.consequence-message > .fa-exclamation-triangle {
+  /* Icon color - warning orange with golden tint */
+  color: #f39c12;
+  
+  /* Icon size */
+  font-size: 18px;
+  
+  /* Icon shadow for depth */
+  text-shadow: 
+    0 0 8px rgba(243, 156, 18, 0.6),
+    1px 1px 2px rgba(0, 0, 0, 0.4);
+  
+  /* Prevent icon from shrinking */
+  flex-shrink: 0;
+  
+  /* Subtle animation */
+  animation: pulse-warning 2s ease-in-out infinite;
+}
+
+/* Pulse animation for warning icon */
+@keyframes pulse-warning {
+  0%, 100% {
+    opacity: 1;
+    text-shadow: 
+      0 0 8px rgba(243, 156, 18, 0.6),
+      1px 1px 2px rgba(0, 0, 0, 0.4);
+  }
+  50% {
+    opacity: 0.85;
+    text-shadow: 
+      0 0 12px rgba(243, 156, 18, 0.8),
+      1px 1px 2px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* Consequence count - RED with emphasis */
+.consequence-message .consequence-count {
+  /* Bold red color for danger */
+  color: #e74c3c;
+  
+  /* Typography */
+  font-weight: 700;
+  font-size: 18px;
+  
+  /* Strong text shadow for visibility */
+  text-shadow: 
+    0 0 8px rgba(231, 76, 60, 0.6),
+    1px 1px 3px rgba(0, 0, 0, 0.5),
+    0 0 4px rgba(231, 76, 60, 0.4);
+  
+  /* Spacing */
+  margin-right: 2px;
+}
+
+/* Trauma text - PURPLE with mystical feel */
+.consequence-message .consequence-trauma {
+  /* Purple color matching trauma system */
+  color: #8e44ad;
+  
+  /* Typography */
+  font-weight: 700;
+  font-size: 17px;
+  
+  /* Purple glow text shadow */
+  text-shadow: 
+    0 0 10px rgba(142, 68, 173, 0.7),
+    1px 1px 3px rgba(0, 0, 0, 0.5),
+    0 0 6px rgba(142, 68, 173, 0.5);
+  
+  /* Additional emphasis */
+  font-style: italic;
+}
+
+/* Consequence message in chat cards */
+.chat-message .message-content .consequence-message {
+  /* Ensure proper width in chat */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Consequence message in roll results */
+.dice-roll .dice-result .consequence-message {
+  /* Additional top margin for separation from roll result */
+  margin-top: 12px;
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .consequence-message {
+    background: linear-gradient(135deg, 
+      rgba(139, 90, 43, 0.35) 0%,
+      rgba(184, 134, 11, 0.45) 50%,
+      rgba(139, 90, 43, 0.35) 100%
+    );
+    border-color: #daa520;
+  }
+  
+  .consequence-message .consequence-count {
+    color: #ff6b6b;
+    text-shadow: 
+      0 0 10px rgba(255, 107, 107, 0.7),
+      1px 1px 3px rgba(0, 0, 0, 0.6),
+      0 0 5px rgba(255, 107, 107, 0.5);
+  }
+  
+  .consequence-message .consequence-trauma {
+    color: #a569bd;
+    text-shadow: 
+      0 0 12px rgba(165, 105, 189, 0.8),
+      1px 1px 3px rgba(0, 0, 0, 0.6),
+      0 0 7px rgba(165, 105, 189, 0.6);
+  }
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+  .consequence-message {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+  
+  .consequence-message > .fa-exclamation-triangle {
+    font-size: 16px;
+  }
+  
+  .consequence-message .consequence-count {
+    font-size: 16px;
+  }
+  
+  .consequence-message .consequence-trauma {
+    font-size: 15px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .consequence-message {
+    background: #f5f5dc;
+    border: 2px solid #8b5a2b;
+    box-shadow: none;
+  }
+  
+  .consequence-message > .fa-exclamation-triangle {
+    animation: none;
+  }
+}
+
+/* ========================================= */
+/* CONSEQUENCE SELECTION SYSTEM */
+/* ========================================= */
+
+/* Select Consequences Button */
+.select-consequences-btn {
+  /* Steampunk button gradient */
+  background: linear-gradient(135deg, #8b4513, #6b3410);
+  
+  /* Golden border */
+  border: 2px solid #d4af37;
+  border-radius: 6px;
+  
+  /* Spacing */
+  padding: 8px 16px;
+  margin-top: 8px;
+  
+  /* Typography */
+  font-family: 'Modesto Condensed', 'Palatino Linotype', serif;
+  font-size: 1em;
+  font-weight: bold;
+  color: #d4af37;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  
+  /* Shadow and effects */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  
+  /* Cursor */
+  cursor: pointer;
+  
+  /* Smooth transitions */
+  transition: all 0.2s ease;
+}
+
+.select-consequences-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #a0522d, #7d4620);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  transform: translateY(-2px);
+}
+
+.select-consequences-btn:disabled {
+  background: linear-gradient(135deg, #555, #444);
+  border-color: #777;
+  color: #999;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Selected Consequences Message */
+.selected-consequences-message {
+  /* Steel/coal gradient background */
+  background: linear-gradient(135deg, 
+    rgba(70, 70, 80, 0.85) 0%, 
+    rgba(50, 50, 60, 0.85) 100%
+  );
+  
+  /* Copper border */
+  border: 2px solid #cd7f32;
+  border-radius: 8px;
+  
+  /* Spacing */
+  padding: 14px 18px;
+  margin: 10px 0;
+  
+  /* Typography */
+  font-family: 'Modesto Condensed', 'Palatino Linotype', serif;
+  font-size: 1.3em;
+  color: #d4af37;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+  
+  /* Shadow effects */
+  box-shadow: 
+    0 4px 10px rgba(0, 0, 0, 0.7), 
+    inset 0 1px 3px rgba(205, 127, 50, 0.3);
+}
+
+/* Agent name highlight in selected consequences */
+.selected-consequences-message .agent-name {
+  color: #3498db;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(52, 152, 219, 0.6);
+}
+
+/* Consequences list */
+.selected-consequences-message ul {
+  margin: 10px 0 0 0;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.selected-consequences-message li {
+  color: #e0e0e0;
+  margin: 6px 0;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  position: relative;
+  padding-left: 20px;
+}
+
+/* Gear icon bullet for consequences */
+.selected-consequences-message li:before {
+  content: "⚙";
+  position: absolute;
+  left: 0;
+  color: #cd7f32;
+  font-size: 1.1em;
+}
