@@ -306,3 +306,161 @@
   color: #cd7f32;
   font-size: 1.1em;
 }
+
+/* ========================================= */
+/* GM-ONLY CONSEQUENCE TOGGLE SYSTEM */
+/* ========================================= */
+
+/* GM Info Box */
+.gm-info-box {
+  animation: gm-box-fade-in 0.4s ease;
+}
+
+@keyframes gm-box-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Consequence Row Container */
+.consequence-row {
+  transition: all 0.3s ease;
+}
+
+.consequence-row:hover {
+  background: rgba(212, 175, 55, 0.05);
+  border-radius: 4px;
+}
+
+/* GM Toggle Button */
+.consequence-toggle-btn {
+  /* Smooth transitions */
+  transition: all 0.3s ease, transform 0.15s ease;
+  
+  /* Prevent text selection */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  
+  /* Shadow for depth */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.consequence-toggle-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+}
+
+.consequence-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+/* Consequence label styling */
+.consequence-label {
+  transition: all 0.3s ease;
+  font-family: 'Palatino Linotype', serif;
+  font-size: 15px;
+  /* Color inherited from dialog theme */
+}
+
+/* Deactivated consequence row (when GM toggles off) */
+.consequence-row[data-deactivated="true"] .consequence-label {
+  opacity: 0.4;
+  text-decoration: line-through;
+  /* Color handled by theme adaptation below */
+}
+
+/* GM crown icon in info box */
+.gm-info-box .fa-crown {
+  animation: crown-glow 3s ease-in-out infinite;
+}
+
+@keyframes crown-glow {
+  0%, 100% {
+    text-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+  }
+  50% {
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.9);
+  }
+}
+
+/* Tooltip enhancement for toggle buttons */
+.consequence-toggle-btn[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(44, 62, 80, 0.95);
+  color: #ecf0f1;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1000;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  font-family: 'Palatino Linotype', serif;
+}
+
+/* Checkbox disabled state for deactivated consequences */
+.consequence-checkbox:disabled + .consequence-label {
+  cursor: not-allowed;
+}
+
+/* ========================================= */
+/* DIALOG THEME ADAPTATION (Light/Dark Mode) */
+/* ========================================= */
+
+/* Adapt dialog text colors to Foundry's theme */
+.dialog.cogwheel-consequence-dialog .window-content,
+.dialog.cogwheel-consequence-dialog form,
+.dialog.cogwheel-consequence-dialog .consequence-label {
+  color: var(--color-text-dark-primary, #1a1a1a);
+}
+
+/* In dark mode, use light text */
+@media (prefers-color-scheme: dark) {
+  .dialog.cogwheel-consequence-dialog .window-content,
+  .dialog.cogwheel-consequence-dialog form,
+  .dialog.cogwheel-consequence-dialog .consequence-label {
+    color: var(--color-text-light-primary, #e0e0e0);
+  }
+  
+  /* Deactivated labels in dark mode */
+  .consequence-row[data-deactivated="true"] .consequence-label,
+  .consequence-label[style*="opacity: 0.4"] {
+    color: var(--color-text-light-secondary, #999) !important;
+  }
+}
+
+/* Foundry's native dark theme detection */
+body.theme-dark .dialog.cogwheel-consequence-dialog .window-content,
+body.theme-dark .dialog.cogwheel-consequence-dialog form,
+body.theme-dark .dialog.cogwheel-consequence-dialog .consequence-label {
+  color: var(--color-text-light-primary, #e0e0e0);
+}
+
+body.theme-dark .consequence-row[data-deactivated="true"] .consequence-label,
+body.theme-dark .consequence-label[style*="opacity: 0.4"] {
+  color: var(--color-text-light-secondary, #999) !important;
+}
+
+/* Light theme (default) */
+body.theme-light .dialog.cogwheel-consequence-dialog .window-content,
+body.theme-light .dialog.cogwheel-consequence-dialog form,
+body.theme-light .dialog.cogwheel-consequence-dialog .consequence-label {
+  color: var(--color-text-dark-primary, #1a1a1a);
+}
+
+body.theme-light .consequence-row[data-deactivated="true"] .consequence-label,
+body.theme-light .consequence-label[style*="opacity: 0.4"] {
+  color: var(--color-text-dark-secondary, #666) !important;
+}
+

@@ -12,6 +12,17 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## [Unreleased] | [Nieopublikowane]
 
 ### Added | Dodano
+- **GM Consequence Toggle System with Real-Time Sync** | **System Dezaktywacji Konsekwencji dla GM z Synchronizacją Real-Time**
+  - Added toggle buttons for GM to activate/deactivate consequence options in selection dialog | Dodano przyciski toggle dla GM do aktywowania/dezaktywowania opcji konsekwencji w oknie wyboru
+  - GM sees green ✓ buttons next to each consequence that can be clicked to deactivate | GM widzi zielone przyciski ✓ obok każdej konsekwencji które można kliknąć aby dezaktywować
+  - Deactivated consequences show gray ✗ button and are visually dimmed with strikethrough text | Dezaktywowane konsekwencje pokazują szary przycisk ✗ i są wizualnie wyszarzone z przekreślonym tekstem
+  - **Real-time synchronization: Players see only active consequences automatically** | **Synchronizacja real-time: Gracze widzą tylko aktywne konsekwencje automatycznie**
+  - **Player dialogs auto-refresh when GM toggles consequences (no need to reopen)** | **Dialogi graczy auto-odświeżają się gdy GM toggleuje konsekwencje (nie trzeba ponownie otwierać)**
+  - GM info box explains the toggle functionality with crown icon and instructions | Pole informacyjne dla GM wyjaśnia funkcjonalność toggle z ikoną korony i instrukcjami
+  - Deactivated consequences cannot be selected (checkbox disabled) | Dezaktywowane konsekwencje nie mogą być wybrane (checkbox wyłączony)
+  - Toggle state saved in world settings (persistent across sessions) | Stan toggle zapisywany w ustawieniach world (trwały między sesjami)
+  - Smooth animations for toggle transitions and hover effects | Płynne animacje dla przejść toggle i efektów hover
+
 - **Clock Archive System** | **System Archiwum Zegarów**
   - Added archive button next to "Add Clock" button in clock dialog | Dodano przycisk archiwum obok przycisku "Dodaj Zegar" w oknie zegarów
   - Deleted clocks now move to archive instead of being permanently removed | Usunięte zegary trafiają teraz do archiwum zamiast być trwale usunięte
@@ -30,6 +41,25 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - Fixed archive and add clock buttons misalignment in toolbar | Naprawiono niewyrównanie przycisków archiwum i dodawania zegara w toolbarze
 
 ### Technical | Techniczne
+- **GM Consequence Toggle with Real-Time Sync** | **GM Toggle Konsekwencji z Synchronizacją Real-Time**
+  - Registered `activeConsequences` world setting (Array of 10 booleans, default all true) | Zarejestrowano ustawienie world `activeConsequences` (tablica 10 boolean, domyślnie wszystkie true)
+  - Added `cogwheelSyndicateActiveConsequencesUpdated` hook for consequence state synchronization | Dodano hook `cogwheelSyndicateActiveConsequencesUpdated` dla synchronizacji stanu konsekwencji
+  - Socket type `updateActiveConsequences` broadcasts toggle changes to all connected clients | Typ socket `updateActiveConsequences` rozgłasza zmiany toggle do wszystkich klientów
+  - `refreshDialog()` function rebuilds dialog HTML when activeConsequences changes | Funkcja `refreshDialog()` przebudowuje HTML dialogu gdy activeConsequences się zmienia
+  - Hook listener registered before dialog open, cleaned up in close callback | Hook listener rejestrowany przed otwarciem dialogu, czyszczony w callback close
+  - `generateContent()` function reads current state from settings and filters for players | Funkcja `generateContent()` odczytuje aktualny stan z ustawień i filtruje dla graczy
+  - `attachEventListeners()` function handles all event binding including GM toggle clicks | Funkcja `attachEventListeners()` obsługuje wszystkie bindowania eventów włącznie z kliknięciami GM toggle
+  - GM toggle click: updates settings → triggers hook → emits socket → refreshes all open dialogs | Kliknięcie GM toggle: aktualizuje ustawienia → wywołuje hook → emituje socket → odświeża wszystkie otwarte dialogi
+  - Players automatically see only active consequences (disabled ones hidden from HTML) | Gracze automatycznie widzą tylko aktywne konsekwencje (wyłączone ukryte z HTML)
+  - Modified `showConsequencesSelectionDialog()` to use DialogV2.wait() with render/close hooks | Zmodyfikowano `showConsequencesSelectionDialog()` aby używać DialogV2.wait() z hookami render/close
+  - GM sees toggle buttons with `.consequence-toggle-btn` class for each consequence | GM widzi przyciski toggle z klasą `.consequence-toggle-btn` dla każdej konsekwencji
+  - Inline styles on buttons for green (active) and gray (inactive) gradients | Style inline na przyciskach dla zielonych (aktywne) i szarych (nieaktywne) gradientów
+  - Deactivated rows: checkbox disabled, label opacity 0.4, strikethrough text | Dezaktywowane wiersze: checkbox wyłączony, opacity labela 0.4, przekreślony tekst
+  - Added `.gm-info-box` with crown icon and fade-in animation | Dodano `.gm-info-box` z ikoną korony i animacją fade-in
+  - Added `.consequence-row` container with hover effects | Dodano kontener `.consequence-row` z efektami hover
+  - CSS animations: `gm-box-fade-in`, `crown-glow` for visual polish | Animacje CSS: `gm-box-fade-in`, `crown-glow` dla wizualnego dopracowania
+  - Translation keys added: `GMOnly`, `GMInfo`, `ToggleTooltip`, `Active`, `Inactive` | Dodano klucze tłumaczeń: `GMOnly`, `GMInfo`, `ToggleTooltip`, `Active`, `Inactive`
+
 - **Archive Settings** | **Ustawienia Archiwum**
   - Registered `archivedClocks` world setting in init.js | Zarejestrowano ustawienie world `archivedClocks` w init.js
   - Added `cogwheelSyndicateArchivedClocksUpdated` hook for archive synchronization | Dodano hook `cogwheelSyndicateArchivedClocksUpdated` dla synchronizacji archiwum
@@ -62,12 +92,14 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - Keys: Archive, OpenArchive, ArchivedClocks, RestoreClock, DeletePermanently, ArchivedOn, NoArchivedClocks, ClockArchived, ClockRestored, ClockDeletedPermanently, Restore, Delete, Close
 
 ### Files Modified | Zmodyfikowane Pliki
-- `src/scripts/init.js` - Added archivedClocks settings registration | Dodano rejestrację ustawień archivedClocks
+- `src/scripts/init.js` - Added activeConsequences world setting + cogwheelSyndicateActiveConsequencesUpdated hook + socket listener | Dodano ustawienie world activeConsequences + hook cogwheelSyndicateActiveConsequencesUpdated + listener socket
+- `src/scripts/consequences.mjs` - Rewritten showConsequencesSelectionDialog() with refreshDialog/attachEventListeners for real-time sync | Przepisano showConsequencesSelectionDialog() z refreshDialog/attachEventListeners dla synchronizacji real-time
+- `src/styles/consequences.css` - Added GM-only UI styles (toggle buttons, info box, animations) | Dodano style UI tylko dla GM (przyciski toggle, info box, animacje)
+- `lang/pl.json` & `lang/en.json` - Added GM consequence toggle translations (5 new keys) | Dodano tłumaczenia toggle konsekwencji dla GM (5 nowych kluczy)
 - `src/scripts/clocks.mjs` - Archive system implementation with inline styling | Implementacja systemu archiwum z inline stylami
 - `src/templates/doom-clocks-dialog.hbs` - Added archive button in toolbar | Dodano przycisk archiwum w toolbarze
 - `src/templates/clock-archive-dialog.hbs` - New archive dialog template with inline styles | Nowy szablon dialogu archiwum z inline stylami
 - `src/styles/clocks.css` - Archive dialog CSS (backup for inline styles) | CSS dialogu archiwum (backup dla inline stylów)
-- `lang/pl.json` & `lang/en.json` - Archive translations | Tłumaczenia archiwum
 
 ## [0.9.19] - 2025-10-06
 

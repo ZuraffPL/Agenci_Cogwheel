@@ -145,6 +145,7 @@
   padding: 8px 16px;
   border: 1px solid #666;
   background: linear-gradient(to bottom, #f8f8f8, #e8e8e8);
+  color: #1a1a1a; /* Dark text for light button background */
   cursor: pointer;
   font-size: 13px;
   border-radius: 4px;
@@ -166,6 +167,7 @@
 .spend-np-btn {
   background: linear-gradient(to bottom, #ffe6e6, #ffcccc);
   border-color: #cc6666;
+  color: #1a1a1a; /* Dark text for light background */
 }
 
 .spend-np-btn:hover:not(:disabled) {
@@ -176,6 +178,7 @@
 .spend-sp-btn {
   background: linear-gradient(to bottom, #e6f3ff, #ccddff);
   border-color: #6699cc;
+  color: #1a1a1a; /* Dark text for light background */
 }
 
 .spend-sp-btn:hover:not(:disabled) {

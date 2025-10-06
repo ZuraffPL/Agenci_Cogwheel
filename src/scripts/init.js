@@ -62,6 +62,19 @@ Hooks.once("init", () => {
     }
   });
 
+  // Rejestracja ustawienia dla aktywnych konsekwencji (GM toggle system)
+  game.settings.register("cogwheel-syndicate", "activeConsequences", {
+    name: "Active Consequences",
+    hint: "Stores which consequence types are currently active (GM can toggle)",
+    scope: "world", // Ustawienie globalne dla świata
+    config: false,   // Nie widoczne w menu ustawień
+    type: Array,
+    default: [true, true, true, true, true, true, true, true, true, true], // Domyślnie wszystkie aktywne (10 konsekwencji)
+    onChange: () => {
+      Hooks.call("cogwheelSyndicateActiveConsequencesUpdated"); // Hook dla synchronizacji konsekwencji
+    }
+  });
+
   // Rejestracja ustawienia dla licznika użyć redukcji stresu
   game.settings.register("cogwheel-syndicate", "stressReduceUsesThisSession", {
     name: "Stress Reduction Uses This Session",
@@ -357,6 +370,9 @@ Hooks.once("setup", () => {
     } else if (data.type === "updateStressUses") {
       game.cogwheelSyndicate.stressReduceUsesThisSession = data.stressReduceUsesThisSession;
       Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
+    } else if (data.type === "updateActiveConsequences") {
+      // Synchronizacja aktywnych konsekwencji (GM toggle)
+      await game.settings.set("cogwheel-syndicate", "activeConsequences", data.activeConsequences);
     }
     // Usunięto obsługę "updateClocks", bo game.settings automatycznie synchronizuje dane
   });

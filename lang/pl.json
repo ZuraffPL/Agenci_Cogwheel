@@ -438,6 +438,11 @@
   "COGWHEEL.Consequences.Type10": "Dodatkowa komplikacja fabularna",
   "COGWHEEL.Consequences.SelectedMessage": "Agent {agentName} wybrał następujące konsekwencje:",
   "COGWHEEL.Consequences.AlreadySelected": "Konsekwencje już wybrane",
+  "COGWHEEL.Consequences.GMOnly": "Funkcja tylko dla MG",
+  "COGWHEEL.Consequences.GMInfo": "Kliknij zielony przycisk ✓ aby dezaktywować konsekwencję. Gracz zobaczy tylko aktywne opcje.",
+  "COGWHEEL.Consequences.ToggleTooltip": "Kliknij aby aktywować/dezaktywować tę konsekwencję",
+  "COGWHEEL.Consequences.Active": "Aktywna",
+  "COGWHEEL.Consequences.Inactive": "Nieaktywna",
   "pdfjs-editor-highlight-button": "Zakreślacz",
   "pdfjs-editor-highlight-button-label": "Zaznacz tekst kolorem"
 }

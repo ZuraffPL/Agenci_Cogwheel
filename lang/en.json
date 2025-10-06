@@ -438,6 +438,11 @@
   "COGWHEEL.Consequences.Type10": "Additional narrative complication",
   "COGWHEEL.Consequences.SelectedMessage": "Agent {agentName} selected the following consequences:",
   "COGWHEEL.Consequences.AlreadySelected": "Consequences already selected",
+  "COGWHEEL.Consequences.GMOnly": "GM Only Feature",
+  "COGWHEEL.Consequences.GMInfo": "Click the green ✓ button to deactivate a consequence. Players will only see active options.",
+  "COGWHEEL.Consequences.ToggleTooltip": "Click to activate/deactivate this consequence",
+  "COGWHEEL.Consequences.Active": "Active",
+  "COGWHEEL.Consequences.Inactive": "Inactive",
   "pdfjs-editor-highlight-button": "Highlighter",
   "pdfjs-editor-highlight-button-label": "Highlight text with color"
 }

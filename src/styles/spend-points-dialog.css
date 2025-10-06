@@ -5,6 +5,7 @@
   height: auto !important;
   max-height: none !important;
   overflow: visible !important;
+  /* Background color handled by theme adaptation below */
 }
 
 .dialog.spend-points-dialog .dialog-content {
@@ -31,10 +32,10 @@
 
 .action-section {
   margin-bottom: 8px; /* Zmniejszono z 10px na 8px */
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border-light, #ccc);
   border-radius: 6px;
   padding: 12px; /* Zmniejszono z 15px na 12px */
-  background: #f9f9f9;
+  background: var(--color-bg-option, #f9f9f9);
   flex-shrink: 0;
 }
 
@@ -46,7 +47,7 @@
   margin: 0 0 10px 0; /* Zmniejszono z 15px na 10px */
   font-size: 16px;
   font-weight: bold;
-  color: #333;
+  color: var(--color-text-dark-heading, #333);
   border-bottom: 2px solid #d32f2f;
   padding-bottom: 8px;
 }
@@ -67,7 +68,7 @@
 }
 
 .action-option:hover {
-  background-color: #ffe6e6;
+  background-color: var(--color-hover-light, #ffe6e6);
 }
 
 .action-option input[type="radio"] {
@@ -79,11 +80,12 @@
 .action-option span {
   line-height: 1.4;
   font-size: 14px;
+  color: #1a1a1a !important; /* Force dark text - window background is always light */
 }
 
 .action-option input[type="radio"]:checked + span {
   font-weight: bold;
-  color: #d32f2f;
+  color: #d32f2f !important; /* Keep red color for checked state */
 }
 
 /* Custom action with number input styling */
@@ -139,6 +141,7 @@
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 15px;
+  color: var(--color-text-dark-primary, #333);
 }
 
 /* Foundry standard button styling for spend points dialogs */
@@ -322,4 +325,206 @@
   color: #d32f2f;
   font-weight: bold;
   margin-left: 10px;
+}
+
+/* ========================================= */
+/* THEME ADAPTATION (Light/Dark Mode) */
+/* ========================================= */
+
+/* Light mode (default and explicit) */
+.dialog.spend-points-dialog .window-content,
+body.theme-light .dialog.spend-points-dialog .window-content {
+  background-color: #ffffff !important;
+}
+
+body.theme-light .spend-points-dialog {
+  background-color: #ffffff;
+}
+
+/* Dark mode support - adapt to Foundry's dark theme */
+body.theme-dark .dialog.spend-points-dialog .window-content {
+  background-color: #1a1a1a !important;
+}
+
+body.theme-dark .spend-points-dialog {
+  background-color: #1a1a1a !important;
+}
+
+body.theme-dark .spend-points-dialog .dialog-content {
+  background-color: #1a1a1a !important;
+}
+
+body.theme-dark .action-section {
+  background: rgba(60, 60, 70, 0.8) !important;
+  border-color: #555 !important;
+}
+
+body.theme-dark .action-section h3 {
+  color: #e0e0e0 !important;
+}
+
+body.theme-dark .action-option {
+  background: rgba(50, 50, 60, 0.5) !important;
+}
+
+body.theme-dark .action-option:hover {
+  background: rgba(70, 70, 80, 0.7) !important;
+}
+
+body.theme-dark .action-option span,
+body.theme-dark .action-option label,
+body.theme-dark label.action-option,
+body.theme-dark label.action-option span,
+body.theme-dark .spend-points-dialog .dialog-content p {
+  color: #e0e0e0 !important;
+}
+
+body.theme-dark .action-option span.cost {
+  color: #ff6b6b !important;
+}
+
+body.theme-dark .action-option input[type="radio"]:checked + span {
+  color: #ff6b6b !important;
+}
+
+/* SP Dialog specific dark mode styles */
+body.theme-dark .spend-points-dialog.sp-dialog .section-group {
+  background-color: rgba(60, 60, 70, 0.8) !important;
+  border-color: #555 !important;
+}
+
+body.theme-dark .spend-points-dialog.sp-dialog .section-group h4 {
+  color: #64b5f6 !important;
+  border-bottom-color: rgba(100, 181, 246, 0.3) !important;
+}
+
+body.theme-dark .spend-points-dialog.sp-dialog .cost-section h5 {
+  color: #90caf9 !important;
+  background-color: rgba(33, 150, 243, 0.2) !important;
+}
+
+body.theme-dark .spend-points-dialog.sp-dialog .action-item span {
+  color: #e0e0e0 !important;
+}
+
+body.theme-dark .spend-points-dialog.sp-dialog .action-item {
+  background: rgba(50, 50, 60, 0.5) !important;
+  border-color: rgba(100, 181, 246, 0.3) !important;
+}
+
+body.theme-dark .spend-points-dialog.sp-dialog .action-item:hover:not(.disabled) {
+  background: rgba(70, 70, 80, 0.7) !important;
+  border-color: #64b5f6 !important;
+}
+
+body.theme-dark .spend-points-dialog.sp-dialog .action-item.disabled {
+  background: rgba(40, 40, 50, 0.3) !important;
+  border-color: rgba(80, 80, 90, 0.5) !important;
+}
+
+body.theme-dark .spend-points-dialog.sp-dialog .action-item input[type="radio"]:checked + span {
+  color: #64b5f6 !important;
+}
+
+body.theme-dark .spend-points-dialog.sp-dialog .uses-indicator {
+  color: #81c784 !important;
+}
+
+body.theme-dark .spend-points-dialog.sp-dialog .uses-exhausted {
+  color: #e57373 !important;
+}
+
+/* Browser dark mode preference */
+@media (prefers-color-scheme: dark) {
+  .dialog.spend-points-dialog .window-content {
+    background-color: #1a1a1a !important;
+  }
+  
+  .spend-points-dialog {
+    background-color: #1a1a1a !important;
+  }
+  
+  .spend-points-dialog .dialog-content {
+    background-color: #1a1a1a !important;
+  }
+  
+  .action-section {
+    background: rgba(60, 60, 70, 0.8) !important;
+    border-color: #555 !important;
+  }
+  
+  .action-section h3 {
+    color: #e0e0e0 !important;
+  }
+  
+  .action-option {
+    background: rgba(50, 50, 60, 0.5) !important;
+  }
+  
+  .action-option:hover {
+    background: rgba(70, 70, 80, 0.7) !important;
+  }
+  
+  .action-option span,
+  .action-option label,
+  label.action-option,
+  label.action-option span,
+  .spend-points-dialog .dialog-content p {
+    color: #e0e0e0 !important;
+  }
+  
+  .action-option span.cost {
+    color: #ff6b6b !important;
+  }
+  
+  .action-option input[type="radio"]:checked + span {
+    color: #ff6b6b !important;
+  }
+  
+  /* SP Dialog specific dark mode styles */
+  .spend-points-dialog.sp-dialog .section-group {
+    background-color: rgba(60, 60, 70, 0.8) !important;
+    border-color: #555 !important;
+  }
+  
+  .spend-points-dialog.sp-dialog .section-group h4 {
+    color: #64b5f6 !important;
+    border-bottom-color: rgba(100, 181, 246, 0.3) !important;
+  }
+  
+  .spend-points-dialog.sp-dialog .cost-section h5 {
+    color: #90caf9 !important;
+    background-color: rgba(33, 150, 243, 0.2) !important;
+  }
+  
+  .spend-points-dialog.sp-dialog .action-item span {
+    color: #e0e0e0 !important;
+  }
+  
+  .spend-points-dialog.sp-dialog .action-item {
+    background: rgba(50, 50, 60, 0.5) !important;
+    border-color: rgba(100, 181, 246, 0.3) !important;
+  }
+  
+  .spend-points-dialog.sp-dialog .action-item:hover:not(.disabled) {
+    background: rgba(70, 70, 80, 0.7) !important;
+    border-color: #64b5f6 !important;
+  }
+  
+  .spend-points-dialog.sp-dialog .action-item.disabled {
+    background: rgba(40, 40, 50, 0.3) !important;
+    border-color: rgba(80, 80, 90, 0.5) !important;
+  }
+  
+  .spend-points-dialog.sp-dialog .action-item input[type="radio"]:checked + span {
+    color: #64b5f6 !important;
+  }
+  
+  .spend-points-dialog.sp-dialog .uses-indicator {
+    color: #81c784 !important;
+  }
+  
+  .spend-points-dialog.sp-dialog .uses-exhausted {
+    color: #e57373 !important;
+  }
 }

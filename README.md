@@ -22,6 +22,26 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 
 *A game about secret agents who fight threats of the industrial revolution era.*
 
+## 🔥 Latest Features
+
+### 🎯 GM Consequence Toggle System (Unreleased)
+- **👑 GM-Only Controls**: Toggle buttons to activate/deactivate consequence options
+- **🔄 Real-Time Synchronization**: Players see only active consequences automatically
+- **♻️ Auto-Refresh**: Player dialogs update instantly when GM toggles (no reopen needed)
+- **🎨 Visual Feedback**: Green ✓ (active) / Gray ✗ (inactive) toggle buttons with animations
+- **📊 Smart Filtering**: Deactivated consequences disabled with strikethrough text
+- **💾 Persistent State**: Toggle settings saved across sessions (world settings)
+- **🌐 Multi-User Sync**: Changes broadcast to all connected clients via sockets
+- **🎭 Theme Adaptive**: Consequence dialog fully supports light/dark mode
+
+### 🌙 Dark Mode Dialog Adaptation (Unreleased)
+- **🎨 Full Theme Support**: All spend points dialogs adapt to Foundry's light/dark themes
+- **🔄 Auto-Detection**: Responds to both `body.theme-dark` and browser preferences
+- **📋 Complete Coverage**: Window backgrounds, sections, buttons, text - all themed
+- **✨ Color Consistency**: Dark backgrounds (#1a1a1a) with light text (#e0e0e0) in dark mode
+- **🎯 Button Clarity**: "Wydaj PP/NP" buttons always use dark text on light backgrounds
+- **🎪 SP Dialog Styling**: Radio button options with proper background colors in both themes
+
 ## 🔥 What's New in v0.9.19
 
 ### 🔄 Real-Time Clock Synchronization
