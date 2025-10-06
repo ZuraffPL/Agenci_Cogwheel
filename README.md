@@ -2,12 +2,12 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.9.18**
+**Current System Version: 0.9.19**
 
 ## ⚠️ Important Version Notice | Ważne Informacje o Wersji
 
 ### Foundry VTT v13+ (Current/Latest)
-- **Version 0.9.18**: Requires Foundry VTT v13.348 or higher
+- **Version 0.9.19**: Requires Foundry VTT v13.348 or higher
 - **Full native DOM API compatibility** - no jQuery dependencies
 - **Latest features and optimizations**
 
@@ -21,6 +21,32 @@ A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about
 Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysłowej.
 
 *A game about secret agents who fight threats of the industrial revolution era.*
+
+## 🔥 What's New in v0.9.19
+
+### 🔄 Real-Time Clock Synchronization
+- **⚡ Instant Updates**: All clock changes synchronize immediately across all connected users
+- **🎯 No Window Refresh Needed**: Changes visible without closing/reopening the Doom Clocks dialog
+- **📡 Socket Broadcasting**: Proper multi-user synchronization using Foundry's native socket system
+- **🔧 All Operations Synced**: Add, edit, delete, increment/decrement segments - all update in real-time
+- **📑 Category Preservation**: Active category (Mission/Campaign/Personal) maintained during sync
+
+### 🛠️ Technical Improvements
+- **🎯 ApplicationV2 Instance Discovery**: Triple-layer search for reliable dialog detection
+  - Primary: `ui.windows` collection
+  - Secondary: `foundry.applications.instances` (ApplicationV2 native)
+  - Fallback: `globalThis.foundry.applications.apps`
+- **🏷️ Unique Marker System**: Added `_isCogwheelClocksDialog` marker for reliable identification
+  - More robust than `instanceof` checks with module scoping
+- **🚫 Infinite Loop Prevention**: `isSocketUpdate` flag prevents socket broadcast loops
+- **⚡ Optimized Non-GM Updates**: Players only refresh UI without redundant settings saves
+- **📝 Reduced Logging**: Streamlined console output to essential synchronization messages only
+- **🌐 Global Export**: `DoomClocksDialog` class exported and globally accessible
+
+### 🐛 Bug Fixes
+- Fixed clocks not updating immediately when GM makes changes
+- Resolved ApplicationV2 instance not being found in `ui.windows` collection
+- Fixed socket listener initialization timing (moved from `setup` to `ready` hook)
 
 ## 🔥 What's New in v0.9.18
 

@@ -11,6 +11,38 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.19] - 2025-10-06
+
+**REAL-TIME CLOCK SYNCHRONIZATION** | **SYNCHRONIZACJA ZEGARÓW W CZASIE RZECZYWISTYM**
+
+### Fixed | Naprawiono
+- **Real-time Clock Synchronization Across All Users** | **Synchronizacja Zegarów w Czasie Rzeczywistym Między Wszystkimi Użytkownikami**
+  - Fixed clocks not updating immediately when GM makes changes (add/edit/delete/increment segments) | Naprawiono brak natychmiastowej aktualizacji zegarów gdy GM wprowadza zmiany (dodawanie/edycja/usuwanie/zmiana segmentów)
+  - All clock operations now synchronize instantly without requiring window close/reopen | Wszystkie operacje na zegarach synchronizują się natychmiast bez potrzeby zamykania/otwierania okna
+  - Socket broadcasting properly updates all connected users' clock dialogs | Socket broadcasting prawidłowo aktualizuje dialogi zegarów wszystkich podłączonych użytkowników
+  - Active category (Mission/Campaign/Personal) is preserved during synchronization | Aktywna kategoria (Misja/Kampania/Osobiste) jest zachowywana podczas synchronizacji
+
+### Technical | Techniczne
+- **ApplicationV2 Instance Discovery** | **Wykrywanie Instancji ApplicationV2**
+  - Added unique marker `_isCogwheelClocksDialog` to DoomClocksDialog class for reliable identification | Dodano unikalny marker `_isCogwheelClocksDialog` do klasy DoomClocksDialog dla niezawodnej identyfikacji
+  - Replaced `instanceof` checks with marker-based detection (more reliable with module scoping) | Zamieniono sprawdzanie `instanceof` na detekcję opartą na markerze (bardziej niezawodne z module scoping)
+  - Triple-layer instance search: `ui.windows` → `foundry.applications.instances` → `globalThis.foundry.applications.apps` | Trójwarstwowe wyszukiwanie instancji: `ui.windows` → `foundry.applications.instances` → `globalThis.foundry.applications.apps`
+
+- **Socket Optimization** | **Optymalizacja Socketów**
+  - Moved socket listener from `Hooks.once("setup")` to `Hooks.once("ready")` for guaranteed initialization | Przeniesiono nasłuchiwanie socketów z `Hooks.once("setup")` do `Hooks.once("ready")` dla gwarancji inicjalizacji
+  - Added `isSocketUpdate` flag to prevent infinite socket broadcast loops | Dodano flagę `isSocketUpdate` aby zapobiec nieskończonym pętlom socketowym
+  - Optimized non-GM users to only refresh UI without redundant settings saves | Zoptymalizowano użytkowników non-GM aby tylko odświeżali UI bez nadmiarowych zapisów ustawień
+  - Reduced console logging to essential synchronization messages only | Zredukowano logowanie w konsoli do tylko istotnych komunikatów synchronizacji
+
+- **Export and Global Access** | **Eksport i Globalny Dostęp**
+  - Exported `DoomClocksDialog` class from clocks.mjs module | Wyeksportowano klasę `DoomClocksDialog` z modułu clocks.mjs
+  - Added global `window.DoomClocksDialog` reference for cross-module compatibility | Dodano globalną referencję `window.DoomClocksDialog` dla kompatybilności między modułami
+
+### Files Modified | Zmodyfikowane Pliki
+- `src/scripts/clocks.mjs` - Real-time synchronization logic | Logika synchronizacji w czasie rzeczywistym
+- `src/scripts/init.js` - DoomClocksDialog export and global registration | Eksport DoomClocksDialog i rejestracja globalna
+- `TEST-CLOCKS-SYNC.md` - Updated test documentation with success confirmation | Zaktualizowana dokumentacja testów z potwierdzeniem sukcesu
+
 ## [0.9.18] - 2025-10-03
 
 **INTERACTIVE CONSEQUENCE SELECTION SYSTEM** | **INTERAKTYWNY SYSTEM WYBORU KONSEKWENCJI**

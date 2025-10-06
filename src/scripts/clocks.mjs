@@ -4,6 +4,10 @@ export class DoomClocksDialog extends foundry.applications.api.ApplicationV2 {
 
 constructor(options = {}) {
     super(options);
+    
+    // Unikalny marker do identyfikacji tej klasy w hookach
+    this._isCogwheelClocksDialog = true;
+    
     // Odczyt zegarów z ustawień świata
     this.clocks = game.settings.get("cogwheel-syndicate", "doomClocks") || [];
     
@@ -458,28 +462,26 @@ html.querySelectorAll(".delete-clock").forEach(element => {
     await this._updateClocks();
   }
 
-  async _updateClocks() {
-    console.log("_updateClocks called with clocks:", this.clocks);
-    
+  async _updateClocks(isSocketUpdate = false) {
     try {
       // Zapis zegarów do ustawień świata
       await game.settings.set("cogwheel-syndicate", "doomClocks", this.clocks);
-      console.log("Successfully saved clocks to world settings");
       
       // Wysłanie aktualizacji przez socket do wszystkich użytkowników
-      await game.socket.emit("system.cogwheel-syndicate", {
-        type: "updateClocks",
-        clocks: this.clocks
-      });
-      console.log("Successfully emitted socket update");
+      // Tylko jeśli to nie jest aktualizacja wywołana przez socket (uniknięcie pętli)
+      if (!isSocketUpdate) {
+        game.socket.emit("system.cogwheel-syndicate", {
+          type: "updateClocks",
+          clocks: this.clocks
+        });
+        console.log("[Clocks] ✅ Clocks synchronized to all users");
+      }
 
-      // Wywołanie hooka lokalnie
+      // Wywołanie hooka lokalnie dla odświeżenia UI
       Hooks.call("cogwheelSyndicateClocksUpdated");
-      console.log("Successfully called cogwheelSyndicateClocksUpdated hook");
       
       // Odświeżenie bieżącego okna - zachowaj aktywną kategorię
       const currentCategory = this.activeCategory;
-      console.log("Rendering with current category:", currentCategory);
       this.render(true);
     
     // Po renderowaniu, przywróć aktywną kategorię
@@ -589,51 +591,94 @@ export async function openDoomClocks() {
 
 // Hook do odświeżania otwartych okien dialogowych zegarów
 Hooks.on("cogwheelSyndicateClocksUpdated", () => {
+  let foundDialogs = 0;
+  
+  // Metoda 1: Szukaj w ui.windows (standardowa dla Application)
   for (let appId in ui.windows) {
     const window = ui.windows[appId];
-    if (window instanceof DoomClocksDialog) {
-      // Aktualizacja lokalnej kopii zegarów w instancji dialogu
-      let clocks = game.settings.get("cogwheel-syndicate", "doomClocks") || [];
-      
-      // Migracja starych zegarów - dodaj brakujące pola
-      let needsSave = false;
-      clocks = clocks.map(clock => {
-        if (!clock.category) {
-          console.log(`Migrating clock "${clock.name}" to default category`);
-          clock.category = 'mission';
-          needsSave = true;
-        }
-        if (!clock.fillColor) {
-          console.log(`Migrating clock "${clock.name}" to default red color`);
-          clock.fillColor = '#dc2626';
-          needsSave = true;
-        }
-        return clock;
-      });
-      
-      // Zapisz migrację jeśli potrzeba
-      if (needsSave) {
-        console.log("Saving migrated clocks to settings in hook");
-        game.settings.set("cogwheel-syndicate", "doomClocks", clocks);
+    if (window._isCogwheelClocksDialog === true) {
+      foundDialogs++;
+      refreshDialog(window);
+    }
+  }
+  
+  // Metoda 2: Szukaj w ApplicationV2.instances (dla ApplicationV2)
+  if (foundDialogs === 0 && foundry.applications?.instances) {
+    for (let [id, app] of foundry.applications.instances) {
+      if (app._isCogwheelClocksDialog === true) {
+        foundDialogs++;
+        refreshDialog(app);
       }
-      
-      window.clocks = clocks;
-      window.render(true);
+    }
+  }
+  
+  // Metoda 3: Globalne przeszukanie wszystkich instancji (fallback)
+  if (foundDialogs === 0 && globalThis.foundry?.applications?.apps) {
+    for (let app of Object.values(globalThis.foundry.applications.apps)) {
+      if (app._isCogwheelClocksDialog === true) {
+        foundDialogs++;
+        refreshDialog(app);
+      }
+    }
+  }
+  
+  if (foundDialogs > 0) {
+    console.log(`[Clocks] ✅ Synchronized ${foundDialogs} clock dialog(s)`);
+  }
+  
+  // Funkcja pomocnicza do odświeżania dialogu
+  function refreshDialog(window) {
+    // Aktualizacja lokalnej kopii zegarów w instancji dialogu
+    let clocks = game.settings.get("cogwheel-syndicate", "doomClocks") || [];
+    
+    // Migracja starych zegarów - dodaj brakujące pola
+    let needsSave = false;
+    clocks = clocks.map(clock => {
+      if (!clock.category) {
+        clock.category = 'mission';
+        needsSave = true;
+      }
+      if (!clock.fillColor) {
+        clock.fillColor = '#dc2626';
+        needsSave = true;
+      }
+      return clock;
+    });
+    
+    // Zapisz migrację jeśli potrzeba
+    if (needsSave && game.user.isGM) {
+      game.settings.set("cogwheel-syndicate", "doomClocks", clocks);
+    }
+    
+    // Zachowaj aktualną kategorię przed odświeżeniem
+    const currentCategory = window.activeCategory;
+    window.clocks = clocks;
+    window.render(true);
+    
+    // Przywróć kategorię po renderze
+    if (currentCategory) {
+      setTimeout(() => {
+        window.activeCategory = currentCategory;
+      }, 50);
     }
   }
 });
 
 // Nasłuchiwanie na aktualizacje zegarów przez socket
-Hooks.once("setup", () => {
+Hooks.once("ready", () => {
+  console.log("[Clocks] Socket listener registered");
   game.socket.on("system.cogwheel-syndicate", async (data) => {
     if (data.type === "updateClocks") {
       try {
-        // Aktualizacja zegarów w ustawieniach świata
-        await game.settings.set("cogwheel-syndicate", "doomClocks", data.clocks);
+        // Aktualizacja zegarów w ustawieniach świata (tylko dla nie-GM użytkowników)
+        // GM już zapisał zmiany, więc nie potrzebuje ponownego zapisu
+        if (!game.user.isGM) {
+          await game.settings.set("cogwheel-syndicate", "doomClocks", data.clocks);
+        }
         // Wywołanie hooka, który odświeży wszystkie otwarte okna dialogowe
         Hooks.call("cogwheelSyndicateClocksUpdated");
       } catch (error) {
-        console.error("Błąd podczas aktualizacji zegarów przez socket:", error);
+        console.error("[Clocks] Error updating clocks via socket:", error);
       }
     }
   });

@@ -1,9 +1,12 @@
 // src/scripts/init.js
 import { registerHandlebarsHelpers } from "./handlebars.mjs";
-import { openDoomClocks } from "./clocks.mjs"; // Import funkcji otwierającej zegary
+import { openDoomClocks, DoomClocksDialog } from "./clocks.mjs"; // Import funkcji otwierającej zegary i klasy dialogu
 import { MetaCurrencyApp } from "../apps/metacurrency-app.mjs";
 import { FeatsEffects } from "./feats-effects.mjs"; // Import systemu efektów atutów
 import { getConsequencesMessage, showConsequencesSelectionDialog, POSITIONS, RESULT_TYPES } from "./consequences.mjs"; // Import systemu konsekwencji
+
+// Globalne udostępnienie klasy DoomClocksDialog dla hooków
+window.DoomClocksDialog = DoomClocksDialog;
 
 Hooks.once("init", () => {
   // Konfiguracja typów aktorów
