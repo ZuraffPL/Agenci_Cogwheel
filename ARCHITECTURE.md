@@ -229,7 +229,7 @@ src/styles/
 ├── feats-effects.css          # Dedicated feat effects styling (v0.7.7+)
 ├── hq.css                     # Headquarters styling
 ├── nemesis.css                # Nemesis sheet styling
-├── clocks.css                 # Clock system styling
+├── clocks.css                 # Clock system styling (includes archive dialog)
 ├── equipment.css              # Equipment dialogs styling
 ├── equipment-points.css       # Equipment points styling
 ├── notes.css                  # Notes section styling
@@ -240,9 +240,70 @@ src/styles/
 ├── success-upgrade.css        # Success upgrade buttons styling
 ├── meta-currency.css          # Meta currency system styling
 ├── spend-points-dialog.css    # Points spending dialogs styling
+├── consequences.css           # Consequence system styling (v0.9.18+)
 ├── feats.css                  # General feats styling
 └── rolldialog.css            # Roll dialogs styling
 ```
+
+## Clock System (v0.9.19)
+
+### DoomClocksDialog (clocks.mjs)
+**File**: `src/scripts/clocks.mjs`
+
+**Purpose**: Real-time synchronized clock management with archive system
+
+**Key Features**:
+- ApplicationV2-based dialog with category tabs (Mission/Combat/Other)
+- Real-time multi-user synchronization via socket broadcasting
+- Archive system for soft-delete with restore capability
+- Triple-layer instance discovery for reliable dialog detection
+- Unique marker system (`_isCogwheelClocksDialog`) for identification
+
+**Architecture Highlights**:
+```javascript
+class DoomClocksDialog extends foundry.applications.api.ApplicationV2 {
+  constructor() {
+    this._isCogwheelClocksDialog = true;  // Unique marker
+    // ... initialization
+  }
+}
+```
+
+### Archive System
+**Settings**: `game.settings.get/set("cogwheel-syndicate", "archivedClocks")`
+
+**Core Functions**:
+- `_onDeleteClock()`: Archives clock with timestamp metadata instead of permanent deletion
+- `_onOpenArchive()`: Opens archive dialog with DialogV2 and inline styling
+- `_onRestoreClock(index)`: Removes archive metadata and returns clock to active list
+- `_onDeleteArchivedClock(index)`: Permanently deletes clock from archive
+
+**Styling Approach**: Triple-layer for maximum compatibility
+1. **CSS Files**: `clocks.css` with `dialog.clock-archive-dialog` selectors
+2. **JavaScript DOM**: Direct styling in `_onRender()` method
+3. **Inline Styles**: Template-level styles in `clock-archive-dialog.hbs`
+
+**Archive Dialog Layout**:
+```
+Horizontal Flexbox:
+[Clock SVG 80x80] | [Details (flex-grow)] | [Buttons (fixed-width)]
+                   Name, Progress,            Restore (green)
+                   Date, Description          Delete (red)
+```
+
+### Real-Time Synchronization
+**Socket Type**: `updateClocks` and `updateArchivedClocks`
+
+**Hook System**:
+- `cogwheelSyndicateClocksUpdated`: Triggered when active clocks change
+- `cogwheelSyndicateArchivedClocksUpdated`: Triggered when archived clocks change
+
+**Instance Discovery**: Triple-layer search
+1. `ui.windows` - Legacy support
+2. `foundry.applications.instances` - ApplicationV2 native
+3. `globalThis.foundry.applications.apps` - Fallback
+
+**Loop Prevention**: `isSocketUpdate` flag prevents infinite broadcast loops
 
 ## Benefits
 

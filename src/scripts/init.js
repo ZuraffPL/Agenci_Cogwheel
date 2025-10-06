@@ -49,6 +49,19 @@ Hooks.once("init", () => {
     }
   });
 
+  // Rejestracja ustawienia dla zarchiwizowanych zegarów
+  game.settings.register("cogwheel-syndicate", "archivedClocks", {
+    name: "Archived Doom Clocks",
+    hint: "Stores archived (deleted) Doom Clocks with timestamps",
+    scope: "world", // Ustawienie globalne dla świata
+    config: false,   // Nie widoczne w menu ustawień
+    type: Array,
+    default: [],     // Domyślnie pusta tablica
+    onChange: () => {
+      Hooks.call("cogwheelSyndicateArchivedClocksUpdated"); // Hook dla archiwum
+    }
+  });
+
   // Rejestracja ustawienia dla licznika użyć redukcji stresu
   game.settings.register("cogwheel-syndicate", "stressReduceUsesThisSession", {
     name: "Stress Reduction Uses This Session",

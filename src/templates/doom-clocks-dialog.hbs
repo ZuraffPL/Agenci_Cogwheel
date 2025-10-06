@@ -1,8 +1,13 @@
 <div class="doom-clocks-content" data-active-category="{{activeCategory}}">
   {{#if isGM}}
-    <button class="add-clock steampunk-clock-btn" title="{{localize 'COGSYNDICATE.AddDoomClock'}}" data-category="{{activeCategory}}">
-      <i class="fas fa-clock"></i> {{localize "COGSYNDICATE.AddDoomClock"}}
-    </button>
+    <div class="clock-toolbar">
+      <button class="add-clock steampunk-clock-btn" title="{{localize 'COGSYNDICATE.AddDoomClock'}}" data-category="{{activeCategory}}">
+        <i class="fas fa-clock"></i> {{localize "COGSYNDICATE.AddDoomClock"}}
+      </button>
+      <button class="open-archive steampunk-archive-btn" title="{{localize 'COGSYNDICATE.OpenArchive'}}">
+        <i class="fas fa-archive"></i> {{localize "COGSYNDICATE.Archive"}}
+      </button>
+    </div>
   {{/if}}
   
   <!-- Zakładki kategorii zegarów -->

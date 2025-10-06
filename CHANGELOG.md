@@ -11,6 +11,64 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+### Added | Dodano
+- **Clock Archive System** | **System Archiwum Zegarów**
+  - Added archive button next to "Add Clock" button in clock dialog | Dodano przycisk archiwum obok przycisku "Dodaj Zegar" w oknie zegarów
+  - Deleted clocks now move to archive instead of being permanently removed | Usunięte zegary trafiają teraz do archiwum zamiast być trwale usunięte
+  - Archive dialog shows all deleted clocks with restore and permanent delete options | Dialog archiwum pokazuje wszystkie usunięte zegary z opcjami przywrócenia i trwałego usunięcia
+  - Archived clocks display timestamp showing when they were archived | Zarchiwizowane zegary pokazują znacznik czasu kiedy zostały zarchiwizowane
+  - Restore function returns clocks to active list in their original category | Funkcja przywracania zwraca zegary do aktywnej listy w ich oryginalnej kategorii
+  - Multi-user synchronization for archive operations | Synchronizacja między użytkownikami dla operacji archiwum
+  - Archive button visible only to GM users | Przycisk archiwum widoczny tylko dla GM
+  - Full steampunk styling with horizontal layout (clock visual | details | buttons) | Pełna steampunkowa stylistyka z horyzontalnym układem (wizualizacja zegara | szczegóły | przyciski)
+
+### Fixed | Naprawiono
+- **Archive Dialog UI** | **UI Dialogu Archiwum**
+  - Fixed archive dialog not applying steampunk styles | Naprawiono brak aplikacji steampunkowych stylów w dialogu archiwum
+  - Fixed buttons positioned below clocks instead of on the right | Naprawiono przyciski umieszczone pod zegarami zamiast po prawej
+  - Fixed dialog width not auto-adjusting to content | Naprawiono szerokość dialogu nie dostosowującą się do zawartości
+  - Fixed archive and add clock buttons misalignment in toolbar | Naprawiono niewyrównanie przycisków archiwum i dodawania zegara w toolbarze
+
+### Technical | Techniczne
+- **Archive Settings** | **Ustawienia Archiwum**
+  - Registered `archivedClocks` world setting in init.js | Zarejestrowano ustawienie world `archivedClocks` w init.js
+  - Added `cogwheelSyndicateArchivedClocksUpdated` hook for archive synchronization | Dodano hook `cogwheelSyndicateArchivedClocksUpdated` dla synchronizacji archiwum
+  - Socket type `updateArchivedClocks` for multi-user archive updates | Typ socket `updateArchivedClocks` dla aktualizacji archiwum między użytkownikami
+
+- **Archive Functions** | **Funkcje Archiwum**
+  - `_onDeleteClock()`: Modified to archive clocks with timestamp metadata | Zmodyfikowano aby archiwizować zegary ze znacznikiem czasu
+  - `_onOpenArchive()`: Opens archive dialog using DialogV2 with inline styling | Otwiera dialog archiwum używając DialogV2 z inline stylami
+  - `_onRestoreClock(index)`: Removes archive metadata and returns clock to active list | Usuwa metadane archiwum i zwraca zegar do aktywnej listy
+  - `_onDeleteArchivedClock(index)`: Permanently deletes clock from archive | Trwale usuwa zegar z archiwum
+
+- **UI Styling Approach** | **Podejście do Stylowania UI**
+  - Triple-layer styling: CSS files + JavaScript _onRender() + inline styles in template | Trójwarstwowe stylowanie: pliki CSS + JavaScript _onRender() + style inline w szablonie
+  - Direct DOM manipulation in _onRender() for dialog, header, content, and buttons | Bezpośrednia manipulacja DOM w _onRender() dla dialogu, nagłówka, contentu i przycisków
+  - Inline styles in Handlebars template for guaranteed layout and colors | Style inline w szablonie Handlebars dla gwarantowanego layoutu i kolorów
+  - DialogV2 positioning: width: auto, min-width: 650px, max-width: 950px | Pozycjonowanie DialogV2: szerokość: auto, min: 650px, max: 950px
+
+- **UI Enhancements** | **Ulepszenia UI**
+  - Created `clock-archive-dialog.hbs` template with SVG clock visualization | Utworzono szablon `clock-archive-dialog.hbs` z wizualizacją SVG zegarów
+  - Added `.clock-toolbar` container for button layout with perfect alignment | Dodano kontener `.clock-toolbar` dla układu przycisków z idealnym wyrównaniem
+  - Horizontal flexbox layout: [Clock SVG 80x80] | [Details flex-grow] | [Buttons fixed-width] | Horyzontalny layout flexbox: [SVG zegara 80x80] | [Szczegóły flex-grow] | [Przyciski stała szerokość]
+  - Steampunk-styled archive button matching existing UI (removed margin-bottom) | Przycisk archiwum w stylu steampunk pasujący do istniejącego UI (usunięto margin-bottom)
+  - Archive dialog with full steampunk gradient backgrounds and golden borders | Dialog archiwum z pełnymi gradientowymi tłami steampunk i złotymi obramowaniami
+  - Green restore button (linear-gradient #2d4a2d → #3d5a3d) | Zielony przycisk przywracania (linear-gradient #2d4a2d → #3d5a3d)
+  - Red delete button (linear-gradient #4a2d2d → #5a3d3d) | Czerwony przycisk usuwania (linear-gradient #4a2d2d → #5a3d3d)
+  - Metallic sheen effect overlay on dialog content | Efekt metalicznego połysku na contencie dialogu
+
+- **Translations** | **Tłumaczenia**
+  - Added 13 new translation keys for archive feature (pl.json, en.json) | Dodano 13 nowych kluczy tłumaczeń dla funkcji archiwum (pl.json, en.json)
+  - Keys: Archive, OpenArchive, ArchivedClocks, RestoreClock, DeletePermanently, ArchivedOn, NoArchivedClocks, ClockArchived, ClockRestored, ClockDeletedPermanently, Restore, Delete, Close
+
+### Files Modified | Zmodyfikowane Pliki
+- `src/scripts/init.js` - Added archivedClocks settings registration | Dodano rejestrację ustawień archivedClocks
+- `src/scripts/clocks.mjs` - Archive system implementation with inline styling | Implementacja systemu archiwum z inline stylami
+- `src/templates/doom-clocks-dialog.hbs` - Added archive button in toolbar | Dodano przycisk archiwum w toolbarze
+- `src/templates/clock-archive-dialog.hbs` - New archive dialog template with inline styles | Nowy szablon dialogu archiwum z inline stylami
+- `src/styles/clocks.css` - Archive dialog CSS (backup for inline styles) | CSS dialogu archiwum (backup dla inline stylów)
+- `lang/pl.json` & `lang/en.json` - Archive translations | Tłumaczenia archiwum
+
 ## [0.9.19] - 2025-10-06
 
 **REAL-TIME CLOCK SYNCHRONIZATION** | **SYNCHRONIZACJA ZEGARÓW W CZASIE RZECZYWISTYM**

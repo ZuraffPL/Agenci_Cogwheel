@@ -31,7 +31,29 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 - **🔧 All Operations Synced**: Add, edit, delete, increment/decrement segments - all update in real-time
 - **📑 Category Preservation**: Active category (Mission/Campaign/Personal) maintained during sync
 
-### 🛠️ Technical Improvements
+### �️ Clock Archive System
+- **📦 Soft Delete**: Deleted clocks move to archive instead of permanent removal
+- **🎒 Archive Button**: Access archived clocks via button next to "Add Clock"
+- **♻️ Restore Function**: Return archived clocks to active list in original category
+- **🗑️ Permanent Delete**: Option to permanently remove clocks from archive
+- **📅 Timestamp Display**: Shows when each clock was archived
+- **🎨 Full Steampunk Styling**: Beautiful horizontal layout with gradient backgrounds
+  - Clock visualization (80x80 SVG) on left
+  - Details (name, progress, date, description) in center
+  - Action buttons (Restore/Delete) on right
+- **🔒 GM-Only Access**: Archive button visible only to Game Master
+- **📡 Multi-User Sync**: Archive operations synchronize across all connected users
+
+### 🎨 Archive Dialog Features
+- **🎭 Horizontal Layout**: Professional flexbox design [SVG | Details | Buttons]
+- **🌈 Steampunk Gradients**: Brown-gold backgrounds with metallic sheen overlay
+- **🎯 Auto-Adjusting Width**: Dialog width adapts to content (650-950px range)
+- **💚 Green Restore Button**: Linear gradient (#2d4a2d → #3d5a3d) with hover animations
+- **❤️ Red Delete Button**: Linear gradient (#4a2d2d → #5a3d3d) with danger styling
+- **✨ Triple-Layer Styling**: CSS files + JavaScript DOM manipulation + inline styles
+- **🌐 Full Translations**: Complete Polish/English support for all UI elements
+
+### �🛠️ Technical Improvements
 - **🎯 ApplicationV2 Instance Discovery**: Triple-layer search for reliable dialog detection
   - Primary: `ui.windows` collection
   - Secondary: `foundry.applications.instances` (ApplicationV2 native)
@@ -42,11 +64,17 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 - **⚡ Optimized Non-GM Updates**: Players only refresh UI without redundant settings saves
 - **📝 Reduced Logging**: Streamlined console output to essential synchronization messages only
 - **🌐 Global Export**: `DoomClocksDialog` class exported and globally accessible
+- **🗄️ Archive Settings**: New `archivedClocks` world setting with dedicated hook
+- **🎨 Inline Styling**: Direct DOM manipulation ensures styling reliability across Foundry versions
 
 ### 🐛 Bug Fixes
 - Fixed clocks not updating immediately when GM makes changes
 - Resolved ApplicationV2 instance not being found in `ui.windows` collection
 - Fixed socket listener initialization timing (moved from `setup` to `ready` hook)
+- Fixed archive dialog not applying steampunk styles (added triple-layer styling)
+- Fixed buttons positioned below clocks instead of on the right (flexbox horizontal layout)
+- Fixed dialog width not auto-adjusting to content (width: auto with min/max constraints)
+- Fixed archive and add clock buttons misalignment in toolbar (removed margin-bottom, align-items: center)
 
 ## 🔥 What's New in v0.9.18
 

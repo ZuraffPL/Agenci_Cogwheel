@@ -131,6 +131,13 @@ constructor(options = {}) {
 if (game.user.isGM) {
   html.querySelector(".add-clock")
       .addEventListener("click", this._onAddClock.bind(this));
+  
+  // Przycisk archiwum
+  const archiveBtn = html.querySelector(".open-archive");
+  if (archiveBtn) {
+    archiveBtn.addEventListener("click", this._onOpenArchive.bind(this));
+  }
+  
   html.querySelectorAll(".increment-clock").forEach(element => {
   element.addEventListener("click", this._onIncrementClock.bind(this));
 });
@@ -458,8 +465,37 @@ html.querySelectorAll(".delete-clock").forEach(element => {
   async _onDeleteClock(event) {
     event.preventDefault();
     const index = parseInt(event.currentTarget.closest(".clock-item").dataset.index);
+    const clock = this.clocks[index];
+    
+    // Dodaj timestamp archiwizacji
+    const archivedClock = {
+      ...clock,
+      archivedAt: Date.now(),
+      archivedDate: new Date().toLocaleDateString(game.i18n.lang, { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    };
+    
+    // Pobierz aktualne archiwum i dodaj nowy zegar
+    let archivedClocks = game.settings.get("cogwheel-syndicate", "archivedClocks") || [];
+    archivedClocks.push(archivedClock);
+    await game.settings.set("cogwheel-syndicate", "archivedClocks", archivedClocks);
+    
+    // Usuń z aktywnych zegarów
     this.clocks.splice(index, 1);
     await this._updateClocks();
+    
+    // Broadcast archiwum przez socket
+    game.socket.emit("system.cogwheel-syndicate", {
+      type: "updateArchivedClocks",
+      archivedClocks: archivedClocks
+    });
+    
+    ui.notifications.info(`${game.i18n.localize("COGSYNDICATE.ClockArchived")}: ${clock.name}`);
   }
 
   async _updateClocks(isSocketUpdate = false) {
@@ -571,6 +607,175 @@ html.querySelectorAll(".delete-clock").forEach(element => {
     // W ApplicationV2 używamy tylko setPosition - nie modyfikujemy CSS bezpośrednio
     this.setPosition({ height: targetHeight });
   }
+
+  // Metoda do otwierania archiwum zegarów
+  async _onOpenArchive(event) {
+    event.preventDefault();
+    const archivedClocks = game.settings.get("cogwheel-syndicate", "archivedClocks") || [];
+    
+    // Render template dla archiwum
+    const content = await cogwheel_syndicate_Utility.renderTemplate(
+      "systems/cogwheel-syndicate/src/templates/clock-archive-dialog.hbs",
+      { 
+        archivedClocks,
+        isGM: game.user.isGM,
+        noClocks: archivedClocks.length === 0
+      }
+    );
+
+    // Dialog archiwum
+    class ArchiveDialog extends foundry.applications.api.DialogV2 {
+      constructor(clocksApp) {
+        const options = {
+          window: {
+            title: game.i18n.localize("COGSYNDICATE.ArchivedClocks"),
+            icon: "fas fa-archive",
+            classes: ["cogwheel", "clock-archive-dialog"]
+          },
+          position: {
+            width: "auto",
+            height: "auto"
+          },
+          content: content,
+          buttons: [
+            {
+              action: "close",
+              label: game.i18n.localize("COGSYNDICATE.Close"),
+              default: true
+            }
+          ],
+          rejectClose: false
+        };
+        
+        super(options);
+        this.clocksApp = clocksApp;
+      }
+
+      _onRender(context, options) {
+        super._onRender(context, options);
+        
+        // Apply steampunk styling directly to dialog element
+        const dialogEl = this.element;
+        if (dialogEl) {
+          // Set dialog-level styles
+          dialogEl.style.background = "linear-gradient(135deg, #3d2817 0%, #4a321d 30%, #5a4a3a 70%, #2c1810 100%)";
+          dialogEl.style.border = "2px solid #cd7f32";
+          dialogEl.style.borderRadius = "8px";
+          dialogEl.style.boxShadow = "0 8px 24px rgba(0, 0, 0, 0.6), inset 0 1px 3px rgba(205, 127, 50, 0.3)";
+          dialogEl.style.minWidth = "650px";
+          dialogEl.style.maxWidth = "950px";
+          
+          // Style window header
+          const header = dialogEl.querySelector('.window-header');
+          if (header) {
+            header.style.background = "linear-gradient(135deg, #4a321d 0%, #5a4a3a 50%, #4a321d 100%)";
+            header.style.borderBottom = "2px solid #cd7f32";
+            header.style.color = "#f4a460";
+            header.style.textShadow = "1px 1px 2px rgba(0, 0, 0, 0.8)";
+          }
+          
+          // Style window content
+          const content = dialogEl.querySelector('.window-content');
+          if (content) {
+            content.style.background = "linear-gradient(135deg, #3d2817 0%, #4a321d 30%, #5a4a3a 70%, #2c1810 100%)";
+            content.style.color = "#f4a460";
+            content.style.padding = "15px";
+          }
+          
+          // Style dialog buttons footer
+          const buttonsFooter = dialogEl.querySelector('.dialog-buttons');
+          if (buttonsFooter) {
+            buttonsFooter.style.background = "linear-gradient(135deg, #3d2817 0%, #4a321d 50%, #2c1810 100%)";
+            buttonsFooter.style.borderTop = "2px solid #cd7f32";
+            buttonsFooter.style.padding = "10px 15px";
+            
+            const closeBtn = buttonsFooter.querySelector('button');
+            if (closeBtn) {
+              closeBtn.style.background = "linear-gradient(135deg, #3d2817 0%, #4a321d 50%, #2c1810 100%)";
+              closeBtn.style.border = "2px solid #cd7f32";
+              closeBtn.style.borderRadius = "5px";
+              closeBtn.style.color = "#f4a460";
+              closeBtn.style.padding = "8px 18px";
+              closeBtn.style.fontWeight = "bold";
+              closeBtn.style.textShadow = "1px 1px 2px rgba(0, 0, 0, 0.8)";
+              closeBtn.style.cursor = "pointer";
+              closeBtn.style.transition = "all 0.3s ease";
+            }
+          }
+        }
+        
+        // Dodaj event listenery dla przycisków przywróć i usuń
+        const restoreBtns = this.element.querySelectorAll('.restore-clock');
+        const deleteBtns = this.element.querySelectorAll('.delete-archived-clock');
+        
+        restoreBtns.forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            const index = parseInt(e.currentTarget.dataset.index);
+            await this.clocksApp._onRestoreClock(index);
+            this.close();
+          });
+        });
+        
+        deleteBtns.forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            const index = parseInt(e.currentTarget.dataset.index);
+            await this.clocksApp._onDeleteArchivedClock(index);
+            this.close();
+          });
+        });
+      }
+    }
+
+    const dialog = new ArchiveDialog(this);
+    dialog.render(true);
+  }
+
+  // Przywrócenie zegara z archiwum
+  async _onRestoreClock(index) {
+    let archivedClocks = game.settings.get("cogwheel-syndicate", "archivedClocks") || [];
+    const clock = archivedClocks[index];
+    
+    if (!clock) return;
+    
+    // Usuń pola archiwizacji
+    const { archivedAt, archivedDate, ...restoredClock } = clock;
+    
+    // Dodaj z powrotem do aktywnych zegarów
+    this.clocks.push(restoredClock);
+    await this._updateClocks();
+    
+    // Usuń z archiwum
+    archivedClocks.splice(index, 1);
+    await game.settings.set("cogwheel-syndicate", "archivedClocks", archivedClocks);
+    
+    // Broadcast archiwum przez socket
+    game.socket.emit("system.cogwheel-syndicate", {
+      type: "updateArchivedClocks",
+      archivedClocks: archivedClocks
+    });
+    
+    ui.notifications.info(`${game.i18n.localize("COGSYNDICATE.ClockRestored")}: ${restoredClock.name}`);
+  }
+
+  // Usunięcie zegara z archiwum na stałe
+  async _onDeleteArchivedClock(index) {
+    let archivedClocks = game.settings.get("cogwheel-syndicate", "archivedClocks") || [];
+    const clock = archivedClocks[index];
+    
+    if (!clock) return;
+    
+    // Usuń na stałe
+    archivedClocks.splice(index, 1);
+    await game.settings.set("cogwheel-syndicate", "archivedClocks", archivedClocks);
+    
+    // Broadcast archiwum przez socket
+    game.socket.emit("system.cogwheel-syndicate", {
+      type: "updateArchivedClocks",
+      archivedClocks: archivedClocks
+    });
+    
+    ui.notifications.warn(`${game.i18n.localize("COGSYNDICATE.ClockDeletedPermanently")}: ${clock.name}`);
+  }
 }
 
 export async function openDoomClocks() {
@@ -679,6 +884,18 @@ Hooks.once("ready", () => {
         Hooks.call("cogwheelSyndicateClocksUpdated");
       } catch (error) {
         console.error("[Clocks] Error updating clocks via socket:", error);
+      }
+    }
+    
+    // Socket listener dla archiwum
+    if (data.type === "updateArchivedClocks") {
+      try {
+        if (!game.user.isGM) {
+          await game.settings.set("cogwheel-syndicate", "archivedClocks", data.archivedClocks);
+        }
+        Hooks.call("cogwheelSyndicateArchivedClocksUpdated");
+      } catch (error) {
+        console.error("[Clocks] Error updating archived clocks via socket:", error);
       }
     }
   });
