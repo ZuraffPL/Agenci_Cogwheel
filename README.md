@@ -2,12 +2,12 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.9.19**
+**Current System Version: 0.9.20**
 
 ## ⚠️ Important Version Notice | Ważne Informacje o Wersji
 
 ### Foundry VTT v13+ (Current/Latest)
-- **Version 0.9.19**: Requires Foundry VTT v13.348 or higher
+- **Version 0.9.20**: Requires Foundry VTT v13.348 or higher
 - **Full native DOM API compatibility** - no jQuery dependencies
 - **Latest features and optimizations**
 
@@ -24,7 +24,17 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 
 ## 🔥 Latest Features
 
-### 🎯 GM Consequence Toggle System (Unreleased)
+### ⏱️ Dynamic Consequence Buttons with Auto-Expiration (v0.9.20)
+- **⏲️ 120-Second Lifetime**: All consequence buttons automatically expire after 2 minutes
+- **🔄 Smart Button Updates**: Success level upgrades create new buttons with correct consequence counts
+- **♻️ Auto-Disable Old Buttons**: Previous buttons marked as "(Outdated)" / "(Przestarzałe)" when superseded
+- **📊 Example Flow**: Desperate Failure (4 consequences) → Upgrade Success → New button with 3 consequences
+- **🎯 Same Chat Message**: New buttons appear in upgrade notification (no separate message)
+- **🧹 Memory Management**: Automatic timer cleanup prevents memory leaks
+- **🎨 Visual States**: Active → Expired (timeout) or Outdated (replaced by upgrade)
+- **🌐 Full Translations**: Polish/English support for all button states
+
+### 🎯 GM Consequence Toggle System (v0.9.19)
 - **👑 GM-Only Controls**: Toggle buttons to activate/deactivate consequence options
 - **🔄 Real-Time Synchronization**: Players see only active consequences automatically
 - **♻️ Auto-Refresh**: Player dialogs update instantly when GM toggles (no reopen needed)
@@ -34,13 +44,38 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 - **🌐 Multi-User Sync**: Changes broadcast to all connected clients via sockets
 - **🎭 Theme Adaptive**: Consequence dialog fully supports light/dark mode
 
-### 🌙 Dark Mode Dialog Adaptation (Unreleased)
+### 🌙 Dark Mode Dialog Adaptation (v0.9.19)
 - **🎨 Full Theme Support**: All spend points dialogs adapt to Foundry's light/dark themes
 - **🔄 Auto-Detection**: Responds to both `body.theme-dark` and browser preferences
 - **📋 Complete Coverage**: Window backgrounds, sections, buttons, text - all themed
 - **✨ Color Consistency**: Dark backgrounds (#1a1a1a) with light text (#e0e0e0) in dark mode
 - **🎯 Button Clarity**: "Wydaj PP/NP" buttons always use dark text on light backgrounds
 - **🎪 SP Dialog Styling**: Radio button options with proper background colors in both themes
+
+## 🔥 What's New in v0.9.20
+
+### ⏱️ Dynamic Consequence Button System
+- **⏲️ Automatic Expiration**: All consequence buttons expire after 120 seconds
+- **🔄 Smart Updates on Upgrade**: Upgrading success level creates new button with recalculated consequences
+- **♻️ Old Button Disabling**: Previous buttons automatically disabled and marked "(Outdated)"
+- **📊 Correct Count Calculation**: New buttons show accurate consequence count for upgraded result type
+- **🎯 Integrated Chat Messages**: New buttons appear in same message as upgrade notification
+- **🧹 Timer Cleanup**: Proper memory management with automatic timer clearing
+- **🎨 Visual Button States**:
+  - Active: Normal consequence button with full functionality
+  - Expired: Shows "(Wygasło)" / "(Expired)" after 120 seconds
+  - Outdated: Shows "(Przestarzałe)" / "(Outdated)" when replaced by upgrade
+- **🌐 Multilingual Support**: Complete Polish/English translations for all states
+
+### 🛠️ Technical Implementation
+- **Timer System**: `window.cogwheelSyndicate.consequenceButtonTimers` for setTimeout tracking
+- **Button Metadata**: `window.cogwheelSyndicate.activeConsequenceButtons` for state management
+- **Helper Functions**:
+  - `disableOldConsequenceButton(buttonId)` - Disables and clears timer
+  - `calculateConsequenceCount(position, resultType)` - Calculates consequences dynamically
+  - `createConsequenceButton(actor, count, oldButtonId)` - Creates button with integrated timer
+- **Parameter Flow**: position and oldConsequenceButtonId passed through upgrade chain
+- **Translation Keys**: `COGWHEEL.Consequences.Outdated` and `COGWHEEL.Consequences.Expired`
 
 ## 🔥 What's New in v0.9.19
 

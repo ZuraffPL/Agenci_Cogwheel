@@ -11,6 +11,35 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.20] - 2025-10-14
+
+### Added | Dodano
+- **Dynamic Consequence Buttons with Auto-Expiration** | **Dynamiczne Przyciski Konsekwencji z Auto-Wygasaniem**
+  - Consequence buttons now expire after 120 seconds showing "(Expired)" / "(Wygasło)" | Przyciski konsekwencji wygasają po 120 sekundach pokazując "(Wygasło)" / "(Expired)"
+  - Success level upgrades now create new consequence buttons with correct counts | Podbijanie poziomu sukcesu tworzy teraz nowe przyciski konsekwencji z poprawnymi wartościami
+  - Old consequence buttons are automatically disabled and marked as "(Outdated)" / "(Przestarzałe)" | Stare przyciski konsekwencji są automatycznie dezaktywowane i oznaczane jako "(Przestarzałe)" / "(Outdated)"
+  - Example: Desperate Failure (4 consequences) → Success with Cost (3 consequences) shows new button with 3 | Przykład: Desperacka Porażka (4 konsekwencje) → Sukces z Kosztem (3 konsekwencje) pokazuje nowy przycisk z 3
+  - New buttons appear in the same chat message as the upgrade notification | Nowe przyciski pojawiają się w tej samej wiadomości czatu co powiadomienie o upgrade
+
+### Changed | Zmieniono
+- **Consequence Button Lifecycle Management** | **Zarządzanie Cyklem Życia Przycisków Konsekwencji**
+  - All consequence buttons now have 120-second lifetime with automatic cleanup | Wszystkie przyciski konsekwencji mają teraz 120-sekundowy czas życia z automatycznym czyszczeniem
+  - Button states: Active → Expired (timeout) or Outdated (superseded by upgrade) | Stany przycisków: Aktywny → Wygasły (timeout) lub Przestarzały (zastąpiony przez upgrade)
+  - Timer cleanup prevents memory leaks from abandoned buttons | Czyszczenie timerów zapobiega wyciekom pamięci z porzuconych przycisków
+
+### Technical | Techniczne
+- **Consequence Button System Architecture** | **Architektura Systemu Przycisków Konsekwencji**
+  - Added `window.cogwheelSyndicate.consequenceButtonTimers` for timer ID storage | Dodano `window.cogwheelSyndicate.consequenceButtonTimers` do przechowywania ID timerów
+  - Added `window.cogwheelSyndicate.activeConsequenceButtons` for button metadata tracking | Dodano `window.cogwheelSyndicate.activeConsequenceButtons` do śledzenia metadanych przycisków
+  - Created `disableOldConsequenceButton(buttonId)` function in consequences.mjs | Utworzono funkcję `disableOldConsequenceButton(buttonId)` w consequences.mjs
+  - Created `calculateConsequenceCount(position, resultType)` function for dynamic calculation | Utworzono funkcję `calculateConsequenceCount(position, resultType)` dla dynamicznego wyliczania
+  - Created `createConsequenceButton(actor, count, oldButtonId)` with integrated timer | Utworzono `createConsequenceButton(actor, count, oldButtonId)` z wbudowanym timerem
+  - Modified `upgradeSuccessLevel()` to accept position and oldConsequenceButtonId parameters | Zmodyfikowano `upgradeSuccessLevel()` aby przyjmować parametry position i oldConsequenceButtonId
+  - Upgrade buttons now include `data-position` and `data-consequence-button-id` attributes | Przyciski upgrade zawierają teraz atrybuty `data-position` i `data-consequence-button-id`
+  - Added translations: `COGWHEEL.Consequences.Outdated` and `COGWHEEL.Consequences.Expired` | Dodano tłumaczenia: `COGWHEEL.Consequences.Outdated` i `COGWHEEL.Consequences.Expired`
+
+## [0.9.19] - 2025-10-14
+
 ### Added | Dodano
 - **GM Consequence Toggle System with Real-Time Sync** | **System Dezaktywacji Konsekwencji dla GM z Synchronizacją Real-Time**
   - Added toggle buttons for GM to activate/deactivate consequence options in selection dialog | Dodano przyciski toggle dla GM do aktywowania/dezaktywowania opcji konsekwencji w oknie wyboru

@@ -7,6 +7,7 @@ window.cogwheelSyndicate.rollData = window.cogwheelSyndicate.rollData || {};
 
 // Import FeatsEffects directly
 import { FeatsEffects } from './feats-effects.mjs';
+import { calculateConsequenceCount, createConsequenceButton } from './consequences.mjs';
 
 // Funkcja sprawdzająca czy użytkownik ma uprawnienia do kliknięcia przycisku czatu
 function canUserInteractWithButton(authorUserId) {
@@ -52,7 +53,7 @@ function disableAllUpgradeButtonsForActor(actorId) {
 }
 
 // Funkcja pomocnicza do podnoszenia poziomu sukcesu
-async function upgradeSuccessLevel(actor, currentResult, testedAttribute) {
+async function upgradeSuccessLevel(actor, currentResult, testedAttribute, position, oldConsequenceButtonId) {
   const currentSteamPoints = game.cogwheelSyndicate.steamPoints || 0;
   
   if (currentSteamPoints < 2) {
@@ -109,6 +110,16 @@ async function upgradeSuccessLevel(actor, currentResult, testedAttribute) {
     testedAttribute: testedAttributeText
   });
 
+  // Oblicz nową liczbę konsekwencji dla nowego poziomu sukcesu
+  const newConsequenceCount = calculateConsequenceCount(position, newResult);
+  
+  // Wygeneruj nowy przycisk konsekwencji jeśli nadal są konsekwencje
+  let newConsequenceButton = "";
+  if (newConsequenceCount > 0) {
+    const buttonData = createConsequenceButton(actor, newConsequenceCount, oldConsequenceButtonId);
+    newConsequenceButton = buttonData.html;
+  }
+
   const upgradeContent = `
     <div class="roll-message">
       <div class="chat-header">
@@ -118,6 +129,7 @@ async function upgradeSuccessLevel(actor, currentResult, testedAttribute) {
       <hr>
       <p><strong style='color: black;'>${upgradeMessage}</strong></p>
       <p><span style='color: orange; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.SpentSteamPoints")}</span></p>
+      ${newConsequenceButton}
     </div>
   `;
 
@@ -496,6 +508,27 @@ export async function performAttributeRoll(actor, attribute) {
                 // Generate unique button ID for consequence selection
                 const selectBtnId = `select-consequences-${currentRollTimestamp}-${Math.random().toString(36).substr(2, 9)}`;
                 
+                // Inicjalizuj timer dla przycisku konsekwencji (120 sekund)
+                const consequenceTimer = setTimeout(() => {
+                  const btn = document.getElementById(selectBtnId);
+                  if (btn && !btn.disabled) {
+                    btn.disabled = true;
+                    btn.classList.add('select-consequences-btn-expired');
+                    btn.textContent = game.i18n.localize('COGWHEEL.Consequences.SelectButton') + 
+                                     ` (${game.i18n.localize('COGWHEEL.Consequences.Expired')})`;
+                  }
+                  delete window.cogwheelSyndicate.consequenceButtonTimers[selectBtnId];
+                  delete window.cogwheelSyndicate.activeConsequenceButtons[selectBtnId];
+                }, 120000);
+                
+                // Zapisz timer i dane przycisku
+                window.cogwheelSyndicate.consequenceButtonTimers[selectBtnId] = consequenceTimer;
+                window.cogwheelSyndicate.activeConsequenceButtons[selectBtnId] = {
+                  actorId: actor.id,
+                  consequenceCount: count,
+                  timestamp: currentRollTimestamp
+                };
+                
                 consequencesMessage = `<div class="consequence-message">
                   <i class="fas fa-exclamation-triangle"></i>
                   <span class="consequence-count">${count}</span> ${word}${trauma}
@@ -571,11 +604,17 @@ export async function performAttributeRoll(actor, attribute) {
                 timestamp: currentRollTimestamp
               };
               
+              // Znajdź ID przycisku konsekwencji z tego samego rzutu (jeśli istnieje)
+              const consequenceBtnMatch = consequencesMessage.match(/id="(select-consequences-[^"]+)"/);
+              const consequenceBtnId = consequenceBtnMatch ? consequenceBtnMatch[1] : "";
+              
               upgradeButton = `
                 <button class="success-upgrade-button" id="${buttonId}" 
                         data-actor-id="${actor.id}" 
                         data-result-type="${resultType}"
                         data-tested-attribute="${attribute}"
+                        data-position="${position}"
+                        data-consequence-button-id="${consequenceBtnId}"
                         data-user-id="${game.user.id}">
                   ${game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton")}
                 </button>
@@ -1229,6 +1268,8 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
     const actorId = this.dataset.actorId;
     const resultType = this.dataset.resultType;
     const testedAttribute = this.dataset.testedAttribute;
+    const position = this.dataset.position;
+    const consequenceButtonId = this.dataset.consequenceButtonId;
     const authorUserId = this.dataset.userId;
     
     // Sprawdzenie uprawnień użytkownika
@@ -1258,8 +1299,8 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
       return;
     }
     
-    // Wywołanie funkcji podnoszenia sukcesu z informacją o testowanym atrybucie
-    await upgradeSuccessLevel(actor, resultType, testedAttribute);
+    // Wywołanie funkcji podnoszenia sukcesu z informacją o testowanym atrybucie, pozycji i przycisku konsekwencji
+    await upgradeSuccessLevel(actor, resultType, testedAttribute, position, consequenceButtonId);
     
     // Wyłączenie przycisku po użyciu i usunięcie z rejestru aktualnych przycisków
     this.disabled = true;

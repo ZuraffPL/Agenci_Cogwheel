@@ -443,6 +443,8 @@
   "COGWHEEL.Consequences.ToggleTooltip": "Kliknij aby aktywować/dezaktywować tę konsekwencję",
   "COGWHEEL.Consequences.Active": "Aktywna",
   "COGWHEEL.Consequences.Inactive": "Nieaktywna",
+  "COGWHEEL.Consequences.Outdated": "Przestarzałe",
+  "COGWHEEL.Consequences.Expired": "Wygasło",
   "pdfjs-editor-highlight-button": "Zakreślacz",
   "pdfjs-editor-highlight-button-label": "Zaznacz tekst kolorem"
 }

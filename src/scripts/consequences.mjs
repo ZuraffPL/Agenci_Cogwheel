@@ -3,6 +3,11 @@
  * Handles calculation and display of consequences based on position and test result
  */
 
+// Initialize consequence button timers system
+window.cogwheelSyndicate = window.cogwheelSyndicate || {};
+window.cogwheelSyndicate.consequenceButtonTimers = window.cogwheelSyndicate.consequenceButtonTimers || {};
+window.cogwheelSyndicate.activeConsequenceButtons = window.cogwheelSyndicate.activeConsequenceButtons || {};
+
 /**
  * Position types for tests
  */
@@ -138,6 +143,95 @@ export function determineResultType(successes, isCriticalFailure) {
 
   // Full success (4-5) or critical (6+) - no consequences
   return null;
+}
+
+/**
+ * Disable old consequence button and clear its timer
+ * @param {string} buttonId - ID of the button to disable
+ */
+export function disableOldConsequenceButton(buttonId) {
+  const button = document.getElementById(buttonId);
+  if (button && button.classList.contains('select-consequences-btn')) {
+    button.disabled = true;
+    button.classList.add('select-consequences-btn-outdated');
+    button.textContent = game.i18n.localize('COGWHEEL.Consequences.SelectButton') + 
+                        ` (${game.i18n.localize('COGWHEEL.Consequences.Outdated')})`;
+    
+    // Clear timer if exists
+    const timer = window.cogwheelSyndicate.consequenceButtonTimers[buttonId];
+    if (timer) {
+      clearTimeout(timer);
+      delete window.cogwheelSyndicate.consequenceButtonTimers[buttonId];
+    }
+    
+    // Remove from active buttons
+    delete window.cogwheelSyndicate.activeConsequenceButtons[buttonId];
+  }
+}
+
+/**
+ * Calculate consequence count for given position and result type
+ * @param {string} position - Position (controlled, risky, desperate)
+ * @param {string} resultType - Result type (SuccessWithCost, FailureWithConsequence, FullSuccess, AutoCriticalSuccess, AutoCriticalFailure)
+ * @returns {number} Number of consequences
+ */
+export function calculateConsequenceCount(position, resultType) {
+  const consequencesTable = {
+    'controlled': { 'SuccessWithCost': 1, 'FailureWithConsequence': 2, 'AutoCriticalFailure': 3 },
+    'risky': { 'SuccessWithCost': 2, 'FailureWithConsequence': 3, 'AutoCriticalFailure': 4 },
+    'desperate': { 'SuccessWithCost': 3, 'FailureWithConsequence': 4, 'AutoCriticalFailure': 4 }
+  };
+  
+  return consequencesTable[position]?.[resultType] || 0;
+}
+
+/**
+ * Create consequence button HTML with timer
+ * @param {Actor} actor - The actor
+ * @param {number} consequenceCount - Number of consequences to select
+ * @param {string} oldButtonId - ID of old button to disable (optional)
+ * @returns {Object} Object with html and buttonId
+ */
+export function createConsequenceButton(actor, consequenceCount, oldButtonId = null) {
+  const timestamp = Date.now();
+  const buttonId = `select-consequences-${timestamp}-${Math.random().toString(36).substr(2, 9)}`;
+  
+  // Disable old button if provided
+  if (oldButtonId) {
+    disableOldConsequenceButton(oldButtonId);
+  }
+  
+  // Set 120 second timer (120000 ms)
+  const timer = setTimeout(() => {
+    const button = document.getElementById(buttonId);
+    if (button && !button.disabled) {
+      button.disabled = true;
+      button.classList.add('select-consequences-btn-expired');
+      button.textContent = game.i18n.localize('COGWHEEL.Consequences.SelectButton') + 
+                          ` (${game.i18n.localize('COGWHEEL.Consequences.Expired')})`;
+    }
+    delete window.cogwheelSyndicate.consequenceButtonTimers[buttonId];
+    delete window.cogwheelSyndicate.activeConsequenceButtons[buttonId];
+  }, 120000);
+  
+  // Save timer
+  window.cogwheelSyndicate.consequenceButtonTimers[buttonId] = timer;
+  window.cogwheelSyndicate.activeConsequenceButtons[buttonId] = {
+    actorId: actor.id,
+    consequenceCount: consequenceCount,
+    timestamp: timestamp
+  };
+  
+  return {
+    html: `<button class="select-consequences-btn" 
+            id="${buttonId}"
+            data-actor-id="${actor.id}" 
+            data-consequence-count="${consequenceCount}"
+            data-message-id="">
+      ${game.i18n.localize('COGWHEEL.Consequences.SelectButton')}
+    </button>`,
+    buttonId: buttonId
+  };
 }
 
 /**

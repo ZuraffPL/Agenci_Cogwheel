@@ -443,6 +443,8 @@
   "COGWHEEL.Consequences.ToggleTooltip": "Click to activate/deactivate this consequence",
   "COGWHEEL.Consequences.Active": "Active",
   "COGWHEEL.Consequences.Inactive": "Inactive",
+  "COGWHEEL.Consequences.Outdated": "Outdated",
+  "COGWHEEL.Consequences.Expired": "Expired",
   "pdfjs-editor-highlight-button": "Highlighter",
   "pdfjs-editor-highlight-button-label": "Highlight text with color"
 }
