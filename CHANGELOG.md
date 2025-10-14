@@ -11,6 +11,32 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+### Added | Dodano
+- **Reject Consequence for Stress Points System** | **System Odrzucania Konsekwencji za Punkty Stresu**
+  - Added "Spend SP to reject 1 consequence" button in consequence selection dialog | Dodano przycisk "Wydaj PS, by odrzucić 1 konsekwencję" w oknie wyboru konsekwencji
+  - Position-based stress costs: Controlled (1 SP), Risky (2 SP), Desperate (3 SP) | Koszty stresu zależne od pozycji: Kontrolowana (1 PS), Ryzykowna (2 PS), Desperacka (3 PS)
+  - Reduces consequence count by 1 when confirmed (e.g., 4 → 3 consequences) | Zmniejsza liczbę konsekwencji o 1 po potwierdzeniu (np. 4 → 3 konsekwencje)
+  - Automatic trauma handling when stress exceeds maximum | Automatyczna obsługa traumy gdy stres przekracza maksimum
+  - Button disabled when only 1 consequence remains (minimum selection) | Przycisk wyłączony gdy pozostaje tylko 1 konsekwencja (minimum wyboru)
+  - Confirmation dialog shows exact stress cost and position name | Dialog potwierdzenia pokazuje dokładny koszt stresu i nazwę pozycji
+  - Purple-themed button styling matching trauma/stress system colors | Fioletowa stylistyka przycisku pasująca do kolorów systemu traumy/stresu
+
+### Changed | Zmieniono
+- **Consequence Selection Dialog Enhancements** | **Ulepszenia Dialogu Wyboru Konsekwencji**
+  - Dialog now tracks dynamic consequence count (can be reduced via rejection) | Dialog śledzi dynamiczną liczbę konsekwencji (może być zmniejszona przez odrzucenie)
+  - Selection counter updates in real-time when consequences are rejected | Licznik wyboru aktualizuje się w czasie rzeczywistym gdy konsekwencje są odrzucane
+  - Confirmation validation uses current count instead of original count | Walidacja potwierdzenia używa aktualnej liczby zamiast oryginalnej
+
+### Technical | Techniczne
+- **Reject Consequence System Implementation** | **Implementacja Systemu Odrzucania Konsekwencji**
+  - Added `rejectConsequenceForStress(actor, stressCost, position)` function in consequences.mjs | Dodano funkcję `rejectConsequenceForStress(actor, stressCost, position)` w consequences.mjs
+  - Function handles stress increase, trauma calculation, and chat message creation | Funkcja obsługuje zwiększanie stresu, kalkulację traumy i tworzenie wiadomości czatu
+  - Button event handler updates dialog UI dynamically after successful rejection | Handler przycisku aktualizuje UI dialogu dynamicznie po udanym odrzuceniu
+  - Added position data attribute to consequence selection buttons (`data-position`) | Dodano atrybut danych pozycji do przycisków wyboru konsekwencji (`data-position`)
+  - `showConsequencesSelectionDialog()` now accepts position parameter | `showConsequencesSelectionDialog()` przyjmuje teraz parametr position
+  - Added translations: `COGWHEEL.Consequences.Reject*` and `COGWHEEL.Consequences.Position*` keys | Dodano tłumaczenia: klucze `COGWHEEL.Consequences.Reject*` i `COGWHEEL.Consequences.Position*`
+  - Added CSS styles: `.reject-consequence-btn` and `.reject-consequence-info` | Dodano style CSS: `.reject-consequence-btn` i `.reject-consequence-info`
+
 ## [0.9.20] - 2025-10-14
 
 ### Added | Dodano

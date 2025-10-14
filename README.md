@@ -2,12 +2,12 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.9.20**
+**Current System Version: 0.9.21**
 
 ## ⚠️ Important Version Notice | Ważne Informacje o Wersji
 
 ### Foundry VTT v13+ (Current/Latest)
-- **Version 0.9.20**: Requires Foundry VTT v13.348 or higher
+- **Version 0.9.21**: Requires Foundry VTT v13.348 or higher
 - **Full native DOM API compatibility** - no jQuery dependencies
 - **Latest features and optimizations**
 
@@ -23,6 +23,17 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 *A game about secret agents who fight threats of the industrial revolution era.*
 
 ## 🔥 Latest Features
+
+### 💜 Reject Consequence for Stress Points (v0.9.21)
+- **💰 Position-Based Cost**: Spend Stress Points to reject consequences
+  - Controlled: 1 SP | Ryzykowna: 2 SP | Desperacka: 3 SP
+- **🔘 Purple Button**: "Spend SP to reject 1 consequence" in selection dialog
+- **📉 Dynamic Reduction**: Reduces consequence count by 1 (e.g., 4 → 3 consequences)
+- **⚠️ Trauma Handling**: Automatic trauma calculation when stress exceeds maximum
+- **🚫 Smart Disabling**: Button disabled when only 1 consequence remains
+- **📋 Confirmation Dialog**: Shows exact stress cost and position name before spending
+- **💬 Chat Messages**: Announces rejection with stress cost and trauma warnings
+- **🎨 Steampunk Styling**: Purple gradient matching trauma/stress system colors
 
 ### ⏱️ Dynamic Consequence Buttons with Auto-Expiration (v0.9.20)
 - **⏲️ 120-Second Lifetime**: All consequence buttons automatically expire after 2 minutes

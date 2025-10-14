@@ -537,6 +537,7 @@ export async function performAttributeRoll(actor, attribute) {
                         id="${selectBtnId}"
                         data-actor-id="${actor.id}" 
                         data-consequence-count="${count}"
+                        data-position="${position}"
                         data-message-id="">
                   ${game.i18n.localize('COGWHEEL.Consequences.SelectButton')}
                 </button>`;
@@ -1389,12 +1390,15 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
         return;
       }
       
+      const position = this.dataset.position || 'risky';
+      
       // Open consequence selection dialog (from consequences module)
       await game.cogwheelSyndicate.consequences.showConsequencesSelectionDialog(
         actor, 
         consequenceCount, 
         messageId, 
-        this
+        this,
+        position
       );
     });
   });

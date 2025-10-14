@@ -248,6 +248,84 @@
   opacity: 0.6;
 }
 
+/* Reject Consequence Button (Spend Stress Points) */
+.reject-consequence-btn {
+  /* Purple-themed gradient for stress/trauma association */
+  background: linear-gradient(135deg, #8e44ad, #6c3483);
+  
+  /* Golden border matching other buttons */
+  border: 2px solid #d4af37;
+  border-radius: 6px;
+  
+  /* Spacing */
+  padding: 8px 16px;
+  margin-top: 8px;
+  margin-left: 8px;
+  
+  /* Typography */
+  font-family: 'Modesto Condensed', 'Palatino Linotype', serif;
+  font-size: 1em;
+  font-weight: bold;
+  color: #d4af37;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  
+  /* Shadow and effects */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  
+  /* Cursor */
+  cursor: pointer;
+  
+  /* Smooth transitions */
+  transition: all 0.2s ease;
+}
+
+.reject-consequence-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #a569bd, #7d3c98);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+  transform: translateY(-2px);
+}
+
+.reject-consequence-btn:disabled {
+  background: linear-gradient(135deg, #555, #444);
+  border-color: #777;
+  color: #999;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Reject Consequence Info Dialog */
+.reject-consequence-info {
+  /* Steampunk gradient background */
+  background: linear-gradient(135deg, 
+    rgba(70, 70, 80, 0.85) 0%, 
+    rgba(50, 50, 60, 0.85) 100%
+  );
+  
+  /* Copper border */
+  border: 2px solid #cd7f32;
+  border-radius: 8px;
+  
+  /* Spacing */
+  padding: 14px 18px;
+  margin: 10px 0;
+  
+  /* Typography */
+  font-family: 'Modesto Condensed', 'Palatino Linotype', serif;
+  font-size: 1.2em;
+  color: #d4af37;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+  
+  /* Shadow effects */
+  box-shadow: 
+    0 4px 10px rgba(0, 0, 0, 0.7), 
+    inset 0 1px 3px rgba(205, 127, 50, 0.3);
+}
+
+.reject-consequence-info strong {
+  color: #8e44ad;
+  text-shadow: 0 0 8px rgba(142, 68, 173, 0.7);
+}
+
 /* Selected Consequences Message */
 .selected-consequences-message {
   /* Steel/coal gradient background */

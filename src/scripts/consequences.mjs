@@ -235,18 +235,109 @@ export function createConsequenceButton(actor, consequenceCount, oldButtonId = n
 }
 
 /**
+ * Reject a consequence by spending Stress Points
+ * @param {Actor} actor - The actor rejecting consequence
+ * @param {number} stressCost - Cost in Stress Points
+ * @param {string} position - Fictional position name (for message)
+ * @returns {Promise<boolean>} True if successful, false if failed
+ */
+async function rejectConsequenceForStress(actor, stressCost, position) {
+  const currentStress = actor.system.resources.stress.value || 0;
+  const maxStress = actor.system.resources.stress.max || 12;
+  const currentTrauma = actor.system.resources.trauma.value || 0;
+  const maxTrauma = actor.system.resources.trauma.max || 4;
+  
+  // Calculate new stress value
+  const newStressValue = currentStress + stressCost;
+  
+  // Check if trauma will occur
+  if (newStressValue > maxStress) {
+    // Check if max trauma reached
+    if (currentTrauma >= maxTrauma) {
+      ui.notifications.error(game.i18n.localize('COGSYNDICATE.MaxTraumaReached'));
+      return false;
+    }
+    
+    // Calculate excess stress that becomes new stress after trauma
+    const excessStress = newStressValue - maxStress;
+    const newTraumaValue = currentTrauma + 1;
+    
+    // Update with trauma
+    await actor.update({
+      "system.resources.stress.value": excessStress,
+      "system.resources.trauma.value": newTraumaValue
+    });
+    
+    // Create chat message with trauma warning
+    await ChatMessage.create({
+      content: `
+        <div class="selected-consequences-message">
+          <p>
+            <span class="agent-name" style="color: #3498db; font-weight: bold;">${actor.name}</span> 
+            ${game.i18n.format('COGWHEEL.Consequences.RejectSuccess', { 
+              agentName: '',
+              cost: stressCost 
+            })}
+          </p>
+          <p style="color: #8e44ad; font-weight: bold; margin-top: 8px;">
+            <i class="fas fa-skull" style="margin-right: 6px;"></i>
+            ${game.i18n.localize('COGSYNDICATE.TraumaReceived')}
+          </p>
+        </div>
+      `,
+      speaker: { actor: actor.id }
+    });
+  } else {
+    // Normal stress increase without trauma
+    await actor.update({
+      "system.resources.stress.value": newStressValue
+    });
+    
+    // Create chat message
+    await ChatMessage.create({
+      content: `
+        <div class="selected-consequences-message">
+          <p>
+            <span class="agent-name" style="color: #3498db; font-weight: bold;">${actor.name}</span> 
+            ${game.i18n.format('COGWHEEL.Consequences.RejectSuccess', { 
+              agentName: '',
+              cost: stressCost 
+            })}
+          </p>
+        </div>
+      `,
+      speaker: { actor: actor.id }
+    });
+  }
+  
+  return true;
+}
+
+/**
  * Show consequence selection dialog with 10 consequence types
  * @param {Actor} actor - The actor selecting consequences
  * @param {number} consequenceCount - Number of consequences to select (1-4)
  * @param {string} messageId - Chat message ID to update
  * @param {HTMLButtonElement} button - The button that was clicked
+ * @param {string} position - Fictional position (controlled, risky, desperate)
  */
-export async function showConsequencesSelectionDialog(actor, consequenceCount, messageId, button) {
+export async function showConsequencesSelectionDialog(actor, consequenceCount, messageId, button, position = 'risky') {
   // Check if current user is GM
   const isGM = game.user.isGM;
   
   // Get active consequences state from settings
   let activeConsequences = game.settings.get("cogwheel-syndicate", "activeConsequences");
+  
+  // Calculate stress cost for rejecting a consequence based on position
+  const stressCostMap = {
+    'controlled': 1,
+    'risky': 2,
+    'desperate': 3
+  };
+  const stressCost = stressCostMap[position] || 2;
+  
+  // Track current consequence count (can be reduced by rejecting)
+  let currentConsequenceCount = consequenceCount;
   
   // 10 consequence types
   const consequenceTypes = [
@@ -301,14 +392,20 @@ export async function showConsequencesSelectionDialog(actor, consequenceCount, m
             </div>
           ` : ''}
           <p style="margin-bottom: 12px; font-weight: bold; color: #d4af37;">
-            ${game.i18n.format('COGWHEEL.Consequences.SelectUpTo', { count: consequenceCount })}
+            ${game.i18n.format('COGWHEEL.Consequences.SelectUpTo', { count: currentConsequenceCount })}
           </p>
           <div style="max-height: 400px; overflow-y: auto; padding: 5px;">
             ${checkboxesHtml}
           </div>
           <p id="selection-counter" style="margin-top: 10px; font-weight: bold; color: #3498db;">
-            ${game.i18n.localize('COGSYNDICATE.Selected')}: 0 / ${consequenceCount}
+            ${game.i18n.localize('COGSYNDICATE.Selected')}: 0 / ${currentConsequenceCount}
           </p>
+          <div style="margin-top: 12px; text-align: center;">
+            <button type="button" id="reject-consequence-btn" class="reject-consequence-btn" ${currentConsequenceCount <= 1 ? 'disabled' : ''}>
+              <i class="fas fa-heart-broken" style="margin-right: 6px;"></i>
+              ${game.i18n.localize('COGWHEEL.Consequences.RejectButton')}
+            </button>
+          </div>
         </div>
       </form>
     `;
@@ -420,12 +517,12 @@ export async function showConsequencesSelectionDialog(actor, consequenceCount, m
         
         // Update counter
         if (counter) {
-          counter.textContent = `${game.i18n.localize('COGSYNDICATE.Selected')}: ${checkedCount} / ${consequenceCount}`;
+          counter.textContent = `${game.i18n.localize('COGSYNDICATE.Selected')}: ${checkedCount} / ${currentConsequenceCount}`;
           
           // Change color based on selection
-          if (checkedCount === consequenceCount) {
+          if (checkedCount === currentConsequenceCount) {
             counter.style.color = '#27ae60'; // Green when complete
-          } else if (checkedCount > consequenceCount) {
+          } else if (checkedCount > currentConsequenceCount) {
             counter.style.color = '#e74c3c'; // Red when over limit
           } else {
             counter.style.color = '#3498db'; // Blue when under limit
@@ -433,7 +530,7 @@ export async function showConsequencesSelectionDialog(actor, consequenceCount, m
         }
         
         // Disable other checkboxes if limit reached (only for active ones)
-        if (checkedCount >= consequenceCount) {
+        if (checkedCount >= currentConsequenceCount) {
           checkboxes.forEach(cb => {
             if (!cb.checked && !cb.disabled) {
               cb.disabled = true;
@@ -452,6 +549,88 @@ export async function showConsequencesSelectionDialog(actor, consequenceCount, m
         }
       });
     });
+    
+    // Handle "Reject Consequence" button
+    const rejectBtn = form.querySelector('#reject-consequence-btn');
+    if (rejectBtn) {
+      rejectBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        
+        // Check if can reject more
+        if (currentConsequenceCount <= 1) {
+          ui.notifications.warn(game.i18n.localize('COGWHEEL.Consequences.RejectNoneLeft'));
+          return;
+        }
+        
+        // Get position name for display
+        const positionNames = {
+          'controlled': game.i18n.localize('COGWHEEL.Consequences.PositionControlled'),
+          'risky': game.i18n.localize('COGWHEEL.Consequences.PositionRisky'),
+          'desperate': game.i18n.localize('COGWHEEL.Consequences.PositionDesperate')
+        };
+        const positionName = positionNames[position] || position;
+        
+        // Show confirmation dialog
+        const confirmed = await foundry.applications.api.DialogV2.confirm({
+          window: {
+            title: game.i18n.localize('COGWHEEL.Consequences.RejectTitle'),
+            icon: "fas fa-heart-broken"
+          },
+          content: `
+            <div class="reject-consequence-info">
+              <p>${game.i18n.format('COGWHEEL.Consequences.RejectPrompt', {
+                cost: stressCost,
+                position: positionName
+              })}</p>
+            </div>
+          `,
+          rejectClose: false,
+          modal: true
+        });
+        
+        if (confirmed) {
+          // Try to reject consequence
+          const success = await rejectConsequenceForStress(actor, stressCost, positionName);
+          
+          if (success) {
+            // Reduce consequence count
+            currentConsequenceCount -= 1;
+            
+            // Update counter text
+            if (counter) {
+              const checkedCount = form.querySelectorAll('.consequence-checkbox:checked').length;
+              counter.textContent = `${game.i18n.localize('COGSYNDICATE.Selected')}: ${checkedCount} / ${currentConsequenceCount}`;
+              
+              // Update color
+              if (checkedCount === currentConsequenceCount) {
+                counter.style.color = '#27ae60';
+              } else if (checkedCount > currentConsequenceCount) {
+                counter.style.color = '#e74c3c';
+              } else {
+                counter.style.color = '#3498db';
+              }
+            }
+            
+            // Update instruction text
+            const instructionText = form.querySelector('p[style*="color: #d4af37"]');
+            if (instructionText) {
+              instructionText.textContent = game.i18n.format('COGWHEEL.Consequences.SelectUpTo', { count: currentConsequenceCount });
+            }
+            
+            // Disable button if no more consequences can be rejected
+            if (currentConsequenceCount <= 1) {
+              rejectBtn.disabled = true;
+            }
+            
+            // Trigger checkbox change to re-validate selection
+            const firstCheckbox = form.querySelector('.consequence-checkbox');
+            if (firstCheckbox) {
+              firstCheckbox.dispatchEvent(new Event('change'));
+            }
+          }
+        }
+      });
+    }
   };
 
   try {
@@ -486,10 +665,10 @@ export async function showConsequencesSelectionDialog(actor, consequenceCount, m
             const form = element.querySelector('form');
             const checkboxes = form.querySelectorAll('input[name="consequence"]:checked');
             
-            // Validate selection count
-            if (checkboxes.length !== consequenceCount) {
+            // Validate selection count (use current count, not original)
+            if (checkboxes.length !== currentConsequenceCount) {
               ui.notifications.warn(
-                game.i18n.format('COGWHEEL.Consequences.MustSelect', { count: consequenceCount })
+                game.i18n.format('COGWHEEL.Consequences.MustSelect', { count: currentConsequenceCount })
               );
               return false; // Return false to prevent closing
             }

@@ -445,6 +445,15 @@
   "COGWHEEL.Consequences.Inactive": "Nieaktywna",
   "COGWHEEL.Consequences.Outdated": "Przestarzałe",
   "COGWHEEL.Consequences.Expired": "Wygasło",
+  "COGWHEEL.Consequences.RejectButton": "Wydaj PS, by odrzucić 1 konsekwencję",
+  "COGWHEEL.Consequences.RejectTitle": "Odrzuć konsekwencję za Punkty Stresu",
+  "COGWHEEL.Consequences.RejectPrompt": "Czy chcesz wydać <strong>{cost} Punktów Stresu</strong>, aby odrzucić 1 konsekwencję z pozycji <strong>{position}</strong>?",
+  "COGWHEEL.Consequences.RejectSuccess": "{agentName} wydał(a) {cost} PS i odrzucił(a) 1 konsekwencję",
+  "COGWHEEL.Consequences.RejectInsufficient": "Niewystarczająca ilość Punktów Stresu! Potrzebujesz {cost} PS, masz {current} PS.",
+  "COGWHEEL.Consequences.RejectNoneLeft": "Nie możesz odrzucić więcej konsekwencji - musisz wybrać przynajmniej 1.",
+  "COGWHEEL.Consequences.PositionControlled": "kontrolowanej",
+  "COGWHEEL.Consequences.PositionRisky": "ryzykownej",
+  "COGWHEEL.Consequences.PositionDesperate": "desperackiej",
   "pdfjs-editor-highlight-button": "Zakreślacz",
   "pdfjs-editor-highlight-button-label": "Zaznacz tekst kolorem"
 }

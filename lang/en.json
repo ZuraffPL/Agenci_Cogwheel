@@ -445,6 +445,15 @@
   "COGWHEEL.Consequences.Inactive": "Inactive",
   "COGWHEEL.Consequences.Outdated": "Outdated",
   "COGWHEEL.Consequences.Expired": "Expired",
+  "COGWHEEL.Consequences.RejectButton": "Spend SP to reject 1 consequence",
+  "COGWHEEL.Consequences.RejectTitle": "Reject Consequence for Stress Points",
+  "COGWHEEL.Consequences.RejectPrompt": "Do you want to spend <strong>{cost} Stress Points</strong> to reject 1 consequence from <strong>{position}</strong> position?",
+  "COGWHEEL.Consequences.RejectSuccess": "{agentName} spent {cost} SP and rejected 1 consequence",
+  "COGWHEEL.Consequences.RejectInsufficient": "Insufficient Stress Points! You need {cost} SP, you have {current} SP.",
+  "COGWHEEL.Consequences.RejectNoneLeft": "Cannot reject more consequences - you must select at least 1.",
+  "COGWHEEL.Consequences.PositionControlled": "controlled",
+  "COGWHEEL.Consequences.PositionRisky": "risky",
+  "COGWHEEL.Consequences.PositionDesperate": "desperate",
   "pdfjs-editor-highlight-button": "Highlighter",
   "pdfjs-editor-highlight-button-label": "Highlight text with color"
 }
