@@ -508,27 +508,6 @@ export async function performAttributeRoll(actor, attribute) {
                 // Generate unique button ID for consequence selection
                 const selectBtnId = `select-consequences-${currentRollTimestamp}-${Math.random().toString(36).substr(2, 9)}`;
                 
-                // Inicjalizuj timer dla przycisku konsekwencji (120 sekund)
-                const consequenceTimer = setTimeout(() => {
-                  const btn = document.getElementById(selectBtnId);
-                  if (btn && !btn.disabled) {
-                    btn.disabled = true;
-                    btn.classList.add('select-consequences-btn-expired');
-                    btn.textContent = game.i18n.localize('COGWHEEL.Consequences.SelectButton') + 
-                                     ` (${game.i18n.localize('COGWHEEL.Consequences.Expired')})`;
-                  }
-                  delete window.cogwheelSyndicate.consequenceButtonTimers[selectBtnId];
-                  delete window.cogwheelSyndicate.activeConsequenceButtons[selectBtnId];
-                }, 120000);
-                
-                // Zapisz timer i dane przycisku
-                window.cogwheelSyndicate.consequenceButtonTimers[selectBtnId] = consequenceTimer;
-                window.cogwheelSyndicate.activeConsequenceButtons[selectBtnId] = {
-                  actorId: actor.id,
-                  consequenceCount: count,
-                  timestamp: currentRollTimestamp
-                };
-                
                 consequencesMessage = `<div class="consequence-message">
                   <i class="fas fa-exclamation-triangle"></i>
                   <span class="consequence-count">${count}</span> ${word}${trauma}
@@ -1258,6 +1237,50 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
       button.classList.add('disabled-for-user');
       button.setAttribute('title', game.i18n.localize("COGSYNDICATE.RerollButtonNoPermission"));
     }
+  });
+
+  // Inicjalizacja timerów dla przycisków konsekwencji (120 sekund)
+  html.querySelectorAll('.select-consequences-btn').forEach(function(button) {
+    const buttonId = button.getAttribute('id');
+    const messageTimestamp = message.timestamp || Date.now();
+    const currentTime = Date.now();
+    const timeElapsed = currentTime - messageTimestamp;
+    const timeRemaining = 120000 - timeElapsed; // 120 sekund = 120000 ms
+    
+    // Jeśli przycisk już ma timer, nie inicjalizuj ponownie
+    if (window.cogwheelSyndicate.consequenceButtonTimers[buttonId]) {
+      return;
+    }
+    
+    // Jeśli czas już minął, oznacz przycisk jako wygasły
+    if (timeRemaining <= 0) {
+      button.disabled = true;
+      button.classList.add('select-consequences-btn-expired');
+      button.textContent = game.i18n.localize('COGWHEEL.Consequences.SelectButton') + 
+                          ` (${game.i18n.localize('COGWHEEL.Consequences.Expired')})`;
+      return;
+    }
+    
+    // Ustaw timer na pozostały czas
+    const timer = setTimeout(() => {
+      const btn = document.getElementById(buttonId);
+      if (btn && !btn.disabled) {
+        btn.disabled = true;
+        btn.classList.add('select-consequences-btn-expired');
+        btn.textContent = game.i18n.localize('COGWHEEL.Consequences.SelectButton') + 
+                         ` (${game.i18n.localize('COGWHEEL.Consequences.Expired')})`;
+      }
+      delete window.cogwheelSyndicate.consequenceButtonTimers[buttonId];
+      delete window.cogwheelSyndicate.activeConsequenceButtons[buttonId];
+    }, timeRemaining);
+    
+    // Zapisz timer
+    window.cogwheelSyndicate.consequenceButtonTimers[buttonId] = timer;
+    window.cogwheelSyndicate.activeConsequenceButtons[buttonId] = {
+      actorId: button.dataset.actorId,
+      consequenceCount: parseInt(button.dataset.consequenceCount),
+      timestamp: messageTimestamp
+    };
   });
 
   // Obsługa przycisków podnoszenia sukcesu
