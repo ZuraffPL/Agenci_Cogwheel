@@ -322,8 +322,9 @@
 }
 
 .reject-consequence-info strong {
-  color: #8e44ad;
-  text-shadow: 0 0 8px rgba(142, 68, 173, 0.7);
+  /* Golden color for better visibility on gray background */
+  color: #f39c12;
+  text-shadow: 0 0 8px rgba(243, 156, 18, 0.7);
 }
 
 /* Selected Consequences Message */
