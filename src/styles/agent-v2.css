@@ -8,7 +8,8 @@
   border-radius: 15px;
   min-width: 790px; /* Zwiększona szerokość dla obrażeń */
   width: 790px;
-  min-height: 1100px;
+  max-height: 95vh; /* Responsive max height based on viewport */
+  height: auto; /* Auto height to fit content */
   box-shadow: 
     0 0 20px rgba(205, 127, 50, 0.3),
     inset 0 2px 10px rgba(0, 0, 0, 0.3);
@@ -42,6 +43,34 @@
 .agentv2 .sheet-body {
   background: linear-gradient(135deg, rgba(44, 24, 16, 0.3) 0%, rgba(74, 50, 29, 0.2) 100%);
   border-radius: 0 0 12px 12px;
+  padding: 15px;
+  max-height: calc(100vh - 150px); /* Responsive max height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  padding-right: 10px; /* Space for scrollbar */
+}
+
+/* Custom steampunk scrollbar for Agent v2 sheet body */
+.agentv2.sheet.actor .sheet-body::-webkit-scrollbar {
+  width: 12px;
+}
+
+.agentv2.sheet.actor .sheet-body::-webkit-scrollbar-track {
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #4a321d 100%);
+  border-radius: 6px;
+  border: 1px solid #8b4513;
+}
+
+.agentv2.sheet.actor .sheet-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #8b4513 0%, #cd7f32 50%, #8b4513 100%);
+  border-radius: 6px;
+  border: 1px solid #cd7f32;
+  box-shadow: 0 2px 4px rgba(205, 127, 50, 0.3);
+}
+
+.agentv2.sheet.actor .sheet-body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #cd7f32 0%, #e8a057 50%, #cd7f32 100%);
+  box-shadow: 0 3px 6px rgba(205, 127, 50, 0.5);
 }
 
 /* Steampunk Tabs */
