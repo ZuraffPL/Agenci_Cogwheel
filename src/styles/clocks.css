@@ -118,6 +118,31 @@
   margin-top: 15px;
   position: relative;
   z-index: 1;
+  max-height: calc(100vh - 250px); /* Maksymalna wysokość z marginesem na nagłówek i przyciski */
+  overflow-y: auto; /* Włącz przewijanie pionowe */
+  overflow-x: hidden; /* Wyłącz przewijanie poziome */
+  padding-right: 5px; /* Odstęp dla scrollbara */
+}
+
+/* Stylizacja scrollbara dla steampunkowego wyglądu */
+.doom-clocks .clocks-list::-webkit-scrollbar {
+  width: 12px;
+}
+
+.doom-clocks .clocks-list::-webkit-scrollbar-track {
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #2c1810 100%);
+  border-radius: 6px;
+  border: 1px solid #8B4513;
+}
+
+.doom-clocks .clocks-list::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #8B4513 0%, #cd7f32 50%, #8B4513 100%);
+  border-radius: 6px;
+  border: 1px solid #5a3a1a;
+}
+
+.doom-clocks .clocks-list::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #cd7f32 0%, #e8a057 50%, #cd7f32 100%);
 }
 
 /* Ukrywanie nieaktywnych kategorii zegarów */
