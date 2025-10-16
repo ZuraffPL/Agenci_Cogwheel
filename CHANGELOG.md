@@ -11,6 +11,20 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.22] - 2025-10-16
+
+### Added | Dodano
+- Responsive scrolling dla kart Agent v1 i v2
+- Scrollbar dla dialogu zegarów postępu (5+ zegarów)
+
+### Fixed | Naprawiono
+- Timery przycisków konsekwencji teraz działają po odświeżeniu strony
+- Poprawiona czytelność tekstu w dialogu odrzucania konsekwencji
+- Karty agentów dostosowują się do różnych rozdzielczości ekranów
+- Dialog zegarów nie rozciąga się poza ekran przy wielu zegarach
+
+
+
 ### Added | Dodano
 - **Reject Consequence for Stress Points System** | **System Odrzucania Konsekwencji za Punkty Stresu**
   - Added "Spend SP to reject 1 consequence" button in consequence selection dialog | Dodano przycisk "Wydaj PS, by odrzucić 1 konsekwencję" w oknie wyboru konsekwencji
@@ -535,5 +549,6 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - **Bug Fixes**: Fixed various issues with clock persistence and display | **Naprawy Błędów**: Naprawiono różne problemy z trwałością i wyświetlaniem zegarów
 - **Stability**: Improved overall system stability and error handling | **Stabilność**: Poprawiono ogólną stabilność systemu i obsługę błędów
+
 
 

@@ -2,7 +2,7 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.9.21**
+**Current System Version: 0.9.22**
 
 ## ⚠️ Important Version Notice | Ważne Informacje o Wersji
 
@@ -690,6 +690,7 @@ If you encounter any issues or have questions about this system, please:
 ---
 
 **Note**: This system is designed for the Agenci Cogwheel RPG. Make sure you have access to the game rules to fully utilize this system.
+
 
 
 

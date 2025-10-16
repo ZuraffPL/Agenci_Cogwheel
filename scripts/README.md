@@ -124,3 +124,4 @@ Skrypty używają emoji i kategoryzacji:
 - Wszystkie zmiany są commitowane w jednym przebiegu
 - Dokumentacja jest automatycznie formatowana zgodnie ze standardem
 - Bezpieczne obsługiwanie istniejących tagów w releasach
+
