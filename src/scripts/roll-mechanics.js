@@ -443,17 +443,17 @@ export async function performAttributeRoll(actor, attribute) {
             const counts = {};
             diceResults.forEach(die => counts[die] = (counts[die] || 0) + 1);
 
-            if (counts[11] >= 2) {
+            if (counts[1] >= 2) {
               result = `<span style='color: red; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.AutoCriticalFailure")}</span>`;
               resultType = "AutoCriticalFailure";
-              nemesisPoints += Math.min(counts[11], 4); // Naliczamy punkty proporcjonalnie do liczby 11 (max 4)
+              nemesisPoints += Math.min(counts[1], 4); // Naliczamy punkty proporcjonalnie do liczby 1 (max 4)
             } else if (counts[12] >= 2) {
               result = `<span style='color: green; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.AutoCriticalSuccess")}</span>`;
               resultType = "AutoCriticalSuccess";
               steamPoints += Math.min(counts[12], 4); // Naliczamy punkty proporcjonalnie do liczby 12 (max 4)
             } else {
               diceResults.forEach(die => {
-                if (die === 11) nemesisPoints += 1;
+                if (die === 1) nemesisPoints += 1;
                 if (die === 12) steamPoints += 1;
               });
 

@@ -11,6 +11,12 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+### Changed | Zmieniono
+- **Dice Mechanics Update** | **Aktualizacja Mechaniki Kości**
+  - Rolling a **1** now generates Nemesis Points (instead of 11) | Wyrzucenie **1** teraz generuje Punkty Nemezis (zamiast 11)
+  - **Double 1s** trigger critical failure (instead of double 11s) | **Dublet 1** wywołuje krytyczną porażkę (zamiast dubletu 11)
+  - Double 12s still trigger critical success | Dublet 12 nadal wywołuje krytyczny sukces
+
 ## [0.9.22] - 2025-10-16
 
 ### Added | Dodano

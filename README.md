@@ -468,7 +468,8 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 - **Steam Die**: Spend 1 stress for +1d12 (max once per roll)
 - **Devil's Bargain**: Spend 2 Nemesis Points for +1d12 (mutual exclusive with Steam Die)
 - **Reroll**: Spend 3PP to reroll with bonus dice included for free
-- **Critical Results**: Double 11s and 12s for critical success, double 1s for critical failure
+- **Critical Results**: Double 12s for critical success, double 1s for critical failure
+- **Nemesis Points**: Rolling a 1 generates Nemesis Points for the GM
 
 ### Character Development
 - **Archetypes**: Pre-built character templates with balanced attribute distributions
