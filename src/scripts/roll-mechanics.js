@@ -1022,8 +1022,7 @@ async function executeRollWithData(actor, data, isReroll = false) {
     }
   }
   
-  // Generate consequences message if applicable (comment out for now)
-  /*
+  // Generate consequences message if applicable
   let consequencesMessage = "";
   
   // Map position strings
@@ -1077,7 +1076,6 @@ async function executeRollWithData(actor, data, isReroll = false) {
       }
     }
   }
-  */
 
   // Apply Steam Booster effect if applicable
   let steamBoosterMessage = "";
