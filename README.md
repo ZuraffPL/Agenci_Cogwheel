@@ -2,12 +2,12 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.9.22**
+**Current System Version: 0.9.23**
 
 ## ⚠️ Important Version Notice | Ważne Informacje o Wersji
 
 ### Foundry VTT v13+ (Current/Latest)
-- **Version 0.9.21**: Requires Foundry VTT v13.348 or higher
+- **Version 0.9.23**: Requires Foundry VTT v13.348 or higher
 - **Full native DOM API compatibility** - no jQuery dependencies
 - **Latest features and optimizations**
 
@@ -23,6 +23,12 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 *A game about secret agents who fight threats of the industrial revolution era.*
 
 ## 🔥 Latest Features
+
+### 🎲 Dice Mechanics Update (v0.9.23)
+- **⚠️ BREAKING CHANGE**: Rolling **1s** now generate Nemesis Points (instead of 11s)
+- **💀 Critical Failure**: Double 1s trigger critical failure (instead of double 11s)
+- **⭐ Critical Success**: Double 12s still trigger critical success (unchanged)
+- Makes the game more challenging as 1s are more common than 11s
 
 ### 💜 Reject Consequence for Stress Points (v0.9.21)
 - **💰 Position-Based Cost**: Spend Stress Points to reject consequences

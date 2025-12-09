@@ -11,11 +11,26 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.23] - 2025-12-09
+
 ### Changed | Zmieniono
 - **Dice Mechanics Update** | **Aktualizacja Mechaniki Kości**
   - Rolling a **1** now generates Nemesis Points (instead of 11) | Wyrzucenie **1** teraz generuje Punkty Nemezis (zamiast 11)
   - **Double 1s** trigger critical failure (instead of double 11s) | **Dublet 1** wywołuje krytyczną porażkę (zamiast dubletu 11)
   - Double 12s still trigger critical success | Dublet 12 nadal wywołuje krytyczny sukces
+- **License Update** | **Aktualizacja Licencji**
+  - Changed from MIT to Creative Commons Attribution 4.0 International (CC BY 4.0) | Zmieniono z MIT na Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+### Fixed | Naprawiono
+- **Foundry VTT Compatibility** | **Kompatybilność z Foundry VTT**
+  - Fixed deprecation warnings for ActorSheet and ItemSheet | Naprawiono ostrzeżenia deprecjacji dla ActorSheet i ItemSheet
+  - All sheets now use foundry.appv1 namespace | Wszystkie arkusze używają teraz przestrzeni nazw foundry.appv1
+- **Reroll Functionality** | **Funkcjonalność Ponownego Rzutu**
+  - Fixed ReferenceError: consequencesMessage is not defined | Naprawiono błąd ReferenceError: consequencesMessage is not defined
+  - Reroll now works correctly with consequence messages | Ponowny rzut działa teraz poprawnie z komunikatami konsekwencji
+- **Code Cleanup** | **Porządki w Kodzie**
+  - Removed redundant chat log debug code from init.js | Usunięto redundantny kod debugowy czatu z init.js
+  - Cleaner console output without spam | Czystsza konsola bez spamu
 
 ## [0.9.22] - 2025-10-16
 
