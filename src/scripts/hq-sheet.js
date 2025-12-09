@@ -1,14 +1,7 @@
 import { registerHandlebarsHelpers } from "./handlebars.mjs";
 
-// Foundry v13 compatibility - use same pattern as chlopcy-rpg
-const BaseActorSheet =
-  typeof foundry?.appv1?.sheets?.ActorSheet !== "undefined"
-    ? foundry.appv1.sheets.ActorSheet
-    : ActorSheet;
-
-console.log("Cogwheel HQ: Selected BaseActorSheet:", BaseActorSheet.name);
-
-class CogwheelHQSheet extends BaseActorSheet {
+// Use foundry.appv1 namespace to avoid deprecation warnings
+class CogwheelHQSheet extends foundry.appv1.sheets.ActorSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/cogwheel-syndicate/src/templates/hq-sheet.hbs",

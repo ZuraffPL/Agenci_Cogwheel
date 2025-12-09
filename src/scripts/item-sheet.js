@@ -1,12 +1,5 @@
-// Foundry v13 compatibility - use same pattern as chlopcy-rpg
-const BaseItemSheet =
-  typeof foundry?.appv1?.sheets?.ItemSheet !== "undefined"
-    ? foundry.appv1.sheets.ItemSheet
-    : ItemSheet;
-
-console.log("Cogwheel Archetype: Selected BaseItemSheet:", BaseItemSheet.name);
-
-class CogwheelArchetypeSheet extends BaseItemSheet {
+// Use foundry.appv1 namespace to avoid deprecation warnings
+class CogwheelArchetypeSheet extends foundry.appv1.sheets.ItemSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/cogwheel-syndicate/src/templates/archetype-sheet.hbs",
@@ -49,7 +42,7 @@ class CogwheelArchetypeSheet extends BaseItemSheet {
   }
 }
 
-class CogwheelFeatSheet extends BaseItemSheet {
+class CogwheelFeatSheet extends foundry.appv1.sheets.ItemSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/cogwheel-syndicate/src/templates/feat-sheet.hbs",

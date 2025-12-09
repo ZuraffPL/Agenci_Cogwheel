@@ -3,15 +3,8 @@ import { ActorGearFunctions } from './shared/actor-gear-functions.js';
 import { ActorStressFunctions } from './shared/actor-stress-functions.js';
 import { ActorEquipmentFunctions } from './shared/actor-equipment-functions.js';
 
-// Foundry v13 compatibility - use same pattern as chlopcy-rpg
-const BaseActorSheet =
-  typeof foundry?.appv1?.sheets?.ActorSheet !== "undefined"
-    ? foundry.appv1.sheets.ActorSheet
-    : ActorSheet;
-
-console.log("Cogwheel: Selected BaseActorSheet:", BaseActorSheet.name);
-
-class CogwheelActorSheet extends BaseActorSheet {
+// Use foundry.appv1 namespace to avoid deprecation warnings
+class CogwheelActorSheet extends foundry.appv1.sheets.ActorSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/cogwheel-syndicate/src/templates/actor-sheet.hbs",

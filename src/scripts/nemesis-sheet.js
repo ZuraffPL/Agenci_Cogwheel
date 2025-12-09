@@ -1,12 +1,5 @@
-// Foundry v13 compatibility - use same pattern as chlopcy-rpg
-const BaseActorSheet =
-  typeof foundry?.appv1?.sheets?.ActorSheet !== "undefined"
-    ? foundry.appv1.sheets.ActorSheet
-    : ActorSheet;
-
-console.log("Cogwheel Nemesis: Selected BaseActorSheet:", BaseActorSheet.name);
-
-class CogwheelNemesisSheet extends BaseActorSheet {
+// Use foundry.appv1 namespace to avoid deprecation warnings
+class CogwheelNemesisSheet extends foundry.appv1.sheets.ActorSheet {
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/cogwheel-syndicate/src/templates/nemesis-sheet.hbs",
