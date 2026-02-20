@@ -11,6 +11,36 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.24] - 2026-02-20
+
+### Changed | Zmieniono
+- **Roll Dialog Labels** | **Etykiety Dialogu Rzutu**
+  - "Wydaj 2 Stresu..." → "Dodaj kość stresu (2 punkty stresu)" | "Spend 2 Stress..." → "Add stress die (2 stress points)"
+  - "Wydaj 2 Punkty Pary..." → "Dodaj kość pary (2 punkty pary)" | "Spend 2 Steam..." → "Add steam die (2 steam points)"
+  - "Czarci Targ - Dodaj 2 Punkty Nemezis..." → "Dodaj kość Czarciego Targu (2 punkty nemezis)" | "Devil's Bargain..." → "Add Devil's Bargain die (2 nemesis points)"
+
+### Fixed | Naprawiono
+- **Foundry VTT V13 ApplicationV2 Migration** | **Migracja do ApplicationV2 w Foundry VTT V13**
+  - `CogwheelActorSheetV2` — pełna migracja: `HandlebarsApplicationMixin(ActorSheetV2)`, `DEFAULT_OPTIONS`, `PARTS`, `tabGroups`, `_prepareContext`, `_onRender` | Full migration to V2 framework
+  - `CogwheelNemesisSheet` — pełna migracja do `ActorSheetV2` | Full migration to V2 framework
+  - `ActorEquipmentFunctions` — `new Dialog` → `DialogV2.wait`, `Dialog.confirm` → `DialogV2.confirm`, `renderTemplate` → `foundry.applications.handlebars.renderTemplate`
+  - `ActorStressFunctions` — `new Dialog` → `DialogV2.wait/confirm`, usunięto `parentDialog.close()`
+  - Rejestracja arkuszy: `Actors.registerSheet` → `foundry.documents.collections.Actors.registerSheet`
+  - `renderTemplate` → `foundry.applications.handlebars.renderTemplate` we wszystkich plikach
+- **Tab Navigation** | **Nawigacja Zakładek**
+  - Dodano `data-action="tab"` i `data-group="primary"` do linków nawigacyjnych w `actor-sheetv2.hbs` i `nemesis-sheet.hbs`
+  - Zastąpiono `DEFAULT_OPTIONS.tabs` przez `static tabGroups` (V2 API)
+  - Przywracanie aktywnej zakładki po re-renderze przez `Object.entries(this.tabGroups)` w `_onRender`
+- **Dialog Templates** | **Szablony Dialogów**
+  - `equipment-dialog.hbs`, `add-trauma-dialog.hbs`, `add-minion-dialog.hbs` — `<form>` → `<div>` (uniknięcie zagnieżdżonych formularzy w DialogV2)
+- **Radio Button Styling** | **Stylizacja Pól Radio**
+  - Naprawiono niewidoczne pola radio w ekranie obrażeń (agent-v2.css) i dialogu Wydaj Stres (spend-stress.css)
+  - Dodano `position: relative !important`, `display: inline-block !important`, `opacity: 1 !important` dla przywrócenia widoczności nadpisanej przez Foundry V13
+- **Equipment Status Checkbox** | **Checkbox Statusu Ekwipunku**
+  - Naprawiono `TypeError: Cannot read properties of null (reading 'closest')` — `event.currentTarget` przechwytywane przed `await`
+- **Nemesis Sheet CSS** | **CSS Karty Nemezis**
+  - Naprawiono kolor etykiet formularza: `#333333` → `#c8a96e` (czytelny na ciemnym tle ApplicationV2)
+
 ## [0.9.23] - 2025-12-09
 
 ### Changed | Zmieniono

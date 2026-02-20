@@ -40,30 +40,29 @@ export class ActorStressFunctions {
         templateData
       );
 
-      const dialog = new Dialog({
-        title: game.i18n.localize("COGSYNDICATE.SpendStressTitle"),
+      await foundry.applications.api.DialogV2.wait({
+        window: { title: game.i18n.localize("COGSYNDICATE.SpendStressTitle"), classes: ["cogsyndicate", "spend-stress-dialog"] },
         content: dialogContent,
-        buttons: {
-          cancel: {
+        rejectClose: false,
+        position: { width: 450 },
+        buttons: [
+          {
+            action: "cancel",
             label: game.i18n.localize("COGSYNDICATE.Cancel"),
-            callback: () => {}
+            callback: () => null
           },
-          confirm: {
+          {
+            action: "confirm",
             label: game.i18n.localize("COGSYNDICATE.Confirm"),
-            callback: async (html) => {
+            default: true,
+            callback: async (event, button) => {
               return await ActorStressFunctions._processStressSpending(
-                actor, sheet, html, dialog, { validateStressCost, formatMessage, onSuccess, onError, onTraumaWarning }
+                actor, sheet, button.form, { validateStressCost, formatMessage, onSuccess, onError, onTraumaWarning }
               );
             }
           }
-        },
-        default: "confirm",
-        width: 450,
-        classes: ["cogsyndicate", "dialog", "spend-stress-dialog"],
-        close: () => {}
+        ]
       });
-
-      dialog.render(true);
 
     } catch (error) {
       console.error("Error in handleSpendStress:", error);
@@ -79,10 +78,10 @@ export class ActorStressFunctions {
    * Internal method to process stress spending
    * @private
    */
-  static async _processStressSpending(actor, sheet, html, parentDialog, options = {}) {
+  static async _processStressSpending(actor, sheet, form, options = {}) {
     const { validateStressCost, formatMessage, onSuccess, onError, onTraumaWarning } = options;
     
-    const selectedOption = html[0].querySelector('input[name="stressAction"]:checked');
+    const selectedOption = form.querySelector('input[name="stressAction"]:checked');
     
     if (!selectedOption) {
       ActorStressFunctions._showErrorDialog(
@@ -130,7 +129,6 @@ export class ActorStressFunctions {
       await ActorStressFunctions._executeStressAction(
         actor, sheet, stressAction, stressCost, steamBonus, maxStress, true, { formatMessage, onSuccess }
       );
-      parentDialog.close();
       return true;
     }
 
@@ -138,7 +136,6 @@ export class ActorStressFunctions {
     await ActorStressFunctions._executeStressAction(
       actor, sheet, stressAction, stressCost, steamBonus, maxStress, false, { formatMessage, onSuccess }
     );
-    parentDialog.close();
     return true;
   }
 
@@ -234,22 +231,12 @@ export class ActorStressFunctions {
    * @private
    */
   static async _showTraumaWarning(actor) {
-    return new Promise((resolve) => {
-      new Dialog({
-        title: game.i18n.localize("COGSYNDICATE.TraumaWarning"),
-        content: `<p style="text-align: center; font-size: 16px; margin-bottom: 15px;">${game.i18n.format("COGSYNDICATE.TraumaMessage", {agentName: actor.name})}</p>`,
-        buttons: {
-          cancel: {
-            label: game.i18n.localize("COGSYNDICATE.Cancel"),
-            callback: () => resolve(false)
-          },
-          confirm: {
-            label: game.i18n.localize("COGSYNDICATE.Confirm"),
-            callback: () => resolve(true)
-          }
-        },
-        default: "confirm"
-      }).render(true);
+    return foundry.applications.api.DialogV2.confirm({
+      window: { title: game.i18n.localize("COGSYNDICATE.TraumaWarning") },
+      content: `<p style="text-align: center; font-size: 16px; margin-bottom: 15px;">${game.i18n.format("COGSYNDICATE.TraumaMessage", {agentName: actor.name})}</p>`,
+      yes: { label: game.i18n.localize("COGSYNDICATE.Confirm"), default: true },
+      no: { label: game.i18n.localize("COGSYNDICATE.Cancel") },
+      rejectClose: false
     });
   }
 
@@ -258,17 +245,12 @@ export class ActorStressFunctions {
    * @private
    */
   static _showErrorDialog(message) {
-    new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.Error"),
+    foundry.applications.api.DialogV2.wait({
+      window: { title: game.i18n.localize("COGSYNDICATE.Error") },
       content: `<p style="color: red; font-weight: bold; text-align: center; font-size: 16px;">${message}</p>`,
-      buttons: {
-        ok: {
-          label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          callback: () => {}
-        }
-      },
-      default: "ok"
-    }).render(true);
+      rejectClose: false,
+      buttons: [{ action: "ok", label: game.i18n.localize("COGSYNDICATE.Confirm"), default: true, callback: () => null }]
+    });
   }
 
   /**

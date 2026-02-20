@@ -2,13 +2,13 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.9.23**
+**Current System Version: 0.9.24**
 
 ## ⚠️ Important Version Notice | Ważne Informacje o Wersji
 
 ### Foundry VTT v13+ (Current/Latest)
-- **Version 0.9.23**: Requires Foundry VTT v13.348 or higher
-- **Full native DOM API compatibility** - no jQuery dependencies
+- **Version 0.9.24**: Requires Foundry VTT v13.348 or higher
+- **Full ApplicationV2 framework** — no V1 deprecation warnings
 - **Latest features and optimizations**
 
 ### Foundry VTT v12 (Legacy Support)
@@ -23,6 +23,14 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 *A game about secret agents who fight threats of the industrial revolution era.*
 
 ## 🔥 Latest Features
+
+### ⚙️ ApplicationV2 Full Migration (v0.9.24)
+- **🔧 Zero V1 Warnings**: All sheets and dialogs fully migrated to Foundry VTT ApplicationV2 framework
+- **📋 ActorSheetV2**: `CogwheelActorSheetV2` and `CogwheelNemesisSheet` use `HandlebarsApplicationMixin(ActorSheetV2)`
+- **💬 DialogV2**: All `new Dialog` replaced with `DialogV2.wait` / `DialogV2.confirm` across all modules
+- **🗂️ Tab Fix**: Tab navigation restored after re-renders via `static tabGroups` and `_onRender` sync
+- **🔘 Radio Fix**: Radio buttons visible again in damage track and Spend Stress dialog (Foundry V13 override fix)
+- **🎲 Cleaner Labels**: Roll dialog options now show concise labels (e.g. "Dodaj kość stresu (2 punkty stresu)")
 
 ### 🎲 Dice Mechanics Update (v0.9.23)
 - **⚠️ BREAKING CHANGE**: Rolling **1s** now generate Nemesis Points (instead of 11s)

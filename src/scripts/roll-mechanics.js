@@ -160,7 +160,7 @@ export async function performAttributeRoll(actor, attribute) {
   }[attribute];
 
   const dialogContent = `
-    <form class="roll-dialog">
+    <div class="roll-dialog">
       <div class="form-group">
         <p><strong><span class="roll-label">${game.i18n.localize("COGSYNDICATE.Roll2d12")}</span> <span class="attribute-name">${attrLabel}</span>: <span class="attribute-value">${baseEffectiveAttrValue}</span></strong></p>
       </div>
@@ -212,27 +212,31 @@ export async function performAttributeRoll(actor, attribute) {
           <option value="5">+5</option>
         </select>
       </div>
-    </form>
+    </div>
   `;
 
-  return new Promise((resolve) => {
-    const dialog = new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.RollAttribute"),
-      content: dialogContent,
-      buttons: {
-        cancel: {
-          label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => resolve()
-        },
-        roll: {
-          label: game.i18n.localize("COGSYNDICATE.Roll2d12"),
-          callback: async (html) => {
-            const position = html[0].querySelector('[name="position"]').value;
-            const useStressDie = html[0].querySelector('[name="stressDie"]').checked;
-            const useSteamDie = html[0].querySelector('[name="steamDie"]').checked;
-            const useDevilDie = html[0].querySelector('[name="devilDie"]').checked;
-            const applyTrauma = html[0].querySelector('[name="applyTrauma"]').checked;
-            const rollModifier = parseInt(html[0].querySelector('[name="rollModifier"]').value, 10) || 0;
+  await foundry.applications.api.DialogV2.wait({
+    window: { title: game.i18n.localize("COGSYNDICATE.RollAttribute"), classes: ["cogwheel-roll-dialog"] },
+    content: dialogContent,
+    rejectClose: false,
+    buttons: [
+      {
+        action: "cancel",
+        label: game.i18n.localize("COGSYNDICATE.Cancel"),
+        callback: () => null
+      },
+      {
+        action: "roll",
+        label: game.i18n.localize("COGSYNDICATE.Roll2d12"),
+        default: true,
+        callback: async (event, button, dlg) => {
+          const form = button.form;
+          const position = form.querySelector('[name="position"]').value;
+          const useStressDie = form.querySelector('[name="stressDie"]').checked;
+          const useSteamDie = form.querySelector('[name="steamDie"]').checked;
+          const useDevilDie = form.querySelector('[name="devilDie"]').checked;
+          const applyTrauma = form.querySelector('[name="applyTrauma"]').checked;
+          const rollModifier = parseInt(form.querySelector('[name="rollModifier"]').value, 10) || 0;
             const positionModifiers = { desperate: -3, risky: 0, controlled: 3 };
             const positionModifier = positionModifiers[position];
             const positionLabel = {
@@ -263,26 +267,15 @@ export async function performAttributeRoll(actor, attribute) {
               stressIncrease = 2;
 
               if (currentStress + stressIncrease >= maxStress) {
-                const traumaDialog = await new Promise((traumaResolve) => {
-                  new Dialog({
-                    title: game.i18n.localize("COGSYNDICATE.TraumaWarning"),
-                    content: `<p>${game.i18n.format("COGSYNDICATE.TraumaMessage", { agentName: actor.name })}</p>`,
-                    buttons: {
-                      cancel: {
-                        label: game.i18n.localize("COGSYNDICATE.Cancel"),
-                        callback: () => traumaResolve(false)
-                      },
-                      confirm: {
-                        label: game.i18n.localize("COGSYNDICATE.Confirm"),
-                        callback: () => traumaResolve(true)
-                      }
-                    },
-                    default: "confirm"
-                  }).render(true);
+                const traumaDialog = await foundry.applications.api.DialogV2.confirm({
+                  window: { title: game.i18n.localize("COGSYNDICATE.TraumaWarning") },
+                  content: `<p>${game.i18n.format("COGSYNDICATE.TraumaMessage", { agentName: actor.name })}</p>`,
+                  yes: { label: game.i18n.localize("COGSYNDICATE.Confirm"), default: true },
+                  no: { label: game.i18n.localize("COGSYNDICATE.Cancel") },
+                  rejectClose: false
                 });
 
                 if (!traumaDialog) {
-                  resolve();
                   return;
                 }
                 traumaDialogMessage = `<p>${game.i18n.localize("COGSYNDICATE.TraumaReceived")}</p>`;
@@ -299,13 +292,7 @@ export async function performAttributeRoll(actor, attribute) {
                     content: `<p>${maxTraumaMessage}</p>`,
                     speaker: { actor: actor.id }
                   });
-                  new Dialog({
-                    title: "Maximum Trauma",
-                    content: `<p>${maxTraumaMessage}</p>`,
-                    buttons: {
-                      ok: { label: "OK" }
-                    }
-                  }).render(true);
+                  await foundry.applications.api.DialogV2.wait({ window: { title: "Maximum Trauma" }, content: `<p>${maxTraumaMessage}</p>`, rejectClose: false, buttons: [{ action: "ok", label: "OK", default: true, callback: () => null }] });
                 }
                 resetStress = true;
               } else {
@@ -316,39 +303,26 @@ export async function performAttributeRoll(actor, attribute) {
             }
 
             if (useSteamDie) {
-              const steamDialog = await new Promise((steamResolve) => {
-                new Dialog({
-                  title: game.i18n.localize("COGSYNDICATE.SteamDieConfirmTitle"),
-                  content: `<p>${game.i18n.localize("COGSYNDICATE.SteamDieLabel")}</p>`,
-                  buttons: {
-                    cancel: {
-                      label: game.i18n.localize("COGSYNDICATE.Cancel"),
-                      callback: () => steamResolve(false)
-                    },
-                    confirm: {
-                      label: game.i18n.localize("COGSYNDICATE.Confirm"),
-                      callback: () => steamResolve(true)
-                    }
-                  },
-                  default: "confirm"
-                }).render(true);
+              const steamDialog = await foundry.applications.api.DialogV2.confirm({
+                window: { title: game.i18n.localize("COGSYNDICATE.SteamDieConfirmTitle") },
+                content: `<p>${game.i18n.localize("COGSYNDICATE.SteamDieLabel")}</p>`,
+                yes: { label: game.i18n.localize("COGSYNDICATE.Confirm"), default: true },
+                no: { label: game.i18n.localize("COGSYNDICATE.Cancel") },
+                rejectClose: false
               });
 
               if (!steamDialog) {
-                resolve();
                 return;
               }
 
               const currentSteamPoints = game.cogwheelSyndicate.steamPoints || 0;
               if (currentSteamPoints < 2) {
-                await new Dialog({
-                  title: game.i18n.localize("COGSYNDICATE.SteamDieInsufficientTitle"),
+                await foundry.applications.api.DialogV2.wait({
+                  window: { title: game.i18n.localize("COGSYNDICATE.SteamDieInsufficientTitle") },
                   content: `<p><strong style="color: red; font-size: 1.2em;">${game.i18n.localize("COGSYNDICATE.SteamDieInsufficient")}</strong></p>`,
-                  buttons: {
-                    ok: { label: "OK" }
-                  }
-                }).render(true);
-                resolve();
+                  rejectClose: false,
+                  buttons: [{ action: "ok", label: "OK", default: true, callback: () => null }]
+                });
                 return;
               }
 
@@ -655,40 +629,37 @@ export async function performAttributeRoll(actor, attribute) {
               rollMode: "publicroll"
             });
 
-            resolve();
-          }
         }
-      },
-      default: "roll",
-      width: 450,
-      render: html => {
-        // Dodanie logiki wzajemnego wykluczania się checkboxów
-        const steamDieCheckbox = html[0].querySelector('[name="steamDie"]');
-        const devilDieCheckbox = html[0].querySelector('[name="devilDie"]');
-        const steamDieGroup = html[0].querySelector('.steam-die-group');
-        const devilDieGroup = html[0].querySelector('.devil-die-group');
-        
-        steamDieCheckbox.addEventListener('change', function() {
-          if (this.checked) {
-            devilDieCheckbox.checked = false;
-            devilDieGroup.classList.add('disabled-option');
-            steamDieGroup.classList.remove('disabled-option');
-          } else {
-            devilDieGroup.classList.remove('disabled-option');
-          }
-        });
-        
-        devilDieCheckbox.addEventListener('change', function() {
-          if (this.checked) {
-            steamDieCheckbox.checked = false;
-            steamDieGroup.classList.add('disabled-option');
-            devilDieGroup.classList.remove('disabled-option');
-          } else {
-            steamDieGroup.classList.remove('disabled-option');
-          }
-        });
       }
-    }).render(true);
+    ],
+    render: (event, application) => {
+      // Dodanie logiki wzajemnego wykluczania się checkboxów
+      const html = application.element;
+      const steamDieCheckbox = html.querySelector('[name="steamDie"]');
+      const devilDieCheckbox = html.querySelector('[name="devilDie"]');
+      const steamDieGroup = html.querySelector('.steam-die-group');
+      const devilDieGroup = html.querySelector('.devil-die-group');
+
+      steamDieCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+          devilDieCheckbox.checked = false;
+          devilDieGroup.classList.add('disabled-option');
+          steamDieGroup.classList.remove('disabled-option');
+        } else {
+          devilDieGroup.classList.remove('disabled-option');
+        }
+      });
+
+      devilDieCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+          steamDieCheckbox.checked = false;
+          steamDieGroup.classList.add('disabled-option');
+          devilDieGroup.classList.remove('disabled-option');
+        } else {
+          steamDieGroup.classList.remove('disabled-option');
+        }
+      });
+    }
   });
 }
 
@@ -809,22 +780,12 @@ async function executeRollWithData(actor, data, isReroll = false) {
       stressIncrease = 2;
 
       if (currentStress + stressIncrease >= maxStress) {
-        const traumaDialog = await new Promise((traumaResolve) => {
-          new Dialog({
-            title: game.i18n.localize("COGSYNDICATE.TraumaWarning"),
-            content: `<p>${game.i18n.format("COGSYNDICATE.TraumaMessage", { agentName: actor.name })}</p>`,
-            buttons: {
-              cancel: {
-                label: game.i18n.localize("COGSYNDICATE.Cancel"),
-                callback: () => traumaResolve(false)
-              },
-              confirm: {
-                label: game.i18n.localize("COGSYNDICATE.Confirm"),
-                callback: () => traumaResolve(true)
-              }
-            },
-            default: "confirm"
-          }).render(true);
+        const traumaDialog = await foundry.applications.api.DialogV2.confirm({
+          window: { title: game.i18n.localize("COGSYNDICATE.TraumaWarning") },
+          content: `<p>${game.i18n.format("COGSYNDICATE.TraumaMessage", { agentName: actor.name })}</p>`,
+          yes: { label: game.i18n.localize("COGSYNDICATE.Confirm"), default: true },
+          no: { label: game.i18n.localize("COGSYNDICATE.Cancel") },
+          rejectClose: false
         });
 
         if (!traumaDialog) {
@@ -844,13 +805,7 @@ async function executeRollWithData(actor, data, isReroll = false) {
             content: `<p>${maxTraumaMessage}</p>`,
             speaker: { actor: actor.id }
           });
-          new Dialog({
-            title: "Maximum Trauma",
-            content: `<p>${maxTraumaMessage}</p>`,
-            buttons: {
-              ok: { label: "OK" }
-            }
-          }).render(true);
+          await foundry.applications.api.DialogV2.wait({ window: { title: "Maximum Trauma" }, content: `<p>${maxTraumaMessage}</p>`, rejectClose: false, buttons: [{ action: "ok", label: "OK", default: true, callback: () => null }] });
         }
         resetStress = true;
       } else {
@@ -862,22 +817,12 @@ async function executeRollWithData(actor, data, isReroll = false) {
     }
 
     if (useSteamDie) {
-      const steamDialog = await new Promise((steamResolve) => {
-        new Dialog({
-          title: game.i18n.localize("COGSYNDICATE.SteamDieConfirmTitle"),
-          content: `<p>${game.i18n.localize("COGSYNDICATE.SteamDieLabel")}</p>`,
-          buttons: {
-            cancel: {
-              label: game.i18n.localize("COGSYNDICATE.Cancel"),
-              callback: () => steamResolve(false)
-            },
-            confirm: {
-              label: game.i18n.localize("COGSYNDICATE.Confirm"),
-              callback: () => steamResolve(true)
-            }
-          },
-          default: "confirm"
-        }).render(true);
+      const steamDialog = await foundry.applications.api.DialogV2.confirm({
+        window: { title: game.i18n.localize("COGSYNDICATE.SteamDieConfirmTitle") },
+        content: `<p>${game.i18n.localize("COGSYNDICATE.SteamDieLabel")}</p>`,
+        yes: { label: game.i18n.localize("COGSYNDICATE.Confirm"), default: true },
+        no: { label: game.i18n.localize("COGSYNDICATE.Cancel") },
+        rejectClose: false
       });
 
       if (!steamDialog) {
@@ -886,13 +831,12 @@ async function executeRollWithData(actor, data, isReroll = false) {
 
       const currentSteamPoints = game.cogwheelSyndicate.steamPoints || 0;
       if (currentSteamPoints < 2) {
-        await new Dialog({
-          title: game.i18n.localize("COGSYNDICATE.SteamDieInsufficientTitle"),
+        await foundry.applications.api.DialogV2.wait({
+          window: { title: game.i18n.localize("COGSYNDICATE.SteamDieInsufficientTitle") },
           content: `<p><strong style="color: red; font-size: 1.2em;">${game.i18n.localize("COGSYNDICATE.SteamDieInsufficient")}</strong></p>`,
-          buttons: {
-            ok: { label: "OK" }
-          }
-        }).render(true);
+          rejectClose: false,
+          buttons: [{ action: "ok", label: "OK", default: true, callback: () => null }]
+        });
         return;
       }
 

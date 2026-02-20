@@ -26,11 +26,31 @@
   background-color: #3a5631;
 }
 
-/* Style dla okna dialogowego wydawania sprzętu */
-.spend-gear-dialog {
+/* Style dla okna dialogowego wydawania sprzętu - V1 + V2 */
+.spend-gear-dialog,
+.application.spend-gear-dialog .window-content {
   font-family: Arial, sans-serif;
   background-color: #2a2a2a;
   color: #e0e0e0;
+}
+
+/* DialogV2 - zawartość */
+.application.spend-gear-dialog .dialog-content .spend-gear-content {
+  padding: 15px;
+}
+
+/* DialogV2 - przyciski stopki */
+.application.spend-gear-dialog .form-footer button {
+  background-color: #3a3a3a;
+  border: 1px solid #555;
+  color: #e0e0e0;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+.application.spend-gear-dialog .form-footer button:hover {
+  background-color: #4a6741;
+  border-color: #5a7751;
 }
 
 .spend-gear-content {
@@ -52,13 +72,14 @@
 }
 
 .gear-option {
-  display: flex;
-  align-items: center;
+  display: flex !important;
+  align-items: center !important;
   padding: 8px;
   border: 1px solid #555;
   border-radius: 4px;
   background-color: #3a3a3a;
   transition: background-color 0.2s ease;
+  position: relative;
 }
 
 .gear-option:hover {
@@ -66,15 +87,30 @@
 }
 
 .gear-option input[type="radio"] {
-  margin-right: 10px;
+  position: static !important;
+  display: inline-block !important;
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  min-height: 16px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  margin-right: 10px !important;
+  margin-left: 0 !important;
+  flex-shrink: 0 !important;
   accent-color: #4a6741;
+  cursor: pointer;
 }
 
 .gear-option label {
-  flex: 1;
+  flex: 1 !important;
   cursor: pointer;
   color: #e0e0e0;
   font-size: 14px;
+  position: static !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 1.4;
 }
 
 .gear-option input[type="radio"]:checked + label {

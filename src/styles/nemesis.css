@@ -47,7 +47,7 @@
 
 .cogwheel.sheet.actor.nemesis .form-group label {
   width: 180px;
-  color: #333333;
+  color: #c8a96e;
   flex-shrink: 0;
   font-weight: bold;
   padding-top: 5px;
@@ -134,7 +134,7 @@
 }
 
 .cogwheel.sheet.actor.nemesis .clock-goal-form label {
-  color: #333333;
+  color: #c8a96e;
   font-weight: bold;
   font-size: 0.9em;
 }

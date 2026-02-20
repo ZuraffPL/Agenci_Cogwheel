@@ -37,30 +37,28 @@ export class ActorGearFunctions {
         templateData
       );
 
-      const dialog = new Dialog({
-        title: game.i18n.localize("COGSYNDICATE.SpendGearTitle"),
+      await foundry.applications.api.DialogV2.wait({
+        window: { title: game.i18n.localize("COGSYNDICATE.SpendGearTitle"), classes: ["cogsyndicate", "spend-gear-dialog"] },
         content: dialogContent,
-        buttons: {
-          cancel: {
+        rejectClose: false,
+        buttons: [
+          {
+            action: "cancel",
             label: game.i18n.localize("COGSYNDICATE.Cancel"),
-            callback: () => {}
+            callback: () => null
           },
-          confirm: {
+          {
+            action: "confirm",
             label: game.i18n.localize("COGSYNDICATE.Confirm"),
-            callback: async (html) => {
+            default: true,
+            callback: async (event, button) => {
               return await ActorGearFunctions._processGearSpending(
-                actor, sheet, html, { validateGearCost, formatMessage, onSuccess, onError }
+                actor, sheet, button.form, { validateGearCost, formatMessage, onSuccess, onError }
               );
             }
           }
-        },
-        default: "confirm",
-        width: 400,
-        classes: ["cogsyndicate", "dialog", "spend-gear-dialog"],
-        close: () => {}
+        ]
       });
-
-      dialog.render(true);
 
     } catch (error) {
       console.error("Error in handleSpendGear:", error);
@@ -79,20 +77,15 @@ export class ActorGearFunctions {
   static async _processGearSpending(actor, sheet, html, options = {}) {
     const { validateGearCost, formatMessage, onSuccess, onError } = options;
     
-    const selectedOption = html[0].querySelector('input[name="gearType"]:checked');
+    const selectedOption = html.querySelector('input[name="gearType"]:checked');
 
     if (!selectedOption) {
-      new Dialog({
-        title: game.i18n.localize("COGSYNDICATE.Error"),
+      await foundry.applications.api.DialogV2.wait({
+        window: { title: game.i18n.localize("COGSYNDICATE.Error") },
         content: `<p style="color: red; font-weight: bold; text-align: center; font-size: 16px;">${game.i18n.localize("COGSYNDICATE.ErrorNoGearSelected")}</p>`,
-        buttons: {
-          ok: {
-            label: game.i18n.localize("COGSYNDICATE.Confirm"),
-            callback: () => {}
-          }
-        },
-        default: "ok"
-      }).render(true);
+        rejectClose: false,
+        buttons: [{ action: "ok", label: "OK", default: true, callback: () => null }]
+      });
       return false;
     }
 
@@ -196,17 +189,12 @@ export class ActorGearFunctions {
    * @private
    */
   static _showErrorDialog(message) {
-    new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.Error"),
+    foundry.applications.api.DialogV2.wait({
+      window: { title: game.i18n.localize("COGSYNDICATE.Error") },
       content: `<p style="color: red; font-weight: bold; text-align: center; font-size: 16px;">${message}</p>`,
-      buttons: {
-        ok: {
-          label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          callback: () => {}
-        }
-      },
-      default: "ok"
-    }).render(true);
+      rejectClose: false,
+      buttons: [{ action: "ok", label: "OK", default: true, callback: () => null }]
+    });
   }
 
   /**

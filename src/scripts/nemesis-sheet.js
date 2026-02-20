@@ -1,54 +1,62 @@
-// Use foundry.appv1 namespace to avoid deprecation warnings
-class CogwheelNemesisSheet extends foundry.appv1.sheets.ActorSheet {
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      template: "systems/cogwheel-syndicate/src/templates/nemesis-sheet.hbs",
-      classes: ["cogwheel", "sheet", "actor", "nemesis"],
-      width: 700,
-      height: 900,
-      submitOnChange: true,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-content", initial: "main" }]
-    });
-  }
+// Use HandlebarsApplicationMixin + ActorSheetV2 (ApplicationV2 framework)
+class CogwheelNemesisSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2) {
+  static DEFAULT_OPTIONS = {
+    classes: ["cogwheel", "sheet", "actor", "nemesis"],
+    position: { width: 700, height: 900 },
+    window: { resizable: true },
+    form: { submitOnChange: true }
+  };
 
-  getData() {
-    const data = super.getData();
-    data.system = data.actor.system;
+  static PARTS = {
+    main: {
+      template: "systems/cogwheel-syndicate/src/templates/nemesis-sheet.hbs"
+    }
+  };
+
+  static tabGroups = {
+    primary: "main"
+  };
+
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    context.actor = this.actor;
+    context.system = this.actor.system;
 
     // Ustaw domyślny obrazek awatara, jeśli nie wybrano
-    if (!data.actor.img || data.actor.img === "") {
-      data.actor.img = "systems/cogwheel-syndicate/assets/default-nemesis.png";
+    if (!context.actor.img || context.actor.img === "") {
+      await this.actor.update({ img: "systems/cogwheel-syndicate/assets/default-nemesis.png" });
+      context.actor.img = "systems/cogwheel-syndicate/assets/default-nemesis.png";
     }
 
     // Inicjalizacja danych nemezis, jeśli nie istnieją
-    data.system.influenceRange = data.system.influenceRange || "Lokalny";
-    data.system.organizationType = data.system.organizationType || "";
-    data.system.leaderDescription = data.system.leaderDescription || "";
-    data.system.organizationGoal = data.system.organizationGoal || "";
-    data.system.notes = data.system.notes || "";
-    data.system.minions = data.system.minions || [];
+    context.system.influenceRange = context.system.influenceRange || "Lokalny";
+    context.system.organizationType = context.system.organizationType || "";
+    context.system.leaderDescription = context.system.leaderDescription || "";
+    context.system.organizationGoal = context.system.organizationGoal || "";
+    context.system.notes = context.system.notes || "";
+    context.system.minions = context.system.minions || [];
 
     // Inicjalizacja zegarów
-    data.system.clocks = data.system.clocks || {};
-    data.system.clocks.goal = data.system.clocks.goal || { value: 0, max: 8, description: "" };
-    data.system.clocks.weakening = data.system.clocks.weakening || { value: 0, max: 4 };
-    data.system.clocks.revenge = data.system.clocks.revenge || { value: 0, max: 6 };
+    context.system.clocks = context.system.clocks || {};
+    context.system.clocks.goal = context.system.clocks.goal || { value: 0, max: 8, description: "" };
+    context.system.clocks.weakening = context.system.clocks.weakening || { value: 0, max: 4 };
+    context.system.clocks.revenge = context.system.clocks.revenge || { value: 0, max: 6 };
 
     // Oblicz ilość przybocznych na podstawie zasięgu wpływów
-    const minionsCount = this._getMinionsCount(data.system.influenceRange);
-    data.minionsCount = minionsCount;
+    const minionsCount = this._getMinionsCount(context.system.influenceRange);
+    context.minionsCount = minionsCount;
 
     // Aktualizuj rozmiary zegarów na podstawie zasięgu wpływów
-    this._updateClockSizes(data.system);
+    this._updateClockSizes(context.system);
 
     // Opcje zasięgu wpływów
-    data.influenceOptions = [
+    context.influenceOptions = [
       { value: "Lokalny", label: "Lokalny" },
       { value: "Międzynarodowy", label: "Międzynarodowy" },
       { value: "Globalny", label: "Globalny" }
     ];
 
-    return data;
+    return context;
   }
 
   _getMinionsCount(influenceRange) {
@@ -89,17 +97,15 @@ class CogwheelNemesisSheet extends foundry.appv1.sheets.ActorSheet {
     system.clocks.revenge.value = Math.min(system.clocks.revenge.value, system.clocks.revenge.max);
   }
 
-  activateListeners(html) {
-    super.activateListeners(html);
+  _onRender(context, options) {
+    const html = this.element;
 
     // Obsługa zmiany obrazka awatara
-    html[0].querySelector('.profile-img').addEventListener('click', event => {
-      const fp = new FilePicker({
+    html.querySelector('.profile-img')?.addEventListener('click', event => {
+      const fp = new foundry.applications.apps.FilePicker({
         type: "image",
         current: this.actor.img,
-        callback: path => {
-          this.actor.update({ img: path });
-        },
+        callback: path => { this.actor.update({ img: path }); },
         top: this.position.top + 40,
         left: this.position.left + 10
       });
@@ -107,16 +113,23 @@ class CogwheelNemesisSheet extends foundry.appv1.sheets.ActorSheet {
     });
 
     // Obsługa zmiany zasięgu wpływów
-    html[0].querySelector('.influence-range-select').addEventListener('change', this._onInfluenceRangeChange.bind(this));
+    html.querySelector('.influence-range-select')?.addEventListener('change', this._onInfluenceRangeChange.bind(this));
 
     // Obsługa zegarów nemezis
-    html[0].querySelector('.increment-nemesis-clock').addEventListener('click', this._onIncrementNemesisClock.bind(this));
-    html[0].querySelector('.decrement-nemesis-clock').addEventListener('click', this._onDecrementNemesisClock.bind(this));
+    html.querySelectorAll('.increment-nemesis-clock').forEach(el => el.addEventListener('click', this._onIncrementNemesisClock.bind(this)));
+    html.querySelectorAll('.decrement-nemesis-clock').forEach(el => el.addEventListener('click', this._onDecrementNemesisClock.bind(this)));
 
     // Obsługa przybocznych
-    html[0].querySelector('.add-minion-btn').addEventListener('click', this._onAddMinion.bind(this));
-    html[0].querySelectorAll('.edit-minion').forEach(el => el.addEventListener('click', this._onEditMinion.bind(this)));
-    html[0].querySelectorAll('.delete-minion').forEach(el => el.addEventListener('click', this._onDeleteMinion.bind(this)));
+    html.querySelector('.add-minion-btn')?.addEventListener('click', this._onAddMinion.bind(this));
+    html.querySelectorAll('.edit-minion').forEach(el => el.addEventListener('click', this._onEditMinion.bind(this)));
+    html.querySelectorAll('.delete-minion').forEach(el => el.addEventListener('click', this._onDeleteMinion.bind(this)));
+
+    // Przywróć aktywną zakładkę po re-renderze
+    for (const [group, activeTab] of Object.entries(this.tabGroups)) {
+      html.querySelectorAll(`[data-group="${group}"][data-tab]`).forEach(el => {
+        el.classList.toggle('active', el.dataset.tab === activeTab);
+      });
+    }
   }
 
   async _onInfluenceRangeChange(event) {
@@ -171,41 +184,40 @@ class CogwheelNemesisSheet extends foundry.appv1.sheets.ActorSheet {
   async _onAddMinion(event) {
     event.preventDefault();
 
-    const dialogContent = await renderTemplate(
+    const dialogContent = await foundry.applications.handlebars.renderTemplate(
       "systems/cogwheel-syndicate/src/templates/add-minion-dialog.hbs",
       { minion: { name: "", description: "", role: "" } }
     );
 
-    new Dialog({
-      title: "Dodaj Przybocznego",
+    await foundry.applications.api.DialogV2.wait({
+      window: { title: "Dodaj Przybocznego" },
       content: dialogContent,
-      buttons: {
-        cancel: {
+      rejectClose: false,
+      buttons: [
+        {
+          action: "cancel",
           label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => {}
+          callback: () => null
         },
-        add: {
+        {
+          action: "add",
           label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          callback: async (html) => {
-            const name = html[0].querySelector('[name="name"]').value.trim();
-            const description = html[0].querySelector('[name="description"]').value.trim();
-            const role = html[0].querySelector('[name="role"]').value.trim();
+          default: true,
+          callback: async (event, button) => {
+            const form = button.form;
+            const name = form.querySelector('[name="name"]').value.trim();
+            const description = form.querySelector('[name="description"]').value.trim();
+            const role = form.querySelector('[name="role"]').value.trim();
 
-            if (!name) {
-              ui.notifications.warn("Nazwa przybocznego jest wymagana.");
-              return;
-            }
+            if (!name) { ui.notifications.warn("Nazwa przybocznego jest wymagana."); return; }
 
             const currentMinions = foundry.utils.deepClone(this.actor.system.minions) || [];
             currentMinions.push({ name, description, role });
             await this.actor.update({ "system.minions": currentMinions });
-            this.render();
           }
         }
-      },
-      default: "add",
-      width: 400
-    }).render(true);
+      ]
+    });
   }
 
   async _onEditMinion(event) {
@@ -214,40 +226,39 @@ class CogwheelNemesisSheet extends foundry.appv1.sheets.ActorSheet {
     const currentMinions = foundry.utils.deepClone(this.actor.system.minions) || [];
     const minion = currentMinions[index];
 
-    const dialogContent = await renderTemplate(
+    const dialogContent = await foundry.applications.handlebars.renderTemplate(
       "systems/cogwheel-syndicate/src/templates/add-minion-dialog.hbs",
       { minion }
     );
 
-    new Dialog({
-      title: "Edytuj Przybocznego",
+    await foundry.applications.api.DialogV2.wait({
+      window: { title: "Edytuj Przybocznego" },
       content: dialogContent,
-      buttons: {
-        cancel: {
+      rejectClose: false,
+      buttons: [
+        {
+          action: "cancel",
           label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => {}
+          callback: () => null
         },
-        save: {
+        {
+          action: "save",
           label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          callback: async (html) => {
-            const name = html[0].querySelector('[name="name"]').value.trim();
-            const description = html[0].querySelector('[name="description"]').value.trim();
-            const role = html[0].querySelector('[name="role"]').value.trim();
+          default: true,
+          callback: async (event, button) => {
+            const form = button.form;
+            const name = form.querySelector('[name="name"]').value.trim();
+            const description = form.querySelector('[name="description"]').value.trim();
+            const role = form.querySelector('[name="role"]').value.trim();
 
-            if (!name) {
-              ui.notifications.warn("Nazwa przybocznego jest wymagana.");
-              return;
-            }
+            if (!name) { ui.notifications.warn("Nazwa przybocznego jest wymagana."); return; }
 
             currentMinions[index] = { name, description, role };
             await this.actor.update({ "system.minions": currentMinions });
-            this.render();
           }
         }
-      },
-      default: "save",
-      width: 400
-    }).render(true);
+      ]
+    });
   }
 
   async _onDeleteMinion(event) {
@@ -256,7 +267,6 @@ class CogwheelNemesisSheet extends foundry.appv1.sheets.ActorSheet {
     const currentMinions = foundry.utils.deepClone(this.actor.system.minions) || [];
     currentMinions.splice(index, 1);
     await this.actor.update({ "system.minions": currentMinions });
-    this.render();
   }
 
   async _onCreate(data, options, userId) {
@@ -274,18 +284,8 @@ class CogwheelNemesisSheet extends foundry.appv1.sheets.ActorSheet {
   }
 }
 
-// Foundry v13 compatibility for registration - use same pattern as chlopcy-rpg
-const CHLOPCYCONFIG_NEMESIS = {
-  Actors: typeof foundry?.documents?.collections?.Actors !== "undefined" 
-    ? foundry.documents.collections.Actors 
-    : Actors,
-  ActorSheet: typeof foundry?.appv1?.sheets?.ActorSheet !== "undefined"
-    ? foundry.appv1.sheets.ActorSheet
-    : ActorSheet
-};
-
-// Rejestracja arkusza z kompatybilnością
-CHLOPCYCONFIG_NEMESIS.Actors.registerSheet("cogwheel-syndicate", CogwheelNemesisSheet, {
+// Rejestracja arkusza (ApplicationV2)
+foundry.documents.collections.Actors.registerSheet("cogwheel-syndicate", CogwheelNemesisSheet, {
   types: ["nemesis"],
   makeDefault: true,
   label: "Cogwheel Nemesis Sheet"

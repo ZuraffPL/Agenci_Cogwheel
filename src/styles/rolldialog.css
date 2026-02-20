@@ -3,7 +3,9 @@
 /* Główne tło okna rzutu - kolorystyka z sekcji archetyp */
 .roll-dialog, 
 .dialog.cogwheel-roll-dialog,
-.window-app.dialog.cogwheel-roll-dialog .window-content {
+.window-app.dialog.cogwheel-roll-dialog .window-content,
+.application.dialog.cogwheel-roll-dialog .window-content,
+.application.cogwheel-roll-dialog .dialog-content .roll-dialog {
   background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #4a321d 100%) !important;
   border: 2px solid #b8860b !important;
   border-radius: 12px !important;
@@ -14,7 +16,8 @@
 
 .roll-dialog::before, 
 .dialog.cogwheel-roll-dialog::before,
-.window-app.dialog.cogwheel-roll-dialog .window-content::before {
+.window-app.dialog.cogwheel-roll-dialog .window-content::before,
+.application.dialog.cogwheel-roll-dialog .window-content::before {
   content: '';
   position: absolute;
   top: 0;
@@ -281,3 +284,34 @@
 }
 
 /* Możesz dodać tu kolejne style dla innych elementów okna rzutu */
+
+/* ============================================================
+   DialogV2 (ApplicationV2) - dodatkowe selektory dla v13
+   ============================================================ */
+
+/* Ciemne tło całego .window-content */
+.application.cogwheel-roll-dialog .window-content {
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #4a321d 100%) !important;
+  padding: 0 !important;
+}
+
+/* Rozciągnięcie .roll-dialog na całą szerokość */
+.application.cogwheel-roll-dialog .dialog-content .roll-dialog {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5em;
+}
+
+/* Przyciski w stopce DialogV2 */
+.application.cogwheel-roll-dialog .form-footer button {
+  background: linear-gradient(135deg, #3d2817, #5c3d1e) !important;
+  border: 2px solid #cd7f32 !important;
+  color: #f4a460 !important;
+  font-weight: bold !important;
+  border-radius: 6px !important;
+}
+
+.application.cogwheel-roll-dialog .form-footer button:hover {
+  background: linear-gradient(135deg, #5c3d1e, #7a5230) !important;
+  box-shadow: 0 0 8px rgba(205, 127, 50, 0.6) !important;
+}

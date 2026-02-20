@@ -460,11 +460,14 @@
 }
 
 .agentv2 .damage-radio-item input[type="radio"] {
-  margin: 0;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  order: 1;
+  margin: 0 !important;
+  width: 24px !important;
+  height: 24px !important;
+  cursor: pointer !important;
+  order: 1 !important;
+  position: relative !important;
+  display: inline-block !important;
+  opacity: 1 !important;
 }
 
 .agentv2 .damage-radio-item label {
@@ -954,37 +957,52 @@
 }
 
 .damage-radio-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 0 1px;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 4px !important;
+  margin: 0 1px !important;
 }
 
 .damage-radio-item input[type="radio"] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #000;
-  border-radius: 50%;
-  outline: none;
-  cursor: pointer;
-  position: relative;
-  background: #fff;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
+  min-height: 24px !important;
+  border: 2px solid #555 !important;
+  border-radius: 50% !important;
+  outline: none !important;
+  cursor: pointer !important;
+  position: relative !important;
+  display: inline-block !important;
+  opacity: 1 !important;
+  flex-shrink: 0 !important;
+  background: radial-gradient(circle, #3a3a3a 0%, #1a1a1a 100%) !important;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.3) !important;
+  vertical-align: middle !important;
+  margin: 0 !important;
+}
+
+.damage-radio-item input[type="radio"]:checked {
+  border-color: #d4a843 !important;
+  background: radial-gradient(circle, #8b6914 0%, #3d2800 100%) !important;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 0 8px rgba(212,168,67,0.6) !important;
 }
 
 .damage-radio-item input[type="radio"]:checked::before {
   content: '';
-  display: block;
-  width: 8px;
-  height: 8px;
-  background: #000 !important;
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  display: block !important;
+  width: 10px !important;
+  height: 10px !important;
+  background: #d4a843 !important;
+  border-radius: 50% !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
 }
 
 .damage-radio-item label {

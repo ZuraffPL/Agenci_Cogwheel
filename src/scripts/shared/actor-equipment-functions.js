@@ -38,81 +38,70 @@ export class ActorEquipmentFunctions {
 
     try {
       const templateData = { equipment: config.equipmentDefaults };
-      const dialogContent = await renderTemplate(
+      const dialogContent = await foundry.applications.handlebars.renderTemplate(
         "systems/cogwheel-syndicate/src/templates/equipment-dialog.hbs", 
         templateData
       );
 
-      return new Promise((resolve) => {
-        new Dialog({
-          title: game.i18n.localize("COGSYNDICATE.AddEquipment"),
-          content: dialogContent,
-          buttons: {
-            cancel: {
-              label: game.i18n.localize("COGSYNDICATE.Cancel"),
-              callback: () => resolve(false)
-            },
-            add: {
-              label: game.i18n.localize("COGSYNDICATE.Confirm"),
-              callback: async (html) => {
-                try {
-                  // Extract form data
-                  const formData = {
-                    name: html[0].querySelector('[name="name"]').value,
-                    type: html[0].querySelector('[name="type"]').value,
-                    cost: parseInt(html[0].querySelector('[name="cost"]').value, 10),
-                    usage: html[0].querySelector('[name="usage"]').value,
-                    action: html[0].querySelector('[name="action"]').value
-                  };
+      let result = false;
+      await foundry.applications.api.DialogV2.wait({
+        window: { title: game.i18n.localize("COGSYNDICATE.AddEquipment") },
+        content: dialogContent,
+        rejectClose: false,
+        buttons: [
+          {
+            action: "cancel",
+            label: game.i18n.localize("COGSYNDICATE.Cancel"),
+            callback: () => null
+          },
+          {
+            action: "add",
+            label: game.i18n.localize("COGSYNDICATE.Confirm"),
+            default: true,
+            callback: async (event, button) => {
+              const form = button.form;
+              try {
+                const formData = {
+                  name: form.querySelector('[name="name"]').value,
+                  type: form.querySelector('[name="type"]').value,
+                  cost: parseInt(form.querySelector('[name="cost"]').value, 10),
+                  usage: form.querySelector('[name="usage"]').value,
+                  action: form.querySelector('[name="action"]').value
+                };
 
-                  // Validate input
-                  const inputValidation = config.validateInput(formData, html, config);
-                  if (!inputValidation.valid) {
-                    config.showValidationError(html, inputValidation.message);
-                    return;
-                  }
-
-                  // Validate cost
-                  const currentEquipmentPoints = actor.system.equipmentPoints.value || 0;
-                  const costValidation = config.validateCost(
-                    formData.cost, 
-                    currentEquipmentPoints, 
-                    actor, 
-                    config
-                  );
-                  if (!costValidation.valid) {
-                    config.showValidationError(html, costValidation.message);
-                    return;
-                  }
-
-                  // Process equipment data
-                  const newEquipment = config.processEquipmentData(formData, config);
-
-                  // Add equipment to actor
-                  const currentEquipments = foundry.utils.deepClone(actor.system.equipments) || [];
-                  currentEquipments.push(newEquipment);
-                  
-                  const newEquipmentPoints = currentEquipmentPoints - formData.cost;
-                  
-                  await actor.update({
-                    "system.equipments": currentEquipments,
-                    "system.equipmentPoints.value": newEquipmentPoints
-                  });
-
-                  // Success callback
-                  await config.onSuccess(newEquipment, actor, sheet, config);
-                  resolve(true);
-
-                } catch (error) {
-                  await config.onError(error, actor, sheet, config);
-                  resolve(false);
+                const inputValidation = config.validateInput(formData, form, config);
+                if (!inputValidation.valid) {
+                  config.showValidationError(form, inputValidation.message);
+                  return;
                 }
+
+                const currentEquipmentPoints = actor.system.equipmentPoints.value || 0;
+                const costValidation = config.validateCost(formData.cost, currentEquipmentPoints, actor, config);
+                if (!costValidation.valid) {
+                  config.showValidationError(form, costValidation.message);
+                  return;
+                }
+
+                const newEquipment = config.processEquipmentData(formData, config);
+                const currentEquipments = foundry.utils.deepClone(actor.system.equipments) || [];
+                currentEquipments.push(newEquipment);
+                const newEquipmentPoints = currentEquipmentPoints - formData.cost;
+
+                await actor.update({
+                  "system.equipments": currentEquipments,
+                  "system.equipmentPoints.value": newEquipmentPoints
+                });
+
+                await config.onSuccess(newEquipment, actor, sheet, config);
+                result = true;
+              } catch (error) {
+                await config.onError(error, actor, sheet, config);
               }
             }
-          },
-          default: "add"
-        }).render(true);
+          }
+        ]
       });
+      return result;
 
     } catch (error) {
       await config.onError(error, actor, sheet, config);
@@ -148,85 +137,78 @@ export class ActorEquipmentFunctions {
       }
 
       const templateData = { equipment };
-      const dialogContent = await renderTemplate(
+      const dialogContent = await foundry.applications.handlebars.renderTemplate(
         "systems/cogwheel-syndicate/src/templates/equipment-dialog.hbs", 
         templateData
       );
 
-      return new Promise((resolve) => {
-        new Dialog({
-          title: game.i18n.localize("COGSYNDICATE.EditEquipment"),
-          content: dialogContent,
-          buttons: {
-            cancel: {
-              label: game.i18n.localize("COGSYNDICATE.Cancel"),
-              callback: () => resolve(false)
-            },
-            save: {
-              label: game.i18n.localize("COGSYNDICATE.Confirm"),
-              callback: async (html) => {
-                try {
-                  const formData = {
-                    name: html[0].querySelector('[name="name"]').value,
-                    type: html[0].querySelector('[name="type"]').value,
-                    cost: parseInt(html[0].querySelector('[name="cost"]').value, 10),
-                    usage: html[0].querySelector('[name="usage"]').value,
-                    action: html[0].querySelector('[name="action"]').value
-                  };
+      let result = false;
+      await foundry.applications.api.DialogV2.wait({
+        window: { title: game.i18n.localize("COGSYNDICATE.EditEquipment") },
+        content: dialogContent,
+        rejectClose: false,
+        buttons: [
+          {
+            action: "cancel",
+            label: game.i18n.localize("COGSYNDICATE.Cancel"),
+            callback: () => null
+          },
+          {
+            action: "save",
+            label: game.i18n.localize("COGSYNDICATE.Confirm"),
+            default: true,
+            callback: async (event, button) => {
+              const form = button.form;
+              try {
+                const formData = {
+                  name: form.querySelector('[name="name"]').value,
+                  type: form.querySelector('[name="type"]').value,
+                  cost: parseInt(form.querySelector('[name="cost"]').value, 10),
+                  usage: form.querySelector('[name="usage"]').value,
+                  action: form.querySelector('[name="action"]').value
+                };
 
-                  // Validate input
-                  const inputValidation = config.validateInput(formData, html, config);
-                  if (!inputValidation.valid) {
-                    config.showValidationError(html, inputValidation.message);
+                const inputValidation = config.validateInput(formData, form, config);
+                if (!inputValidation.valid) {
+                  config.showValidationError(form, inputValidation.message);
+                  return;
+                }
+
+                const oldCost = equipment.cost || 0;
+                const costDifference = formData.cost - oldCost;
+                const currentEquipmentPoints = actor.system.equipmentPoints.value || 0;
+
+                if (costDifference > 0) {
+                  const costValidation = config.validateCost(costDifference, currentEquipmentPoints, actor, config);
+                  if (!costValidation.valid) {
+                    config.showValidationError(form, costValidation.message);
                     return;
                   }
-
-                  // Calculate cost difference
-                  const oldCost = equipment.cost || 0;
-                  const costDifference = formData.cost - oldCost;
-                  const currentEquipmentPoints = actor.system.equipmentPoints.value || 0;
-
-                  // Validate cost if increased
-                  if (costDifference > 0) {
-                    const costValidation = config.validateCost(
-                      costDifference, 
-                      currentEquipmentPoints, 
-                      actor, 
-                      config
-                    );
-                    if (!costValidation.valid) {
-                      config.showValidationError(html, costValidation.message);
-                      return;
-                    }
-                  }
-
-                  // Process and update equipment
-                  const updatedEquipment = {
-                    ...equipment,
-                    ...config.processEquipmentData(formData, config)
-                  };
-                  
-                  currentEquipments[equipmentIndex] = updatedEquipment;
-                  const newEquipmentPoints = currentEquipmentPoints - costDifference;
-                  
-                  await actor.update({
-                    "system.equipments": currentEquipments,
-                    "system.equipmentPoints.value": newEquipmentPoints
-                  });
-
-                  await config.onSuccess(updatedEquipment, equipment, actor, sheet, config);
-                  resolve(true);
-
-                } catch (error) {
-                  await config.onError(error, actor, sheet, config);
-                  resolve(false);
                 }
+
+                const updatedEquipment = {
+                  ...equipment,
+                  ...config.processEquipmentData(formData, config)
+                };
+
+                currentEquipments[equipmentIndex] = updatedEquipment;
+                const newEquipmentPoints = currentEquipmentPoints - costDifference;
+
+                await actor.update({
+                  "system.equipments": currentEquipments,
+                  "system.equipmentPoints.value": newEquipmentPoints
+                });
+
+                await config.onSuccess(updatedEquipment, equipment, actor, sheet, config);
+                result = true;
+              } catch (error) {
+                await config.onError(error, actor, sheet, config);
               }
             }
-          },
-          default: "save"
-        }).render(true);
+          }
+        ]
       });
+      return result;
 
     } catch (error) {
       await config.onError(error, actor, sheet, config);
@@ -261,16 +243,14 @@ export class ActorEquipmentFunctions {
 
       // Optional confirmation dialog
       if (config.confirmDelete) {
-        const confirmed = await Dialog.confirm({
-          title: game.i18n.localize("COGSYNDICATE.DeleteEquipment"),
-          content: game.i18n.format("COGSYNDICATE.DeleteEquipmentConfirm", {
-            name: equipmentToDelete.name
-          }),
-          yes: () => true,
-          no: () => false,
-          defaultYes: false
+        const confirmed = await foundry.applications.api.DialogV2.confirm({
+          window: { title: game.i18n.localize("COGSYNDICATE.DeleteEquipment") },
+          content: `<p>${game.i18n.format("COGSYNDICATE.DeleteEquipmentConfirm", { name: equipmentToDelete.name })}</p>`,
+          yes: { label: game.i18n.localize("COGSYNDICATE.Confirm") },
+          no: { label: game.i18n.localize("COGSYNDICATE.Cancel"), default: true },
+          rejectClose: false
         });
-        
+
         if (!confirmed) return false;
       }
 
@@ -319,15 +299,13 @@ export class ActorEquipmentFunctions {
     return { valid: true };
   }
 
-  static _defaultShowValidationError(html, message) {
-    // V1 style - show in dialog
-    const errorMessage = html[0].querySelector('.error-message');
+  static _defaultShowValidationError(form, message) {
+    const errorMessage = form.querySelector('.error-message');
     if (errorMessage) {
       errorMessage.textContent = message;
       errorMessage.classList.add('show');
       setTimeout(() => errorMessage.classList.remove('show'), 3000);
     } else {
-      // Fallback to notification
       ui.notifications.warn(message);
     }
   }
