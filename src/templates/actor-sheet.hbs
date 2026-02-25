@@ -59,25 +59,15 @@
               </div>
               <div class="damage-section">
                 <label class="damage-label">{{localize "COGSYNDICATE.MachineDamage"}}</label>
-                <div class="radio-group horizontal">
-                  <div class="radio-item">
-                    <input type="radio" id="machine-damage-0" name="system.secondaryAttributes.endurance.value" value="0" {{#if (eq system.secondaryAttributes.endurance.value "0")}}checked{{/if}}>
-                    <label for="machine-damage-0">0</label>
-                  </div>
-                  <div class="radio-item">
-                    <input type="radio" id="machine-damage-1" name="system.secondaryAttributes.endurance.value" value="-1" {{#if (eq system.secondaryAttributes.endurance.value "-1")}}checked{{/if}}>
-                    <label for="machine-damage-1">-1</label>
-                  </div>
-                  <div class="radio-item">
-                    <input type="radio" id="machine-damage-2" name="system.secondaryAttributes.endurance.value" value="-2" {{#if (eq system.secondaryAttributes.endurance.value "-2")}}checked{{/if}}>
-                    <label for="machine-damage-2">-2</label>
-                  </div>
-                  <div class="radio-item">
-                    <input type="radio" id="machine-damage-3" name="system.secondaryAttributes.endurance.value" value="-3" {{#if (eq system.secondaryAttributes.endurance.value "-3")}}checked{{/if}}>
-                    <label for="machine-damage-3">-3</label>
-                  </div>
-                  <div class="radio-item">
-                    <input type="radio" id="machine-damage-t" name="system.secondaryAttributes.endurance.value" value="T" {{#if (eq system.secondaryAttributes.endurance.value "T")}}checked{{/if}}>
+                <div class="damage-radio-group" data-attribute="machine">
+                  {{#times system.attributes.machine.base}}
+                    <div class="damage-radio-item">
+                      <input type="radio" id="machine-damage-{{this}}" name="system.attributes.machine.damage" value="{{this}}" {{#if (eq ../system.attributes.machine.damage this)}}checked{{/if}}>
+                      <label for="machine-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
+                    </div>
+                  {{/times}}
+                  <div class="damage-radio-item">
+                    <input type="radio" id="machine-damage-t" name="system.attributes.machine.damage" value="T" {{#if (eq system.attributes.machine.damage "T")}}checked{{/if}}>
                     <label for="machine-damage-t" title="{{localize 'COGSYNDICATE.Trauma'}}">T</label>
                   </div>
                 </div>
@@ -87,30 +77,20 @@
               <label>{{localize "COGSYNDICATE.Engineering"}}</label>
               <div class="attribute-content">
                 <input type="number" class="base-value" name="system.attributes.engineering.base" value="{{system.attributes.engineering.base}}" min="1" max="6" step="1" {{#unless editable}}disabled{{/unless}} title="{{localize 'COGSYNDICATE.BaseValueTooltip'}}" />
-                <input type="number" class="effective-value" name="system.attributes.engineering.value" value="{{effectiveAttributes.engineering}}" min="1" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
+                <input type="number" class="effective-value" name="system.attributes.engineering.value" value="{{effectiveAttributes.engineering}}" min="0" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
                 <button type="button" class="roll-attribute roll-btn" data-attribute="engineering" title="{{localize 'COGSYNDICATE.Roll2d12'}}"><i class="fas fa-dice-d12"></i></button>
               </div>
               <div class="damage-section">
                 <label class="damage-label">{{localize "COGSYNDICATE.EngineeringDamage"}}</label>
-                <div class="radio-group horizontal">
-                  <div class="radio-item">
-                    <input type="radio" id="engineering-damage-0" name="system.secondaryAttributes.control.value" value="0" {{#if (eq system.secondaryAttributes.control.value "0")}}checked{{/if}}>
-                    <label for="engineering-damage-0">0</label>
-                  </div>
-                  <div class="radio-item">
-                    <input type="radio" id="engineering-damage-1" name="system.secondaryAttributes.control.value" value="-1" {{#if (eq system.secondaryAttributes.control.value "-1")}}checked{{/if}}>
-                    <label for="engineering-damage-1">-1</label>
-                  </div>
-                  <div class="radio-item">
-                    <input type="radio" id="engineering-damage-2" name="system.secondaryAttributes.control.value" value="-2" {{#if (eq system.secondaryAttributes.control.value "-2")}}checked{{/if}}>
-                    <label for="engineering-damage-2">-2</label>
-                  </div>
-                  <div class="radio-item">
-                    <input type="radio" id="engineering-damage-3" name="system.secondaryAttributes.control.value" value="-3" {{#if (eq system.secondaryAttributes.control.value "-3")}}checked{{/if}}>
-                    <label for="engineering-damage-3">-3</label>
-                  </div>
-                  <div class="radio-item">
-                    <input type="radio" id="engineering-damage-t" name="system.secondaryAttributes.control.value" value="T" {{#if (eq system.secondaryAttributes.control.value "T")}}checked{{/if}}>
+                <div class="damage-radio-group" data-attribute="engineering">
+                  {{#times system.attributes.engineering.base}}
+                    <div class="damage-radio-item">
+                      <input type="radio" id="engineering-damage-{{this}}" name="system.attributes.engineering.damage" value="{{this}}" {{#if (eq ../system.attributes.engineering.damage this)}}checked{{/if}}>
+                      <label for="engineering-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
+                    </div>
+                  {{/times}}
+                  <div class="damage-radio-item">
+                    <input type="radio" id="engineering-damage-t" name="system.attributes.engineering.damage" value="T" {{#if (eq system.attributes.engineering.damage "T")}}checked{{/if}}>
                     <label for="engineering-damage-t" title="{{localize 'COGSYNDICATE.Trauma'}}">T</label>
                   </div>
                 </div>
@@ -120,30 +100,20 @@
               <label>{{localize "COGSYNDICATE.Intrigue"}}</label>
               <div class="attribute-content">
                 <input type="number" class="base-value" name="system.attributes.intrigue.base" value="{{system.attributes.intrigue.base}}" min="1" max="6" step="1" {{#unless editable}}disabled{{/unless}} title="{{localize 'COGSYNDICATE.BaseValueTooltip'}}" />
-                <input type="number" class="effective-value" name="system.attributes.intrigue.value" value="{{effectiveAttributes.intrigue}}" min="1" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
+                <input type="number" class="effective-value" name="system.attributes.intrigue.value" value="{{effectiveAttributes.intrigue}}" min="0" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
                 <button type="button" class="roll-attribute roll-btn" data-attribute="intrigue" title="{{localize 'COGSYNDICATE.Roll2d12'}}"><i class="fas fa-dice-d12"></i></button>
               </div>
               <div class="damage-section">
                 <label class="damage-label">{{localize "COGSYNDICATE.IntrigueDamage"}}</label>
-                <div class="radio-group horizontal">
-                  <div class="radio-item">
-                    <input type="radio" id="intrigue-damage-0" name="system.secondaryAttributes.determination.value" value="0" {{#if (eq system.secondaryAttributes.determination.value "0")}}checked{{/if}}>
-                    <label for="intrigue-damage-0">0</label>
-                  </div>
-                  <div class="radio-item">
-                    <input type="radio" id="intrigue-damage-1" name="system.secondaryAttributes.determination.value" value="-1" {{#if (eq system.secondaryAttributes.determination.value "-1")}}checked{{/if}}>
-                    <label for="intrigue-damage-1">-1</label>
-                  </div>
-                  <div class="radio-item">
-                    <input type="radio" id="intrigue-damage-2" name="system.secondaryAttributes.determination.value" value="-2" {{#if (eq system.secondaryAttributes.determination.value "-2")}}checked{{/if}}>
-                    <label for="intrigue-damage-2">-2</label>
-                  </div>
-                  <div class="radio-item">
-                    <input type="radio" id="intrigue-damage-3" name="system.secondaryAttributes.determination.value" value="-3" {{#if (eq system.secondaryAttributes.determination.value "-3")}}checked{{/if}}>
-                    <label for="intrigue-damage-3">-3</label>
-                  </div>
-                  <div class="radio-item">
-                    <input type="radio" id="intrigue-damage-t" name="system.secondaryAttributes.determination.value" value="T" {{#if (eq system.secondaryAttributes.determination.value "T")}}checked{{/if}}>
+                <div class="damage-radio-group" data-attribute="intrigue">
+                  {{#times system.attributes.intrigue.base}}
+                    <div class="damage-radio-item">
+                      <input type="radio" id="intrigue-damage-{{this}}" name="system.attributes.intrigue.damage" value="{{this}}" {{#if (eq ../system.attributes.intrigue.damage this)}}checked{{/if}}>
+                      <label for="intrigue-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
+                    </div>
+                  {{/times}}
+                  <div class="damage-radio-item">
+                    <input type="radio" id="intrigue-damage-t" name="system.attributes.intrigue.damage" value="T" {{#if (eq system.attributes.intrigue.damage "T")}}checked{{/if}}>
                     <label for="intrigue-damage-t" title="{{localize 'COGSYNDICATE.Trauma'}}">T</label>
                   </div>
                 </div>
