@@ -3,24 +3,36 @@ import { ActorGearFunctions } from './shared/actor-gear-functions.js';
 import { ActorStressFunctions } from './shared/actor-stress-functions.js';
 import { ActorEquipmentFunctions } from './shared/actor-equipment-functions.js';
 
-// Use foundry.appv1 namespace to avoid deprecation warnings
-class CogwheelActorSheet extends foundry.appv1.sheets.ActorSheet {
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      template: "systems/cogwheel-syndicate/src/templates/actor-sheet.hbs",
-      classes: ["cogwheel", "sheet", "actor"],
-      width: 750,
-      submitOnChange: true,
-      dragDrop: [{ dropSelector: ".archetype-drop, .feats-drop" }],
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-content", initial: "core" }]
-    });
-  }
+// Karta Agenta V1 - zmigrowana do ApplicationV2 (HandlebarsApplicationMixin + ActorSheetV2)
+class CogwheelActorSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2) {
+  static DEFAULT_OPTIONS = {
+    classes: ["cogwheel", "sheet", "actor"],
+    position: { width: 750 },
+    window: { resizable: true },
+    form: { submitOnChange: true },
+    dragDrop: [{ dropSelector: ".archetype-drop, .feats-drop" }]
+  };
 
-  getData() {
-    const data = super.getData();
-    data.system = data.actor.system;
+  static tabGroups = {
+    primary: "core"
+  };
 
-    // ARCHETYPE: Load archetype data if ID exists
+  static PARTS = {
+    main: {
+      template: "systems/cogwheel-syndicate/src/templates/actor-sheet.hbs"
+    }
+  };
+
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    const data = context;
+    data.actor = this.actor;
+    data.system = this.actor.system;
+
+    // Sprawdź i zainicjalizuj dane jeśli potrzeba
+    this._updateData();
+
+    // ARCHETYPE: Załaduj dane archetypu jeśli istnieje
     if (data.system.archetype && data.system.archetype.id) {
       const archetypeItem = game.items.get(data.system.archetype.id);
       if (archetypeItem && archetypeItem.type === "archetype") {
@@ -54,13 +66,22 @@ class CogwheelActorSheet extends foundry.appv1.sheets.ActorSheet {
     data.system.secondaryAttributes.determination = { ...defaultSecondary, ...data.system.secondaryAttributes.determination };
 
     data.system.attributes = data.system.attributes || {};
-    data.system.attributes.machine = data.system.attributes.machine || { base: 1, value: 1 };
-    data.system.attributes.engineering = data.system.attributes.engineering || { base: 1, value: 1 };
-    data.system.attributes.intrigue = data.system.attributes.intrigue || { base: 1, value: 1 };
+    data.system.attributes.machine = data.system.attributes.machine || { base: 1, value: 1, damage: 0 };
+    data.system.attributes.engineering = data.system.attributes.engineering || { base: 1, value: 1, damage: 0 };
+    data.system.attributes.intrigue = data.system.attributes.intrigue || { base: 1, value: 1, damage: 0 };
 
     data.system.attributes.machine.base = parseInt(data.system.attributes.machine.base, 10) || 1;
     data.system.attributes.engineering.base = parseInt(data.system.attributes.engineering.base, 10) || 1;
     data.system.attributes.intrigue.base = parseInt(data.system.attributes.intrigue.base, 10) || 1;
+
+    // Normalizacja wartości uszkodzeń: ujemne legacy → wartość bezwzględna, "T" zachowane, NaN → 0
+    for (const attrName of ['machine', 'engineering', 'intrigue']) {
+      const raw = data.system.attributes[attrName].damage;
+      if (raw !== 'T') {
+        const parsed = parseInt(raw, 10);
+        data.system.attributes[attrName].damage = isNaN(parsed) ? 0 : Math.abs(parsed);
+      }
+    }
 
     data.system.resources = data.system.resources || {};
     data.system.resources.gear = data.system.resources.gear || { value: 0, max: 4, basis: "machine" };
@@ -80,11 +101,12 @@ class CogwheelActorSheet extends foundry.appv1.sheets.ActorSheet {
     };
 
     data.effectiveAttributes = {};
-    for (const [mainAttr, secondaryAttr] of Object.entries(attributeMap)) {
-      const baseValue = parseInt(data.system.attributes[mainAttr].base, 10) || 1;
-      const secondaryValue = parseInt(data.system.secondaryAttributes[secondaryAttr].value, 10) || 0;
-      data.effectiveAttributes[mainAttr] = baseValue + secondaryValue;
-      data.system.attributes[mainAttr].value = data.effectiveAttributes[mainAttr];
+    for (const attrName of ['machine', 'engineering', 'intrigue']) {
+      const baseValue = data.system.attributes[attrName].base || 1;
+      const rawDamage = data.system.attributes[attrName].damage;
+      const damageValue = (rawDamage === 'T') ? baseValue : (parseInt(rawDamage, 10) || 0);
+      data.effectiveAttributes[attrName] = Math.max(0, baseValue - damageValue);
+      data.system.attributes[attrName].value = data.effectiveAttributes[attrName];
     }
 
     const gearBasis = data.system.resources.gear.basis || "machine";
@@ -120,47 +142,54 @@ class CogwheelActorSheet extends foundry.appv1.sheets.ActorSheet {
       this.actor.update(updates);
     }
 
-    console.log("Dane w getData:", data);
     return data;
   }
 
-  activateListeners(html) {
-    super.activateListeners(html);
-    html.find('.roll-attribute').click(this._onRollAttribute.bind(this));
-    html.find('.delete-feat').click(this._onDeleteFeat.bind(this));
-    html.find('.feat-toggle-btn').click(this._onToggleFeat.bind(this));
-    html.find('.remove-archetype').click(this._onRemoveArchetype.bind(this));
-    html.find('.increment').click(this._onIncrementResource.bind(this));
-    html.find('.decrement').click(this._onDecrementResource.bind(this));
-    html.find('.add-equipment-btn').click(this._onAddEquipment.bind(this));
-    html.find('.edit-equipment').click(this._onEditEquipment.bind(this));
-    html.find('.delete-equipment').click(this._onDeleteEquipment.bind(this));
-    html.find('.equipment-status-checkbox').click(this._onEquipmentStatusChange.bind(this));
-    html.find('.equipment-toggle').click(this._onToggleEquipment.bind(this));
-    html.find('.add-trauma-btn').click(this._onAddTrauma.bind(this));
-    html.find('.edit-trauma').click(this._onEditTrauma.bind(this));
-    html.find('.delete-trauma').click(this._onDeleteTrauma.bind(this));
-    html.find('.trauma-toggle').click(this._onToggleTrauma.bind(this));
-    html.find('.spend-gear-btn').click(this._onSpendGearShared.bind(this));
-    html.find('.spend-stress-btn').click(this._onSpendStressShared.bind(this));
-    html.find('input[type="radio"][value="T"]').click(this._onTraumaDamageSelected.bind(this));
-    this._assignRandomBackgrounds(html);
+  _onRender(context, options) {
+    const html = this.element;
+    html.querySelectorAll('.roll-attribute').forEach(el => el.addEventListener('click', this._onRollAttribute.bind(this)));
+    html.querySelectorAll('.delete-feat').forEach(el => el.addEventListener('click', this._onDeleteFeat.bind(this)));
+    html.querySelectorAll('.feat-toggle-btn').forEach(el => el.addEventListener('click', this._onToggleFeat.bind(this)));
+    html.querySelectorAll('.remove-archetype').forEach(el => el.addEventListener('click', this._onRemoveArchetype.bind(this)));
+    html.querySelectorAll('.increment').forEach(el => el.addEventListener('click', this._onIncrementResource.bind(this)));
+    html.querySelectorAll('.decrement').forEach(el => el.addEventListener('click', this._onDecrementResource.bind(this)));
+    html.querySelectorAll('.add-equipment-btn').forEach(el => el.addEventListener('click', this._onAddEquipment.bind(this)));
+    html.querySelectorAll('.edit-equipment').forEach(el => el.addEventListener('click', this._onEditEquipment.bind(this)));
+    html.querySelectorAll('.delete-equipment').forEach(el => el.addEventListener('click', this._onDeleteEquipment.bind(this)));
+    html.querySelectorAll('.equipment-status-checkbox').forEach(el => el.addEventListener('click', this._onEquipmentStatusChange.bind(this)));
+    html.querySelectorAll('.equipment-toggle').forEach(el => el.addEventListener('click', this._onToggleEquipment.bind(this)));
+    html.querySelectorAll('.add-trauma-btn').forEach(el => el.addEventListener('click', this._onAddTrauma.bind(this)));
+    html.querySelectorAll('.edit-trauma').forEach(el => el.addEventListener('click', this._onEditTrauma.bind(this)));
+    html.querySelectorAll('.delete-trauma').forEach(el => el.addEventListener('click', this._onDeleteTrauma.bind(this)));
+    html.querySelectorAll('.trauma-toggle').forEach(el => el.addEventListener('click', this._onToggleTrauma.bind(this)));
+    html.querySelectorAll('.spend-gear-btn').forEach(el => el.addEventListener('click', this._onSpendGear.bind(this)));
+    html.querySelectorAll('.spend-stress-btn').forEach(el => el.addEventListener('click', this._onSpendStress.bind(this)));
+    html.querySelectorAll('input[type="radio"][value="T"]').forEach(el => el.addEventListener('click', this._onTraumaDamageSelected.bind(this)));
+    html.querySelectorAll('.damage-radio-group input[type="radio"]:not([value="T"])').forEach(el => el.addEventListener('change', this._onDamageRadioChange.bind(this)));
+    this._assignGearBackgrounds(html);
+    this._assignEquipmentColors(html);
     this._updateEquipmentPointsDisplay(html);
+
+    // Przywróć aktywną zakładkę po re-renderze
+    for (const [group, activeTab] of Object.entries(this.tabGroups)) {
+      html.querySelectorAll(`[data-group="${group}"][data-tab]`).forEach(el => {
+        el.classList.toggle('active', el.dataset.tab === activeTab);
+      });
+    }
   }
 
   _updateEquipmentPointsDisplay(html) {
-    const equipmentPointsValue = html.find('.equipment-points-value');
+    const equipmentPointsValue = html.querySelector('.equipment-points-value');
+    if (!equipmentPointsValue) return;
     const currentPoints = this.actor.system.equipmentPoints.value || 0;
     const maxPoints = this.actor.system.equipmentPoints.max || 6;
     
-    // Usuń poprzednie klasy
-    equipmentPointsValue.removeClass('low medium');
+    equipmentPointsValue.classList.remove('low', 'medium');
     
-    // Dodaj odpowiednią klasę w zależności od poziomu punktów
     if (currentPoints <= 1) {
-      equipmentPointsValue.addClass('low');
+      equipmentPointsValue.classList.add('low');
     } else if (currentPoints <= 3) {
-      equipmentPointsValue.addClass('medium');
+      equipmentPointsValue.classList.add('medium');
     }
   }
 
@@ -223,14 +252,6 @@ class CogwheelActorSheet extends foundry.appv1.sheets.ActorSheet {
     await this.actor.update({
       "system.equipments": currentEquipments
     });
-
-    // Update visual state without full re-render to preserve expanded/collapsed state
-    const equipmentItem = $(event.currentTarget).closest('.equipment-item');
-    if (isChecked) {
-      equipmentItem.addClass('disabled');
-    } else {
-      equipmentItem.removeClass('disabled');
-    }
   }
 
   async _onAttributeChange(event) {
@@ -412,23 +433,12 @@ class CogwheelActorSheet extends foundry.appv1.sheets.ActorSheet {
     const maxValue = this.actor.system.resources[resource].max;
 
     if (resource === "stress" && currentValue + 1 >= maxValue) {
-      const traumaDialog = await new Promise((resolve) => {
-        new Dialog({
-          title: game.i18n.localize("COGSYNDICATE.TraumaWarning"),
-          content: `<p>${game.i18n.format("COGSYNDICATE.TraumaMessage", { agentName: this.actor.name })}</p>`,
-          buttons: {
-            cancel: {
-              label: game.i18n.localize("COGSYNDICATE.Cancel"),
-              callback: () => resolve(false)
-            },
-            confirm: {
-              label: game.i18n.localize("COGSYNDICATE.Confirm"),
-              callback: () => resolve(true)
-            }
-          },
-          default: "confirm",
-          close: () => resolve(false)
-        }).render(true);
+      const traumaDialog = await foundry.applications.api.DialogV2.confirm({
+        window: { title: game.i18n.localize("COGSYNDICATE.TraumaWarning") },
+        content: `<p>${game.i18n.format("COGSYNDICATE.TraumaMessage", { agentName: this.actor.name })}</p>`,
+        yes: { label: game.i18n.localize("COGSYNDICATE.Confirm"), default: true },
+        no: { label: game.i18n.localize("COGSYNDICATE.Cancel") },
+        rejectClose: false
       });
 
       if (traumaDialog) {
@@ -449,44 +459,10 @@ class CogwheelActorSheet extends foundry.appv1.sheets.ActorSheet {
             content: `<p>${maxTraumaMessage}</p>`,
             speaker: { actor: this.actor.id }
           });
-          new Dialog({
-            title: "Maximum Trauma",
-            content: `<p>${maxTraumaMessage}</p>`,
-            buttons: {
-              ok: { label: "OK" }
-            }
-          }).render(true);
+          await foundry.applications.api.DialogV2.wait({ window: { title: "Maximum Trauma" }, content: `<p>${maxTraumaMessage}</p>`, rejectClose: false, buttons: [{ action: "ok", label: "OK", default: true, callback: () => null }] });
         }
       }
       return;
-    } else if (resource === "trauma" && currentValue + 1 <= maxValue) {
-      const newTrauma = currentValue + 1;
-      await this.actor.update({
-        [`system.resources.${resource}.value`]: newTrauma
-      });
-      await ChatMessage.create({
-        content: `
-          <div class="feat-effect-message">
-            <h3><i class="fas fa-skull" style="color: #9b59b6 !important;"></i> ${game.i18n.format("COGSYNDICATE.TraumaIncreased", { actorName: this.actor.name })}</h3>
-          </div>
-        `,
-        speaker: { actor: this.actor.id }
-      });
-
-      if (newTrauma === maxValue) {
-        const maxTraumaMessage = game.i18n.localize("COGSYNDICATE.MaxTraumaReached");
-        await ChatMessage.create({
-          content: `<p>${maxTraumaMessage}</p>`,
-          speaker: { actor: this.actor.id }
-        });
-        new Dialog({
-          title: "Maximum Trauma",
-          content: `<p>${maxTraumaMessage}</p>`,
-          buttons: {
-            ok: { label: "OK" }
-          }
-        }).render(true);
-      }
     } else if (currentValue < maxValue) {
       const newValue = currentValue + 1;
       await this.actor.update({
@@ -519,6 +495,24 @@ class CogwheelActorSheet extends foundry.appv1.sheets.ActorSheet {
           `,
           speaker: { actor: this.actor.id }
         });
+      } else if (resource === "trauma") {
+        await ChatMessage.create({
+          content: `
+            <div class="feat-effect-message">
+              <h3><i class="fas fa-skull" style="color: #9b59b6 !important;"></i> ${game.i18n.format("COGSYNDICATE.TraumaIncreased", { actorName: this.actor.name })}</h3>
+            </div>
+          `,
+          speaker: { actor: this.actor.id }
+        });
+
+        if (newValue === 4) {
+          const maxTraumaMessage = game.i18n.localize("COGSYNDICATE.MaxTraumaReached");
+          await ChatMessage.create({
+            content: `<p>${maxTraumaMessage}</p>`,
+            speaker: { actor: this.actor.id }
+          });
+          await foundry.applications.api.DialogV2.wait({ window: { title: "Maximum Trauma" }, content: `<p>${maxTraumaMessage}</p>`, rejectClose: false, buttons: [{ action: "ok", label: "OK", default: true, callback: () => null }] });
+        }
       }
     }
   }
@@ -593,6 +587,71 @@ class CogwheelActorSheet extends foundry.appv1.sheets.ActorSheet {
     await this.actor.update(updates);
   }
 
+  async _updateData() {
+    // Sprawdź czy aktor ma wszystkie wymagane pola
+    const updates = {};
+    
+    if (!this.actor.system.attributes?.machine?.base) {
+      updates["system.attributes.machine.base"] = 1;
+    }
+    if (!this.actor.system.attributes?.engineering?.base) {
+      updates["system.attributes.engineering.base"] = 1;
+    }
+    if (!this.actor.system.attributes?.intrigue?.base) {
+      updates["system.attributes.intrigue.base"] = 1;
+    }
+
+    if (!this.actor.system.feats) {
+      updates["system.feats"] = [];
+    }
+
+    const gearMax = 4 + (this.actor.system.attributes?.machine?.base || 1);
+    
+    if (this.actor.system.resources?.gear?.value === undefined || this.actor.system.resources?.gear?.value === null) {
+      updates["system.resources.gear.value"] = gearMax;
+      updates["system.resources.gear.basis"] = "machine";
+    }
+    
+    if (!this.actor.system.resources?.stress?.value) {
+      updates["system.resources.stress.value"] = 0;
+    }
+    
+    if (!this.actor.system.resources?.trauma?.value) {
+      updates["system.resources.trauma.value"] = 0;
+    }
+    
+    if (!this.actor.system.resources?.development?.value) {
+      updates["system.resources.development.value"] = 0;
+    }
+    
+    if (!this.actor.system.equipmentPoints?.value) {
+      updates["system.equipmentPoints.value"] = 6;
+    }
+    
+    if (!this.actor.system.traumas) {
+      updates["system.traumas"] = [];
+    }
+    
+    if (!this.actor.system.equipments) {
+      updates["system.equipments"] = [];
+    }
+
+    // Migrate legacy negative damage values to positive (absolute value)
+    for (const attrName of ['machine', 'engineering', 'intrigue']) {
+      const raw = this.actor.system.attributes?.[attrName]?.damage;
+      if (raw !== undefined && raw !== 'T') {
+        const parsed = parseInt(raw, 10);
+        if (!isNaN(parsed) && parsed < 0) {
+          updates[`system.attributes.${attrName}.damage`] = Math.abs(parsed);
+        }
+      }
+    }
+
+    if (Object.keys(updates).length > 0) {
+      await this.actor.update(updates);
+    }
+  }
+
   async _onAddEquipment(event) {
     event.preventDefault();
     await ActorEquipmentFunctions.handleAddEquipment(this.actor, this, {
@@ -658,46 +717,44 @@ class CogwheelActorSheet extends foundry.appv1.sheets.ActorSheet {
       trauma: { name: "", description: "", effect: "", type: "physical" }
     };
 
-    const dialogContent = await renderTemplate("systems/cogwheel-syndicate/src/templates/add-trauma-dialog.hbs", templateData);
+    const dialogContent = await foundry.applications.handlebars.renderTemplate("systems/cogwheel-syndicate/src/templates/add-trauma-dialog.hbs", templateData);
 
-    new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.AddTrauma"),
+    await foundry.applications.api.DialogV2.wait({
+      window: { title: game.i18n.localize("COGSYNDICATE.AddTrauma"), classes: ["cogsyndicate", "trauma-dialog"] },
       content: dialogContent,
-      buttons: {
-        cancel: {
+      rejectClose: false,
+      buttons: [
+        {
+          action: "cancel",
           label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => {}
+          callback: () => null
         },
-        add: {
+        {
+          action: "add",
           label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          callback: async (html) => {
-            const traumaName = html.find('[name="name"]').val().trim();
-            const traumaType = html.find('[name="type"]').val().trim();
-            const traumaDescription = html.find('[name="description"]').val().trim();
-            const traumaEffect = html.find('[name="effect"]').val().trim();
-
-            if (!traumaName || !traumaEffect) {
-              html.find('.error-message').text(game.i18n.localize("COGSYNDICATE.TraumaValidationError")).show();
-              return;
-            }
+          default: true,
+          callback: async (event, button) => {
+            const form = button.form;
+            const traumaName = form.querySelector('[name="name"]').value;
+            const traumaDescription = form.querySelector('[name="description"]').value;
+            const traumaEffect = form.querySelector('[name="effect"]').value;
+            const traumaType = form.querySelector('[name="type"]').value;
 
             const newTrauma = {
               name: traumaName,
-              type: traumaType,
-              description: traumaDescription || "",
-              effect: traumaEffect
+              description: traumaDescription,
+              effect: traumaEffect,
+              type: traumaType
             };
+
             const currentTraumas = foundry.utils.deepClone(this.actor.system.traumas) || [];
             currentTraumas.push(newTrauma);
             await this.actor.update({ "system.traumas": currentTraumas });
             this.render();
           }
         }
-      },
-      default: "add",
-      width: 400,
-      classes: ["cogsyndicate", "dialog", "trauma-dialog"]
-    }).render(true);
+      ]
+    });
   }
 
   async _onEditTrauma(event) {
@@ -706,48 +763,42 @@ class CogwheelActorSheet extends foundry.appv1.sheets.ActorSheet {
     const currentTraumas = foundry.utils.deepClone(this.actor.system.traumas) || [];
     const trauma = currentTraumas[index];
 
-    const templateData = {
-      trauma: trauma
-    };
+    const dialogContent = await foundry.applications.handlebars.renderTemplate("systems/cogwheel-syndicate/src/templates/add-trauma-dialog.hbs", { trauma });
 
-    const dialogContent = await renderTemplate("systems/cogwheel-syndicate/src/templates/add-trauma-dialog.hbs", templateData);
-
-    new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.EditTrauma"),
+    await foundry.applications.api.DialogV2.wait({
+      window: { title: game.i18n.localize("COGSYNDICATE.EditTrauma"), classes: ["cogsyndicate", "trauma-dialog"] },
       content: dialogContent,
-      buttons: {
-        cancel: {
+      rejectClose: false,
+      buttons: [
+        {
+          action: "cancel",
           label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => {}
+          callback: () => null
         },
-        save: {
+        {
+          action: "save",
           label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          callback: async (html) => {
-            const traumaName = html.find('[name="name"]').val().trim();
-            const traumaType = html.find('[name="type"]').val().trim();
-            const traumaDescription = html.find('[name="description"]').val().trim();
-            const traumaEffect = html.find('[name="effect"]').val().trim();
-
-            if (!traumaName || !traumaEffect) {
-              html.find('.error-message').text(game.i18n.localize("COGSYNDICATE.TraumaValidationError")).show();
-              return;
-            }
+          default: true,
+          callback: async (event, button) => {
+            const form = button.form;
+            const traumaName = form.querySelector('[name="name"]').value;
+            const traumaDescription = form.querySelector('[name="description"]').value;
+            const traumaEffect = form.querySelector('[name="effect"]').value;
+            const traumaType = form.querySelector('[name="type"]').value;
 
             currentTraumas[index] = {
               name: traumaName,
-              type: traumaType,
-              description: traumaDescription || "",
-              effect: traumaEffect
+              description: traumaDescription,
+              effect: traumaEffect,
+              type: traumaType
             };
+
             await this.actor.update({ "system.traumas": currentTraumas });
             this.render();
           }
         }
-      },
-      default: "save",
-      width: 400,
-      classes: ["cogsyndicate", "dialog", "trauma-dialog"]
-    }).render(true);
+      ]
+    });
   }
 
   async _onDeleteTrauma(event) {
@@ -759,514 +810,107 @@ class CogwheelActorSheet extends foundry.appv1.sheets.ActorSheet {
     this.render();
   }
 
-  _assignRandomBackgrounds(html) {
-    const equipmentItems = html.find('.equipment-item');
-    
-    // Mapowanie typów ekwipunku na steampunkowe kolory
+  _assignGearBackgrounds(html) {
+    const backgrounds = [
+      'url("systems/cogwheel-syndicate/src/styles/images/gears1.png")',
+      'url("systems/cogwheel-syndicate/src/styles/images/gears2.png")',
+      'url("systems/cogwheel-syndicate/src/styles/images/gears3.png")',
+      'url("systems/cogwheel-syndicate/src/styles/images/gears4.png")'
+    ];
+
+    html.querySelectorAll('.gear-background').forEach(el => {
+      const randomBackground = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+      el.style.backgroundImage = randomBackground;
+    });
+  }
+
+  _assignEquipmentColors(html) {
     const steampunkColors = {
       'weapon': 'steampunk-weapon',
-      'armor': 'steampunk-armor', 
+      'armor': 'steampunk-armor',
       'tool': 'steampunk-tool',
       'gadget': 'steampunk-gadget',
       'other': 'steampunk-other'
     };
-    
-    // Kolory fallback dla kompatybilności wstecznej
+
     const pastelColors = [
       'pastel-pink',
-      'pastel-blue', 
+      'pastel-blue',
       'pastel-green',
       'pastel-yellow',
       'pastel-purple',
       'pastel-orange'
     ];
 
-    equipmentItems.each((index, element) => {
-      const $element = $(element);
-      
-      // Próbujemy znaleźć typ ekwipunku z danych data-*
-      let equipmentType = $element.attr('data-equipment-type');
-      
-      // Jeśli nie ma data-equipment-type, próbujemy z innerHTML
+    html.querySelectorAll('.equipment-item').forEach(element => {
+      let equipmentType = element.dataset.equipmentType;
+
       if (!equipmentType) {
-        const typeElement = $element.find('.equipment-type');
-        if (typeElement.length > 0) {
-          equipmentType = typeElement.text().toLowerCase().trim();
+        const typeElement = element.querySelector('.equipment-type');
+        if (typeElement) {
+          equipmentType = typeElement.textContent.toLowerCase().trim();
         }
       }
-      
-      // Jeśli nadal nie ma typu, próbujemy z zawartości tekstowej
+
       if (!equipmentType) {
-        const content = $element.text().toLowerCase();
+        const content = element.textContent.toLowerCase();
         if (content.includes('weapon') || content.includes('broń')) equipmentType = 'weapon';
         else if (content.includes('armor') || content.includes('pancerz')) equipmentType = 'armor';
         else if (content.includes('tool') || content.includes('narzędzie')) equipmentType = 'tool';
         else if (content.includes('gadget') || content.includes('gadżet')) equipmentType = 'gadget';
         else equipmentType = 'other';
       }
-      
-      // Przypisz odpowiednią klasę steampunkową lub losowy pastelowy kolor
-      let colorClass;
-      if (equipmentType && steampunkColors[equipmentType]) {
-        colorClass = steampunkColors[equipmentType];
-      } else {
-        colorClass = pastelColors[Math.floor(Math.random() * pastelColors.length)];
-      }
-      
-      $element.addClass(colorClass);
 
-      // Nie ustawiamy już kolorów tekstu w JS - kolory są teraz w CSS
-      // Steampunkowe style mają już odpowiednie kolory tekstu z text-shadow
+      const colorClass = (equipmentType && steampunkColors[equipmentType])
+        ? steampunkColors[equipmentType]
+        : pastelColors[Math.floor(Math.random() * pastelColors.length)];
+
+      element.classList.add(colorClass);
     });
   }
 
   _onToggleEquipment(event) {
     event.preventDefault();
-    const toggle = $(event.currentTarget);
+    const toggle = event.currentTarget;
     const equipmentItem = toggle.closest('.equipment-item');
-    const icon = toggle.find('i');
+    const icon = toggle.querySelector('i');
     
-    equipmentItem.toggleClass('collapsed');
+    equipmentItem.classList.toggle('collapsed');
     
-    if (equipmentItem.hasClass('collapsed')) {
-      icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+    if (equipmentItem.classList.contains('collapsed')) {
+      icon.classList.remove('fa-chevron-down');
+      icon.classList.add('fa-chevron-right');
     } else {
-      icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+      icon.classList.remove('fa-chevron-right');
+      icon.classList.add('fa-chevron-down');
     }
   }
 
   _onToggleTrauma(event) {
     event.preventDefault();
-    const toggle = $(event.currentTarget);
+    const toggle = event.currentTarget;
     const traumaItem = toggle.closest('.trauma-item');
-    const icon = toggle.find('i');
+    const icon = toggle.querySelector('i');
     
-    traumaItem.toggleClass('collapsed');
+    traumaItem.classList.toggle('collapsed');
     
-    if (traumaItem.hasClass('collapsed')) {
-      icon.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+    if (traumaItem.classList.contains('collapsed')) {
+      icon.classList.remove('fa-chevron-down');
+      icon.classList.add('fa-chevron-right');
     } else {
-      icon.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+      icon.classList.remove('fa-chevron-right');
+      icon.classList.add('fa-chevron-down');
     }
   }
 
   async _onSpendGear(event) {
     event.preventDefault();
-    console.log("=== SPEND GEAR DEBUG START ===");
-
-    const templateData = {
-      currentGear: this.actor.system.resources.gear.value || 0,
-      currentSteam: game.cogwheelSyndicate?.steamPoints || 0
-    };const dialogContent = await renderTemplate("systems/cogwheel-syndicate/src/templates/spend-gear-dialog.hbs", templateData);
-
-    // Zachowaj referencję do this dla użycia w callback
-    const actorRef = this.actor;
-    const sheetRef = this;
-
-    const dialog = new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.SpendGearTitle"),
-      content: dialogContent,
-      buttons: {
-        cancel: {
-          label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => {
-            console.log("Dialog anulowany");
-          }
-        },
-        confirm: {
-          label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          callback: async (html) => {
-            console.log("Callback confirm uruchomiony");
-            
-            const selectedOption = html.find('input[name="gearType"]:checked');
-            const errorMessage = html.find('.error-message');
-
-            console.log("Wybrane opcje:", selectedOption.length);            if (selectedOption.length === 0) {
-              console.log("Brak wybranej opcji");
-              new Dialog({
-                title: game.i18n.localize("COGSYNDICATE.Error"),
-                content: `<p style="color: red; font-weight: bold; text-align: center; font-size: 16px;">${game.i18n.localize("COGSYNDICATE.ErrorNoGearSelected")}</p>`,
-                buttons: {
-                  ok: {
-                    label: game.i18n.localize("COGSYNDICATE.Confirm"),
-                    callback: () => {}
-                  }
-                },
-                default: "ok"
-              }).render(true);
-              return false;
-            }
-
-            const gearType = selectedOption.val();
-            const gearCost = parseInt(selectedOption.data('cost'), 10);
-            const steamCost = parseInt(selectedOption.data('steam'), 10);            const currentGear = actorRef.system.resources.gear.value || 0;
-            const currentSteam = game.cogwheelSyndicate?.steamPoints || 0;
-
-            // Sprawdź czy agent ma wystarczająco punktów sprzętu
-            if (currentGear < gearCost) {
-              console.log("Za mało punktów sprzętu");
-              new Dialog({
-                title: game.i18n.localize("COGSYNDICATE.Error"),
-                content: `<p style="color: red; font-weight: bold; text-align: center; font-size: 16px;">${game.i18n.format("COGSYNDICATE.ErrorInsufficientGear", {required: gearCost, available: currentGear})}</p>`,
-                buttons: {
-                  ok: {
-                    label: game.i18n.localize("COGSYNDICATE.Confirm"),
-                    callback: () => {}
-                  }
-                },
-                default: "ok"
-              }).render(true);
-              return false;
-            }
-
-            // Sprawdź czy są wystarczające punkty pary
-            if (steamCost > 0 && currentSteam < steamCost) {
-              console.log("Za mało punktów pary");
-              new Dialog({
-                title: game.i18n.localize("COGSYNDICATE.Error"),
-                content: `<p style="color: red; font-weight: bold; text-align: center; font-size: 16px;">${game.i18n.format("COGSYNDICATE.ErrorInsufficientSteam", {required: steamCost, available: currentSteam})}</p>`,
-                buttons: {
-                  ok: {
-                    label: game.i18n.localize("COGSYNDICATE.Confirm"),
-                    callback: () => {}
-                  }
-                },
-                default: "ok"
-              }).render(true);
-              return false;
-            }
-
-            try {
-              console.log("Rozpoczynam aktualizację...");
-              
-              // Aktualizuj punkty sprzętu u agenta
-              const newGearValue = currentGear - gearCost;
-              await actorRef.update({
-                "system.resources.gear.value": newGearValue
-              });
-              console.log("Zaktualizowano punkty sprzętu:", newGearValue);
-
-              // Aktualizuj punkty pary (jeśli potrzebne)
-              if (steamCost > 0) {                const newSteamValue = currentSteam - steamCost;
-                game.cogwheelSyndicate.steamPoints = newSteamValue;
-                
-                // Synchronizacja przez socket
-                game.socket.emit("system.cogwheel-syndicate", {
-                  type: "updateMetaCurrencies",
-                  nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
-                  steamPoints: game.cogwheelSyndicate.steamPoints
-                });
-                
-                Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
-                console.log("Zaktualizowano punkty pary:", newSteamValue);
-              }
-
-              // Przygotuj komunikat na czat
-              const gearTypeLabels = {
-                'light': game.i18n.localize("COGSYNDICATE.GearLight"),
-                'medium': game.i18n.localize("COGSYNDICATE.GearMedium"), 
-                'heavy': game.i18n.localize("COGSYNDICATE.GearHeavy"),
-                'very-heavy': game.i18n.localize("COGSYNDICATE.GearVeryHeavy")
-              };
-
-              const gearTypeName = gearTypeLabels[gearType] || gearType;
-              const agentName = actorRef.name;
-              const gearPointsLabel = gearCost === 1 ? 
-                game.i18n.localize("COGSYNDICATE.GearPoint") : 
-                game.i18n.localize("COGSYNDICATE.GearPoints");
-            
-              let message;
-            
-              if (steamCost > 0) {
-                message = `Agent <strong>${agentName}</strong> wydał <strong>${gearCost}</strong> ${gearPointsLabel} oraz <strong>1 ${game.i18n.localize("COGSYNDICATE.SteamPoint")}</strong> na <strong>${gearTypeName}</strong>.`;
-              } else {
-                message = `Agent <strong>${agentName}</strong> wydał <strong>${gearCost}</strong> ${gearPointsLabel} na <strong>${gearTypeName}</strong>.`;
-              }
-
-              console.log("Przygotowany komunikat:", message);
-
-              // Wyślij komunikat na czat
-              const chatMessage = await ChatMessage.create({
-                content: `<p>${message}</p>`,
-                speaker: { actor: actorRef.id },
-                style: CONST.CHAT_MESSAGE_STYLES.OTHER
-              });
-
-              console.log("ChatMessage utworzony:", chatMessage);
-              console.log("=== SPEND GEAR DEBUG END ===");
-
-              sheetRef.render();
-              
-              // Zamknij dialog dopiero po sukcesie
-              dialog.close();
-              return true;            } catch (error) {
-              console.error("Błąd podczas wydawania sprzętu:", error);
-              new Dialog({
-                title: game.i18n.localize("COGSYNDICATE.Error"),
-                content: `<p style="color: red; font-weight: bold; text-align: center; font-size: 16px;">${game.i18n.format("COGSYNDICATE.ErrorGeneral", {error: error.message})}</p>`,
-                buttons: {
-                  ok: {
-                    label: game.i18n.localize("COGSYNDICATE.Confirm"),
-                    callback: () => {}
-                  }
-                },
-                default: "ok"
-              }).render(true);
-              return false;
-            }
-          }
-        }
-      },
-      default: "confirm",
-      width: 400,
-      classes: ["cogsyndicate", "dialog", "spend-gear-dialog"],
-      close: () => {
-        console.log("Dialog zamknięty");
-      }
-    });
-
-    dialog.render(true);
+    await ActorGearFunctions.handleSpendGear(this.actor, this, {});
   }
 
   async _onSpendStress(event) {
     event.preventDefault();
-    console.log("=== SPEND STRESS DEBUG START ===");
-
-    const templateData = {
-      currentStress: this.actor.system.resources.stress.value || 0,
-      maxStress: this.actor.system.resources.stress.max || 12,
-      currentSteam: game.cogwheelSyndicate?.steamPoints || 0
-    };
-
-    const dialogContent = await renderTemplate("systems/cogwheel-syndicate/src/templates/spend-stress-dialog.hbs", templateData);
-
-    // Zachowaj referencję do this dla użycia w callback
-    const actorRef = this.actor;
-    const sheetRef = this;
-
-    const dialog = new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.SpendStressTitle"),
-      content: dialogContent,
-      buttons: {
-        cancel: {
-          label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => {
-            console.log("Dialog anulowany");
-          }
-        },
-        confirm: {
-          label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          callback: async (html) => {
-            console.log("Callback confirm uruchomiony");
-            
-            const selectedOption = html.find('input[name="stressAction"]:checked');
-            const errorMessage = html.find('.error-message');
-
-            console.log("Wybrane opcje:", selectedOption.length);
-            
-            if (selectedOption.length === 0) {
-              console.log("Brak wybranej opcji");
-              new Dialog({
-                title: game.i18n.localize("COGSYNDICATE.Error"),
-                content: `<p style="color: red; font-weight: bold; text-align: center; font-size: 16px;">${game.i18n.localize("COGSYNDICATE.ErrorNoStressSelected")}</p>`,
-                buttons: {
-                  ok: {
-                    label: game.i18n.localize("COGSYNDICATE.Confirm"),
-                    callback: () => {}
-                  }
-                },
-                default: "ok"
-              }).render(true);
-              return false;
-            }
-
-            const stressAction = selectedOption.val();
-            const stressCost = parseInt(selectedOption.data('cost'), 10);
-            const steamBonus = parseInt(selectedOption.data('steam') || 0, 10);
-            
-            const currentStress = actorRef.system.resources.stress.value || 0;
-            const maxStress = actorRef.system.resources.stress.max || 12;
-            const currentSteam = game.cogwheelSyndicate?.steamPoints || 0;
-
-            console.log("Dane stresu:", { stressAction, stressCost, steamBonus, currentStress, maxStress, currentSteam });
-
-            // Funkcja wykonania akcji stresu
-            const executeStressAction = async (withTrauma = false) => {
-              try {
-                console.log("Rozpoczynam aktualizację...");
-                
-                let finalStressValue;
-                let traumaOccurred = false;
-                
-                if (withTrauma) {
-                  // Jeśli z traumą, oblicz końcową wartość stresu
-                  const excessStress = (currentStress + stressCost) - maxStress;
-                  finalStressValue = excessStress;
-                  traumaOccurred = true;
-                  
-                  // Zwiększ traumę
-                  const traumaValue = actorRef.system.resources.trauma.value || 0;
-                  const newTraumaValue = Math.min(traumaValue + 1, actorRef.system.resources.trauma.max);
-                  
-                  await actorRef.update({
-                    "system.resources.stress.value": finalStressValue,
-                    "system.resources.trauma.value": newTraumaValue
-                  });
-                  
-                  console.log("Agent doznał traumy, nowy stres:", finalStressValue, "trauma:", newTraumaValue);
-                } else {
-                  // Normalne wydanie stresu bez traumy
-                  finalStressValue = currentStress + stressCost;
-                  await actorRef.update({
-                    "system.resources.stress.value": finalStressValue
-                  });
-                  console.log("Zaktualizowano punkty stresu:", finalStressValue);
-                }
-
-                // Aktualizuj punkty pary (jeśli potrzebne)
-                if (steamBonus > 0) {
-                  const newSteamValue = currentSteam + steamBonus;
-                  game.cogwheelSyndicate.steamPoints = newSteamValue;
-                  
-                  // Synchronizacja przez socket
-                  game.socket.emit("system.cogwheel-syndicate", {
-                    type: "updateMetaCurrencies",
-                    nemesisPoints: game.cogwheelSyndicate.nemesisPoints,
-                    steamPoints: game.cogwheelSyndicate.steamPoints
-                  });
-                  
-                  Hooks.call("cogwheelSyndicateMetaCurrenciesUpdated");
-                  console.log("Zaktualizowano punkty pary:", newSteamValue);
-                }
-
-                // Przygotuj komunikat na czat
-                const agentName = actorRef.name;
-                let message;
-                
-                switch(stressAction) {
-                  case 'controlled':
-                    message = game.i18n.format("COGSYNDICATE.StressSpentControlled", {agentName});
-                    break;
-                  case 'risky':
-                    message = game.i18n.format("COGSYNDICATE.StressSpentRisky", {agentName});
-                    break;
-                  case 'desperate':
-                    message = game.i18n.format("COGSYNDICATE.StressSpentDesperate", {agentName});
-                    break;
-                  case 'steam':
-                    message = game.i18n.format("COGSYNDICATE.StressSpentSteam", {agentName});
-                    break;
-                  case 'help':
-                    message = game.i18n.format("COGSYNDICATE.StressSpentHelp", {agentName});
-                    break;
-                  default:
-                    message = `Agent ${agentName} wydał ${stressCost} punktów stresu.`;
-                }
-
-                // Dodaj informację o traumie do komunikatu jeśli wystąpiła
-                if (traumaOccurred) {
-                  message += `<br><strong>${game.i18n.localize("COGSYNDICATE.TraumaReceived")}</strong>`;
-                }
-
-                console.log("Przygotowany komunikat:", message);
-
-                // Wyślij komunikat na czat
-                const chatMessage = await ChatMessage.create({
-                  content: `<p>${message}</p>`,
-                  speaker: { actor: actorRef.id },
-                  style: CONST.CHAT_MESSAGE_STYLES.OTHER
-                });
-
-                console.log("ChatMessage utworzony:", chatMessage);
-                sheetRef.render();
-                
-                return true;
-              } catch (error) {
-                console.error("Błąd podczas wydawania stresu:", error);
-                new Dialog({
-                  title: game.i18n.localize("COGSYNDICATE.Error"),
-                  content: `<p style="color: red; font-weight: bold; text-align: center; font-size: 16px;">Wystąpił błąd podczas wydawania stresu!<br><br><small>${error.message}</small></p>`,
-                  buttons: {
-                    ok: {
-                      label: game.i18n.localize("COGSYNDICATE.Confirm"),
-                      callback: () => {}
-                    }
-                  },
-                  default: "ok"
-                }).render(true);
-                return false;
-              }
-            };
-
-            // Sprawdź czy agent przekroczy maksymalny poziom stresu
-            const newStressValue = currentStress + stressCost;
-            const willCauseTrauma = newStressValue > maxStress;
-            
-            if (willCauseTrauma) {
-              console.log("Wydanie stresu spowoduje traumę");
-              
-              // Pokaż ostrzeżenie o traumie i pozwól na potwierdzenie
-              const traumaWarningDialog = new Dialog({
-                title: game.i18n.localize("COGSYNDICATE.TraumaWarning"),
-                content: `<p style="text-align: center; font-size: 16px; margin-bottom: 15px;">${game.i18n.format("COGSYNDICATE.TraumaMessage", {agentName: actorRef.name})}</p>`,
-                buttons: {
-                  cancel: {
-                    label: game.i18n.localize("COGSYNDICATE.Cancel"),
-                    callback: () => {
-                      console.log("Anulowano wydanie stresu z traumą");
-                      return false;
-                    }
-                  },
-                  confirm: {
-                    label: game.i18n.localize("COGSYNDICATE.Confirm"),
-                    callback: async () => {
-                      console.log("Potwierdzono wydanie stresu z traumą");
-                      
-                      // Wykonaj akcję z traumą
-                      await executeStressAction(true);
-                      dialog.close();
-                      return true;
-                    }
-                  }
-                },
-                default: "confirm"
-              });
-              
-              traumaWarningDialog.render(true);
-              return false; // Zatrzymaj pierwotny dialog
-            }
-
-            // Wykonaj akcję normalnie (bez traumy)
-            await executeStressAction(false);
-            dialog.close();
-            return true;
-          }
-        }
-      },
-      default: "confirm",
-      width: 450,
-      classes: ["cogsyndicate", "dialog", "spend-stress-dialog"],
-      close: () => {
-        console.log("Dialog zamknięty");
-      }
-    });
-
-    dialog.render(true);
-  }
-
-  // Override methods with shared functions
-  async _onSpendGearShared(event) {
-    event.preventDefault();
-    await ActorGearFunctions.handleSpendGear(this.actor, this, {
-      // v1 uses default behavior, but can be customized here if needed
-    });
-  }
-
-  async _onSpendStressShared(event) {
-    event.preventDefault();
-    await ActorStressFunctions.handleSpendStress(this.actor, this, {
-      // v1 uses default behavior, but can be customized here if needed
-    });
+    await ActorStressFunctions.handleSpendStress(this.actor, this, {});
   }
 
   // Migrate equipment status from old format (used/destroyed separate) to new format (usedDestroyed combined)
@@ -1301,51 +945,66 @@ class CogwheelActorSheet extends foundry.appv1.sheets.ActorSheet {
     }
   }
 
+  async _onDamageRadioChange(event) {
+    const input = event.currentTarget;
+    const group = input.closest('.damage-radio-group');
+    const attribute = group?.dataset?.attribute;
+    if (!attribute) return;
+    const value = parseInt(input.value, 10);
+    if (isNaN(value)) return;
+    await this.actor.update({ [`system.attributes.${attribute}.damage`]: value });
+  }
+
   async _onTraumaDamageSelected(event) {
     event.preventDefault();
     
-    // Determine which attribute was damaged based on the input name
-    const inputName = event.currentTarget.name;
-    let attributeName = '';
-    let attributeNameKey = '';
+    // Capture before any await — event.currentTarget becomes null after async suspension
+    const radioButton = event.currentTarget;
     
-    if (inputName.includes('endurance')) {
-      attributeName = game.i18n.localize("COGSYNDICATE.Machine");
-      attributeNameKey = "COGSYNDICATE.Machine";
-    } else if (inputName.includes('control')) {
-      attributeName = game.i18n.localize("COGSYNDICATE.Engineering");
-      attributeNameKey = "COGSYNDICATE.Engineering";
-    } else if (inputName.includes('determination')) {
-      attributeName = game.i18n.localize("COGSYNDICATE.Intrigue");
-      attributeNameKey = "COGSYNDICATE.Intrigue";
+    // Reset this radio button
+    radioButton.checked = false;
+    
+    // Determine the attribute based on the damage section
+    let attributeName = "unknown";
+    const damageGroup = radioButton.closest('.damage-radio-group');
+    
+    if (damageGroup) {
+      const damageSection = damageGroup.closest('[data-attribute]');
+      if (damageSection) {
+        attributeName = damageSection.dataset.attribute;
+      } else {
+        const sectionElement = damageGroup.closest('.damage-system');
+        if (sectionElement) {
+          const label = sectionElement.querySelector('.damage-label');
+          if (label) {
+            const labelText = label.textContent.toLowerCase();
+            if (labelText.includes('machine') || labelText.includes('maszyn')) {
+              attributeName = "machine";
+            } else if (labelText.includes('engineering') || labelText.includes('inżynier')) {
+              attributeName = "engineering"; 
+            } else if (labelText.includes('intrigue') || labelText.includes('intryg')) {
+              attributeName = "intrigue";
+            }
+          }
+        }
+      }
     }
-
+    
     const agentName = this.actor.name;
     
     // Show steampunk-styled confirmation dialog
-    const confirmed = await new Promise((resolve) => {
-      new Dialog({
-        title: game.i18n.localize("COGSYNDICATE.Trauma"),
-        content: `
-          <div class="steampunk-dialog">
-            <p>${game.i18n.format("COGSYNDICATE.TraumaFromDamageWarning", { 
-              agentName: `<strong style="color: #4a90e2;">${agentName}</strong>` 
-            })} <strong style="color: #9b59b6;">${game.i18n.localize("COGSYNDICATE.Trauma")}</strong>.</p>
-          </div>
-        `,
-        buttons: {
-          cancel: {
-            label: game.i18n.localize("COGSYNDICATE.Cancel"),
-            callback: () => resolve(false)
-          },
-          confirm: {
-            label: game.i18n.localize("COGSYNDICATE.Confirm"),
-            callback: () => resolve(true)
-          }
-        },
-        default: "confirm",
-        classes: ["cogsyndicate", "dialog", "steampunk-dialog"]
-      }).render(true);
+    const confirmed = await foundry.applications.api.DialogV2.confirm({
+      window: { title: game.i18n.localize("COGSYNDICATE.Trauma"), classes: ["cogsyndicate", "steampunk-dialog"] },
+      content: `
+        <div class="steampunk-dialog">
+          <p>${game.i18n.format("COGSYNDICATE.TraumaFromDamageWarning", { 
+            agentName: `<strong style="color: #4a90e2;">${agentName}</strong>` 
+          })} <strong style="color: #9b59b6;">${game.i18n.localize("COGSYNDICATE.Trauma")}</strong>.</p>
+        </div>
+      `,
+      yes: { label: game.i18n.localize("COGSYNDICATE.Confirm"), default: true },
+      no: { label: game.i18n.localize("COGSYNDICATE.Cancel") },
+      rejectClose: false
     });
 
     if (confirmed) {
@@ -1387,28 +1046,17 @@ class CogwheelActorSheet extends foundry.appv1.sheets.ActorSheet {
         ui.notifications.warn(game.i18n.localize("COGSYNDICATE.MaxTraumaReached"));
         
         // Uncheck the radio button since trauma cannot be increased
-        event.currentTarget.checked = false;
+        radioButton.checked = false;
       }
     } else {
       // User cancelled, uncheck the radio button
-      event.currentTarget.checked = false;
+      radioButton.checked = false;
     }
   }
 }
 
-// Foundry v13 compatibility for registration - use same pattern as chlopcy-rpg
-const CHLOPCYCONFIG = {
-  Actors: typeof foundry?.documents?.collections?.Actors !== "undefined" 
-    ? foundry.documents.collections.Actors 
-    : Actors,
-  ActorSheet: typeof foundry?.appv1?.sheets?.ActorSheet !== "undefined"
-    ? foundry.appv1.sheets.ActorSheet
-    : ActorSheet
-};
-
-// Rejestracja arkusza z kompatybilnością
-CHLOPCYCONFIG.Actors.unregisterSheet("core", CHLOPCYCONFIG.ActorSheet);
-CHLOPCYCONFIG.Actors.registerSheet("cogwheel-syndicate", CogwheelActorSheet, {
+// Rejestracja arkusza (ApplicationV2)
+foundry.documents.collections.Actors.registerSheet("cogwheel-syndicate", CogwheelActorSheet, {
   types: ["agent"],
   makeDefault: true,
   label: "Cogwheel Actor Sheet"

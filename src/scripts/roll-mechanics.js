@@ -190,12 +190,10 @@ export async function performAttributeRoll(actor, attribute) {
           ${game.i18n.localize("COGSYNDICATE.DevilDieLabel")}
         </label>
       </div>
-      <div class="form-group trauma-group">
-        <label>
-          <input type="checkbox" name="applyTrauma" />
-          ${game.i18n.format("COGSYNDICATE.ApplyTraumaLabel", { traumaValue: traumaValue })}
-        </label>
-      </div>
+      ${traumaValue > 0 ? `
+      <div class="form-group trauma-group trauma-info">
+        <span class="trauma-indicator">💀 ${game.i18n.format("COGSYNDICATE.ApplyTraumaLabel", { traumaValue: traumaValue })}</span>
+      </div>` : ''}
       <div class="form-group modifier-group">
         <strong><span class="modifier-label">${game.i18n.localize("COGSYNDICATE.RollModifier")}</span>:</strong>
         <select name="rollModifier">
@@ -235,7 +233,6 @@ export async function performAttributeRoll(actor, attribute) {
           const useStressDie = form.querySelector('[name="stressDie"]').checked;
           const useSteamDie = form.querySelector('[name="steamDie"]').checked;
           const useDevilDie = form.querySelector('[name="devilDie"]').checked;
-          const applyTrauma = form.querySelector('[name="applyTrauma"]').checked;
           const rollModifier = parseInt(form.querySelector('[name="rollModifier"]').value, 10) || 0;
             const positionModifiers = { desperate: -3, risky: 0, controlled: 3 };
             const positionModifier = positionModifiers[position];
@@ -250,7 +247,7 @@ export async function performAttributeRoll(actor, attribute) {
 
             let effectiveAttrValue = baseEffectiveAttrValue;
             let traumaModifier = 0;
-            if (applyTrauma && traumaValue > 0) {
+            if (traumaValue > 0) {
               traumaModifier = -traumaValue;
               effectiveAttrValue = baseEffectiveAttrValue + traumaModifier;
             }
@@ -352,70 +349,27 @@ export async function performAttributeRoll(actor, attribute) {
               devilDialogMessage = `<p>${game.i18n.format("COGSYNDICATE.DevilDieUsed", { agentName: actor.name })}</p>`;
             }
 
-            let diceCount = 2;
-            if (useStressDie) diceCount += 1;
-            if (useSteamDie) diceCount += 1;
-            if (useDevilDie) diceCount += 1;
+            // Osobne Roll dla każdego typu kości – unikalne kolory w Dice So Nice
+            const mainRoll = await new Roll(`2d12 + ${effectiveAttrValue} + ${positionModifier} + ${rollModifier}`).evaluate();
+            const stressRoll = useStressDie ? await new Roll('1d12[cogwheel_stress]').evaluate() : null;
+            const steamRoll  = useSteamDie  ? await new Roll('1d12[cogwheel_steam]').evaluate()  : null;
+            const devilRoll  = useDevilDie  ? await new Roll('1d12[cogwheel_devil]').evaluate()  : null;
 
-            // Foundry v13 compatible roll formula
-            const rollFormula = `${diceCount}d12 + ${effectiveAttrValue} + ${positionModifier} + ${rollModifier}`;
-            console.log("Roll formula:", rollFormula);
-            
-            const roll = new Roll(rollFormula);
-            await roll.evaluate();
-            
-            console.log("Roll after evaluate:", roll);
-            console.log("Roll.class:", roll.constructor.name);
-            console.log("Roll properties:", Object.keys(roll));
+            const [die1, die2] = mainRoll.terms[0].results.map(r => r.result);
+            const stressDie = stressRoll ? stressRoll.dice[0].total : null;
+            const steamDie  = steamRoll  ? steamRoll.dice[0].total  : null;
+            const devilDie  = devilRoll  ? devilRoll.dice[0].total  : null;
 
-            const diceResults = roll.terms[0].results.map(r => r.result);
-            let die1, die2, stressDie, steamDie, devilDie;
-            
-            if (diceCount === 5) {
-              // 2d12 + stress + steam + devil
-              [die1, die2, stressDie, steamDie, devilDie] = diceResults;
-            } else if (diceCount === 4) {
-              // 2d12 + dwie dodatkowe kości
-              if (useStressDie && useSteamDie) {
-                [die1, die2, stressDie, steamDie] = diceResults;
-                devilDie = null;
-              } else if (useStressDie && useDevilDie) {
-                [die1, die2, stressDie, devilDie] = diceResults;
-                steamDie = null;
-              } else if (useSteamDie && useDevilDie) {
-                [die1, die2, steamDie, devilDie] = diceResults;
-                stressDie = null;
-              }
-            } else if (diceCount === 3) {
-              // 2d12 + jedna dodatkowa kość
-              if (useStressDie) {
-                [die1, die2, stressDie] = diceResults;
-                steamDie = null;
-                devilDie = null;
-              } else if (useSteamDie) {
-                [die1, die2, steamDie] = diceResults;
-                stressDie = null;
-                devilDie = null;
-              } else if (useDevilDie) {
-                [die1, die2, devilDie] = diceResults;
-                stressDie = null;
-                steamDie = null;
-              }
-            } else {
-              // tylko 2d12
-              [die1, die2] = diceResults;
-              stressDie = null;
-              steamDie = null;
-              devilDie = null;
-            }
-            let total = roll.total;
+            const allDiceValues = [die1, die2, stressDie, steamDie, devilDie].filter(v => v !== null);
+            const diceCount = allDiceValues.length;
+            let total = mainRoll.total + (stressDie ?? 0) + (steamDie ?? 0) + (devilDie ?? 0);
             let nemesisPoints = 0;
             let steamPoints = 0;
             let result;
             let resultType = ""; // Dodana zmienna do śledzenia typu wyniku
 
             const counts = {};
-            diceResults.forEach(die => counts[die] = (counts[die] || 0) + 1);
+            allDiceValues.forEach(die => counts[die] = (counts[die] || 0) + 1);
 
             if (counts[1] >= 2) {
               result = `<span style='color: red; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.AutoCriticalFailure")}</span>`;
@@ -426,7 +380,7 @@ export async function performAttributeRoll(actor, attribute) {
               resultType = "AutoCriticalSuccess";
               steamPoints += Math.min(counts[12], 4); // Naliczamy punkty proporcjonalnie do liczby 12 (max 4)
             } else {
-              diceResults.forEach(die => {
+              allDiceValues.forEach(die => {
                 if (die === 1) nemesisPoints += 1;
                 if (die === 12) steamPoints += 1;
               });
@@ -541,7 +495,6 @@ export async function performAttributeRoll(actor, attribute) {
               useStressDie,
               useSteamDie,
               useDevilDie,
-              applyTrauma,
               rollModifier,
               baseEffectiveAttrValue,
               traumaValue
@@ -610,7 +563,7 @@ export async function performAttributeRoll(actor, attribute) {
                 ${useSteamDie ? steamDialogMessage : ""}
                 ${useDevilDie ? devilDialogMessage : ""}
                 ${traumaDialogMessage}
-                ${applyTrauma && traumaModifier !== 0 ? `<p>${game.i18n.format("COGSYNDICATE.TraumaApplied", { traumaValue: Math.abs(traumaModifier) })}</p>` : ""}
+                ${traumaModifier !== 0 ? `<p>${game.i18n.format("COGSYNDICATE.TraumaApplied", { traumaValue: Math.abs(traumaModifier) })}</p>` : ""}
                 ${nemesisPoints > 0 ? `<p><span style='color: purple; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedNemesisPoint", { amount: nemesisPoints })}</span></p>` : ""}
                 ${steamPoints > 0 ? `<p><span style='color: orange; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedSteamPoint", { amount: steamPoints })}</span></p>` : ""}
                 ${steamBoosterMessage}
@@ -621,10 +574,15 @@ export async function performAttributeRoll(actor, attribute) {
               </div>
             `;
 
+            // Wyświetl kości 3D z kolorami (Dice So Nice)
+            if (game.dice3d) {
+              const dsnRolls = [mainRoll, stressRoll, steamRoll, devilRoll].filter(Boolean);
+              await Promise.all(dsnRolls.map(r => game.dice3d.showForRoll(r, game.user, false)));
+            }
+
             await ChatMessage.create({
               content: chatContent,
               speaker: { actor: actor.id },
-              rolls: [roll],
               flavor: game.i18n.localize("COGSYNDICATE.Roll3D"),
               rollMode: "publicroll"
             });
@@ -736,7 +694,6 @@ async function executeRollWithData(actor, data, isReroll = false) {
     useStressDie,
     useSteamDie,
     useDevilDie,
-    applyTrauma,
     rollModifier,
     baseEffectiveAttrValue,
     traumaValue
@@ -758,7 +715,7 @@ async function executeRollWithData(actor, data, isReroll = false) {
 
   let effectiveAttrValue = baseEffectiveAttrValue;
   let traumaModifier = 0;
-  if (applyTrauma && traumaValue > 0) {
+  if (traumaValue > 0) {
     traumaModifier = -traumaValue;
     effectiveAttrValue = baseEffectiveAttrValue + traumaModifier;
   }
@@ -877,66 +834,27 @@ async function executeRollWithData(actor, data, isReroll = false) {
     }
   }
 
-  let diceCount = 2;
-  if (useStressDie) diceCount += 1;
-  if (useSteamDie) diceCount += 1;
-  if (useDevilDie) diceCount += 1;
+  // Osobne Roll dla każdego typu kości – unikalne kolory w Dice So Nice
+  const mainRoll = await new Roll(`2d12 + ${effectiveAttrValue} + ${positionModifier} + ${rollModifier}`).evaluate();
+  const stressRoll = useStressDie ? await new Roll('1d12[cogwheel_stress]').evaluate() : null;
+  const steamRoll  = useSteamDie  ? await new Roll('1d12[cogwheel_steam]').evaluate()  : null;
+  const devilRoll  = useDevilDie  ? await new Roll('1d12[cogwheel_devil]').evaluate()  : null;
 
-  // Foundry v13 compatible roll formula
-  const rollFormula = `${diceCount}d12 + ${effectiveAttrValue} + ${positionModifier} + ${rollModifier}`;
-  console.log("Reroll formula:", rollFormula);
-  
-  const roll = new Roll(rollFormula);
-  await roll.evaluate();
+  const [die1, die2] = mainRoll.terms[0].results.map(r => r.result);
+  const stressDie = stressRoll ? stressRoll.dice[0].total : null;
+  const steamDie  = steamRoll  ? steamRoll.dice[0].total  : null;
+  const devilDie  = devilRoll  ? devilRoll.dice[0].total  : null;
 
-  const diceResults = roll.terms[0].results.map(r => r.result);
-  let die1, die2, stressDie, steamDie, devilDie;
-  
-  if (diceCount === 5) {
-    // 2d12 + stress + steam + devil
-    [die1, die2, stressDie, steamDie, devilDie] = diceResults;
-  } else if (diceCount === 4) {
-    // 2d12 + dwie dodatkowe kości
-    if (useStressDie && useSteamDie) {
-      [die1, die2, stressDie, steamDie] = diceResults;
-      devilDie = null;
-    } else if (useStressDie && useDevilDie) {
-      [die1, die2, stressDie, devilDie] = diceResults;
-      steamDie = null;
-    } else if (useSteamDie && useDevilDie) {
-      [die1, die2, steamDie, devilDie] = diceResults;
-      stressDie = null;
-    }
-  } else if (diceCount === 3) {
-    // 2d12 + jedna dodatkowa kość
-    if (useStressDie) {
-      [die1, die2, stressDie] = diceResults;
-      steamDie = null;
-      devilDie = null;
-    } else if (useSteamDie) {
-      [die1, die2, steamDie] = diceResults;
-      stressDie = null;
-      devilDie = null;
-    } else if (useDevilDie) {
-      [die1, die2, devilDie] = diceResults;
-      stressDie = null;
-      steamDie = null;
-    }
-  } else {
-    // tylko 2d12
-    [die1, die2] = diceResults;
-    stressDie = null;
-    steamDie = null;
-    devilDie = null;
-  }
-  let total = roll.total;
+  const allDiceValues = [die1, die2, stressDie, steamDie, devilDie].filter(v => v !== null);
+  const diceCount = allDiceValues.length;
+  let total = mainRoll.total + (stressDie ?? 0) + (steamDie ?? 0) + (devilDie ?? 0);
   let nemesisPoints = 0;
   let steamPoints = 0;
   let result;
   let resultType = "";
 
   const counts = {};
-  diceResults.forEach(die => counts[die] = (counts[die] || 0) + 1);
+  allDiceValues.forEach(die => counts[die] = (counts[die] || 0) + 1);
 
   if (counts[11] >= 2) {
     result = `<span style='color: red; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.AutoCriticalFailure")}</span>`;
@@ -947,7 +865,7 @@ async function executeRollWithData(actor, data, isReroll = false) {
     resultType = "AutoCriticalSuccess";
     steamPoints += Math.min(counts[12], 4);
   } else {
-    diceResults.forEach(die => {
+    allDiceValues.forEach(die => {
       if (die === 11) nemesisPoints += 1;
       if (die === 12) steamPoints += 1;
     });
@@ -1068,7 +986,6 @@ async function executeRollWithData(actor, data, isReroll = false) {
       useStressDie,
       useSteamDie,
       useDevilDie,
-      applyTrauma,
       rollModifier,
       baseEffectiveAttrValue,
       traumaValue
@@ -1136,7 +1053,7 @@ async function executeRollWithData(actor, data, isReroll = false) {
       ${useSteamDie ? steamDialogMessage : ""}
       ${useDevilDie ? devilDialogMessage : ""}
       ${traumaMessageFromDialog}
-      ${applyTrauma && traumaModifier !== 0 ? `<p>${game.i18n.format("COGSYNDICATE.TraumaApplied", { traumaValue: Math.abs(traumaModifier) })}</p>` : ""}
+      ${traumaModifier !== 0 ? `<p>${game.i18n.format("COGSYNDICATE.TraumaApplied", { traumaValue: Math.abs(traumaModifier) })}</p>` : ""}
       ${nemesisPoints > 0 ? `<p><span style='color: purple; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedNemesisPoint", { amount: nemesisPoints })}</span></p>` : ""}
       ${steamPoints > 0 ? `<p><span style='color: orange; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedSteamPoint", { amount: steamPoints })}</span></p>` : ""}
       ${steamBoosterMessage}
@@ -1147,10 +1064,15 @@ async function executeRollWithData(actor, data, isReroll = false) {
     </div>
   `;
 
+  // Wyświetl kości 3D z kolorami (Dice So Nice)
+  if (game.dice3d) {
+    const dsnRolls = [mainRoll, stressRoll, steamRoll, devilRoll].filter(Boolean);
+    await Promise.all(dsnRolls.map(r => game.dice3d.showForRoll(r, game.user, false)));
+  }
+
   await ChatMessage.create({
     content: chatContent,
     speaker: { actor: actor.id },
-    rolls: [roll],
     flavor: game.i18n.localize("COGSYNDICATE.Roll3D"),
     rollMode: "publicroll"
   });

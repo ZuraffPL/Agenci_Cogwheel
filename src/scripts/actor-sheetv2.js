@@ -74,9 +74,15 @@ class CogwheelActorSheetV2 extends foundry.applications.api.HandlebarsApplicatio
     data.system.attributes.engineering.base = parseInt(data.system.attributes.engineering.base, 10) || 1;
     data.system.attributes.intrigue.base = parseInt(data.system.attributes.intrigue.base, 10) || 1;
 
-    data.system.attributes.machine.damage = parseInt(data.system.attributes.machine.damage, 10) || 0;
-    data.system.attributes.engineering.damage = parseInt(data.system.attributes.engineering.damage, 10) || 0;
-    data.system.attributes.intrigue.damage = parseInt(data.system.attributes.intrigue.damage, 10) || 0;
+    // Normalize damage values: convert negative legacy values to their absolute value,
+    // preserve "T" (trauma), treat NaN as 0
+    for (const attrName of ['machine', 'engineering', 'intrigue']) {
+      const raw = data.system.attributes[attrName].damage;
+      if (raw !== 'T') {
+        const parsed = parseInt(raw, 10);
+        data.system.attributes[attrName].damage = isNaN(parsed) ? 0 : Math.abs(parsed);
+      }
+    }
 
     data.system.resources = data.system.resources || {};
     data.system.resources.gear = data.system.resources.gear || { value: 0, max: 4, basis: "machine" };
@@ -89,11 +95,13 @@ class CogwheelActorSheetV2 extends foundry.applications.api.HandlebarsApplicatio
     data.system.equipments = data.system.equipments || [];
     data.system.notes = data.system.notes || "";
 
-    // Calculate effective attributes based on base value minus damage
+    // Calculate effective attributes based on base value minus damage.
+    // damage is already normalized (non-negative integer or "T") by the block above.
     data.effectiveAttributes = {};
     for (const attrName of ['machine', 'engineering', 'intrigue']) {
       const baseValue = data.system.attributes[attrName].base || 1;
-      const damageValue = parseInt(data.system.attributes[attrName].damage, 10) || 0;
+      const rawDamage = data.system.attributes[attrName].damage;
+      const damageValue = (rawDamage === 'T') ? baseValue : (parseInt(rawDamage, 10) || 0);
       data.effectiveAttributes[attrName] = Math.max(0, baseValue - damageValue);
       data.system.attributes[attrName].value = data.effectiveAttributes[attrName];
     }
@@ -154,6 +162,7 @@ class CogwheelActorSheetV2 extends foundry.applications.api.HandlebarsApplicatio
     html.querySelectorAll('.spend-gear-btn').forEach(el => el.addEventListener('click', this._onSpendGear.bind(this)));
     html.querySelectorAll('.spend-stress-btn').forEach(el => el.addEventListener('click', this._onSpendStress.bind(this)));
     html.querySelectorAll('input[type="radio"][value="T"]').forEach(el => el.addEventListener('click', this._onTraumaDamageSelected.bind(this)));
+    html.querySelectorAll('.damage-radio-group input[type="radio"]:not([value="T"])').forEach(el => el.addEventListener('change', this._onDamageRadioChange.bind(this)));
     this._assignGearBackgrounds(html);
     this._assignEquipmentColors(html);
     this._updateEquipmentPointsDisplay(html);
@@ -577,6 +586,17 @@ class CogwheelActorSheetV2 extends foundry.applications.api.HandlebarsApplicatio
       updates["system.equipments"] = [];
     }
 
+    // Migrate legacy negative damage values to positive (absolute value)
+    for (const attrName of ['machine', 'engineering', 'intrigue']) {
+      const raw = this.actor.system.attributes?.[attrName]?.damage;
+      if (raw !== undefined && raw !== 'T') {
+        const parsed = parseInt(raw, 10);
+        if (!isNaN(parsed) && parsed < 0) {
+          updates[`system.attributes.${attrName}.damage`] = Math.abs(parsed);
+        }
+      }
+    }
+
     if (Object.keys(updates).length > 0) {
       await this.actor.update(updates);
     }
@@ -960,15 +980,28 @@ class CogwheelActorSheetV2 extends foundry.applications.api.HandlebarsApplicatio
     }
   }
 
+  async _onDamageRadioChange(event) {
+    const input = event.currentTarget;
+    const group = input.closest('.damage-radio-group');
+    const attribute = group?.dataset?.attribute;
+    if (!attribute) return;
+    const value = parseInt(input.value, 10);
+    if (isNaN(value)) return;
+    await this.actor.update({ [`system.attributes.${attribute}.damage`]: value });
+  }
+
   async _onTraumaDamageSelected(event) {
     event.preventDefault();
     
+    // Capture before any await — event.currentTarget becomes null after async suspension
+    const radioButton = event.currentTarget;
+    
     // Reset this radio button
-    event.currentTarget.checked = false;
+    radioButton.checked = false;
     
     // Determine the attribute based on the damage section
     let attributeName = "unknown";
-    const damageGroup = event.currentTarget.closest('.damage-radio-group');
+    const damageGroup = radioButton.closest('.damage-radio-group');
     
     if (damageGroup) {
       const damageSection = damageGroup.closest('[data-attribute]');
@@ -1049,11 +1082,11 @@ class CogwheelActorSheetV2 extends foundry.applications.api.HandlebarsApplicatio
         ui.notifications.warn(game.i18n.localize("COGSYNDICATE.MaxTraumaReached"));
         
         // Uncheck the radio button since trauma cannot be increased
-        event.currentTarget.checked = false;
+        radioButton.checked = false;
       }
     } else {
       // User cancelled, uncheck the radio button
-      event.currentTarget.checked = false;
+      radioButton.checked = false;
     }
   }
 }

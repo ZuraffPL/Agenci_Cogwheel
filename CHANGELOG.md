@@ -11,6 +11,24 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.25] - 2026-02-25
+
+### Fixed | Naprawiono
+- **Actor Sheet V1 ApplicationV2 Migration** | **Migracja CogwheelActorSheet do ApplicationV2**
+  - `CogwheelActorSheet` (`agent` type) — pełna migracja: `HandlebarsApplicationMixin(ActorSheetV2)`, `DEFAULT_OPTIONS`, `PARTS`, `tabGroups`, `_prepareContext`, `_onRender` | Full migration from V1 `foundry.appv1.sheets.ActorSheet` to V2 framework
+  - Usunięto ostrzeżenie deprecjacji `Application V1` dla kart agenta v1 | Removed V1 deprecation warning for agent v1 sheets
+  - `_updateData()` — dodano metodę inicjalizacji/migracji danych (identyczna z v2) | Added data initialization/migration method
+  - `_onDamageRadioChange()` — dodano obsługę radio buttonów obrażeń atrybutów (native DOM) | Added damage radio button handler
+  - `_onTraumaDamageSelected()` — `new Promise(Dialog)` → `DialogV2.confirm`; przechwytywanie `radioButton` przed `await` (fix nullref) | Migrated to DialogV2 with safe radioButton capture
+  - Usunięto 417 linii osieroconego kodu V1 (`_onSpendGearShared`, `_onSpendStressShared`, stara implementacja dialogów) | Removed 417 lines of orphaned V1 dialog code
+  - Rejestracja: `CHLOPCYCONFIG.Actors.registerSheet` → `foundry.documents.collections.Actors.registerSheet` | Updated sheet registration to V2 pattern
+- **DSN Dice So Nice Fix** | **Naprawa DSN Dice So Nice**
+  - Usunięto `fontScale: 1.2` i `material: 'plastic'` z definicji colorsetów (powodowały `mergeObject` error) | Removed invalid fields causing `mergeObject` crash
+  - Zastąpiono `material: 'plastic'` przez `texture: 'none'` (prawidłowe API DSN) | Replaced with correct DSN API field
+  - Przywrócono `"default"` jako drugi argument `addColorset()` | Restored `"default"` second argument
+- **Double Dice Animation Fix** | **Naprawa Podwójnej Animacji Kości**
+  - Usunięto `rolls: [...]` z obu wywołań `ChatMessage.create` — animacja DSN była wywoływana podwójnie (przez `rolls` field i przez `showForRoll()`) | Removed `rolls` field from ChatMessage to prevent double DSN animation
+
 ## [0.9.24] - 2026-02-20
 
 ### Changed | Zmieniono

@@ -298,3 +298,44 @@ Hooks.once("setup", () => {
     // Usunięto obsługę "updateClocks", bo game.settings automatycznie synchronizuje dane
   });
 });
+
+/**
+ * Rejestracja kolorów kości specjalnych dla Dice So Nice.
+ * Kość Stresu  – żółta, czarne cyfry
+ * Kość Pary    – niebieska, białe cyfry z czarną obwódką
+ * Kość Czarciego Targu – czarna, czerwone cyfry
+ */
+Hooks.once("diceSoNiceReady", (dice3d) => {
+  dice3d.addColorset({
+    name: "cogwheel_stress",
+    description: "Kość Stresu",
+    category: "Cogwheel Syndicate",
+    foreground: "#000000",
+    background: "#FFD700",
+    outline: "#333333",
+    edge: "#ccaa00",
+    texture: "none"
+  }, "default");
+
+  dice3d.addColorset({
+    name: "cogwheel_steam",
+    description: "Kość Pary",
+    category: "Cogwheel Syndicate",
+    foreground: "#ffffff",
+    background: "#0967f3",
+    outline: "#000000",
+    edge: "#0550cc",
+    texture: "none"
+  }, "default");
+
+  dice3d.addColorset({
+    name: "cogwheel_devil",
+    description: "Kość Czarciego Targu",
+    category: "Cogwheel Syndicate",
+    foreground: "#ff0000",
+    background: "#111111",
+    outline: "#ff0000",
+    edge: "#330000",
+    texture: "none"
+  }, "default");
+});

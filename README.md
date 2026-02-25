@@ -2,12 +2,12 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.9.24**
+**Current System Version: 0.9.25**
 
 ## ⚠️ Important Version Notice | Ważne Informacje o Wersji
 
 ### Foundry VTT v13+ (Current/Latest)
-- **Version 0.9.24**: Requires Foundry VTT v13.348 or higher
+- **Version 0.9.25**: Requires Foundry VTT v13.348 or higher
 - **Full ApplicationV2 framework** — no V1 deprecation warnings
 - **Latest features and optimizations**
 
@@ -23,6 +23,15 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 *A game about secret agents who fight threats of the industrial revolution era.*
 
 ## 🔥 Latest Features
+
+### ⚙️ Actor Sheet V1 ApplicationV2 Migration (v0.9.25)
+- **🔧 Zero V1 Warnings**: `CogwheelActorSheet` (agent v1) fully migrated to ApplicationV2 — no more deprecation warnings
+- **📋 `_updateData()`**: Data initialization/migration method added (mirrors v2 implementation)
+- **🎯 `_onDamageRadioChange()`**: Native DOM handler for attribute damage radio buttons
+- **💬 `DialogV2`**: `_onTraumaDamageSelected` migrated — radioButton captured before `await` to prevent null reference
+- **🧹 Code Cleanup**: Removed 417 lines of orphaned V1 dialog code
+- **🎲 DSN Fix**: Removed invalid `fontScale`/`material` fields from colorsets (fixed `mergeObject` crash)
+- **🎲 No Double Animation**: Removed `rolls` field from `ChatMessage.create` to prevent double DSN dice animation
 
 ### ⚙️ ApplicationV2 Full Migration (v0.9.24)
 - **🔧 Zero V1 Warnings**: All sheets and dialogs fully migrated to Foundry VTT ApplicationV2 framework

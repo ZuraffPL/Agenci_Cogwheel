@@ -283,6 +283,15 @@
   color: #000000 !important; /* Czarny kolor */
 }
 
+/* Styl informacyjnego wskaźnika traumy (zastąpił checkbox) */
+.roll-dialog .trauma-info .trauma-indicator {
+  display: block;
+  color: #8a2be2 !important;
+  font-weight: bold !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  cursor: default;
+}
+
 /* Możesz dodać tu kolejne style dla innych elementów okna rzutu */
 
 /* ============================================================
