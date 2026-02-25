@@ -30,7 +30,8 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 - **🎯 `_onDamageRadioChange()`**: Native DOM handler for attribute damage radio buttons
 - **💬 `DialogV2`**: `_onTraumaDamageSelected` migrated — radioButton captured before `await` to prevent null reference
 - **🧹 Code Cleanup**: Removed 417 lines of orphaned V1 dialog code
-- **🎲 DSN Fix**: Removed invalid `fontScale`/`material` fields from colorsets (fixed `mergeObject` crash)
+- **🎲 DSN Colorsets Fixed**: Predefined colorsets restored and working — stress dice (gold/black), steam dice (blue), devil dice (dark)
+- **🎲 DSN Fix**: Removed invalid `fontScale`/`material` fields from colorsets (fixed `mergeObject` crash), replaced with `texture: none`
 - **🎲 No Double Animation**: Removed `rolls` field from `ChatMessage.create` to prevent double DSN dice animation
 
 ### ⚙️ ApplicationV2 Full Migration (v0.9.24)

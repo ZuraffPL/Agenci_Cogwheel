@@ -22,10 +22,12 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - `_onTraumaDamageSelected()` — `new Promise(Dialog)` → `DialogV2.confirm`; przechwytywanie `radioButton` przed `await` (fix nullref) | Migrated to DialogV2 with safe radioButton capture
   - Usunięto 417 linii osieroconego kodu V1 (`_onSpendGearShared`, `_onSpendStressShared`, stara implementacja dialogów) | Removed 417 lines of orphaned V1 dialog code
   - Rejestracja: `CHLOPCYCONFIG.Actors.registerSheet` → `foundry.documents.collections.Actors.registerSheet` | Updated sheet registration to V2 pattern
-- **DSN Dice So Nice Fix** | **Naprawa DSN Dice So Nice**
-  - Usunięto `fontScale: 1.2` i `material: 'plastic'` z definicji colorsetów (powodowały `mergeObject` error) | Removed invalid fields causing `mergeObject` crash
+- **DSN Dice So Nice — Predefiniowane Kolory Kości** | **DSN Dice So Nice — Predefined Dice Colorsets**
+  - Naprawiono rejestrację colorsetów `cogwheel_stress` (złoto/czerń), `cogwheel_steam` (niebieski), `cogwheel_devil` (ciemny) | Fixed registration of `cogwheel_stress` (gold/black), `cogwheel_steam` (blue), `cogwheel_devil` (dark) colorsets
+  - Usunięto `fontScale: 1.2` i `material: 'plastic'` z definicji colorsetów (powodowały błąd `mergeObject`) | Removed invalid fields causing `mergeObject` crash
   - Zastąpiono `material: 'plastic'` przez `texture: 'none'` (prawidłowe API DSN) | Replaced with correct DSN API field
   - Przywrócono `"default"` jako drugi argument `addColorset()` | Restored `"default"` second argument
+  - Kości stresu, pary i Czarciego Targu mają teraz unikalny wygląd automatycznie po włączeniu DSN | Stress, steam and devil dice now have unique appearance automatically when DSN is enabled
 - **Double Dice Animation Fix** | **Naprawa Podwójnej Animacji Kości**
   - Usunięto `rolls: [...]` z obu wywołań `ChatMessage.create` — animacja DSN była wywoływana podwójnie (przez `rolls` field i przez `showForRoll()`) | Removed `rolls` field from ChatMessage to prevent double DSN animation
 
