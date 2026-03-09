@@ -2,12 +2,12 @@
 
 A Foundry Virtual Tabletop system for **Agenci Cogwheel** - a tabletop RPG about secret agents fighting threats in the industrial revolution era.
 
-**Current System Version: 0.9.25**
+**Current System Version: 0.9.26**
 
 ## ⚠️ Important Version Notice | Ważne Informacje o Wersji
 
 ### Foundry VTT v13+ (Current/Latest)
-- **Version 0.9.25**: Requires Foundry VTT v13.348 or higher
+- **Version 0.9.26**: Requires Foundry VTT v13.348 or higher
 - **Full ApplicationV2 framework** — no V1 deprecation warnings
 - **Latest features and optimizations**
 
@@ -23,6 +23,13 @@ Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysło
 *A game about secret agents who fight threats of the industrial revolution era.*
 
 ## 🔥 Latest Features
+
+### 🎯 Agent V2 Damage Radio Buttons Visual Fix (v0.9.26)
+- **📐 Perfect Alignment**: Selection fill and border now perfectly centred using `box-shadow` inset technique — no more offset
+- **✨ `all: unset` Reset**: Foundry global styles fully neutralised on v2 radio inputs — clean rendering
+- **🟡 Gold Fill**: Checked state uses bright gold `#ffe8a0` fill + `#f5d878` border, consistent with steampunk aesthetic
+- **🔧 No Pseudo-Elements**: Dropped `::before` approach that caused positioning issues; pure CSS box-shadow solution
+- **🎨 Higher Specificity**: `.cogwheel.agentv2` selector ensures v2-specific rules always win over Foundry globals
 
 ### ⚙️ Actor Sheet V1 ApplicationV2 Migration (v0.9.25)
 - **🔧 Zero V1 Warnings**: `CogwheelActorSheet` (agent v1) fully migrated to ApplicationV2 — no more deprecation warnings

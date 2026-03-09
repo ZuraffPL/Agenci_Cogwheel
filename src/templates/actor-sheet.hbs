@@ -7,12 +7,12 @@
   <section class="sheet-body">
     <!-- Nawigacja tabów -->
     <nav class="sheet-tabs tabs" data-group="primary">
-      <a class="item active" data-tab="core">{{localize "COGSYNDICATE.CoreTab"}}</a>
-      <a class="item" data-tab="feats">{{localize "COGSYNDICATE.FeatsTab"}}</a>
-      <a class="item" data-tab="equipment">{{localize "COGSYNDICATE.EquipmentTab"}}</a>
-      <a class="item" data-tab="traumas">{{localize "COGSYNDICATE.TraumasTab"}}</a>
-      <a class="item" data-tab="development">{{localize "COGSYNDICATE.DevelopmentTab"}}</a>
-      <a class="item" data-tab="notes">{{localize "COGSYNDICATE.NotesTab"}}</a>
+      <a class="item active" data-tab="core" data-group="primary" data-action="tab">{{localize "COGSYNDICATE.CoreTab"}}</a>
+      <a class="item" data-tab="feats" data-group="primary" data-action="tab">{{localize "COGSYNDICATE.FeatsTab"}}</a>
+      <a class="item" data-tab="equipment" data-group="primary" data-action="tab">{{localize "COGSYNDICATE.EquipmentTab"}}</a>
+      <a class="item" data-tab="traumas" data-group="primary" data-action="tab">{{localize "COGSYNDICATE.TraumasTab"}}</a>
+      <a class="item" data-tab="development" data-group="primary" data-action="tab">{{localize "COGSYNDICATE.DevelopmentTab"}}</a>
+      <a class="item" data-tab="notes" data-group="primary" data-action="tab">{{localize "COGSYNDICATE.NotesTab"}}</a>
     </nav>
 
     <!-- Zawartość tabów -->
@@ -60,7 +60,7 @@
               <div class="damage-section">
                 <label class="damage-label">{{localize "COGSYNDICATE.MachineDamage"}}</label>
                 <div class="damage-radio-group" data-attribute="machine">
-                  {{#times system.attributes.machine.base}}
+                  {{#times 3}}
                     <div class="damage-radio-item">
                       <input type="radio" id="machine-damage-{{this}}" name="system.attributes.machine.damage" value="{{this}}" {{#if (eq ../system.attributes.machine.damage this)}}checked{{/if}}>
                       <label for="machine-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
@@ -83,7 +83,7 @@
               <div class="damage-section">
                 <label class="damage-label">{{localize "COGSYNDICATE.EngineeringDamage"}}</label>
                 <div class="damage-radio-group" data-attribute="engineering">
-                  {{#times system.attributes.engineering.base}}
+                  {{#times 3}}
                     <div class="damage-radio-item">
                       <input type="radio" id="engineering-damage-{{this}}" name="system.attributes.engineering.damage" value="{{this}}" {{#if (eq ../system.attributes.engineering.damage this)}}checked{{/if}}>
                       <label for="engineering-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
@@ -106,7 +106,7 @@
               <div class="damage-section">
                 <label class="damage-label">{{localize "COGSYNDICATE.IntrigueDamage"}}</label>
                 <div class="damage-radio-group" data-attribute="intrigue">
-                  {{#times system.attributes.intrigue.base}}
+                  {{#times 3}}
                     <div class="damage-radio-item">
                       <input type="radio" id="intrigue-damage-{{this}}" name="system.attributes.intrigue.damage" value="{{this}}" {{#if (eq ../system.attributes.intrigue.damage this)}}checked{{/if}}>
                       <label for="intrigue-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
@@ -214,7 +214,7 @@
         </div>
       </div>
 
-<div class="tab equipment" data-tab="equipment">
+<div class="tab equipment" data-group="primary" data-tab="equipment">
   <section class="equipment-section archetype-section">
     <h3><i class="fas fa-backpack"></i> {{localize "COGSYNDICATE.EquipmentTab"}}</h3>
     

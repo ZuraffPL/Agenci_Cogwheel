@@ -1,33 +1,35 @@
-import { registerHandlebarsHelpers } from "./handlebars.mjs";
+// Karta Bazy - zmigrowana do ApplicationV2 (HandlebarsApplicationMixin + ActorSheetV2)
+class CogwheelHQSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2) {
+  static DEFAULT_OPTIONS = {
+    classes: ["cogwheel", "sheet", "actor", "hq"],
+    position: { width: 700, height: 900 },
+    window: { resizable: true },
+    form: { submitOnChange: true }
+  };
 
-// Use foundry.appv1 namespace to avoid deprecation warnings
-class CogwheelHQSheet extends foundry.appv1.sheets.ActorSheet {
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      template: "systems/cogwheel-syndicate/src/templates/hq-sheet.hbs",
-      classes: ["cogwheel", "sheet", "actor", "hq"],
-      width: 700,
-      height: 900,
-      submitOnChange: true,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-content", initial: "primary-locations" }]
-    });
-  }
+  static tabGroups = {
+    primary: "primary-locations"
+  };
 
-  getData() {
-    const data = super.getData();
-    data.system = data.actor.system;
+  static PARTS = {
+    main: {
+      template: "systems/cogwheel-syndicate/src/templates/hq-sheet.hbs"
+    }
+  };
 
-    // Ustaw domyślny obrazek awatara, jeśli nie wybrano
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    const data = context;
+    data.actor = this.actor;
+    data.system = this.actor.system;
+
     if (!data.actor.img || data.actor.img === "") {
-      data.actor.img = "systems/foundryvtt/assets/mystery-man.svg";
+      data.actor.img = "icons/svg/mystery-man.svg";
     }
 
-    // Inicjalizacja list, jeśli nie istnieją
     data.system.locationsPrimary = data.system.locationsPrimary || [];
     data.system.locationsAdditional = data.system.locationsAdditional || [];
     data.system.expansionProjects = data.system.expansionProjects || [];
-
-    // Inicjalizacja sekcji podstawowych, jeśli nie istnieją
     data.system.primarySections = data.system.primarySections || {
       infirmary: { level: 0, isDestroyed: false },
       crewQuarters: { level: 0, isDestroyed: false },
@@ -38,157 +40,90 @@ class CogwheelHQSheet extends foundry.appv1.sheets.ActorSheet {
     return data;
   }
 
-  activateListeners(html) {
-    super.activateListeners(html);
+  _onRender(context, options) {
+    const html = this.element;
 
-    // Obsługa zmiany obrazka awatara
-    html[0].querySelector('.profile-img').addEventListener('click', event => {
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = 'image/*';
-      input.onchange = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const img = await this._onImageUpload(file);
-          await this.actor.update({ "img": img });
-        }
-      };
-      input.click();
-    });
+    // Przywróć aktywną zakładkę po re-renderze
+    for (const [group, activeTab] of Object.entries(this.tabGroups)) {
+      html.querySelectorAll(`[data-group="${group}"][data-tab]`).forEach(el => {
+        el.classList.toggle('active', el.dataset.tab === activeTab);
+      });
+    }
 
-    // Obsługa dodawania lokacji
-    html[0].querySelector('.add-location-btn').addEventListener('click', this._onAddLocation.bind(this));
-
-    // Obsługa edycji lokacji
-    html[0].querySelectorAll('.edit-location').forEach(el => el.addEventListener('click', this._onEditLocation.bind(this)));
-
-    // Obsługa usuwania lokacji
-    html[0].querySelectorAll('.delete-location').forEach(el => el.addEventListener('click', this._onDeleteLocation.bind(this)));
-
-    // Obsługa dodawania projektu rozbudowy
-    html[0].querySelector('.add-project-btn').addEventListener('click', this._onAddExpansionProject.bind(this));
-
-    // Obsługa edycji projektu rozbudowy
-    html[0].querySelectorAll('.edit-project').forEach(el => el.addEventListener('click', this._onEditExpansionProject.bind(this)));
-
-    // Obsługa usuwania projektu rozbudowy
-    html[0].querySelectorAll('.delete-project').forEach(el => el.addEventListener('click', this._onDeleteExpansionProject.bind(this)));
-
-    // Obsługa zwiększania poziomu sekcji
-    html[0].querySelectorAll('.increase-level').forEach(el => el.addEventListener('click', this._onIncreaseLevel.bind(this)));
-
-    // Obsługa zmniejszania poziomu sekcji
-    html[0].querySelectorAll('.decrease-level').forEach(el => el.addEventListener('click', this._onDecreaseLevel.bind(this)));
-
-    // Obsługa checkboxa "Lokacja zniszczona"
-    html[0].querySelectorAll('.destroyed-checkbox').forEach(el => el.addEventListener('change', this._onToggleDestroyed.bind(this)));
-  }
-
-  async _onImageUpload(file) {
-    const uploadResponse = await FilePicker.upload("data", "", file);
-    return uploadResponse.path; // Zwraca ścieżkę do przesłanego obrazu
+    html.querySelector('.add-location-btn')?.addEventListener('click', this._onAddLocation.bind(this));
+    html.querySelectorAll('.edit-location').forEach(el => el.addEventListener('click', this._onEditLocation.bind(this)));
+    html.querySelectorAll('.delete-location').forEach(el => el.addEventListener('click', this._onDeleteLocation.bind(this)));
+    html.querySelector('.add-project-btn')?.addEventListener('click', this._onAddExpansionProject.bind(this));
+    html.querySelectorAll('.edit-project').forEach(el => el.addEventListener('click', this._onEditExpansionProject.bind(this)));
+    html.querySelectorAll('.delete-project').forEach(el => el.addEventListener('click', this._onDeleteExpansionProject.bind(this)));
+    html.querySelectorAll('.increase-level').forEach(el => el.addEventListener('click', this._onIncreaseLevel.bind(this)));
+    html.querySelectorAll('.decrease-level').forEach(el => el.addEventListener('click', this._onDecreaseLevel.bind(this)));
+    html.querySelectorAll('.destroyed-checkbox').forEach(el => el.addEventListener('change', this._onToggleDestroyed.bind(this)));
   }
 
   async _onAddLocation(event) {
     event.preventDefault();
-
-    // Dane dla szablonu
-    const templateData = {
-      location: { name: "", description: "", effect: "" }
-    };
-
-    // Renderowanie szablonu
-    const dialogContent = await renderTemplate("systems/cogwheel-syndicate/src/templates/add-location-dialog.hbs", templateData);
-
-    new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.AddLocation"),
+    const dialogContent = await foundry.applications.handlebars.renderTemplate(
+      "systems/cogwheel-syndicate/src/templates/add-location-dialog.hbs",
+      { location: { name: "", description: "", effect: "" } }
+    );
+    const result = await foundry.applications.api.DialogV2.wait({
+      window: { title: game.i18n.localize("COGSYNDICATE.AddLocation") },
       content: dialogContent,
-      buttons: {
-        cancel: {
-          label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => {}
-        },
-        add: {
+      rejectClose: false,
+      buttons: [
+        { label: game.i18n.localize("COGSYNDICATE.Cancel"), action: "cancel" },
+        {
           label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          callback: async (html) => {
-            const locationName = html[0].querySelector('[name="name"]').value.trim();
-            const locationDescription = html[0].querySelector('[name="description"]').value.trim();
-            const locationEffect = html[0].querySelector('[name="effect"]').value.trim();
-
-            // Walidacja: Nazwa i Efekt są wymagane, Opis jest opcjonalny
-            if (!locationName || !locationEffect) {
-              const errorMessage = html[0].querySelector('.error-message');
-              if (errorMessage) errorMessage.style.display = 'block';
-              return;
-            }
-
-            const newLocation = {
-              name: locationName,
-              description: locationDescription || "", // Opis może być pusty
-              effect: locationEffect
-            };
-            const currentLocations = foundry.utils.deepClone(this.actor.system.locationsAdditional) || [];
-            currentLocations.push(newLocation);
-            await this.actor.update({ "system.locationsAdditional": currentLocations });
-            this.render();
+          action: "add",
+          default: true,
+          callback: (_event, _button, dialog) => {
+            const name = dialog.element.querySelector('[name="name"]')?.value.trim() ?? "";
+            const description = dialog.element.querySelector('[name="description"]')?.value.trim() ?? "";
+            const effect = dialog.element.querySelector('[name="effect"]')?.value.trim() ?? "";
+            if (!name || !effect) return null;
+            return { name, description, effect };
           }
         }
-      },
-      default: "add",
-      width: 400
-    }).render(true);
+      ]
+    });
+    if (!result) return;
+    const currentLocations = foundry.utils.deepClone(this.actor.system.locationsAdditional) || [];
+    currentLocations.push(result);
+    await this.actor.update({ "system.locationsAdditional": currentLocations });
   }
 
   async _onEditLocation(event) {
     event.preventDefault();
     const index = parseInt(event.currentTarget.closest('.location-item').dataset.index);
     const currentLocations = foundry.utils.deepClone(this.actor.system.locationsAdditional) || [];
-    const location = currentLocations[index];
-
-    // Dane dla szablonu
-    const templateData = {
-      location: location
-    };
-
-    // Renderowanie szablonu
-    const dialogContent = await renderTemplate("systems/cogwheel-syndicate/src/templates/add-location-dialog.hbs", templateData);
-
-    new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.EditLocation"),
+    const dialogContent = await foundry.applications.handlebars.renderTemplate(
+      "systems/cogwheel-syndicate/src/templates/add-location-dialog.hbs",
+      { location: currentLocations[index] }
+    );
+    const result = await foundry.applications.api.DialogV2.wait({
+      window: { title: game.i18n.localize("COGSYNDICATE.EditLocation") },
       content: dialogContent,
-      buttons: {
-        cancel: {
-          label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => {}
-        },
-        save: {
+      rejectClose: false,
+      buttons: [
+        { label: game.i18n.localize("COGSYNDICATE.Cancel"), action: "cancel" },
+        {
           label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          callback: async (html) => {
-            const locationName = html[0].querySelector('[name="name"]').value.trim();
-            const locationDescription = html[0].querySelector('[name="description"]').value.trim();
-            const locationEffect = html[0].querySelector('[name="effect"]').value.trim();
-
-            // Walidacja: Nazwa i Efekt są wymagane, Opis jest opcjonalny
-            if (!locationName || !locationEffect) {
-              const errorMessage = html[0].querySelector('.error-message');
-              if (errorMessage) errorMessage.style.display = 'block';
-              return;
-            }
-
-            // Aktualizacja lokacji
-            currentLocations[index] = {
-              name: locationName,
-              description: locationDescription || "", // Opis może być pusty
-              effect: locationEffect
-            };
-            await this.actor.update({ "system.locationsAdditional": currentLocations });
-            this.render();
+          action: "save",
+          default: true,
+          callback: (_event, _button, dialog) => {
+            const name = dialog.element.querySelector('[name="name"]')?.value.trim() ?? "";
+            const description = dialog.element.querySelector('[name="description"]')?.value.trim() ?? "";
+            const effect = dialog.element.querySelector('[name="effect"]')?.value.trim() ?? "";
+            if (!name || !effect) return null;
+            return { name, description, effect };
           }
         }
-      },
-      default: "save",
-      width: 400
-    }).render(true);
+      ]
+    });
+    if (!result) return;
+    currentLocations[index] = result;
+    await this.actor.update({ "system.locationsAdditional": currentLocations });
   }
 
   async _onDeleteLocation(event) {
@@ -197,109 +132,71 @@ class CogwheelHQSheet extends foundry.appv1.sheets.ActorSheet {
     const currentLocations = foundry.utils.deepClone(this.actor.system.locationsAdditional) || [];
     currentLocations.splice(index, 1);
     await this.actor.update({ "system.locationsAdditional": currentLocations });
-    this.render();
   }
 
   async _onAddExpansionProject(event) {
     event.preventDefault();
-
-    // Dane dla szablonu
-    const templateData = {
-      project: { name: "", description: "", effect: "" }
-    };
-
-    // Renderowanie szablonu
-    const dialogContent = await renderTemplate("systems/cogwheel-syndicate/src/templates/add-project-dialog.hbs", templateData);
-
-    new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.AddExpansionProject"),
+    const dialogContent = await foundry.applications.handlebars.renderTemplate(
+      "systems/cogwheel-syndicate/src/templates/add-project-dialog.hbs",
+      { project: { name: "", description: "", effect: "" } }
+    );
+    const result = await foundry.applications.api.DialogV2.wait({
+      window: { title: game.i18n.localize("COGSYNDICATE.AddExpansionProject") },
       content: dialogContent,
-      buttons: {
-        cancel: {
-          label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => {}
-        },
-        add: {
+      rejectClose: false,
+      buttons: [
+        { label: game.i18n.localize("COGSYNDICATE.Cancel"), action: "cancel" },
+        {
           label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          callback: async (html) => {
-            const projectName = html[0].querySelector('[name="name"]').value.trim();
-            const projectDescription = html[0].querySelector('[name="description"]').value.trim();
-            const projectEffect = html[0].querySelector('[name="effect"]').value.trim();
-
-            // Walidacja: Nazwa i Efekt są wymagane, Opis jest opcjonalny
-            if (!projectName || !projectEffect) {
-              const errorMessage = html[0].querySelector('.error-message');
-              if (errorMessage) errorMessage.style.display = 'block';
-              return;
-            }
-
-            const newProject = {
-              name: projectName,
-              description: projectDescription || "", // Opis może być pusty
-              effect: projectEffect
-            };
-            const currentProjects = foundry.utils.deepClone(this.actor.system.expansionProjects) || [];
-            currentProjects.push(newProject);
-            await this.actor.update({ "system.expansionProjects": currentProjects });
-            this.render();
+          action: "add",
+          default: true,
+          callback: (_event, _button, dialog) => {
+            const name = dialog.element.querySelector('[name="name"]')?.value.trim() ?? "";
+            const description = dialog.element.querySelector('[name="description"]')?.value.trim() ?? "";
+            const effect = dialog.element.querySelector('[name="effect"]')?.value.trim() ?? "";
+            if (!name || !effect) return null;
+            return { name, description, effect };
           }
         }
-      },
-      default: "add",
-      width: 400
-    }).render(true);
+      ]
+    });
+    if (!result) return;
+    const currentProjects = foundry.utils.deepClone(this.actor.system.expansionProjects) || [];
+    currentProjects.push(result);
+    await this.actor.update({ "system.expansionProjects": currentProjects });
   }
 
   async _onEditExpansionProject(event) {
     event.preventDefault();
     const index = parseInt(event.currentTarget.closest('.project-item').dataset.index);
     const currentProjects = foundry.utils.deepClone(this.actor.system.expansionProjects) || [];
-    const project = currentProjects[index];
-
-    // Dane dla szablonu
-    const templateData = {
-      project: project
-    };
-
-    // Renderowanie szablonu
-    const dialogContent = await renderTemplate("systems/cogwheel-syndicate/src/templates/add-project-dialog.hbs", templateData);
-
-    new Dialog({
-      title: game.i18n.localize("COGSYNDICATE.EditExpansionProject"),
+    const dialogContent = await foundry.applications.handlebars.renderTemplate(
+      "systems/cogwheel-syndicate/src/templates/add-project-dialog.hbs",
+      { project: currentProjects[index] }
+    );
+    const result = await foundry.applications.api.DialogV2.wait({
+      window: { title: game.i18n.localize("COGSYNDICATE.EditExpansionProject") },
       content: dialogContent,
-      buttons: {
-        cancel: {
-          label: game.i18n.localize("COGSYNDICATE.Cancel"),
-          callback: () => {}
-        },
-        save: {
+      rejectClose: false,
+      buttons: [
+        { label: game.i18n.localize("COGSYNDICATE.Cancel"), action: "cancel" },
+        {
           label: game.i18n.localize("COGSYNDICATE.Confirm"),
-          callback: async (html) => {
-            const projectName = html[0].querySelector('[name="name"]').value.trim();
-            const projectDescription = html[0].querySelector('[name="description"]').value.trim();
-            const projectEffect = html[0].querySelector('[name="effect"]').value.trim();
-
-            // Walidacja: Nazwa i Efekt są wymagane, Opis jest opcjonalny
-            if (!projectName || !projectEffect) {
-              const errorMessage = html[0].querySelector('.error-message');
-              if (errorMessage) errorMessage.style.display = 'block';
-              return;
-            }
-
-            // Aktualizacja projektu
-            currentProjects[index] = {
-              name: projectName,
-              description: projectDescription || "", // Opis może być pusty
-              effect: projectEffect
-            };
-            await this.actor.update({ "system.expansionProjects": currentProjects });
-            this.render();
+          action: "save",
+          default: true,
+          callback: (_event, _button, dialog) => {
+            const name = dialog.element.querySelector('[name="name"]')?.value.trim() ?? "";
+            const description = dialog.element.querySelector('[name="description"]')?.value.trim() ?? "";
+            const effect = dialog.element.querySelector('[name="effect"]')?.value.trim() ?? "";
+            if (!name || !effect) return null;
+            return { name, description, effect };
           }
         }
-      },
-      default: "save",
-      width: 400
-    }).render(true);
+      ]
+    });
+    if (!result) return;
+    currentProjects[index] = result;
+    await this.actor.update({ "system.expansionProjects": currentProjects });
   }
 
   async _onDeleteExpansionProject(event) {
@@ -308,7 +205,6 @@ class CogwheelHQSheet extends foundry.appv1.sheets.ActorSheet {
     const currentProjects = foundry.utils.deepClone(this.actor.system.expansionProjects) || [];
     currentProjects.splice(index, 1);
     await this.actor.update({ "system.expansionProjects": currentProjects });
-    this.render();
   }
 
   async _onIncreaseLevel(event) {
@@ -316,11 +212,9 @@ class CogwheelHQSheet extends foundry.appv1.sheets.ActorSheet {
     const section = event.currentTarget.dataset.section;
     const currentSections = foundry.utils.deepClone(this.actor.system.primarySections) || {};
     const currentLevel = currentSections[section]?.level || 0;
-
     if (currentLevel < 3) {
       currentSections[section].level = currentLevel + 1;
       await this.actor.update({ "system.primarySections": currentSections });
-      this.render();
     }
   }
 
@@ -329,57 +223,23 @@ class CogwheelHQSheet extends foundry.appv1.sheets.ActorSheet {
     const section = event.currentTarget.dataset.section;
     const currentSections = foundry.utils.deepClone(this.actor.system.primarySections) || {};
     const currentLevel = currentSections[section]?.level || 0;
-
     if (currentLevel > 0) {
       currentSections[section].level = currentLevel - 1;
       await this.actor.update({ "system.primarySections": currentSections });
-      this.render();
     }
   }
 
   async _onToggleDestroyed(event) {
-    event.preventDefault();
     const section = event.currentTarget.dataset.section;
     const isChecked = event.currentTarget.checked;
     const currentSections = foundry.utils.deepClone(this.actor.system.primarySections) || {};
-
     currentSections[section].isDestroyed = isChecked;
     await this.actor.update({ "system.primarySections": currentSections });
-    this.render();
-  }
-
-  async _onCreate(data, options, userId) {
-    await super._onCreate(data, options, userId);
-
-    const updates = {
-      "img": "systems/foundryvtt/assets/mystery-man.svg", // Domyślny obrazek
-      "system.locationsPrimary": [],
-      "system.locationsAdditional": [],
-      "system.expansionProjects": [],
-      "system.primarySections": {
-        infirmary: { level: 0, isDestroyed: false },
-        crewQuarters: { level: 0, isDestroyed: false },
-        trainingHalls: { level: 0, isDestroyed: false },
-        workshop: { level: 0, isDestroyed: false }
-      }
-    };
-
-    await this.actor.update(updates);
   }
 }
 
-// Foundry v13 compatibility for registration - use same pattern as chlopcy-rpg
-const CHLOPCYCONFIG_HQ = {
-  Actors: typeof foundry?.documents?.collections?.Actors !== "undefined" 
-    ? foundry.documents.collections.Actors 
-    : Actors,
-  ActorSheet: typeof foundry?.appv1?.sheets?.ActorSheet !== "undefined"
-    ? foundry.appv1.sheets.ActorSheet
-    : ActorSheet
-};
-
-// Rejestracja arkusza z kompatybilnością
-CHLOPCYCONFIG_HQ.Actors.registerSheet("cogwheel-syndicate", CogwheelHQSheet, {
+// Rejestracja arkusza
+foundry.documents.collections.Actors.registerSheet("cogwheel-syndicate", CogwheelHQSheet, {
   types: ["HQ"],
   makeDefault: true,
   label: "Cogwheel HQ Sheet"

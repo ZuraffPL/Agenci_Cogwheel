@@ -112,48 +112,48 @@
 }
 
 .roll-dialog .stress-die-group {
-  background: #ffcccc !important; /* Jasnoczerwone tło */
-  border: 2px solid #cc0000 !important; /* Czerwone obramowanie */
+  background: #FFD700 !important; /* Złote tło - kość stresu */
+  border: 2px solid #ccaa00 !important;
   border-radius: 6px;
   padding: 0.5em 0.7em;
   margin-bottom: 0.5em;
-  box-shadow: 0 2px 4px rgba(204, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(204, 170, 0, 0.4);
 }
 
 .roll-dialog .stress-die-group label {
-  color: #cc0000 !important;
-  font-weight: bold !important; /* Pogrubiona etykieta */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  color: #000000 !important;
+  font-weight: bold !important;
+  text-shadow: none;
 }
 
 .roll-dialog .steam-die-group {
-  background: #eaf3ff;
-  border: 2px solid #0066cc !important; /* Niebieskie obramowanie */
+  background: #0967f3 !important; /* Niebieskie tło - kość pary */
+  border: 2px solid #0550cc !important;
   border-radius: 6px;
   padding: 0.5em 0.7em;
   margin-bottom: 0.5em;
-  box-shadow: 0 2px 4px rgba(0, 102, 204, 0.2);
+  box-shadow: 0 2px 4px rgba(9, 103, 243, 0.4);
 }
 
 .roll-dialog .steam-die-group label {
-  color: #0066cc !important;
+  color: #ffffff !important;
   font-weight: bold !important;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .roll-dialog .devil-die-group {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #3c5a78 100%) !important; /* Gradient ciemnoszary/stalowy */
-  border: 2px solid #000000 !important; /* Czarne obramowanie */
+  background: #111111 !important; /* Czarne tło - kość Czarciego Targu */
+  border: 2px solid #330000 !important;
   border-radius: 6px;
   padding: 0.5em 0.7em;
   margin-bottom: 0.5em;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 4px rgba(255, 0, 0, 0.3);
 }
 
 .roll-dialog .devil-die-group label {
-  color: #cd7f32 !important; /* Miedziany kolor etykiety */
+  color: #ff0000 !important; /* Czerwony kolor etykiety */
   font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
 }
 
 /* Style dla wzajemnie wykluczających się checkboxów */
@@ -232,15 +232,15 @@
 
 /* Override dla specjalnych etykiet w grupach kości */
 .roll-dialog .stress-die-group label {
-  color: #cc0000 !important; /* Czerwony dla stress dice */
+  color: #000000 !important; /* Czarny dla kości stresu (złote tło) */
 }
 
 .roll-dialog .steam-die-group label {
-  color: #0066cc !important; /* Niebieski dla steam dice */
+  color: #ffffff !important; /* Biały dla kości pary (niebieskie tło) */
 }
 
 .roll-dialog .devil-die-group label {
-  color: #cd7f32 !important; /* Miedziany dla devil dice */
+  color: #ff0000 !important; /* Czerwony dla kości Czarciego Targu (czarne tło) */
 }
 
 .roll-dialog .trauma-group label {

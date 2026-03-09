@@ -627,7 +627,6 @@ dialog.clock-archive-dialog .dialog-content {
   color: #f4a460 !important;
   padding: 15px !important;
   position: relative;
-  max-height: 600px !important;
   overflow-y: auto !important;
 }
 
@@ -865,6 +864,154 @@ dialog.clock-archive-dialog .dialog-buttons button:hover {
 }
 
 dialog.clock-archive-dialog .dialog-buttons button:active {
+  transform: translateY(0px) !important;
+  box-shadow: inset 0 1px 2px rgba(205, 127, 50, 0.6), 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ============================================
+   ADD / EDIT CLOCK DIALOG STYLES
+   ============================================ */
+
+/* Form groups */
+dialog.add-clock-dialog .clock-form-group,
+dialog.edit-clock-dialog .clock-form-group {
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+dialog.add-clock-dialog .clock-form-group label,
+dialog.edit-clock-dialog .clock-form-group label {
+  color: #f4a460 !important;
+  font-weight: bold;
+  font-size: 0.95em;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Inputs and textareas */
+dialog.add-clock-dialog .clock-form-group input[type="text"],
+dialog.add-clock-dialog .clock-form-group textarea,
+dialog.edit-clock-dialog .clock-form-group input[type="text"],
+dialog.edit-clock-dialog .clock-form-group textarea {
+  background: rgba(20, 12, 6, 0.8) !important;
+  border: 1px solid #8B4513 !important;
+  border-radius: 4px !important;
+  color: #e8d5c0 !important;
+  padding: 7px 10px !important;
+  font-size: 0.95em;
+  transition: border-color 0.2s ease;
+}
+
+dialog.add-clock-dialog .clock-form-group input[type="text"]:focus,
+dialog.add-clock-dialog .clock-form-group textarea:focus,
+dialog.edit-clock-dialog .clock-form-group input[type="text"]:focus,
+dialog.edit-clock-dialog .clock-form-group textarea:focus {
+  border-color: #cd7f32 !important;
+  outline: none !important;
+  box-shadow: 0 0 4px rgba(205, 127, 50, 0.4) !important;
+}
+
+dialog.add-clock-dialog .clock-form-group input::placeholder,
+dialog.add-clock-dialog .clock-form-group textarea::placeholder,
+dialog.edit-clock-dialog .clock-form-group input::placeholder,
+dialog.edit-clock-dialog .clock-form-group textarea::placeholder {
+  color: #8a6a4a !important;
+}
+
+/* Selects */
+dialog.add-clock-dialog .clock-form-group select,
+dialog.edit-clock-dialog .clock-form-group select {
+  background: rgba(20, 12, 6, 0.8) !important;
+  border: 1px solid #8B4513 !important;
+  border-radius: 4px !important;
+  color: #e8d5c0 !important;
+  padding: 7px 10px !important;
+  font-size: 0.95em;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+dialog.add-clock-dialog .clock-form-group select:focus,
+dialog.edit-clock-dialog .clock-form-group select:focus {
+  border-color: #cd7f32 !important;
+  outline: none !important;
+  box-shadow: 0 0 4px rgba(205, 127, 50, 0.4) !important;
+}
+
+/* Color palette */
+dialog.add-clock-dialog .clock-color-palette,
+dialog.edit-clock-dialog .clock-color-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+dialog.add-clock-dialog .clock-color-palette input[type="radio"],
+dialog.edit-clock-dialog .clock-color-palette input[type="radio"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  border: 3px solid rgba(0, 0, 0, 0.4) !important;
+  cursor: pointer !important;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease !important;
+  margin: 0 !important;
+}
+
+dialog.add-clock-dialog .clock-color-palette input[value="#dc2626"],
+dialog.edit-clock-dialog .clock-color-palette input[value="#dc2626"] { background-color: #dc2626 !important; }
+dialog.add-clock-dialog .clock-color-palette input[value="#ea580c"],
+dialog.edit-clock-dialog .clock-color-palette input[value="#ea580c"] { background-color: #ea580c !important; }
+dialog.add-clock-dialog .clock-color-palette input[value="#d97706"],
+dialog.edit-clock-dialog .clock-color-palette input[value="#d97706"] { background-color: #d97706 !important; }
+dialog.add-clock-dialog .clock-color-palette input[value="#ca8a04"],
+dialog.edit-clock-dialog .clock-color-palette input[value="#ca8a04"] { background-color: #ca8a04 !important; }
+dialog.add-clock-dialog .clock-color-palette input[value="#65a30d"],
+dialog.edit-clock-dialog .clock-color-palette input[value="#65a30d"] { background-color: #65a30d !important; }
+dialog.add-clock-dialog .clock-color-palette input[value="#16a34a"],
+dialog.edit-clock-dialog .clock-color-palette input[value="#16a34a"] { background-color: #16a34a !important; }
+dialog.add-clock-dialog .clock-color-palette input[value="#0d9488"],
+dialog.edit-clock-dialog .clock-color-palette input[value="#0d9488"] { background-color: #0d9488 !important; }
+dialog.add-clock-dialog .clock-color-palette input[value="#2563eb"],
+dialog.edit-clock-dialog .clock-color-palette input[value="#2563eb"] { background-color: #2563eb !important; }
+dialog.add-clock-dialog .clock-color-palette input[value="#4f46e5"],
+dialog.edit-clock-dialog .clock-color-palette input[value="#4f46e5"] { background-color: #4f46e5 !important; }
+dialog.add-clock-dialog .clock-color-palette input[value="#7c3aed"],
+dialog.edit-clock-dialog .clock-color-palette input[value="#7c3aed"] { background-color: #7c3aed !important; }
+dialog.add-clock-dialog .clock-color-palette input[value="#db2777"],
+dialog.edit-clock-dialog .clock-color-palette input[value="#db2777"] { background-color: #db2777 !important; }
+dialog.add-clock-dialog .clock-color-palette input[value="#6b7280"],
+dialog.edit-clock-dialog .clock-color-palette input[value="#6b7280"] { background-color: #6b7280 !important; }
+
+dialog.add-clock-dialog .clock-color-palette input[type="radio"]:hover,
+dialog.edit-clock-dialog .clock-color-palette input[type="radio"]:hover {
+  transform: scale(1.2) !important;
+  border-color: #f4a460 !important;
+  box-shadow: 0 0 6px rgba(244, 164, 96, 0.6) !important;
+}
+
+dialog.add-clock-dialog .clock-color-palette input[type="radio"]:checked,
+dialog.edit-clock-dialog .clock-color-palette input[type="radio"]:checked {
+  transform: scale(1.15) !important;
+  border-color: #f4a460 !important;
+  box-shadow: 0 0 0 3px rgba(244, 164, 96, 0.5), 0 0 8px rgba(244, 164, 96, 0.4) !important;
+}
+
+/* Button hover/active states (base styles applied via inline in _onRender) */
+dialog.add-clock-dialog .dialog-buttons button:hover,
+dialog.edit-clock-dialog .dialog-buttons button:hover {
+  background: linear-gradient(135deg, #4a321d 0%, #5a4a3a 50%, #3d2817 100%) !important;
+  border-color: #e8a057 !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+  box-shadow: inset 0 1px 2px rgba(232, 160, 87, 0.4), 0 4px 8px rgba(0, 0, 0, 0.6) !important;
+}
+
+dialog.add-clock-dialog .dialog-buttons button:active,
+dialog.edit-clock-dialog .dialog-buttons button:active {
   transform: translateY(0px) !important;
   box-shadow: inset 0 1px 2px rgba(205, 127, 50, 0.6), 0 1px 2px rgba(0, 0, 0, 0.4) !important;
 }

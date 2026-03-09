@@ -11,6 +11,17 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.26] - 2026-03-09
+
+### Fixed | Naprawiono
+- **Agent V2 Damage Radio Buttons Visual Fix** | **Naprawa Wizualna Pól Radio Obrażeń na Karcie Agenta V2**
+  - Całkowita przebudowa stylizacji radio buttonów sekcji obrażeń na karcie v2 | Complete overhaul of damage radio button styling on v2 sheet
+  - Użyto `all: unset` do resetu wszystkich globalnych styli Foundry nadpisujących wygląd pól | Used `all: unset` to reset all Foundry global styles overriding field appearance
+  - Porzucono pseudo-element `::before` na rzecz czystego `box-shadow` (inset) — eliminuje problem przesunięcia zaznaczenia | Dropped `::before` pseudo-element in favour of pure `box-shadow` (inset) — eliminates selection offset issue
+  - Zaznaczone pole: jasne złote wypełnienie `#ffe8a0` + złota ramka `#f5d878` przez `box-shadow`, identyczna pozycja jak zewnętrzna poświata | Checked field: bright gold fill `#ffe8a0` + gold border `#f5d878` via `box-shadow`, identical position as outer glow
+  - Podniesiono specyficzność selektora CSS z `.agentv2` do `.cogwheel.agentv2` (parytet z v1) | Raised CSS selector specificity from `.agentv2` to `.cogwheel.agentv2` (parity with v1)
+  - Usunięto zbędne inline style z szablonu `actor-sheetv2.hbs` | Removed redundant inline styles from `actor-sheetv2.hbs` template
+
 ## [0.9.25] - 2026-02-25
 
 ### Fixed | Naprawiono

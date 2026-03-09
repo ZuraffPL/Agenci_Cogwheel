@@ -59,7 +59,8 @@
 }
 
 .action-option {
-  display: flex;
+  display: flex !important;
+  flex-direction: row !important;
   align-items: flex-start;
   cursor: pointer;
   padding: 6px; /* Zmniejszono z 8px na 6px */
@@ -72,9 +73,14 @@
 }
 
 .action-option input[type="radio"] {
-  margin-right: 10px;
-  margin-top: 2px;
+  width: auto !important;
+  height: auto !important;
+  min-width: 16px;
+  margin-right: 10px !important;
+  margin-top: 3px;
   flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: auto;
 }
 
 .action-option span {
@@ -261,7 +267,8 @@
 }
 
 .spend-points-dialog.sp-dialog .action-item {
-  display: flex;
+  display: flex !important;
+  flex-direction: row !important;
   align-items: flex-start;
   cursor: pointer;
   padding: 8px; /* Zmniejszono z 10px na 8px */
@@ -277,9 +284,14 @@
 }
 
 .spend-points-dialog.sp-dialog .action-item input[type="radio"] {
-  margin-right: 12px;
-  margin-top: 2px;
+  width: auto !important;
+  height: auto !important;
+  min-width: 16px;
+  margin-right: 12px !important;
+  margin-top: 3px;
   flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: auto;
   cursor: pointer;
 }
 

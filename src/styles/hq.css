@@ -267,13 +267,13 @@
   color: #e0e0e0;
 }
 
-.cogwheel.sheet.actor.hq .section-item.disabled {
+.cogwheel.sheet.actor.hq .section-item.is-destroyed {
   filter: brightness(0.6);
 }
 
-.cogwheel.sheet.actor.hq .section-item.disabled .section-name,
-.cogwheel.sheet.actor.hq .section-item.disabled .level-label,
-.cogwheel.sheet.actor.hq .section-item.disabled .level-value,
-.cogwheel.sheet.actor.hq .section-item.disabled .level-description.active {
+.cogwheel.sheet.actor.hq .section-item.is-destroyed .section-name,
+.cogwheel.sheet.actor.hq .section-item.is-destroyed .level-label,
+.cogwheel.sheet.actor.hq .section-item.is-destroyed .level-value,
+.cogwheel.sheet.actor.hq .section-item.is-destroyed .level-description.active {
   color: #999;
 }

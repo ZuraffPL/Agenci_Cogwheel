@@ -234,7 +234,60 @@ html.querySelectorAll(".delete-clock").forEach(element => {
         this.activeCategory = activeCategory;
       }
 
-      
+      _onRender(context, options) {
+        super._onRender(context, options);
+        this._applySteampunkStyles();
+      }
+
+      _applySteampunkStyles() {
+        const el = this.element;
+        if (!el) return;
+        el.style.background = "linear-gradient(135deg, #3d2817 0%, #4a321d 30%, #5a4a3a 70%, #2c1810 100%)";
+        el.style.border = "2px solid #cd7f32";
+        el.style.borderRadius = "8px";
+        el.style.boxShadow = "0 8px 24px rgba(0,0,0,0.6), inset 0 1px 3px rgba(205,127,50,0.3)";
+        const header = el.querySelector('.window-header');
+        if (header) {
+          header.style.background = "linear-gradient(135deg, #4a321d 0%, #5a4a3a 50%, #4a321d 100%)";
+          header.style.borderBottom = "2px solid #cd7f32";
+          header.style.color = "#f4a460";
+        }
+        const content = el.querySelector('.window-content');
+        if (content) {
+          content.style.background = "linear-gradient(135deg, #3d2817 0%, #4a321d 30%, #5a4a3a 70%, #2c1810 100%)";
+          content.style.color = "#f4a460";
+          content.style.padding = "15px";
+        }
+        el.querySelectorAll('input[type="text"], textarea').forEach(input => {
+          input.style.background = "rgba(20, 12, 6, 0.8)";
+          input.style.border = "1px solid #8B4513";
+          input.style.borderRadius = "4px";
+          input.style.color = "#e8d5c0";
+          input.style.padding = "7px 10px";
+        });
+        el.querySelectorAll('select').forEach(select => {
+          select.style.background = "rgba(20, 12, 6, 0.8)";
+          select.style.border = "1px solid #8B4513";
+          select.style.borderRadius = "4px";
+          select.style.color = "#e8d5c0";
+          select.style.padding = "7px 10px";
+        });
+        const footer = el.querySelector('.dialog-buttons');
+        if (footer) {
+          footer.style.background = "linear-gradient(135deg, #3d2817 0%, #4a321d 50%, #2c1810 100%)";
+          footer.style.borderTop = "2px solid #cd7f32";
+          footer.style.padding = "10px 15px";
+          footer.querySelectorAll('button').forEach(btn => {
+            btn.style.background = "linear-gradient(135deg, #3d2817 0%, #4a321d 50%, #2c1810 100%)";
+            btn.style.border = "2px solid #cd7f32";
+            btn.style.borderRadius = "5px";
+            btn.style.color = "#f4a460";
+            btn.style.padding = "8px 18px";
+            btn.style.fontWeight = "bold";
+            btn.style.cursor = "pointer";
+          });
+        }
+      }
 
 
       async handleAddClock() {
@@ -356,11 +409,60 @@ html.querySelectorAll(".delete-clock").forEach(element => {
         this.index = index;
       }
 
-      _onRender() {
-        console.log("EditClockDialog _onRender called");
-        // Upewnij się, że poprawny kolor jest zaznaczony
+      _onRender(context, options) {
+        super._onRender(context, options);
+        this._applySteampunkStyles();
         this._setCorrectColorSelection();
+      }
 
+      _applySteampunkStyles() {
+        const el = this.element;
+        if (!el) return;
+        el.style.background = "linear-gradient(135deg, #3d2817 0%, #4a321d 30%, #5a4a3a 70%, #2c1810 100%)";
+        el.style.border = "2px solid #cd7f32";
+        el.style.borderRadius = "8px";
+        el.style.boxShadow = "0 8px 24px rgba(0,0,0,0.6), inset 0 1px 3px rgba(205,127,50,0.3)";
+        const header = el.querySelector('.window-header');
+        if (header) {
+          header.style.background = "linear-gradient(135deg, #4a321d 0%, #5a4a3a 50%, #4a321d 100%)";
+          header.style.borderBottom = "2px solid #cd7f32";
+          header.style.color = "#f4a460";
+        }
+        const content = el.querySelector('.window-content');
+        if (content) {
+          content.style.background = "linear-gradient(135deg, #3d2817 0%, #4a321d 30%, #5a4a3a 70%, #2c1810 100%)";
+          content.style.color = "#f4a460";
+          content.style.padding = "15px";
+        }
+        el.querySelectorAll('input[type="text"], textarea').forEach(input => {
+          input.style.background = "rgba(20, 12, 6, 0.8)";
+          input.style.border = "1px solid #8B4513";
+          input.style.borderRadius = "4px";
+          input.style.color = "#e8d5c0";
+          input.style.padding = "7px 10px";
+        });
+        el.querySelectorAll('select').forEach(select => {
+          select.style.background = "rgba(20, 12, 6, 0.8)";
+          select.style.border = "1px solid #8B4513";
+          select.style.borderRadius = "4px";
+          select.style.color = "#e8d5c0";
+          select.style.padding = "7px 10px";
+        });
+        const footer = el.querySelector('.dialog-buttons');
+        if (footer) {
+          footer.style.background = "linear-gradient(135deg, #3d2817 0%, #4a321d 50%, #2c1810 100%)";
+          footer.style.borderTop = "2px solid #cd7f32";
+          footer.style.padding = "10px 15px";
+          footer.querySelectorAll('button').forEach(btn => {
+            btn.style.background = "linear-gradient(135deg, #3d2817 0%, #4a321d 50%, #2c1810 100%)";
+            btn.style.border = "2px solid #cd7f32";
+            btn.style.borderRadius = "5px";
+            btn.style.color = "#f4a460";
+            btn.style.padding = "8px 18px";
+            btn.style.fontWeight = "bold";
+            btn.style.cursor = "pointer";
+          });
+        }
       }
       
       
@@ -633,8 +735,8 @@ html.querySelectorAll(".delete-clock").forEach(element => {
             classes: ["cogwheel", "clock-archive-dialog"]
           },
           position: {
-            width: "auto",
-            height: "auto"
+            width: 700,
+            height: 650
           },
           content: content,
           buttons: [
@@ -680,6 +782,7 @@ html.querySelectorAll(".delete-clock").forEach(element => {
             content.style.background = "linear-gradient(135deg, #3d2817 0%, #4a321d 30%, #5a4a3a 70%, #2c1810 100%)";
             content.style.color = "#f4a460";
             content.style.padding = "15px";
+            content.style.overflowY = "auto";
           }
           
           // Style dialog buttons footer

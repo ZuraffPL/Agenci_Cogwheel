@@ -7,9 +7,9 @@
   <section class="sheet-body">
     <!-- Nawigacja zakładek -->
     <nav class="sheet-tabs tabs" data-group="primary">
-      <a class="item active" data-tab="primary-locations">{{localize "COGSYNDICATE.PrimaryLocationsTab"}}</a>
-      <a class="item" data-tab="additional-locations">{{localize "COGSYNDICATE.AdditionalLocationsTab"}}</a>
-      <a class="item" data-tab="expansion">{{localize "COGSYNDICATE.ExpansionProjectsTab"}}</a>
+      <a class="item active" data-tab="primary-locations" data-group="primary" data-action="tab">{{localize "COGSYNDICATE.PrimaryLocationsTab"}}</a>
+      <a class="item" data-tab="additional-locations" data-group="primary" data-action="tab">{{localize "COGSYNDICATE.AdditionalLocationsTab"}}</a>
+      <a class="item" data-tab="expansion" data-group="primary" data-action="tab">{{localize "COGSYNDICATE.ExpansionProjectsTab"}}</a>
     </nav>
 
     <!-- Zawartość zakładek -->
@@ -20,7 +20,7 @@
           <h3 class="centered">{{localize "COGSYNDICATE.PrimaryLocationsTab"}}</h3>
 
           <!-- Sekcja: Ambulatorium -->
-          <div class="section-item infirmary {{#if system.primarySections.infirmary.isDestroyed}}disabled{{/if}}">
+          <div class="section-item infirmary {{#if system.primarySections.infirmary.isDestroyed}}is-destroyed{{/if}}">
             <div class="section-header">
               <span class="section-name">{{localize "COGSYNDICATE.Infirmary"}}</span>
             </div>
@@ -41,7 +41,7 @@
           <hr class="section-separator">
 
           <!-- Sekcja: Kwatery Załogi -->
-          <div class="section-item crew-quarters {{#if system.primarySections.crewQuarters.isDestroyed}}disabled{{/if}}">
+          <div class="section-item crew-quarters {{#if system.primarySections.crewQuarters.isDestroyed}}is-destroyed{{/if}}">
             <div class="section-header">
               <span class="section-name">{{localize "COGSYNDICATE.CrewQuarters"}}</span>
             </div>
@@ -62,7 +62,7 @@
           <hr class="section-separator">
 
           <!-- Sekcja: Sale treningowe -->
-          <div class="section-item training-halls {{#if system.primarySections.trainingHalls.isDestroyed}}disabled{{/if}}">
+          <div class="section-item training-halls {{#if system.primarySections.trainingHalls.isDestroyed}}is-destroyed{{/if}}">
             <div class="section-header">
               <span class="section-name">{{localize "COGSYNDICATE.TrainingHalls"}}</span>
             </div>
@@ -83,7 +83,7 @@
           <hr class="section-separator">
 
           <!-- Sekcja: Warsztat -->
-          <div class="section-item workshop {{#if system.primarySections.workshop.isDestroyed}}disabled{{/if}}">
+          <div class="section-item workshop {{#if system.primarySections.workshop.isDestroyed}}is-destroyed{{/if}}">
             <div class="section-header">
               <span class="section-name">{{localize "COGSYNDICATE.Workshop"}}</span>
             </div>

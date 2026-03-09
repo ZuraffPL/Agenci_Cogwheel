@@ -16,6 +16,11 @@
 }
 
 .agentv2 .sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 15px;
   background: linear-gradient(135deg, #4a321d 0%, #6b4423 50%, #5a3a1f 100%);
   border-bottom: 3px solid #cd7f32;
   margin-bottom: 10px;
@@ -26,18 +31,48 @@
 }
 
 .agentv2 .sheet-header h1 {
+  text-align: center;
   color: #cd7f32;
   text-shadow: 
     2px 2px 4px rgba(0, 0, 0, 0.6),
     0 0 8px rgba(205, 127, 50, 0.4);
+  margin: 0;
   font-weight: bold;
+  font-size: 1.4em;
+}
+
+.agentv2 .sheet-header h1 input[name="name"] {
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 100%);
+  border: 2px solid #cd7f32;
+  border-radius: 8px;
+  color: #cd7f32;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1em;
+  padding: 5px 10px;
+  text-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.6),
+    0 0 8px rgba(205, 127, 50, 0.4);
+  box-shadow: 
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(205, 127, 50, 0.2);
+  min-width: 200px;
 }
 
 .agentv2 .profile-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
   border: 3px solid #cd7f32;
   box-shadow: 
     0 0 15px rgba(205, 127, 50, 0.4),
     inset 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.agentv2 .centered {
+  text-align: center;
 }
 
 .agentv2 .sheet-body {
@@ -112,6 +147,8 @@
 /* Steampunk Containers */
 .agentv2 .attributes-container, 
 .agentv2 .resources-container {
+  display: flex;
+  justify-content: space-between;
   background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #4a321d 100%);
   border: 2px solid #b8860b;
   border-radius: 12px;
@@ -144,8 +181,11 @@
   border-color: #cd7f32;
 }
 
-.agentv2 .attribute, 
-.agentv2 .resource {
+.agentv2 .attribute {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0 5px;
+  text-align: center;
   background: linear-gradient(135deg, rgba(26, 26, 26, 0.3) 0%, rgba(58, 58, 58, 0.2) 100%);
   border: 1px solid rgba(205, 127, 50, 0.3);
   border-radius: 8px;
@@ -154,7 +194,19 @@
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
 }
 
-.agentv2 input {
+.agentv2 .resource {
+  flex: 1;
+  margin: 0 5px;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.3) 0%, rgba(58, 58, 58, 0.2) 100%);
+  border: 1px solid rgba(205, 127, 50, 0.3);
+  border-radius: 8px;
+  padding: 10px;
+  color: #f4a460;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.agentv2 input:not([type="radio"]) {
   background: linear-gradient(135deg, #2c1810 0%, #3d2817 100%);
   border: 2px solid #cd7f32;
   border-radius: 6px;
@@ -167,12 +219,37 @@
     inset 0 1px 2px rgba(205, 127, 50, 0.2);
 }
 
+/* Kontener wartości atrybutu */
+.agentv2 .attribute-content,
+.agentv2 .resource-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
 /* Specjalne kolory dla wartości liczbowych atrybutów */
-.agentv2 .attribute-content input.base-value,
-.agentv2 .attribute-content input.effective-value {
-  color: #8b4513 !important; /* Ciemna miedź */
-  background: linear-gradient(135deg, #c0c0c0 0%, #d3d3d3 100%) !important; /* Jasna stal */
+.agentv2 .attribute-content input.base-value {
+  width: 30px !important;
+  height: 20px !important;
+  font-size: 0.8em !important;
+  border-radius: 4px !important;
+  color: #8b4513 !important;
+  background: linear-gradient(135deg, #c0c0c0 0%, #d3d3d3 100%) !important;
   border: 2px solid #cd7f32 !important;
+  text-shadow: none !important;
+  font-weight: bold !important;
+}
+
+.agentv2 .attribute-content input.effective-value {
+  width: 70px !important;
+  height: 40px !important;
+  font-size: 1.4em !important;
+  border-radius: 6px !important;
+  cursor: default !important;
+  color: #8b4513 !important;
+  background: linear-gradient(135deg, #c0c0c0 0%, #d3d3d3 100%) !important;
+  border: 3px solid #cd7f32 !important;
   text-shadow: none !important;
   font-weight: bold !important;
   box-shadow: 0 0 8px rgba(205, 127, 50, 0.4) !important;
@@ -441,53 +518,7 @@
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
-.agentv2 .damage-radio-group {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 12px;
-  flex-wrap: nowrap;
-  margin-top: 4px;
-}
 
-.agentv2 .damage-radio-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  min-width: 24px;
-  flex-shrink: 0;
-}
-
-.agentv2 .damage-radio-item input[type="radio"] {
-  margin: 0 !important;
-  width: 24px !important;
-  height: 24px !important;
-  cursor: pointer !important;
-  order: 1 !important;
-  position: relative !important;
-  display: inline-block !important;
-  opacity: 1 !important;
-}
-
-.agentv2 .damage-radio-item label {
-  font-size: 12px; /* Zwiększony rozmiar z 11px */
-  color: #ff4444 !important; /* Czerwony kolor zamiast piaskowego */
-  cursor: pointer;
-  user-select: none;
-  min-width: 20px;
-  text-align: center;
-  order: 2;
-  margin-top: 2px;
-  font-weight: bold !important; /* Pogrubienie */
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6) !important;
-}
-
-.agentv2 .damage-radio-item input[type="radio"]:checked + label {
-  color: #ff6666 !important; /* Jaśniejszy czerwony dla zaznaczonych */
-  font-weight: bold !important;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important; /* Mocniejszy cień */
-}
 
 /* Hide secondary attributes section in Agent v2 */
 .agentv2 .secondary-attributes {
@@ -501,6 +532,12 @@
 
 .agentv2 .attribute-content {
   margin-bottom: 8px;
+}
+
+.agentv2 .attribute-content input,
+.agentv2 .resource-content input {
+  width: 50px;
+  margin-right: 5px;
 }
 
 /* Feats styles for Agent v2 */
@@ -945,78 +982,81 @@
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
 }
 
+/* Resource input color coding - Agent v2 */
+.agentv2.sheet.actor .resource-content input.gear-value {
+  background-color: #eaffea !important;
+  border: 2px solid #2ecc40 !important;
+  color: #217a2c !important;
+  font-weight: bold !important;
+}
+.agentv2.sheet.actor .resource-content input.trauma-value {
+  background-color: #f3eaff !important;
+  border: 2px solid #a259e6 !important;
+  color: #6b21a8 !important;
+  font-weight: bold !important;
+}
+.agentv2.sheet.actor .resource-content input.stress-value {
+  background-color: #ffeaea !important;
+  border: 2px solid #e62e2e !important;
+  color: #a82121 !important;
+  font-weight: bold !important;
+}
+
 /* ===== DAMAGE SYSTEM STYLING - AGENT V2 ===== */
 
-/* V2 damage-radio-group specific styling */
-.damage-radio-group {
+/* ===== DAMAGE SECTION - KARTA AGENTA V2 (scoped) ===== */
+.agentv2 .damage-radio-group {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  flex-wrap: nowrap;
+  gap: 4px;
   justify-content: center;
   margin-top: 6px;
 }
 
-.damage-radio-item {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  gap: 4px !important;
-  margin: 0 1px !important;
+.agentv2 .damage-radio-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 0 1px;
+  flex-shrink: 0;
 }
 
-.damage-radio-item input[type="radio"] {
-  -webkit-appearance: none !important;
-  -moz-appearance: none !important;
-  appearance: none !important;
-  width: 24px !important;
-  height: 24px !important;
-  min-width: 24px !important;
-  min-height: 24px !important;
-  border: 2px solid #555 !important;
-  border-radius: 50% !important;
-  outline: none !important;
-  cursor: pointer !important;
-  position: relative !important;
-  display: inline-block !important;
-  opacity: 1 !important;
-  flex-shrink: 0 !important;
-  background: radial-gradient(circle, #3a3a3a 0%, #1a1a1a 100%) !important;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 1px 2px rgba(0,0,0,0.3) !important;
-  vertical-align: middle !important;
-  margin: 0 !important;
+.cogwheel.agentv2 .damage-radio-item input[type="radio"] {
+  all: unset;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  max-width: 20px;
+  max-height: 20px;
+  border: none !important;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-block;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  background: transparent !important;
+  box-shadow: inset 0 0 0 2px #7a5c2a, inset 0 0 0 10px #1a1a1a;
+  vertical-align: top;
 }
 
-.damage-radio-item input[type="radio"]:checked {
-  border-color: #d4a843 !important;
-  background: radial-gradient(circle, #8b6914 0%, #3d2800 100%) !important;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.5), 0 0 8px rgba(212,168,67,0.6) !important;
+.cogwheel.agentv2 .damage-radio-item input[type="radio"]:checked {
+  box-shadow: inset 0 0 0 2px #f5d878, inset 0 0 0 10px #ffe8a0, 0 0 8px rgba(212,168,67,0.7);
 }
 
-.damage-radio-item input[type="radio"]:checked::before {
-  content: '';
-  display: block !important;
-  width: 10px !important;
-  height: 10px !important;
-  background: #d4a843 !important;
-  border-radius: 50% !important;
-  position: absolute !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-}
-
-.damage-radio-item label {
+.agentv2 .damage-radio-item label {
   margin-top: 2px;
-  font-size: 11px !important;
+  font-size: 11px;
   text-align: center;
-  color: #ff4444 !important;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6) !important;
-  font-weight: bold !important;
+  color: #ff4444;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+  font-weight: bold;
 }
 
-.damage-radio-item input[type="radio"]:checked + label {
-  color: #ff6666 !important;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9) !important;
+.agentv2 .damage-radio-item input[type="radio"]:checked + label {
+  color: #ff6666;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
 }
 
 /* Red styling for damage labels in v2 */
