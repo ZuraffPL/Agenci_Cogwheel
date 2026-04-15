@@ -2,7 +2,11 @@
 
 System Foundry VTT dla **Agenci Cogwheel** — fabularnej gry o tajnych agentach walczących z zagrożeniami ery rewolucji przemysłowej.
 
-**Aktualna wersja: 0.9.96** | Wymaga Foundry VTT v13.351+
+[![Wersja systemu](https://img.shields.io/badge/system-v0.9.96-c0813a?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDJhMTAgMTAgMCAxIDAgMCAyMEExMCAxMCAwIDAgMCAxMiAyem0wIDE4YTggOCAwIDEgMSAwLTE2IDggOCAwIDAgMSAwIDE2em0wLTEyYTQgNCAwIDEgMCAwIDggNCA0IDAgMCAwIDAtOHoiLz48L3N2Zz4=)](https://github.com/ZuraffPL/Agenci_Cogwheel/releases/latest)
+[![Foundry VTT](https://img.shields.io/badge/Foundry_VTT-v13.351+-8b0000?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDJMMiA3bDEwIDUgMTAtNS0xMC01ek0yIDE3bDEwIDUgMTAtNVYybC0xMCA1LTEwLTV2MTV6Ii8+PC9zdmc+)](https://foundryvtt.com)
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES2022%2B-f7df1e?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Licencja](https://img.shields.io/badge/licencja-MIT-2d7a2d?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
+[![GitHub Release](https://img.shields.io/github/v/release/ZuraffPL/Agenci_Cogwheel?style=for-the-badge&color=5b3a8c&label=GitHub+Release)](https://github.com/ZuraffPL/Agenci_Cogwheel/releases/latest)
 
 ---
 

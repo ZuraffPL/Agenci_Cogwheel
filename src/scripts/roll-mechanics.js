@@ -552,25 +552,20 @@ export async function performAttributeRoll(actor, attribute) {
                   <img src="${actor.img}" alt="${actor.name}" class="chat-avatar" />
                   <h3>${game.i18n.format("COGSYNDICATE.Agent", { agentName: actor.name })}</h3>
                 </div>
-                <hr>
-                <p><strong style='color: brown;'>${game.i18n.localize("COGSYNDICATE.Position")}: ${positionLabel}</strong></p>
-                <hr>
-                <p><strong style='color: black;'>${game.i18n.localize("COGSYNDICATE.RolledOn").replace('{attrLabel}', `<span style='color: #2563eb; font-weight: bold;'>${attrLabel}</span>`).replace('{total}', `<span style='color: red; font-weight: bold;'>${total}</span>`)}</strong></p>
-                <hr>
-                <p>${result}</p>
-                ${consequencesMessage}
-                ${useStressDie ? `<p>${game.i18n.format("COGSYNDICATE.StressDieUsed", { agentName: actor.name })}</p>` : ""}
-                ${useSteamDie ? steamDialogMessage : ""}
-                ${useDevilDie ? devilDialogMessage : ""}
-                ${traumaDialogMessage}
-                ${traumaModifier !== 0 ? `<p>${game.i18n.format("COGSYNDICATE.TraumaApplied", { traumaValue: Math.abs(traumaModifier) })}</p>` : ""}
-                ${nemesisPoints > 0 ? `<p><span style='color: purple; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedNemesisPoint", { amount: nemesisPoints })}</span></p>` : ""}
-                ${steamPoints > 0 ? `<p><span style='color: orange; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedSteamPoint", { amount: steamPoints })}</span></p>` : ""}
-                ${steamBoosterMessage}
-                <hr>
-                <p>${game.i18n.localize("COGSYNDICATE.Roll")}: ${diceCount}d12 (${die1}+${die2}${useStressDie ? `+${stressDie}` : ""}${useSteamDie ? `+${steamDie}` : ""}${useDevilDie ? `+${devilDie}` : ""}) + ${effectiveAttrValue} (${attrLabel})${traumaModifier !== 0 ? ` ${traumaModifier} (${game.i18n.localize("COGSYNDICATE.Trauma")})` : ""} + ${positionModifier} (${game.i18n.localize("COGSYNDICATE.Position")})${rollModifier !== 0 ? ` ${rollModifier > 0 ? '+' : ''}${rollModifier} (${game.i18n.localize("COGSYNDICATE.RollModifier")})` : ""}</p>
-                ${upgradeButton}
-                ${rerollButton}
+                <div class="roll-section roll-position">${game.i18n.localize("COGSYNDICATE.Position")}: ${positionLabel}</div>
+                <div class="roll-section roll-skill">${game.i18n.localize("COGSYNDICATE.RolledOn").replace('{attrLabel}', `<span style='color:#7eb8f7;font-weight:bold'>${attrLabel}</span>`).replace('{total}', `<span style='color:#f5b942;font-weight:bold'>${total}</span>`)}</div>
+                <div class="roll-section roll-result-row">${result}</div>
+                ${consequencesMessage ? `<div class="roll-section">${consequencesMessage}</div>` : ""}
+                ${useStressDie ? `<div class="roll-section roll-extra">${game.i18n.format("COGSYNDICATE.StressDieUsed", { agentName: actor.name })}</div>` : ""}
+                ${useSteamDie ? `<div class="roll-section roll-extra">${steamDialogMessage}</div>` : ""}
+                ${useDevilDie ? `<div class="roll-section roll-extra">${devilDialogMessage}</div>` : ""}
+                ${traumaDialogMessage ? `<div class="roll-section roll-extra">${traumaDialogMessage}</div>` : ""}
+                ${traumaModifier !== 0 ? `<div class="roll-section roll-extra">${game.i18n.format("COGSYNDICATE.TraumaApplied", { traumaValue: Math.abs(traumaModifier) })}</div>` : ""}
+                ${nemesisPoints > 0 ? `<div class="roll-section roll-extra" style='color:#c084fc;font-weight:bold'>${game.i18n.format("COGSYNDICATE.AddedNemesisPoint", { amount: nemesisPoints })}</div>` : ""}
+                ${steamPoints > 0 ? `<div class="roll-section roll-extra" style='color:#f59e0b;font-weight:bold'>${game.i18n.format("COGSYNDICATE.AddedSteamPoint", { amount: steamPoints })}</div>` : ""}
+                ${steamBoosterMessage ? `<div class="roll-section roll-extra">${steamBoosterMessage}</div>` : ""}
+                <div class="roll-details">${game.i18n.localize("COGSYNDICATE.Roll")}: ${diceCount}d12 (${die1}+${die2}${useStressDie ? `+${stressDie}` : ""}${useSteamDie ? `+${steamDie}` : ""}${useDevilDie ? `+${devilDie}` : ""}) + ${effectiveAttrValue} (${attrLabel})${traumaModifier !== 0 ? ` ${traumaModifier} (${game.i18n.localize("COGSYNDICATE.Trauma")})` : ""} + ${positionModifier} (${game.i18n.localize("COGSYNDICATE.Position")})${rollModifier !== 0 ? ` ${rollModifier > 0 ? '+' : ''}${rollModifier} (${game.i18n.localize("COGSYNDICATE.RollModifier")})` : ""}</div>
+                <div class="roll-section" style='padding-top:6px;padding-bottom:6px'>${upgradeButton}${rerollButton}</div>
               </div>
             `;
 
@@ -1031,25 +1026,20 @@ async function executeRollWithData(actor, data, isReroll = false) {
         <img src="${actor.img}" alt="${actor.name}" class="chat-avatar" />
         <h3>${game.i18n.format("COGSYNDICATE.Agent", { agentName: actor.name })}</h3>
       </div>
-      <hr>
-      <p><strong style='color: brown;'>${game.i18n.localize("COGSYNDICATE.Position")}: ${positionLabel}</strong></p>
-      <hr>
-      <p><strong style='color: black;'>${game.i18n.localize("COGSYNDICATE.RolledOn").replace('{attrLabel}', `<span style='color: #2563eb; font-weight: bold;'>${attrLabel}</span>`).replace('{total}', `<span style='color: red; font-weight: bold;'>${total}</span>`)}</strong></p>
-      <hr>
-      <p>${result}</p>
-      ${consequencesMessage}
-      ${useStressDie ? stressDieMessage : ""}
-      ${useSteamDie ? steamDialogMessage : ""}
-      ${useDevilDie ? devilDialogMessage : ""}
-      ${traumaMessageFromDialog}
-      ${traumaModifier !== 0 ? `<p>${game.i18n.format("COGSYNDICATE.TraumaApplied", { traumaValue: Math.abs(traumaModifier) })}</p>` : ""}
-      ${nemesisPoints > 0 ? `<p><span style='color: purple; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedNemesisPoint", { amount: nemesisPoints })}</span></p>` : ""}
-      ${steamPoints > 0 ? `<p><span style='color: orange; font-weight: bold'>${game.i18n.format("COGSYNDICATE.AddedSteamPoint", { amount: steamPoints })}</span></p>` : ""}
-      ${steamBoosterMessage}
-      <hr>
-      <p>${game.i18n.localize("COGSYNDICATE.Roll")}: ${diceCount}d12 (${die1}+${die2}${useStressDie ? `+${stressDie}` : ""}${useSteamDie ? `+${steamDie}` : ""}${useDevilDie ? `+${devilDie}` : ""}) + ${effectiveAttrValue} (${attrLabel})${traumaModifier !== 0 ? ` ${traumaModifier} (${game.i18n.localize("COGSYNDICATE.Trauma")})` : ""} + ${positionModifier} (${game.i18n.localize("COGSYNDICATE.Position")})${rollModifier !== 0 ? ` ${rollModifier > 0 ? '+' : ''}${rollModifier} (${game.i18n.localize("COGSYNDICATE.RollModifier")})` : ""}</p>
-      ${upgradeButton}
-      ${rerollButton}
+      <div class="roll-section roll-position">${game.i18n.localize("COGSYNDICATE.Position")}: ${positionLabel}</div>
+      <div class="roll-section roll-skill">${game.i18n.localize("COGSYNDICATE.RolledOn").replace('{attrLabel}', `<span style='color:#7eb8f7;font-weight:bold'>${attrLabel}</span>`).replace('{total}', `<span style='color:#f5b942;font-weight:bold'>${total}</span>`)}</div>
+      <div class="roll-section roll-result-row">${result}</div>
+      ${consequencesMessage ? `<div class="roll-section">${consequencesMessage}</div>` : ""}
+      ${useStressDie ? `<div class="roll-section roll-extra">${stressDieMessage}</div>` : ""}
+      ${useSteamDie ? `<div class="roll-section roll-extra">${steamDialogMessage}</div>` : ""}
+      ${useDevilDie ? `<div class="roll-section roll-extra">${devilDialogMessage}</div>` : ""}
+      ${traumaMessageFromDialog ? `<div class="roll-section roll-extra">${traumaMessageFromDialog}</div>` : ""}
+      ${traumaModifier !== 0 ? `<div class="roll-section roll-extra">${game.i18n.format("COGSYNDICATE.TraumaApplied", { traumaValue: Math.abs(traumaModifier) })}</div>` : ""}
+      ${nemesisPoints > 0 ? `<div class="roll-section roll-extra" style='color:#c084fc;font-weight:bold'>${game.i18n.format("COGSYNDICATE.AddedNemesisPoint", { amount: nemesisPoints })}</div>` : ""}
+      ${steamPoints > 0 ? `<div class="roll-section roll-extra" style='color:#f59e0b;font-weight:bold'>${game.i18n.format("COGSYNDICATE.AddedSteamPoint", { amount: steamPoints })}</div>` : ""}
+      ${steamBoosterMessage ? `<div class="roll-section roll-extra">${steamBoosterMessage}</div>` : ""}
+      <div class="roll-details">${game.i18n.localize("COGSYNDICATE.Roll")}: ${diceCount}d12 (${die1}+${die2}${useStressDie ? `+${stressDie}` : ""}${useSteamDie ? `+${steamDie}` : ""}${useDevilDie ? `+${devilDie}` : ""}) + ${effectiveAttrValue} (${attrLabel})${traumaModifier !== 0 ? ` ${traumaModifier} (${game.i18n.localize("COGSYNDICATE.Trauma")})` : ""} + ${positionModifier} (${game.i18n.localize("COGSYNDICATE.Position")})${rollModifier !== 0 ? ` ${rollModifier > 0 ? '+' : ''}${rollModifier} (${game.i18n.localize("COGSYNDICATE.RollModifier")})` : ""}</div>
+      <div class="roll-section" style='padding-top:6px;padding-bottom:6px'>${upgradeButton}${rerollButton}</div>
     </div>
   `;
 
@@ -1092,13 +1082,13 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
     }
   });
 
-  // Inicjalizacja timerów dla przycisków konsekwencji (120 sekund)
+  // Inicjalizacja timerów dla przycisków konsekwencji (240 sekund)
   html.querySelectorAll('.select-consequences-btn').forEach(function(button) {
     const buttonId = button.getAttribute('id');
     const messageTimestamp = message.timestamp || Date.now();
     const currentTime = Date.now();
     const timeElapsed = currentTime - messageTimestamp;
-    const timeRemaining = 120000 - timeElapsed; // 120 sekund = 120000 ms
+    const timeRemaining = 240000 - timeElapsed; // 240 sekund = 240000 ms
     
     // Jeśli przycisk już ma timer, nie inicjalizuj ponownie
     if (window.cogwheelSyndicate.consequenceButtonTimers[buttonId]) {

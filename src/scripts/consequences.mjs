@@ -199,7 +199,7 @@ export function createConsequenceButton(actor, consequenceCount, oldButtonId = n
     disableOldConsequenceButton(oldButtonId);
   }
   
-  // Set 120 second timer (120000 ms)
+  // Set 240 second timer (240000 ms)
   const timer = setTimeout(() => {
     const button = document.getElementById(buttonId);
     if (button && !button.disabled) {
@@ -210,7 +210,7 @@ export function createConsequenceButton(actor, consequenceCount, oldButtonId = n
     }
     delete window.cogwheelSyndicate.consequenceButtonTimers[buttonId];
     delete window.cogwheelSyndicate.activeConsequenceButtons[buttonId];
-  }, 120000);
+  }, 240000);
   
   // Save timer
   window.cogwheelSyndicate.consequenceButtonTimers[buttonId] = timer;
