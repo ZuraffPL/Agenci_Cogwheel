@@ -48,11 +48,8 @@ jspm_packages/
 # next.js build output
 .next
 
-# Foundry VTT
-# Exclude database files (but keep the JSON versions)
-packs/*.db
-packs/*/
-!packs/*.json
+# Foundry VTT build output
+*.zip
 
 # Temporary files
 *.tmp
