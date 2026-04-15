@@ -61,7 +61,6 @@ export class ActorGearFunctions {
       });
 
     } catch (error) {
-      console.error("Error in handleSpendGear:", error);
       if (onError) {
         onError(error);
       } else {
@@ -176,7 +175,6 @@ export class ActorGearFunctions {
       return true;
 
     } catch (error) {
-      console.error("Error during gear spending:", error);
       ActorGearFunctions._showErrorDialog(
         game.i18n.format("COGSYNDICATE.ErrorGeneral", { error: error.message })
       );

@@ -80,6 +80,41 @@ System automatycznie stosuje specjalne efekty gdy określone atuty (feats) są p
 - Integruje się z systemem rzutów i metawalut
 - Automatyczna detekcja kombinacji archetyp-atut
 
+### Agent Pary + Szkolenie Organizacji
+
+**Warunki:**
+- Agent posiada archetyp "Agent Pary"
+- Na jego kartę zostaje przeciągnięty atut "Szkolenie Organizacji"
+
+**Efekt:**
+- Wyświetla dialog wyboru atrybutu (Maszyna, Inżynieria, Intryga)
+- Bazowa wartość wybranego atrybutu wzrasta o 1 punkt
+- Maksymalna wartość bazowa to 6 — jeśli wszystkie atrybuty są na 6, efekt nie jest stosowany
+- System wyświetla powiadomienie i wiadomość na czacie z ikoną biretu dyplomowego
+
+**Usuwanie:**
+- Gdy atut "Szkolenie Organizacji" jest usuwany z karty Agenta Pary
+- Wyświetla dialog wyboru atrybutu do obniżenia (spośród tych powyżej wartości bazowej archetypu)
+- Bazowa wartość wybranego atrybutu maleje o 1 punkt (minimum = wartość bazowa archetypu: 3)
+- Jeśli brak atrybutów do obniżenia — powiadomienie z wyjaśnieniem
+
+### Agent Pary + Wsparcie
+
+**Warunki:**
+- Agent posiada archetyp "Agent Pary"
+- Na jego kartę zostaje przeciągnięty atut "Wsparcie"
+
+**Efekt:**
+- Pula startowych Punktów Pary wzrasta z 1 do 2
+- Efekt sprawdzany przez `hasSupportEffect(actor)` przy każdym teście atrybutu
+- System wyświetla powiadomienie i wiadomość na czacie z ikoną złączonych rąk
+- Po dodaniu/usunięciu atryb automatycznie wywoływane `updateSteamPointsForSupportEffects()`
+
+**Usuwanie:**
+- Gdy atut "Wsparcie" jest usuwany z karty Agenta Pary
+- Pula startowych Punktów Pary wraca do 1
+- System wyświetla powiadomienie i wiadomość na czacie
+
 ## Techniczne Aspekty
 
 ### Pliki
@@ -108,6 +143,17 @@ System automatycznie stosuje specjalne efekty gdy określone atuty (feats) są p
 - `_removeTinkererEffect(actor, feat)` - usuwa efekt Majsterkowicza
 - `_applyIntrigantEffect(actor, feat)` - stosuje efekt Intryganta
 - `_removeIntrigantEffect(actor, feat)` - usuwa efekt Intryganta
+- `_applySteamBoosterFeatEffect(actor, feat)` - stosuje efekt Dopalacza Pary (powiadomienie)
+- `_removeSteamBoosterFeatEffect(actor, feat)` - usuwa efekt Dopalacza Pary
+- `_applyOrganizationTrainingEffect(actor, feat)` - stosuje efekt Szkolenia Organizacji (dialog wyboru atrybutu)
+- `_removeOrganizationTrainingEffect(actor, feat)` - usuwa efekt Szkolenia Organizacji (dialog wyboru atrybutu)
+- `_applySupportEffect(actor, feat)` - stosuje efekt Wsparcia (zwiększa pulę Punktów Pary)
+- `_removeSupportEffect(actor, feat)` - usuwa efekt Wsparcia
+
+#### Metody Pomocnicze
+
+- `hasSupportEffect(actor)` - sprawdza czy agent ma aktywny efekt Wsparcia
+- `updateSteamPointsForSupportEffects()` - aktualizuje Punkty Pary na podstawie aktywnych efektów Wsparcia
 
 #### Integracja z Systemem Rzutów
 
@@ -130,7 +176,7 @@ System wyświetla:
 
 ### CSS Styling
 
-Wiadomości na czacie mają specjalne stylowanie zdefiniowane w `cogwheel.css`:
+Wiadomości na czacie mają specjalne stylowanie zdefiniowane w `feats-effects.css` oraz `cogwheel.css`:
 - Tło gradientowe w kolorach steampunkowych
 - Złota ramka i nagłówki
 - Ikony Font Awesome
@@ -187,15 +233,6 @@ static async _applyPrecisionToolsEffect(actor, feat) {
 }
 ```
 
-## Debugging
-
-System loguje informacje do konsoli:
-```javascript
-console.log(`FeatsEffects: Checking effects for feat "${feat.name}" on actor "${actor.name}"`);
-```
-
-Włącz Developer Tools (F12) żeby zobaczyć logi systemu.
-
 ## Bezpieczeństwo
 
 - System sprawdza typy obiektów przed operacjami
@@ -205,7 +242,7 @@ Włącz Developer Tools (F12) żeby zobaczyć logi systemu.
 
 ## Kompatybilność
 
-- Foundry VTT v12+
-- System Cogwheel Syndicate v0.7.4+
+- Foundry VTT v13+
+- System Cogwheel Syndicate v0.9.0+
 - Obsługuje obie wersje kart agentów (v1 i v2)
 - Działa z systemem przeciągania i upuszczania Foundry VTT

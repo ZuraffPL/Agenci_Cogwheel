@@ -2,9 +2,9 @@
 
 ## ⚠️ Important Version Information
 
-### Current Version (v0.9.0+) - Foundry v13 Required
-- **Requires**: Foundry VTT v13.348 or higher
-- **Features**: Full native DOM API, modern JavaScript
+### Current Version (v0.9.26) - Foundry v13 Required
+- **Requires**: Foundry VTT v13.351 or higher
+- **Features**: Full native DOM API, modern JavaScript, ApplicationV2
 - **Installation**: Use instructions below for latest version
 
 ### Legacy Version (v0.8.1) - Foundry v12 Support  
@@ -34,9 +34,9 @@
 
 ## System Requirements
 
-### For v0.9.0+ (Current)
-- **Foundry VTT**: Version 13.348 or higher
-- **Verified Compatibility**: Foundry VTT v13.348
+### For v0.9.26+ (Current)
+- **Foundry VTT**: Version 13.351 or higher
+- **Verified Compatibility**: Foundry VTT v13.351
 - **Languages**: English and Polish support included
 - **Modern Browser**: Required for native DOM API
 

@@ -12,14 +12,14 @@
   
   <!-- Zakładki kategorii zegarów -->
   <div class="clocks-tabs">
-    <button class="tab-btn {{#if (eq activeCategory 'mission')}}active{{/if}}" data-category="mission" title="Zegary postępu misji">
-      <i class="fas fa-bullseye"></i> Misja
+    <button class="tab-btn {{#if (eq activeCategory 'mission')}}active{{/if}}" data-category="mission" title="{{localize 'COGSYNDICATE.ClockCategoryMission'}}">
+      <i class="fas fa-bullseye"></i> {{localize "COGSYNDICATE.ClockCategoryMission"}}
     </button>
-    <button class="tab-btn {{#if (eq activeCategory 'combat')}}active{{/if}}" data-category="combat" title="Zegary walki">
-      <i class="fas fa-fist-raised"></i> Walka
+    <button class="tab-btn {{#if (eq activeCategory 'combat')}}active{{/if}}" data-category="combat" title="{{localize 'COGSYNDICATE.ClockCategoryCombat'}}">
+      <i class="fas fa-fist-raised"></i> {{localize "COGSYNDICATE.ClockCategoryCombat"}}
     </button>
-    <button class="tab-btn {{#if (eq activeCategory 'other')}}active{{/if}}" data-category="other" title="Inne zegary">
-      <i class="fas fa-cogs"></i> Inne
+    <button class="tab-btn {{#if (eq activeCategory 'other')}}active{{/if}}" data-category="other" title="{{localize 'COGSYNDICATE.ClockCategoryOther'}}">
+      <i class="fas fa-cogs"></i> {{localize "COGSYNDICATE.ClockCategoryOther"}}
     </button>
   </div>
   

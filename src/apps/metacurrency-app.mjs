@@ -1,4 +1,4 @@
-import cogwheel_syndicate_Utility from "../scripts/utiliti.mjs"
+
 
 class MetaCurrencyApp extends foundry.applications.api.ApplicationV2 {
   constructor(options = {}) {
@@ -60,12 +60,12 @@ class MetaCurrencyApp extends foundry.applications.api.ApplicationV2 {
   async _renderHTML() {
     try {
       const data = await this._prepareContext()
-      const html = await cogwheel_syndicate_Utility.renderTemplate(
+      const html = await foundry.applications.handlebars.renderTemplate(
         "systems/cogwheel-syndicate/src/templates/meta-currency-dialog.hbs", {metacurrencies:data.metacurrencies, canSpendNP:data.canSpendNP,stressUsesLeft:data.stressUsesLeft}
       );
       return html;
     } catch (e) {
-      console.error("_renderHTML error:", e);
+      ui.notifications.error(e.message ?? String(e));
       throw e;
     }
   }
@@ -75,13 +75,7 @@ class MetaCurrencyApp extends foundry.applications.api.ApplicationV2 {
   }
   async render(force = false, options = {}) {
     await super.render(force, options);
-     let html; // Zawinięcie w jQuery dla kompatybilności
-    if (this.element && this.element.jquery) {
-        html = this.element[0]
-      }
-    else{
-      html = this.element
-    }
+    const html = this.element;
     html.querySelectorAll('.metacurrency-increment').forEach(el => el.addEventListener('click', this._onIncrement.bind(this)));
     html.querySelectorAll('.metacurrency-decrement').forEach(el => el.addEventListener('click', this._onDecrement.bind(this)));
     html.querySelectorAll('.spend-np-btn').forEach(el => el.addEventListener('click', this._onSpendNP.bind(this)));
@@ -263,20 +257,7 @@ class MetaCurrencyApp extends foundry.applications.api.ApplicationV2 {
 
     // Sprawdź czy jest wystarczająco punktów
     if (currentNP < cost) {
-      new Dialog({
-        title: game.i18n.localize("COGSYNDICATE.metacurrency.insufficientNP"),
-        content: `<div style="text-align: center; padding: 20px;">
-          <p style="font-weight: bold; color: #d32f2f; font-size: 16px;">
-            ${game.i18n.localize("COGSYNDICATE.metacurrency.insufficientNP")}
-          </p>
-        </div>`,
-        buttons: {
-          ok: {
-            label: "OK",
-            callback: () => {}
-          }
-        }
-      }).render(true);
+      ui.notifications.warn(game.i18n.localize("COGSYNDICATE.metacurrency.insufficientNP"));
       return;
     }
 
@@ -390,20 +371,7 @@ class MetaCurrencyApp extends foundry.applications.api.ApplicationV2 {
 
     // Sprawdź czy jest wystarczająco punktów
     if (currentSP < cost) {
-      new Dialog({
-        title: game.i18n.localize("COGSYNDICATE.spendSP.insufficientSP"),
-        content: `<div style="text-align: center; padding: 20px;">
-          <p style="font-weight: bold; color: #1976d2; font-size: 16px;">
-            ${game.i18n.localize("COGSYNDICATE.spendSP.insufficientSP")}
-          </p>
-        </div>`,
-        buttons: {
-          ok: {
-            label: "OK",
-            callback: () => {}
-          }
-        }
-      }).render(true);
+      ui.notifications.warn(game.i18n.localize("COGSYNDICATE.spendSP.insufficientSP"));
       return;
     }
 

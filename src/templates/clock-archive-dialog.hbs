@@ -34,9 +34,9 @@
           <div class="clock-details" style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 5px; min-width: 0; overflow: hidden;">
             <div class="clock-name" style="color: #f4a460; font-weight: bold; font-size: 1.1em; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{clock.name}}</div>
             <div class="clock-progress" style="color: #d4a574; font-size: 0.9em; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); margin-bottom: 3px;">{{clock.value}} / {{clock.max}} • 
-              {{#if (eq clock.category 'mission')}}<i class="fas fa-bullseye"></i> Misja{{/if}}
-              {{#if (eq clock.category 'combat')}}<i class="fas fa-fist-raised"></i> Walka{{/if}}
-              {{#if (eq clock.category 'other')}}<i class="fas fa-cogs"></i> Inne{{/if}}
+              {{#if (eq clock.category 'mission')}}<i class="fas fa-bullseye"></i> {{localize "COGSYNDICATE.ClockCategoryMission"}}{{/if}}
+              {{#if (eq clock.category 'combat')}}<i class="fas fa-fist-raised"></i> {{localize "COGSYNDICATE.ClockCategoryCombat"}}{{/if}}
+              {{#if (eq clock.category 'other')}}<i class="fas fa-cogs"></i> {{localize "COGSYNDICATE.ClockCategoryOther"}}{{/if}}
             </div>
             <div class="clock-archived-date" style="color: #b8860b; font-size: 0.85em; font-style: italic; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8); margin-bottom: 5px;">
               <i class="fas fa-calendar-times"></i> {{localize "COGSYNDICATE.ArchivedOn"}}: {{clock.archivedDate}}

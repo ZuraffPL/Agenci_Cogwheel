@@ -19,8 +19,6 @@ export class FeatsEffects {
     const archetypeName = actor.system.archetype?.name?.toLowerCase() || '';
     const featName = feat.name?.toLowerCase() || '';
 
-    console.log(`FeatsEffects: Checking effects for feat "${feat.name}" on actor "${actor.name}" with archetype "${actor.system.archetype?.name}"`);
-
     // Steam Commando + Steam Augmentation effect
     if (archetypeName.includes('parowy komandos') && featName.includes('parowa augmentacja')) {
       return await this._applySteamAugmentationEffect(actor, feat);
@@ -110,10 +108,8 @@ export class FeatsEffects {
       content: `
         <div class="feat-effect-message">
           <h3><i class="fas fa-cog"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectAppliedTitle")}</h3>
-          <p><strong>${actor.name}</strong> otrzymał <strong>${feat.name}</strong></p>
-          <p><strong>Efekt:</strong> Bazowa wartość <strong>Stali</strong> wzrosła o ${increase} (z ${currentStalBase} na ${newStalBase})</p>
-          <hr>
-          <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
+          <p>${game.i18n.format("COGSYNDICATE.FeatEffectApplied", { actorName: actor.name, featName: feat.name, attributeName: game.i18n.localize("COGSYNDICATE.Machine"), increase, oldValue: currentStalBase, newValue: newStalBase })}</p>
+          <p><em>${actor.system.archetype.name}</em></p>
         </div>
       `,
       speaker: { actor: actor.id }
@@ -136,7 +132,7 @@ export class FeatsEffects {
     // Check if Engineering can be increased
     if (currentMaszynaBase >= maxMaszynaBase) {
       ui.notifications.warn(
-        `${actor.name}: Atrybut Maszyna już osiągnął maksymalną wartość bazową (${maxMaszynaBase}). Efekt Majsterkowicza nie może być zastosowany.`
+        game.i18n.format("COGSYNDICATE.TinkerMaxReached", { agentName: actor.name, maxValue: maxMaszynaBase })
       );
       return false;
     }
@@ -154,18 +150,16 @@ export class FeatsEffects {
 
     // Show notification
     ui.notifications.info(
-      `${actor.name}: Majsterkowicz zwiększył bazową wartość Maszyny o ${increase} (z ${currentMaszynaBase} na ${newMaszynaBase}).`
+      game.i18n.format("COGSYNDICATE.TinkerIncreased", { agentName: actor.name, increase, oldValue: currentMaszynaBase, newValue: newMaszynaBase })
     );
 
     // Log to chat
     await ChatMessage.create({
       content: `
         <div class="feat-effect-message">
-          <h3><i class="fas fa-wrench"></i> Efekt Atutu</h3>
-          <p><strong>${actor.name}</strong> otrzymał <strong>${feat.name}</strong></p>
-          <p><strong>Efekt:</strong> Bazowa wartość <strong>Maszyny</strong> wzrosła o ${increase} (z ${currentMaszynaBase} na ${newMaszynaBase})</p>
-          <hr>
-          <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
+          <h3><i class="fas fa-wrench"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectAppliedTitle")}</h3>
+          <p>${game.i18n.format("COGSYNDICATE.FeatEffectApplied", { actorName: actor.name, featName: feat.name, attributeName: game.i18n.localize("COGSYNDICATE.Engineering"), increase, oldValue: currentMaszynaBase, newValue: newMaszynaBase })}</p>
+          <p><em>${actor.system.archetype.name}</em></p>
         </div>
       `,
       speaker: { actor: actor.id }
@@ -188,7 +182,7 @@ export class FeatsEffects {
     // Check if Intrigue can be increased
     if (currentIntrigaBase >= maxIntrigaBase) {
       ui.notifications.warn(
-        `${actor.name}: Atrybut Intryga już osiągnął maksymalną wartość bazową (${maxIntrigaBase}). Efekt Intryganta nie może być zastosowany.`
+        game.i18n.format("COGSYNDICATE.FeatEffectMaxValue", { actorName: actor.name, attributeName: game.i18n.localize("COGSYNDICATE.Intrigue"), maxValue: maxIntrigaBase, featName: feat.name })
       );
       return false;
     }
@@ -219,10 +213,8 @@ export class FeatsEffects {
       content: `
         <div class="feat-effect-message">
           <h3><i class="fas fa-mask"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectAppliedTitle")}</h3>
-          <p><strong>${actor.name}</strong> otrzymał <strong>${feat.name}</strong></p>
-          <p><strong>Efekt:</strong> Bazowa wartość <strong>Intrygi</strong> wzrosła o ${increase} (z ${currentIntrigaBase} na ${newIntrigaBase})</p>
-          <hr>
-          <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
+          <p>${game.i18n.format("COGSYNDICATE.FeatEffectApplied", { actorName: actor.name, featName: feat.name, attributeName: game.i18n.localize("COGSYNDICATE.Intrigue"), increase, oldValue: currentIntrigaBase, newValue: newIntrigaBase })}</p>
+          <p><em>${actor.system.archetype.name}</em></p>
         </div>
       `,
       speaker: { actor: actor.id }
@@ -241,18 +233,16 @@ export class FeatsEffects {
   static async _applySteamBoosterFeatEffect(actor, feat) {
     // Show notification
     ui.notifications.info(
-      `${actor.name}: Dopalacz Pary aktywowany - punkty Pary będą podwajane podczas testów atrybutów głównych.`
+      game.i18n.format("COGSYNDICATE.SteamBoosterActivated", { agentName: actor.name })
     );
 
     // Log to chat
     await ChatMessage.create({
       content: `
         <div class="feat-effect-message">
-          <h3><i class="fas fa-tachometer-alt"></i> Efekt Atutu</h3>
-          <p><strong>${actor.name}</strong> otrzymał <strong>${feat.name}</strong></p>
-          <p><strong>Efekt:</strong> Punkty Pary będą <strong>podwajane</strong> podczas testów atrybutów głównych</p>
-          <hr>
-          <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
+          <h3><i class="fas fa-tachometer-alt"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectAppliedTitle")}</h3>
+          <p>${game.i18n.format("COGSYNDICATE.SteamBoosterActivated", { agentName: actor.name })}</p>
+          <p><em>${actor.system.archetype.name}</em></p>
         </div>
       `,
       speaker: { actor: actor.id }
@@ -274,8 +264,6 @@ export class FeatsEffects {
 
     const archetypeName = actor.system.archetype?.name?.toLowerCase() || '';
     const featName = feat.name?.toLowerCase() || '';
-
-    console.log(`FeatsEffects: Checking removal effects for feat "${feat.name}" on actor "${actor.name}"`);
 
     // Steam Commando + Steam Augmentation removal
     if (archetypeName.includes('parowy komandos') && featName.includes('parowa augmentacja')) {
@@ -337,7 +325,7 @@ export class FeatsEffects {
     // Check if Steel can be decreased (shouldn't go below archetype base)
     if (currentStalBase <= archetypeStalBase) {
       ui.notifications.warn(
-        `${actor.name}: Atrybut Stal już ma wartość bazową archetypu (${archetypeStalBase}). Nie można usunąć efektu Parowej Augmentacji.`
+        game.i18n.format("COGSYNDICATE.SteamAugmentationCannotRemove", { agentName: actor.name, baseValue: archetypeStalBase })
       );
       return false;
     }
@@ -355,18 +343,16 @@ export class FeatsEffects {
 
     // Show notification
     ui.notifications.info(
-      `${actor.name}: Usunięcie Parowej Augmentacji zmniejszyło bazową wartość Stali o ${decrease} (z ${currentStalBase} na ${newStalBase}).`
+      game.i18n.format("COGSYNDICATE.SteamAugmentationDecreased", { agentName: actor.name, decrease, oldValue: currentStalBase, newValue: newStalBase })
     );
 
     // Log to chat
     await ChatMessage.create({
       content: `
         <div class="feat-effect-message">
-          <h3><i class="fas fa-cog"></i> Usunięcie Efektu Atutu</h3>
-          <p><strong>${actor.name}</strong> stracił <strong>${feat.name}</strong></p>
-          <p><strong>Efekt:</strong> Bazowa wartość <strong>Stali</strong> zmniejszyła się o ${decrease} (z ${currentStalBase} na ${newStalBase})</p>
-          <hr>
-          <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
+          <h3><i class="fas fa-cog"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectRemovedTitle")}</h3>
+          <p>${game.i18n.format("COGSYNDICATE.FeatEffectRemoved", { actorName: actor.name, featName: feat.name, attributeName: game.i18n.localize("COGSYNDICATE.Machine"), decrease, oldValue: currentStalBase, newValue: newStalBase })}</p>
+          <p><em>${actor.system.archetype.name}</em></p>
         </div>
       `,
       speaker: { actor: actor.id }
@@ -398,7 +384,7 @@ export class FeatsEffects {
     // Check if Engineering can be decreased (shouldn't go below archetype base)
     if (currentMaszynaBase <= archetypeMaszynaBase) {
       ui.notifications.warn(
-        `${actor.name}: Atrybut Maszyna już ma wartość bazową archetypu (${archetypeMaszynaBase}). Nie można usunąć efektu Majsterkowicza.`
+        game.i18n.format("COGSYNDICATE.TinkerCannotRemove", { agentName: actor.name, baseValue: archetypeMaszynaBase })
       );
       return false;
     }
@@ -416,18 +402,16 @@ export class FeatsEffects {
 
     // Show notification
     ui.notifications.info(
-      `${actor.name}: Usunięcie Majsterkowicza zmniejszyło bazową wartość Maszyny o ${decrease} (z ${currentMaszynaBase} na ${newMaszynaBase}).`
+      game.i18n.format("COGSYNDICATE.TinkerDecreased", { agentName: actor.name, decrease, oldValue: currentMaszynaBase, newValue: newMaszynaBase })
     );
 
     // Log to chat
     await ChatMessage.create({
       content: `
         <div class="feat-effect-message">
-          <h3><i class="fas fa-wrench"></i> Usunięcie Efektu Atutu</h3>
-          <p><strong>${actor.name}</strong> stracił <strong>${feat.name}</strong></p>
-          <p><strong>Efekt:</strong> Bazowa wartość <strong>Maszyny</strong> zmniejszyła się o ${decrease} (z ${currentMaszynaBase} na ${newMaszynaBase})</p>
-          <hr>
-          <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
+          <h3><i class="fas fa-wrench"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectRemovedTitle")}</h3>
+          <p>${game.i18n.format("COGSYNDICATE.FeatEffectRemoved", { actorName: actor.name, featName: feat.name, attributeName: game.i18n.localize("COGSYNDICATE.Engineering"), decrease, oldValue: currentMaszynaBase, newValue: newMaszynaBase })}</p>
+          <p><em>${actor.system.archetype.name}</em></p>
         </div>
       `,
       speaker: { actor: actor.id }
@@ -490,10 +474,8 @@ export class FeatsEffects {
       content: `
         <div class="feat-effect-message">
           <h3><i class="fas fa-mask"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectRemovedTitle")}</h3>
-          <p><strong>${actor.name}</strong> stracił <strong>${feat.name}</strong></p>
-          <p><strong>Efekt:</strong> Bazowa wartość <strong>Intrygi</strong> zmniejszyła się o ${decrease} (z ${currentIntrigaBase} na ${newIntrigaBase})</p>
-          <hr>
-          <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
+          <p>${game.i18n.format("COGSYNDICATE.FeatEffectRemoved", { actorName: actor.name, featName: feat.name, attributeName: game.i18n.localize("COGSYNDICATE.Intrigue"), decrease, oldValue: currentIntrigaBase, newValue: newIntrigaBase })}</p>
+          <p><em>${actor.system.archetype.name}</em></p>
         </div>
       `,
       speaker: { actor: actor.id }
@@ -520,10 +502,8 @@ export class FeatsEffects {
       content: `
         <div class="feat-effect-message">
           <h3><i class="fas fa-tachometer-alt"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectRemovedTitle")}</h3>
-          <p><strong>${actor.name}</strong> stracił <strong>${feat.name}</strong></p>
-          <p><strong>Efekt:</strong> Punkty Pary nie będą już <strong>podwajane</strong> podczas testów atrybutów głównych</p>
-          <hr>
-          <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
+          <p>${game.i18n.format("COGSYNDICATE.SteamBoosterRemoved", { agentName: actor.name })}</p>
+          <p><em>${actor.system.archetype.name}</em></p>
         </div>
       `,
       speaker: { actor: actor.id }
@@ -542,9 +522,9 @@ export class FeatsEffects {
   static async _applyOrganizationTrainingEffect(actor, feat) {
     // Check if all base attributes are at their starting value (3) for Steam Agent
     const attributes = {
-      machine: { key: 'machine', name: 'Stal', current: actor.system.attributes.machine.base || 1 },
-      engineering: { key: 'engineering', name: 'Maszyna', current: actor.system.attributes.engineering.base || 1 },
-      intrigue: { key: 'intrigue', name: 'Intryga', current: actor.system.attributes.intrigue.base || 1 }
+      machine: { key: 'machine', name: game.i18n.localize("COGSYNDICATE.Machine"), current: actor.system.attributes.machine.base || 1 },
+      engineering: { key: 'engineering', name: game.i18n.localize("COGSYNDICATE.Engineering"), current: actor.system.attributes.engineering.base || 1 },
+      intrigue: { key: 'intrigue', name: game.i18n.localize("COGSYNDICATE.Intrigue"), current: actor.system.attributes.intrigue.base || 1 }
     };
 
     // Get attributes that can be increased (not at maximum 6)
@@ -581,71 +561,67 @@ export class FeatsEffects {
       </div>
     `;
 
-    return new Promise((resolve) => {
-      new Dialog({
-        title: game.i18n.localize("COGSYNDICATE.OrganizationTrainingTitle") || "Szkolenie Organizacji",
-        content: dialogContent,
-        buttons: {
-          cancel: {
-            label: game.i18n.localize("COGSYNDICATE.Cancel") || "Anuluj",
-            callback: () => resolve(false)
-          },
-          confirm: {
-            label: game.i18n.localize("COGSYNDICATE.Confirm") || "Zatwierdź",
-            callback: async (html) => {
-              const chosenAttribute = html[0].querySelector('[name="chosenAttribute"]').value;
-              const attributeData = attributes[chosenAttribute];
-              
-              if (!attributeData) {
-                ui.notifications.error(game.i18n.localize("COGSYNDICATE.AttributeCannotBeFound"));
-                resolve(false);
-                return;
-              }
+    return foundry.applications.api.DialogV2.wait({
+      window: { title: game.i18n.localize("COGSYNDICATE.OrganizationTrainingTitle"), classes: ["cogsyndicate", "organization-training-dialog"] },
+      content: dialogContent,
+      rejectClose: false,
+      buttons: [
+        {
+          action: "cancel",
+          label: game.i18n.localize("COGSYNDICATE.Cancel"),
+          callback: () => false
+        },
+        {
+          action: "confirm",
+          label: game.i18n.localize("COGSYNDICATE.Confirm"),
+          default: true,
+          callback: async (event, button) => {
+            const chosenAttribute = button.form.querySelector('[name="chosenAttribute"]').value;
+            const attributeData = attributes[chosenAttribute];
+            
+            if (!attributeData) {
+              ui.notifications.error(game.i18n.localize("COGSYNDICATE.AttributeCannotBeFound"));
+              return false;
+            }
 
-              const newValue = Math.min(attributeData.current + 1, 6);
-              const updateKey = `system.attributes.${chosenAttribute}.base`;
+            const newValue = Math.min(attributeData.current + 1, 6);
+            const updateKey = `system.attributes.${chosenAttribute}.base`;
 
-              try {
-                await actor.update({ [updateKey]: newValue });
+            try {
+              await actor.update({ [updateKey]: newValue });
 
-                // Show success notification
-                ui.notifications.info(
-                  game.i18n.format("COGSYNDICATE.OrganizationTrainingIncreased", {
-                    agentName: actor.name,
-                    attributeName: attributeData.name,
-                    oldValue: attributeData.current,
-                    newValue: newValue
-                  })
-                );
+              // Show success notification
+              ui.notifications.info(
+                game.i18n.format("COGSYNDICATE.OrganizationTrainingIncreased", {
+                  agentName: actor.name,
+                  attributeName: attributeData.name,
+                  oldValue: attributeData.current,
+                  newValue: newValue
+                })
+              );
 
-                // Log to chat with steampunk styling
-                await ChatMessage.create({
-                  content: `
-                    <div class="feat-effect-message">
-                      <h3><i class="fas fa-graduation-cap"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectAppliedTitle")}</h3>
-                      <p><strong>${actor.name}</strong> otrzymał <strong>${feat.name}</strong></p>
-                      <p><strong>Efekt:</strong> Bazowa wartość <strong>${attributeData.name}</strong> zwiększona z <span style="color: #8b4513;">${attributeData.current}</span> na <span style="color: #cd7f32; font-weight: bold;">${newValue}</span></p>
-                      <hr>
-                      <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
-                    </div>
-                  `,
-                  speaker: { actor: actor.id }
-                });
+              // Log to chat with steampunk styling
+              await ChatMessage.create({
+                content: `
+                  <div class="feat-effect-message">
+                    <h3><i class="fas fa-graduation-cap"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectAppliedTitle")}</h3>
+                    <p><strong>${actor.name}</strong> otrzymał <strong>${feat.name}</strong></p>
+                    <p><strong>Efekt:</strong> Bazowa wartość <strong>${attributeData.name}</strong> zwiększona z <span style="color: #8b4513;">${attributeData.current}</span> na <span style="color: #cd7f32; font-weight: bold;">${newValue}</span></p>
+                    <hr>
+                    <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
+                  </div>
+                `,
+                speaker: { actor: actor.id }
+              });
 
-                resolve(true);
-              } catch (error) {
-                console.error('Error applying Organization Training effect:', error);
-                ui.notifications.error(game.i18n.format("COGSYNDICATE.ApplyEffectError", { error: error.message }));
-                resolve(false);
-              }
+              return true;
+            } catch (error) {
+              ui.notifications.error(game.i18n.format("COGSYNDICATE.ApplyEffectError", { error: error.message }));
+              return false;
             }
           }
-        },
-        default: "confirm",
-        width: 400,
-        classes: ["cogsyndicate", "dialog", "organization-training-dialog"],
-        close: () => resolve(false)
-      }).render(true);
+        }
+      ]
     });
   }
 
@@ -658,9 +634,9 @@ export class FeatsEffects {
    */
   static async _removeOrganizationTrainingEffect(actor, feat) {
     const attributes = {
-      machine: { key: 'machine', name: 'Stal', current: actor.system.attributes.machine.base || 1, base: 3 },
-      engineering: { key: 'engineering', name: 'Maszyna', current: actor.system.attributes.engineering.base || 1, base: 3 },
-      intrigue: { key: 'intrigue', name: 'Intryga', current: actor.system.attributes.intrigue.base || 1, base: 3 }
+      machine: { key: 'machine', name: game.i18n.localize("COGSYNDICATE.Machine"), current: actor.system.attributes.machine.base || 1, base: 3 },
+      engineering: { key: 'engineering', name: game.i18n.localize("COGSYNDICATE.Engineering"), current: actor.system.attributes.engineering.base || 1, base: 3 },
+      intrigue: { key: 'intrigue', name: game.i18n.localize("COGSYNDICATE.Intrigue"), current: actor.system.attributes.intrigue.base || 1, base: 3 }
     };
 
     // Get attributes that can be decreased (above archetype base of 3)
@@ -712,71 +688,67 @@ export class FeatsEffects {
       </div>
     `;
 
-    return new Promise((resolve) => {
-      new Dialog({
-        title: game.i18n.localize("COGSYNDICATE.OrganizationTrainingRemoval") || "Usunięcie: Szkolenie Organizacji",
-        content: dialogContent,
-        buttons: {
-          cancel: {
-            label: game.i18n.localize("COGSYNDICATE.Cancel") || "Anuluj",
-            callback: () => resolve(false)
-          },
-          confirm: {
-            label: game.i18n.localize("COGSYNDICATE.Confirm") || "Zatwierdź",
-            callback: async (html) => {
-              const chosenAttribute = html[0].querySelector('[name="chosenAttribute"]').value;
-              const attributeData = attributes[chosenAttribute];
-              
-              if (!attributeData) {
-                ui.notifications.error(game.i18n.localize("COGSYNDICATE.AttributeCannotBeFound"));
-                resolve(false);
-                return;
-              }
+    return foundry.applications.api.DialogV2.wait({
+      window: { title: game.i18n.localize("COGSYNDICATE.OrganizationTrainingRemoval"), classes: ["cogsyndicate", "organization-training-dialog"] },
+      content: dialogContent,
+      rejectClose: false,
+      buttons: [
+        {
+          action: "cancel",
+          label: game.i18n.localize("COGSYNDICATE.Cancel"),
+          callback: () => false
+        },
+        {
+          action: "confirm",
+          label: game.i18n.localize("COGSYNDICATE.Confirm"),
+          default: true,
+          callback: async (event, button) => {
+            const chosenAttribute = button.form.querySelector('[name="chosenAttribute"]').value;
+            const attributeData = attributes[chosenAttribute];
+            
+            if (!attributeData) {
+              ui.notifications.error(game.i18n.localize("COGSYNDICATE.AttributeCannotBeFound"));
+              return false;
+            }
 
-              const newValue = Math.max(attributeData.current - 1, attributeData.base);
-              const updateKey = `system.attributes.${chosenAttribute}.base`;
+            const newValue = Math.max(attributeData.current - 1, attributeData.base);
+            const updateKey = `system.attributes.${chosenAttribute}.base`;
 
-              try {
-                await actor.update({ [updateKey]: newValue });
+            try {
+              await actor.update({ [updateKey]: newValue });
 
-                // Show success notification
-                ui.notifications.info(
-                  game.i18n.format("COGSYNDICATE.OrganizationTrainingRemovalDecreased", {
-                    agentName: actor.name,
-                    attributeName: attributeData.name,
-                    oldValue: attributeData.current,
-                    newValue: newValue
-                  })
-                );
+              // Show success notification
+              ui.notifications.info(
+                game.i18n.format("COGSYNDICATE.OrganizationTrainingRemovalDecreased", {
+                  agentName: actor.name,
+                  attributeName: attributeData.name,
+                  oldValue: attributeData.current,
+                  newValue: newValue
+                })
+              );
 
-                // Log to chat
-                await ChatMessage.create({
-                  content: `
-                    <div class="feat-effect-message">
-                      <h3><i class="fas fa-graduation-cap"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectRemovedTitle")}</h3>
-                      <p><strong>${actor.name}</strong> stracił <strong>${feat.name}</strong></p>
-                      <p><strong>Efekt:</strong> Bazowa wartość <strong>${attributeData.name}</strong> obniżona z <span style="color: #cd7f32;">${attributeData.current}</span> na <span style="color: #8b4513; font-weight: bold;">${newValue}</span></p>
-                      <hr>
-                      <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
-                    </div>
-                  `,
-                  speaker: { actor: actor.id }
-                });
+              // Log to chat
+              await ChatMessage.create({
+                content: `
+                  <div class="feat-effect-message">
+                    <h3><i class="fas fa-graduation-cap"></i> ${game.i18n.localize("COGSYNDICATE.FeatEffectRemovedTitle")}</h3>
+                    <p><strong>${actor.name}</strong> stracił <strong>${feat.name}</strong></p>
+                    <p><strong>Efekt:</strong> Bazowa wartość <strong>${attributeData.name}</strong> obniżona z <span style="color: #cd7f32;">${attributeData.current}</span> na <span style="color: #8b4513; font-weight: bold;">${newValue}</span></p>
+                    <hr>
+                    <p><em>Archetyp: ${actor.system.archetype.name}</em></p>
+                  </div>
+                `,
+                speaker: { actor: actor.id }
+              });
 
-                resolve(true);
-              } catch (error) {
-                console.error('Error removing Organization Training effect:', error);
-                ui.notifications.error(game.i18n.format("COGSYNDICATE.RemoveEffectError", { error: error.message }));
-                resolve(false);
-              }
+              return true;
+            } catch (error) {
+              ui.notifications.error(game.i18n.format("COGSYNDICATE.RemoveEffectError", { error: error.message }));
+              return false;
             }
           }
-        },
-        default: "confirm",
-        width: 400,
-        classes: ["cogsyndicate", "dialog", "organization-training-dialog"],
-        close: () => resolve(false)
-      }).render(true);
+        }
+      ]
     });
   }
 
@@ -926,7 +898,6 @@ export class FeatsEffects {
 
       return !!steamBoosterFeat;
     } catch (error) {
-      console.error(`Error in hasSteamBoosterEffect:`, error);
       return false;
     }
   }
@@ -960,7 +931,6 @@ export class FeatsEffects {
 
       return { steamPoints: doubledSteamPoints, message: message };
     } catch (error) {
-      console.error(`Error in applySteamBoosterEffect:`, error);
       return { steamPoints: originalSteamPoints, message: null };
     }
   }
@@ -1048,7 +1018,6 @@ export class FeatsEffects {
       const feats = actor.system.feats || [];
       return feats.some(feat => feat.name?.toLowerCase().includes('wsparcie'));
     } catch (error) {
-      console.error('Error checking Support effect:', error);
       return false;
     }
   }
@@ -1112,7 +1081,7 @@ export class FeatsEffects {
         ui.notifications.info(`${game.i18n.localize("COGSYNDICATE.SteamPoints")}: ${oldValue} → ${targetSteamPoints} (${supportCount}x ${game.i18n.localize("COGSYNDICATE.Support")})`);
       }
     } catch (error) {
-      console.error('Error updating Steam Points for Support effects:', error);
+      // silently ignore Steam Points update error
     }
   }
 }

@@ -4,11 +4,28 @@ import { openDoomClocks, DoomClocksDialog } from "./clocks.mjs"; // Import funkc
 import { MetaCurrencyApp } from "../apps/metacurrency-app.mjs";
 import { FeatsEffects } from "./feats-effects.mjs"; // Import systemu efektów atutów
 import { getConsequencesMessage, showConsequencesSelectionDialog, POSITIONS, RESULT_TYPES } from "./consequences.mjs"; // Import systemu konsekwencji
+import { AgentData } from "../models/agent-data.mjs";
+import { HQData } from "../models/hq-data.mjs";
+import { NemesisData } from "../models/nemesis-data.mjs";
+import { ArchetypeData, FeatData, EquipmentItemData } from "../models/item-data.mjs";
 
 // Globalne udostępnienie klasy DoomClocksDialog dla hooków
 window.DoomClocksDialog = DoomClocksDialog;
 
 Hooks.once("init", () => {
+  // Rejestracja TypeDataModel dla aktorów i itemów
+  CONFIG.Actor.dataModels = {
+    agent:   AgentData,
+    agentv2: AgentData,
+    HQ:      HQData,
+    nemesis: NemesisData,
+  };
+  CONFIG.Item.dataModels = {
+    archetype:  ArchetypeData,
+    feat:       FeatData,
+    equipment:  EquipmentItemData,
+  };
+
   // Konfiguracja typów aktorów
   CONFIG.Actor.typeLabels = {
     agent: "Agent",
@@ -83,12 +100,6 @@ Hooks.once("init", () => {
     config: false,
     type: Number,
     default: 0
-  });
-
-  // Rejestracja niestandardowego helpera Handlebars
-  Handlebars.registerHelper('capitalize', function (str) {
-    if (typeof str !== 'string') return str;
-    return str.charAt(0).toUpperCase() + str.slice(1);
   });
 
   // Initialize feats effects system
@@ -176,28 +187,28 @@ Hooks.once("ready", async () => {
 Hooks.on("renderSidebarTab", (app, html) => {
   if (app.tabName !== "actors") return;
 
-  const metaButton = `<button class="meta-currency-btn" title="${game.i18n.localize('COGSYNDICATE.metacurrency.title')}"><i class="fas fa-coins"></i> ${game.i18n.localize('COGSYNDICATE.metacurrency.open')}</button>`;
-  const clockButton = `<button class="doom-clocks-btn" title="${game.i18n.localize('COGSYNDICATE.DoomClocksTitle')}"><i class="fas fa-clock"></i> ${game.i18n.localize('COGSYNDICATE.DoomClocksTitle')}</button>`;
+  const root = html instanceof HTMLElement ? html : html[0];
+  if (!root) return;
+  const header = root.querySelector(".directory-header");
+  if (!header) return;
 
-  const header = html[0].querySelector(".directory-header");
   if (!header.querySelector(".meta-currency-btn")) {
-    header.insertAdjacentHTML('beforeend', metaButton);
+    header.insertAdjacentHTML('beforeend', `<button class="meta-currency-btn" title="${game.i18n.localize('COGSYNDICATE.metacurrency.title')}"><i class="fas fa-coins"></i> ${game.i18n.localize('COGSYNDICATE.metacurrency.open')}</button>`);
   }
   if (!header.querySelector(".doom-clocks-btn")) {
-    header.insertAdjacentHTML('beforeend', clockButton);
+    header.insertAdjacentHTML('beforeend', `<button class="doom-clocks-btn" title="${game.i18n.localize('COGSYNDICATE.DoomClocksTitle')}"><i class="fas fa-clock"></i> ${game.i18n.localize('COGSYNDICATE.DoomClocksTitle')}</button>`);
   }
 
-  metaButton.click(() => {
-    MetaCurrencyApp.showApp();
+  header.querySelector(".meta-currency-btn")?.addEventListener('click', () => {
+    try { MetaCurrencyApp.showApp(); } catch(err) { ui.notifications.error(err.message ?? String(err)); }
   });
-  clockButton.click(() => {
-    openDoomClocks();
+  header.querySelector(".doom-clocks-btn")?.addEventListener('click', () => {
+    try { openDoomClocks(); } catch(err) { ui.notifications.error(err.message ?? String(err)); }
   });
 });
 
 // Dodaj kontrolki do paska narzędzi po lewej stronie
 Hooks.on("getSceneControlButtons", (controls) => {
-  console.log("getSceneControlButtons hook called");
   
   // W Foundry v13 controls to object, nie array
   // Znajdź lub utwórz grupę Cogwheel bezpośrednio w object
@@ -246,28 +257,16 @@ Hooks.on("getSceneControlButtons", (controls) => {
 
 // Hook do obsługi kliknięć w scene controls
 Hooks.on("renderSceneControls", (controls, html, data) => {
-  console.log("renderSceneControls hook called");
-  
-  // Konwertuj native DOM element na jQuery
-  const $html = $(html);
-  
-  // Znajdź i obsłuż kliknięcia na nasze przyciski
-  $html.find('[data-tool="doom-clocks"]').off('click').on('click', () => {
-    console.log("Doom clocks button clicked via renderSceneControls!");
-    try {
-      openDoomClocks();
-    } catch (error) {
-      console.error("Error opening doom clocks:", error);
-    }
+  // html może być HTMLElement (Foundry v13) lub jQuery — obsługujemy oba
+  const root = html instanceof HTMLElement ? html : html[0];
+  if (!root) return;
+
+  root.querySelector('[data-tool="doom-clocks"]')?.addEventListener('click', () => {
+    try { openDoomClocks(); } catch (err) { ui.notifications.error(err.message ?? String(err)); }
   });
-  
-  $html.find('[data-tool="meta-currency"]').off('click').on('click', () => {
-    console.log("Meta currency button clicked via renderSceneControls!");
-    try {
-      MetaCurrencyApp.showApp();
-    } catch (error) {
-      console.error("Error opening meta currency:", error);
-    }
+
+  root.querySelector('[data-tool="meta-currency"]')?.addEventListener('click', () => {
+    try { MetaCurrencyApp.showApp(); } catch (err) { ui.notifications.error(err.message ?? String(err)); }
   });
 });
 

@@ -25,124 +25,45 @@ class CogwheelActorSheet extends foundry.applications.api.HandlebarsApplicationM
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-    const data = context;
-    data.actor = this.actor;
-    data.system = this.actor.system;
+    context.actor = this.actor;
+    context.system = this.actor.system;
+    // systemFields umożliwia użycie {{formInput}} w HBS
+    context.systemFields = this.actor.system.schema.fields;
 
-    // Sprawdź i zainicjalizuj dane jeśli potrzeba
-    this._updateData();
-
-    // ARCHETYPE: Załaduj dane archetypu jeśli istnieje
-    if (data.system.archetype && data.system.archetype.id) {
-      const archetypeItem = game.items.get(data.system.archetype.id);
-      if (archetypeItem && archetypeItem.type === "archetype") {
-        // Handle both old (data.attributes) and new (system.attributes) format
-        const archetypeAttributes = archetypeItem.system?.attributes || archetypeItem.data?.attributes;
-        data.system.archetype = {
+    // ARCHETYPE: załaduj dane live na podstawie ID (nie cached name/img)
+    if (context.system.archetype?.id) {
+      const archetypeItem = game.items.get(context.system.archetype.id);
+      if (archetypeItem?.type === "archetype") {
+        context.system.archetype = {
           id: archetypeItem.id,
           name: archetypeItem.name,
           img: archetypeItem.img,
-          attributes: archetypeAttributes
+          attributes: archetypeItem.system?.attributes,
         };
       }
     }
 
-    // FEATS: Use reference IDs for live sync
-    // Store feat IDs in system.feats (array of strings)
-    // At render, resolve to actual items from game.items
-    const featIds = data.system.feats || [];
-    data.feats = featIds
+    // FEATS: rozwiąż tablicę ID na obiekty itemów
+    context.feats = (context.system.feats ?? [])
       .map(id => game.items.get(id))
-      .filter(item => item && item.type === "feat");
+      .filter(item => item?.type === "feat");
 
-    if (!data.actor.img || data.actor.img === "") {
-      data.actor.img = "icons/svg/mystery-man.svg";
-    }
+    // Migracja starego formatu statusów wyposażenia (used/destroyed → usedDestroyed)
+    this._migrateEquipmentStatus(context);
 
-    const defaultSecondary = { value: 0 };
-    data.system.secondaryAttributes = data.system.secondaryAttributes || {};
-    data.system.secondaryAttributes.endurance = { ...defaultSecondary, ...data.system.secondaryAttributes.endurance };
-    data.system.secondaryAttributes.control = { ...defaultSecondary, ...data.system.secondaryAttributes.control };
-    data.system.secondaryAttributes.determination = { ...defaultSecondary, ...data.system.secondaryAttributes.determination };
-
-    data.system.attributes = data.system.attributes || {};
-    data.system.attributes.machine = data.system.attributes.machine || { base: 1, value: 1, damage: 0 };
-    data.system.attributes.engineering = data.system.attributes.engineering || { base: 1, value: 1, damage: 0 };
-    data.system.attributes.intrigue = data.system.attributes.intrigue || { base: 1, value: 1, damage: 0 };
-
-    data.system.attributes.machine.base = parseInt(data.system.attributes.machine.base, 10) || 1;
-    data.system.attributes.engineering.base = parseInt(data.system.attributes.engineering.base, 10) || 1;
-    data.system.attributes.intrigue.base = parseInt(data.system.attributes.intrigue.base, 10) || 1;
-
-    // Normalizacja wartości uszkodzeń: ujemne legacy → wartość bezwzględna, "T" zachowane, NaN → 0
-    for (const attrName of ['machine', 'engineering', 'intrigue']) {
-      const raw = data.system.attributes[attrName].damage;
-      if (raw !== 'T') {
-        const parsed = parseInt(raw, 10);
-        data.system.attributes[attrName].damage = isNaN(parsed) ? 0 : Math.abs(parsed);
-      }
-    }
-
-    data.system.resources = data.system.resources || {};
-    data.system.resources.gear = data.system.resources.gear || { value: 0, max: 4, basis: "machine" };
-    data.system.resources.stress = data.system.resources.stress || { value: 0, max: 4 };
-    data.system.resources.trauma = data.system.resources.trauma || { value: 0, max: 4 };
-    data.system.resources.development = data.system.resources.development || { value: 0, max: 12 };
-
-    data.system.equipmentPoints = data.system.equipmentPoints || { value: 6, max: 6 };
-    data.system.traumas = data.system.traumas || [];
-    data.system.equipments = data.system.equipments || [];
-    data.system.notes = data.system.notes || "";
-
-    const attributeMap = {
-      machine: "endurance",
-      engineering: "control",
-      intrigue: "determination"
-    };
-
-    data.effectiveAttributes = {};
-    for (const attrName of ['machine', 'engineering', 'intrigue']) {
-      const baseValue = data.system.attributes[attrName].base || 1;
-      const rawDamage = data.system.attributes[attrName].damage;
-      const damageValue = (rawDamage === 'T') ? baseValue : (parseInt(rawDamage, 10) || 0);
-      data.effectiveAttributes[attrName] = Math.max(0, baseValue - damageValue);
-      data.system.attributes[attrName].value = data.effectiveAttributes[attrName];
-    }
-
-    const gearBasis = data.system.resources.gear.basis || "machine";
-    data.system.resources.gear.max = Math.max(4, 4 + (data.effectiveAttributes[gearBasis] || 0));
-    data.system.resources.stress.max = Math.max(4, 4 + (data.effectiveAttributes.intrigue || 0));
-    data.system.resources.trauma.max = 4;
-    data.system.resources.development.max = 12;
-
-    // Migrate equipment status fields from old format to new format
-    this._migrateEquipmentStatus(data);
-
-    // Auto-correct current values if they exceed new maximums due to attribute damage
+    // Auto-korekta wartości przekraczających max (max obliczane przez AgentData.prepareDerivedData)
     const updates = {};
-    
-    // Check gear resource
-    if (data.system.resources.gear.value > data.system.resources.gear.max) {
-      updates["system.resources.gear.value"] = data.system.resources.gear.max;
-      data.system.resources.gear.value = data.system.resources.gear.max;
+    if (context.system.resources.gear.value > context.system.resources.gear.max) {
+      updates["system.resources.gear.value"] = context.system.resources.gear.max;
+      context.system.resources.gear.value = context.system.resources.gear.max;
     }
-    
-    // Check stress resource  
-    if (data.system.resources.stress.value > data.system.resources.stress.max) {
-      updates["system.resources.stress.value"] = data.system.resources.stress.max;
-      data.system.resources.stress.value = data.system.resources.stress.max;
+    if (context.system.resources.stress.value > context.system.resources.stress.max) {
+      updates["system.resources.stress.value"] = context.system.resources.stress.max;
+      context.system.resources.stress.value = context.system.resources.stress.max;
     }
-    
-    // Equipment points are always max 6 - no attribute dependency
-    data.system.equipmentPoints.max = 6;
-    
-    // Apply auto-corrections if any were needed
-    if (Object.keys(updates).length > 0) {
-      console.log("Auto-correcting resource values due to attribute changes:", updates);
-      this.actor.update(updates);
-    }
+    if (Object.keys(updates).length > 0) this.actor.update(updates);
 
-    return data;
+    return context;
   }
 
   _onRender(context, options) {
@@ -301,32 +222,25 @@ class CogwheelActorSheet extends foundry.applications.api.HandlebarsApplicationM
 
   async _onDrop(event) {
     if (!(event instanceof DragEvent)) {
-      console.warn("_onDrop: Event is not a DragEvent.");
       return;
     }
 
     let data;
     try {
       data = JSON.parse(event.dataTransfer.getData("text/plain"));
-      console.log("_onDrop: Received data:", data);
     } catch (err) {
-      console.error("_onDrop: Failed to parse drop data.", err);
       return;
     }
 
     if (data.type !== "Item") {
-      console.warn("_onDrop: Dropped data is not of type 'Item'.");
       return;
     }
 
     const item = await Item.fromDropData(data);
-    console.log("_onDrop: Created item from data:", item);
 
     const target = event.currentTarget.classList.contains('archetype-drop') ? 'archetype' : 'feat';
-    console.log("_onDrop: Drop target:", target);
 
     if (target === 'archetype' && item.type === "archetype") {
-      console.log("_onDrop: Adding archetype to actor.");
       // ARCHETYPE: Store reference and copy attribute values to actor
       const archetypeAttributes = item.system?.attributes || item.data?.attributes;
       const archetypeUpdates = {
@@ -365,7 +279,7 @@ class CogwheelActorSheet extends foundry.applications.api.HandlebarsApplicationM
         this.render();
       }
     } else {
-      console.warn("_onDrop: Item type does not match drop target.");
+      // Nothing to do — type mismatch silently ignored
     }
   }
 
@@ -567,7 +481,6 @@ class CogwheelActorSheet extends foundry.applications.api.HandlebarsApplicationM
   }
 
   async _onCreate(data, options, userId) {
-    console.log("Tworzenie postaci - _onCreate wywołane:", data, options, userId);
     await super._onCreate(data, options, userId);
 
     const gearMax = 4 + (this.actor.system.attributes.machine.base || 0);
@@ -583,73 +496,7 @@ class CogwheelActorSheet extends foundry.applications.api.HandlebarsApplicationM
       "system.equipments": []
     };
 
-    console.log("Aktualizacja zasobów przy tworzeniu:", updates);
     await this.actor.update(updates);
-  }
-
-  async _updateData() {
-    // Sprawdź czy aktor ma wszystkie wymagane pola
-    const updates = {};
-    
-    if (!this.actor.system.attributes?.machine?.base) {
-      updates["system.attributes.machine.base"] = 1;
-    }
-    if (!this.actor.system.attributes?.engineering?.base) {
-      updates["system.attributes.engineering.base"] = 1;
-    }
-    if (!this.actor.system.attributes?.intrigue?.base) {
-      updates["system.attributes.intrigue.base"] = 1;
-    }
-
-    if (!this.actor.system.feats) {
-      updates["system.feats"] = [];
-    }
-
-    const gearMax = 4 + (this.actor.system.attributes?.machine?.base || 1);
-    
-    if (this.actor.system.resources?.gear?.value === undefined || this.actor.system.resources?.gear?.value === null) {
-      updates["system.resources.gear.value"] = gearMax;
-      updates["system.resources.gear.basis"] = "machine";
-    }
-    
-    if (!this.actor.system.resources?.stress?.value) {
-      updates["system.resources.stress.value"] = 0;
-    }
-    
-    if (!this.actor.system.resources?.trauma?.value) {
-      updates["system.resources.trauma.value"] = 0;
-    }
-    
-    if (!this.actor.system.resources?.development?.value) {
-      updates["system.resources.development.value"] = 0;
-    }
-    
-    if (!this.actor.system.equipmentPoints?.value) {
-      updates["system.equipmentPoints.value"] = 6;
-    }
-    
-    if (!this.actor.system.traumas) {
-      updates["system.traumas"] = [];
-    }
-    
-    if (!this.actor.system.equipments) {
-      updates["system.equipments"] = [];
-    }
-
-    // Migrate legacy negative damage values to positive (absolute value)
-    for (const attrName of ['machine', 'engineering', 'intrigue']) {
-      const raw = this.actor.system.attributes?.[attrName]?.damage;
-      if (raw !== undefined && raw !== 'T') {
-        const parsed = parseInt(raw, 10);
-        if (!isNaN(parsed) && parsed < 0) {
-          updates[`system.attributes.${attrName}.damage`] = Math.abs(parsed);
-        }
-      }
-    }
-
-    if (Object.keys(updates).length > 0) {
-      await this.actor.update(updates);
-    }
   }
 
   async _onAddEquipment(event) {
@@ -932,7 +779,6 @@ class CogwheelActorSheet extends foundry.applications.api.HandlebarsApplicationM
         delete migratedEquipment.destroyed;
         
         needsUpdate = true;
-        console.log(`Cogwheel: Migrated equipment "${equipment.name}" from old status format to new format`);
       }
       
       return migratedEquipment;
@@ -941,7 +787,6 @@ class CogwheelActorSheet extends foundry.applications.api.HandlebarsApplicationM
     if (needsUpdate) {
       updates["system.equipments"] = migratedEquipments;
       await this.actor.update(updates);
-      console.log(`Cogwheel: Successfully migrated ${migratedEquipments.length} equipment items for actor "${this.actor.name}"`);
     }
   }
 

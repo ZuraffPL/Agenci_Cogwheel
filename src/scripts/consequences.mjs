@@ -56,12 +56,10 @@ const CONSEQUENCES_TABLE = {
 export function calculateConsequences(position, resultType) {
   // Validate inputs
   if (!CONSEQUENCES_TABLE[position]) {
-    console.warn(`[Consequences] Invalid position: ${position}. Defaulting to controlled.`);
     position = POSITIONS.CONTROLLED;
   }
 
   if (!CONSEQUENCES_TABLE[position][resultType]) {
-    console.warn(`[Consequences] Invalid result type: ${resultType} for position ${position}. No consequences.`);
     return { consequences: 0, trauma: false };
   }
 
@@ -722,6 +720,6 @@ export async function showConsequencesSelectionDialog(actor, consequenceCount, m
       button.textContent = game.i18n.localize('COGWHEEL.Consequences.AlreadySelected');
     }
   } catch (error) {
-    console.error("Error in consequence selection dialog:", error);
+    // silently ignore dialog error
   }
 }

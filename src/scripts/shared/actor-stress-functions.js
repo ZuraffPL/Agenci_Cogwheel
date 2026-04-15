@@ -65,7 +65,6 @@ export class ActorStressFunctions {
       });
 
     } catch (error) {
-      console.error("Error in handleSpendStress:", error);
       if (onError) {
         onError(error);
       } else {
@@ -218,7 +217,6 @@ export class ActorStressFunctions {
       return true;
 
     } catch (error) {
-      console.error("Error during stress spending:", error);
       ActorStressFunctions._showErrorDialog(
         game.i18n.format("COGSYNDICATE.ErrorGeneral", { error: error.message })
       );

@@ -2,13 +2,17 @@
   "id": "cogwheel-syndicate",
   "title": "Agenci Cogwheel",
   "description": "Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysłowej",
-  "version": "0.9.26",
+  "version": "0.9.96",
   "compatibility": {
     "minimum": "13",
     "verified": "13.351"
   },
   "scripts": [],
   "esmodules": [
+    "src/models/agent-data.mjs",
+    "src/models/hq-data.mjs",
+    "src/models/nemesis-data.mjs",
+    "src/models/item-data.mjs",
     "src/scripts/init.js",
     "src/scripts/handlebars.mjs",
     "src/scripts/feats-effects.mjs",
@@ -43,21 +47,10 @@
       "src/styles/equipment.css", 
       "src/styles/equipment-points.css", 
       "src/styles/agent-v2.css",
+      "src/styles/sidebars-controls.css",
       "src/styles/cogwheel.css"
   ],
   "socket": true,
-  "packs": [
-    {
-      "name": "archetypes",
-      "label": "COGSYNDICATE.CompendiumArchetypes",
-      "path": "packs/archetypes.db",
-      "type": "Item",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    }
-  ],
   "languages": [
     {
       "lang": "en",

@@ -1,4 +1,4 @@
-import cogwheel_syndicate_Utility from "../scripts/utiliti.mjs"
+
 
 export class DoomClocksDialog extends foundry.applications.api.ApplicationV2 {
 
@@ -15,12 +15,10 @@ constructor(options = {}) {
     let needsSave = false;
     this.clocks = this.clocks.map(clock => {
       if (!clock.category) {
-        console.log(`Migrating clock "${clock.name}" to default category`);
         clock.category = 'mission';
         needsSave = true;
       }
       if (!clock.fillColor) {
-        console.log(`Migrating clock "${clock.name}" to default red color`);
         clock.fillColor = '#dc2626';
         needsSave = true;
       }
@@ -29,7 +27,6 @@ constructor(options = {}) {
     
     // Zapisz migrację jeśli potrzeba
     if (needsSave) {
-      console.log("Saving migrated clocks to settings");
       game.settings.set("cogwheel-syndicate", "doomClocks", this.clocks);
     }
     
@@ -84,7 +81,7 @@ constructor(options = {}) {
       );
       return html;
     } catch (e) {
-      console.error("_renderHTML error:", e);
+      ui.notifications.error(e.message ?? String(e));
       throw e;
     }
   }
@@ -94,13 +91,7 @@ constructor(options = {}) {
   }
   async render(force = false, options = {}) {
     await super.render(force, options);
-    let html; // Zawinięcie w jQuery dla kompatybilności
-    if (this.element && this.element.jquery) {
-        html = this.element[0]
-      }
-    else{
-      html = this.element
-    }
+    const html = this.element;
 
     // Znajdź kontener - może być w różnych miejscach w zależności od wersji Foundry
     let container = html.querySelector('.doom-clocks-content');
@@ -168,9 +159,8 @@ html.querySelectorAll(".delete-clock").forEach(element => {
    * z zachowaniem ograniczeń min/max, zgodnie z natywnym DOM i AppV2
    */
   _autoAdjustHeight() {
-    const $element = $(this.element);
-    // Szukaj tylko widocznych zegarów w aktualnej kategorii
-    const visibleClocks = $element.find('.clock-item:visible').length;
+    // Szukaj tylko widocznych zegarów w aktualnej kategorii (natywny DOM, bez jQuery)
+    const visibleClocks = Array.from(this.element.querySelectorAll('.clock-item')).filter(el => el.offsetParent !== null).length;
     const baseHeight = 220; // UI, przyciski, zakładki, padding
     const clockHeight = 110; // Większa wysokość jednego zegara
     const maxHeight = 750; // Maksymalna wysokość okna (zgodnie z DEFAULT_OPTIONS)
@@ -191,12 +181,11 @@ html.querySelectorAll(".delete-clock").forEach(element => {
   }
   async _onAddClock(event) {
     event.preventDefault();
-    console.log("=== _onAddClock START ===");
     
     // Pobierz aktualnie aktywną kategorię z instancji
     const activeCategory = this.activeCategory || 'mission';
     
-    const dialogContent = await cogwheel_syndicate_Utility.renderTemplate(
+    const dialogContent = await foundry.applications.handlebars.renderTemplate(
       "systems/cogwheel-syndicate/src/templates/add-clock-dialog.hbs",
       { clock: { name: "", description: "", max: 4, category: activeCategory, fillColor: "#dc2626" } }
     );
@@ -221,7 +210,6 @@ html.querySelectorAll(".delete-clock").forEach(element => {
               label: game.i18n.localize("COGSYNDICATE.Confirm"),
               default: true,
               callback: async (event, button, html) => {
-                console.log("Dialog callback triggered");
                 await this.handleAddClock();
               }
             }
@@ -291,12 +279,8 @@ html.querySelectorAll(".delete-clock").forEach(element => {
 
 
       async handleAddClock() {
-        console.log("handleAddClock called");
-        
         try {
-          // Używamy element z dialogu, wzorując się na kodzie kolegi
           const element = this.element;
-          console.log("Dialog element:", element);
           
           const nameInput = element.querySelector('[name="name"]');
           const descInput = element.querySelector('[name="description"]');
@@ -304,21 +288,11 @@ html.querySelectorAll(".delete-clock").forEach(element => {
           const categoryInput = element.querySelector('[name="category"]');
           const fillColorInput = element.querySelector('[name="fillColor"]:checked');
           
-          console.log("Form inputs found:", {
-            nameInput: nameInput?.value,
-            descInput: descInput?.value,
-            maxInput: maxInput?.value,
-            categoryInput: categoryInput?.value,
-            fillColorInput: fillColorInput?.value
-          });
-          
           const name = nameInput?.value?.trim() || "";
           const description = descInput?.value?.trim() || "";
           const max = parseInt(maxInput?.value) || 4;
           const category = categoryInput?.value || this.activeCategory;
           const fillColor = fillColorInput?.value || "#dc2626";
-
-          console.log("Processed form values:", { name, description, max, category, fillColor });
 
           if (!name) {
             ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
@@ -334,13 +308,11 @@ html.querySelectorAll(".delete-clock").forEach(element => {
             fillColor: fillColor
           };
           
-          console.log("Adding new clock:", newClock);
           this.clocksApp.clocks.push(newClock);
           await this.clocksApp._updateClocks();
-          ui.notifications.info(`Dodano nowy zegar: ${name}`);
+          ui.notifications.info(game.i18n.format("COGSYNDICATE.ClockAdded", { name }));
         } catch (error) {
-          console.error("Error in handleAddClock:", error);
-          ui.notifications.error("Błąd podczas dodawania zegara");
+          ui.notifications.error(game.i18n.localize("COGSYNDICATE.ClockAddError"));
         }
       }
 
@@ -348,15 +320,12 @@ html.querySelectorAll(".delete-clock").forEach(element => {
 
     const dialog = new AddClockDialog(this, activeCategory);
     dialog.render(true, { height: 630 });
-    
-    console.log("=== _onAddClock END ===");
   }
 
 
 
   async _onEditClock(event) {
     event.preventDefault();
-    console.log("=== _onEditClock START ===");
     
     const index = parseInt(event.currentTarget.closest(".clock-item").dataset.index);
     const clock = this.clocks[index];
@@ -366,15 +335,11 @@ html.querySelectorAll(".delete-clock").forEach(element => {
       clock.fillColor = "#dc2626";
     }
     
-    console.log("Editing clock with data:", JSON.stringify(clock, null, 2));
-
     const dialogContent = await foundry.applications.handlebars.renderTemplate(
       "systems/cogwheel-syndicate/src/templates/add-clock-dialog.hbs",
       { clock }
     );
     
-    console.log("Generated dialog content:", dialogContent.substring(0, 200) + "...");
-
     // Używamy klasy DialogV2 wzorowanej na kodzie kolegi bb46003
     class EditClockDialog extends foundry.applications.api.DialogV2 {
       constructor(clocksApp, clock, index) {
@@ -395,7 +360,6 @@ html.querySelectorAll(".delete-clock").forEach(element => {
               label: game.i18n.localize("COGSYNDICATE.Confirm"),
               default: true,
               callback: async (event, button, html) => {
-                console.log("Edit dialog callback triggered");
                 await this.handleEditClock();
               }
             }
@@ -481,31 +445,18 @@ html.querySelectorAll(".delete-clock").forEach(element => {
       }
 
       async handleEditClock() {
-        console.log("handleEditClock called");
-        
         try {
-          // Używamy element z dialogu, wzorując się na kodzie kolegi
           const element = this.element;
-          console.log("Edit dialog element:", element);
           
           const nameInput = element.querySelector('[name="name"]');
           const descInput = element.querySelector('[name="description"]');
           const maxInput = element.querySelector('[name="max"]');
           const fillColorInput = element.querySelector('[name="fillColor"]:checked');
           
-          console.log("Edit form inputs found:", {
-            nameInput: nameInput?.value,
-            descInput: descInput?.value,
-            maxInput: maxInput?.value,
-            fillColorInput: fillColorInput?.value
-          });
-          
           const name = nameInput?.value?.trim() || "";
           const description = descInput?.value?.trim() || "";
           const max = parseInt(maxInput?.value) || this.clock.max;
           const fillColor = fillColorInput?.value || this.clock.fillColor || "#dc2626";
-
-          console.log("Edit processed form values:", { name, description, max, fillColor });
 
           if (!name) {
             ui.notifications.warn(game.i18n.localize("COGSYNDICATE.ClockNameRequired"));
@@ -521,21 +472,17 @@ html.querySelectorAll(".delete-clock").forEach(element => {
             fillColor: fillColor
           };
           
-          console.log("Updating clock at index", this.index, "from:", this.clock, "to:", updatedClock);
           this.clocksApp.clocks[this.index] = updatedClock;
           await this.clocksApp._updateClocks();
-          ui.notifications.info(`Zaktualizowano zegar: ${name}`);
+          ui.notifications.info(game.i18n.format("COGSYNDICATE.ClockUpdated", { name }));
         } catch (error) {
-          console.error("Error in handleEditClock:", error);
-          ui.notifications.error("Błąd podczas edytowania zegara");
+          ui.notifications.error(game.i18n.localize("COGSYNDICATE.ClockEditError"));
         }
       }
     }
 
     const dialog = new EditClockDialog(this, clock, index);
     dialog.render(true, { height: 630 });
-
-    console.log("=== _onEditClock END ===");
   }
 
   async _onIncrementClock(event) {
@@ -612,7 +559,6 @@ html.querySelectorAll(".delete-clock").forEach(element => {
           type: "updateClocks",
           clocks: this.clocks
         });
-        console.log("[Clocks] ✅ Clocks synchronized to all users");
       }
 
       // Wywołanie hooka lokalnie dla odświeżenia UI
@@ -628,11 +574,11 @@ html.querySelectorAll(".delete-clock").forEach(element => {
         this.activeCategory = currentCategory;
         
         // Znajdź i kliknij właściwą zakładkę aby przełączyć widok
-        const targetTab = $(this.element).find(`.tab-btn[data-category="${currentCategory}"]`);
-        if (targetTab.length > 0) {
+        const targetTab = this.element.querySelector(`.tab-btn[data-category="${currentCategory}"]`);
+        if (targetTab) {
           // Wywołaj _onTabChange aby rzeczywiście przełączyć widok
           const fakeEvent = { 
-            currentTarget: targetTab[0],
+            currentTarget: targetTab,
             preventDefault: () => {} // Empty function to prevent errors
           };
           this._onTabChange(fakeEvent);
@@ -644,8 +590,7 @@ html.querySelectorAll(".delete-clock").forEach(element => {
     }, 100);
     
     } catch (error) {
-      console.error("Error in _updateClocks:", error);
-      ui.notifications.error("Błąd podczas aktualizacji zegarów");
+      ui.notifications.error(game.i18n.localize("COGSYNDICATE.ClockUpdateError"));
     }
   }
 
@@ -670,32 +615,27 @@ html.querySelectorAll(".delete-clock").forEach(element => {
     this.activeCategory = category;
     
     // Usuń klasę active z wszystkich przycisków
-    const tabs = $(this.element).find('.tab-btn');
-    tabs.removeClass('active');
+    this.element.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
     
     // Dodaj klasę active do klikniętego przycisku
     button.classList.add('active');
     
     // Zaktualizuj atrybut kategorii kontenera
-    const container = $(this.element).find('.doom-clocks-content');
-    container.attr('data-active-category', category);
+    this.element.querySelector('.doom-clocks-content')?.setAttribute('data-active-category', category);
     
     // Automatycznie dopasuj wysokość po zmianie zakładki
     this._autoAdjustHeight();
     
     // Zaktualizuj przycisk "Dodaj zegar" aby dodawał do aktywnej kategorii
-    $(this.element).find('.add-clock').attr('data-category', category);
+    this.element.querySelector('.add-clock')?.setAttribute('data-category', category);
   }
 
   // Dopasowuje wysokość okna do ilości widocznych zegarów
   _adjustWindowHeight() {
-    const $element = $(this.element);
-    const visibleClocks = $element.find('.clock-item:visible').length;
+    const visibleClocks = Array.from(this.element.querySelectorAll('.clock-item')).filter(el => el.offsetParent !== null).length;
     const baseHeight = 220; // Zwiększona podstawowa wysokość dla UI (przyciski, zakładki, padding)
     const clockHeight = 90; // Zwiększona wysokość jednego zegara (z większym marginesem)
     const maxHeight = 700; // Zwiększona maksymalna wysokość okna
-    
-    console.log(`Adjusting height for ${visibleClocks} visible clocks in category: ${this.activeCategory}`);
     
     // Oblicz optymalną wysokość z dodatkowym bufforem
     let targetHeight = baseHeight + (visibleClocks * clockHeight) + 50; // +50px bufora
@@ -703,8 +643,6 @@ html.querySelectorAll(".delete-clock").forEach(element => {
     
     // Ustaw minimalną wysokość żeby okno nie było za małe
     targetHeight = Math.max(targetHeight, 300);
-    
-    console.log(`Setting window height to: ${targetHeight}px`);
     
     // W ApplicationV2 używamy tylko setPosition - nie modyfikujemy CSS bezpośrednio
     this.setPosition({ height: targetHeight });
@@ -716,7 +654,7 @@ html.querySelectorAll(".delete-clock").forEach(element => {
     const archivedClocks = game.settings.get("cogwheel-syndicate", "archivedClocks") || [];
     
     // Render template dla archiwum
-    const content = await cogwheel_syndicate_Utility.renderTemplate(
+    const content = await foundry.applications.handlebars.renderTemplate(
       "systems/cogwheel-syndicate/src/templates/clock-archive-dialog.hbs",
       { 
         archivedClocks,
@@ -931,7 +869,7 @@ Hooks.on("cogwheelSyndicateClocksUpdated", () => {
   }
   
   if (foundDialogs > 0) {
-    console.log(`[Clocks] ✅ Synchronized ${foundDialogs} clock dialog(s)`);
+    // clocks synchronized
   }
   
   // Funkcja pomocnicza do odświeżania dialogu
@@ -974,7 +912,6 @@ Hooks.on("cogwheelSyndicateClocksUpdated", () => {
 
 // Nasłuchiwanie na aktualizacje zegarów przez socket
 Hooks.once("ready", () => {
-  console.log("[Clocks] Socket listener registered");
   game.socket.on("system.cogwheel-syndicate", async (data) => {
     if (data.type === "updateClocks") {
       try {
@@ -986,7 +923,7 @@ Hooks.once("ready", () => {
         // Wywołanie hooka, który odświeży wszystkie otwarte okna dialogowe
         Hooks.call("cogwheelSyndicateClocksUpdated");
       } catch (error) {
-        console.error("[Clocks] Error updating clocks via socket:", error);
+        // socket error — silently fail to avoid cascading errors
       }
     }
     
@@ -998,7 +935,7 @@ Hooks.once("ready", () => {
         }
         Hooks.call("cogwheelSyndicateArchivedClocksUpdated");
       } catch (error) {
-        console.error("[Clocks] Error updating archived clocks via socket:", error);
+        // socket error — silently fail
       }
     }
   });

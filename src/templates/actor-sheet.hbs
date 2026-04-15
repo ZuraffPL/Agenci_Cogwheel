@@ -1,4 +1,4 @@
-﻿<form class="{{cssClass}}" autocomplete="off">
+<form class="{{cssClass}}" autocomplete="off">
   <header class="sheet-header">
     <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{localize 'COGSYNDICATE.EditImage'}}" />
     <h1><input name="name" type="text" value="{{actor.name}}" placeholder="{{localize 'COGSYNDICATE.CharacterName'}}" class="centered" /></h1>
@@ -31,7 +31,7 @@
                 <div class="archetype-attributes">
                   <div class="archetype-attributes-header">{{localize "COGSYNDICATE.StartingAttributeValues"}}</div>
                   <div class="archetype-attributes-values">
-                    {{#each system.archetype.attributes as |attr key|~}}{{localize (concat "COGSYNDICATE." (capitalize key))}}: {{attr}}{{#unless @last}} | {{/unless}}{{~/each}}
+                    {{#each system.archetype.attributes as |attr key|~}}{{localize (concat "COGSYNDICATE." (cogwheel-capitalize key))}}: {{attr}}{{#unless @last}} | {{/unless}}{{~/each}}
                   </div>
                 </div>
               </div>
@@ -54,18 +54,18 @@
               <label>{{localize "COGSYNDICATE.Machine"}}</label>
               <div class="attribute-content">
                 <input type="number" class="base-value" name="system.attributes.machine.base" value="{{system.attributes.machine.base}}" min="1" max="6" step="1" {{#unless editable}}disabled{{/unless}} title="{{localize 'COGSYNDICATE.BaseValueTooltip'}}" />
-                <input type="number" class="effective-value" name="system.attributes.machine.value" value="{{effectiveAttributes.machine}}" min="1" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
+                <input type="number" class="effective-value" name="system.attributes.machine.value" value="{{system.attributes.machine.value}}" min="1" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
                 <button type="button" class="roll-attribute roll-btn" data-attribute="machine" title="{{localize 'COGSYNDICATE.Roll2d12'}}"><i class="fas fa-dice-d12"></i></button>
               </div>
               <div class="damage-section">
                 <label class="damage-label">{{localize "COGSYNDICATE.MachineDamage"}}</label>
                 <div class="damage-radio-group" data-attribute="machine">
-                  {{#times 3}}
+                  {{#cogwheel-times 3}}
                     <div class="damage-radio-item">
                       <input type="radio" id="machine-damage-{{this}}" name="system.attributes.machine.damage" value="{{this}}" {{#if (eq ../system.attributes.machine.damage this)}}checked{{/if}}>
-                      <label for="machine-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
+                      <label for="machine-damage-{{this}}">{{#if (eq this "0")}}0{{else}}-{{this}}{{/if}}</label>
                     </div>
-                  {{/times}}
+                  {{/cogwheel-times}}
                   <div class="damage-radio-item">
                     <input type="radio" id="machine-damage-t" name="system.attributes.machine.damage" value="T" {{#if (eq system.attributes.machine.damage "T")}}checked{{/if}}>
                     <label for="machine-damage-t" title="{{localize 'COGSYNDICATE.Trauma'}}">T</label>
@@ -77,18 +77,18 @@
               <label>{{localize "COGSYNDICATE.Engineering"}}</label>
               <div class="attribute-content">
                 <input type="number" class="base-value" name="system.attributes.engineering.base" value="{{system.attributes.engineering.base}}" min="1" max="6" step="1" {{#unless editable}}disabled{{/unless}} title="{{localize 'COGSYNDICATE.BaseValueTooltip'}}" />
-                <input type="number" class="effective-value" name="system.attributes.engineering.value" value="{{effectiveAttributes.engineering}}" min="0" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
+                <input type="number" class="effective-value" name="system.attributes.engineering.value" value="{{system.attributes.engineering.value}}" min="0" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
                 <button type="button" class="roll-attribute roll-btn" data-attribute="engineering" title="{{localize 'COGSYNDICATE.Roll2d12'}}"><i class="fas fa-dice-d12"></i></button>
               </div>
               <div class="damage-section">
                 <label class="damage-label">{{localize "COGSYNDICATE.EngineeringDamage"}}</label>
                 <div class="damage-radio-group" data-attribute="engineering">
-                  {{#times 3}}
+                  {{#cogwheel-times 3}}
                     <div class="damage-radio-item">
                       <input type="radio" id="engineering-damage-{{this}}" name="system.attributes.engineering.damage" value="{{this}}" {{#if (eq ../system.attributes.engineering.damage this)}}checked{{/if}}>
-                      <label for="engineering-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
+                      <label for="engineering-damage-{{this}}">{{#if (eq this "0")}}0{{else}}-{{this}}{{/if}}</label>
                     </div>
-                  {{/times}}
+                  {{/cogwheel-times}}
                   <div class="damage-radio-item">
                     <input type="radio" id="engineering-damage-t" name="system.attributes.engineering.damage" value="T" {{#if (eq system.attributes.engineering.damage "T")}}checked{{/if}}>
                     <label for="engineering-damage-t" title="{{localize 'COGSYNDICATE.Trauma'}}">T</label>
@@ -100,18 +100,18 @@
               <label>{{localize "COGSYNDICATE.Intrigue"}}</label>
               <div class="attribute-content">
                 <input type="number" class="base-value" name="system.attributes.intrigue.base" value="{{system.attributes.intrigue.base}}" min="1" max="6" step="1" {{#unless editable}}disabled{{/unless}} title="{{localize 'COGSYNDICATE.BaseValueTooltip'}}" />
-                <input type="number" class="effective-value" name="system.attributes.intrigue.value" value="{{effectiveAttributes.intrigue}}" min="0" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
+                <input type="number" class="effective-value" name="system.attributes.intrigue.value" value="{{system.attributes.intrigue.value}}" min="0" max="6" readonly title="{{localize 'COGSYNDICATE.EffectiveValueTooltip'}}" />
                 <button type="button" class="roll-attribute roll-btn" data-attribute="intrigue" title="{{localize 'COGSYNDICATE.Roll2d12'}}"><i class="fas fa-dice-d12"></i></button>
               </div>
               <div class="damage-section">
                 <label class="damage-label">{{localize "COGSYNDICATE.IntrigueDamage"}}</label>
                 <div class="damage-radio-group" data-attribute="intrigue">
-                  {{#times 3}}
+                  {{#cogwheel-times 3}}
                     <div class="damage-radio-item">
                       <input type="radio" id="intrigue-damage-{{this}}" name="system.attributes.intrigue.damage" value="{{this}}" {{#if (eq ../system.attributes.intrigue.damage this)}}checked{{/if}}>
-                      <label for="intrigue-damage-{{this}}">{{#if (eq this 0)}}0{{else}}-{{this}}{{/if}}</label>
+                      <label for="intrigue-damage-{{this}}">{{#if (eq this "0")}}0{{else}}-{{this}}{{/if}}</label>
                     </div>
-                  {{/times}}
+                  {{/cogwheel-times}}
                   <div class="damage-radio-item">
                     <input type="radio" id="intrigue-damage-t" name="system.attributes.intrigue.damage" value="T" {{#if (eq system.attributes.intrigue.damage "T")}}checked{{/if}}>
                     <label for="intrigue-damage-t" title="{{localize 'COGSYNDICATE.Trauma'}}">T</label>
@@ -248,7 +248,7 @@
                 <i class="fas fa-cube" title="{{localize 'COGSYNDICATE.EquipmentTypeOther'}}"></i>
               {{/if}}
             </span>
-            {{equipment.name}} ({{localize (concat 'COGSYNDICATE.EquipmentType' (capitalize equipment.type))}})
+            {{equipment.name}} ({{localize (concat 'COGSYNDICATE.EquipmentType' (cogwheel-capitalize equipment.type))}})
           </div>
           <div class="equipment-details">
             <div>
@@ -256,7 +256,7 @@
               <br>
               {{localize "COGSYNDICATE.EquipmentAction"}}: {{equipment.action}}
               <br>
-              {{localize "COGSYNDICATE.EquipmentUsage"}}: {{localize (concat 'COGSYNDICATE.EquipmentUsage' (capitalize equipment.usage))}}
+              {{localize "COGSYNDICATE.EquipmentUsage"}}: {{localize (concat 'COGSYNDICATE.EquipmentUsage' (cogwheel-capitalize equipment.usage))}}
             </div>
             <div class="equipment-actions">
               <a class="edit-equipment"><i class="fas fa-edit"></i></a>
@@ -289,7 +289,7 @@
                 </div>
                 <div class="trauma-header">
                   <span class="trauma-name">{{trauma.name}}</span>
-                  <span class="trauma-level">{{localize "COGSYNDICATE.TraumaLevel"}} {{inc index}}</span>
+                  <span class="trauma-level">{{localize "COGSYNDICATE.TraumaLevel"}} {{cogwheel-inc index}}</span>
                   <span class="trauma-type-label">
                     <span class="trauma-type-icon">
                       {{#if (eq trauma.type "physical")}}
@@ -300,7 +300,7 @@
                         <i class="fas fa-brain" title="{{localize 'COGSYNDICATE.TraumaTypeMental'}}"></i>
                       {{/if}}
                     </span>
-                    {{localize (concat "COGSYNDICATE.TraumaType" (capitalize trauma.type))}}
+                    {{localize (concat "COGSYNDICATE.TraumaType" (cogwheel-capitalize trauma.type))}}
                   </span>
                   <span class="trauma-actions-inline">
                     <span class="trauma-separator"> | </span>

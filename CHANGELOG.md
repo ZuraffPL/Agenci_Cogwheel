@@ -11,6 +11,40 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [0.9.96] - 2026-04-15
+
+### Removed | Usunięto
+- **Usunięto katalog `packs/`** — cały katalog z artefaktami LevelDB/NeDB; archetypy są typem Item i nie wymagają kompendium | Removed `packs/` directory — archetypes are Items, no compendium needed
+- **Usunięto `packs` z `system.json`** — sekcja wskazywała na nieistniejący `archetypes.db` | Removed stale `packs` entry from `system.json`
+- **Usunięto `src/scripts/utiliti.mjs`** — wrapper V12/V13 compat; V12 branch `else` był martwym kodem od czasu ustalenia minimum v13 | Removed V12/V13 compat shim, dead code since min v13
+- **Usunięto `src/scripts/shared/EXAMPLES.js`** — plik dokumentacyjny, nigdy nie ładowany przez runtime | Removed doc-only file never loaded by runtime
+- **Usunięto `src/scripts/shared/EQUIPMENT-EXAMPLES.js`** — j.w. | Same as above
+- **Usunięto bloki jQuery compat** z `metacurrency-app.mjs` i `clocks.mjs` — `element.jquery` zawsze `false` w V13, zastąpiono `const html = this.element` | Removed jQuery compat guard blocks from both files
+- **Usunięto `import cogwheel_syndicate_Utility`** z `metacurrency-app.mjs` i `clocks.mjs` | Removed now-unused import
+
+### Fixed | Naprawiono
+- **147 błędów kompilacji w `feats-effects.mjs`** — duplikat bloku zamykającego w `_removeTinkererEffect` (artefakt po wcześniejszej edycji) usunięty | Fixed 147 compile errors — duplicate closing block in `_removeTinkererEffect` removed
+- **`sidebars-controls.css` nigdy nie był ładowany** — plik istniał, ale brakowało go w tablicy `styles` w `system.json`; style kontrolek sceny (`doom-clocks`, `meta-currency`) nie były stosowane | Added missing `sidebars-controls.css` to `system.json` styles array
+
+### Changed | Zmieniono
+- **Zastąpiono `cogwheel_syndicate_Utility.renderTemplate()`** bezpośrednimi wywołaniami `foundry.applications.handlebars.renderTemplate()` w 3 miejscach (`metacurrency-app.mjs`, `clocks.mjs` ×2) | Replaced custom utility with direct Foundry V13 API calls
+
+### Internationalisation | Internacjonalizacja
+- **`add-minion-dialog.hbs`** — 3 hardcoded PL placeholdery → `game.i18n.localize()` | 3 hardcoded PL placeholders → i18n
+- **`add-clock-dialog.hbs`** — label "Kategoria" i 3 opcje dropdown → klucze `COGSYNDICATE.*` | Category label and 3 dropdown options → i18n keys
+- **`doom-clocks-dialog.hbs`** — 3 przyciski zakładek (Misja/Walka/Inne) → i18n | 3 tab buttons → i18n
+- **`clock-archive-dialog.hbs`** — 3 etykiety kategorii → i18n | 3 category labels → i18n
+- **`nemesis-sheet.hbs`** — 6 tytułów przycisków zegarów, `Brak przybocznych.`, placeholder notatek → i18n | 6 clock button titles, empty minions text, notes placeholder → i18n
+- **`lang/pl.json` + `lang/en.json`** — dodano 10 nowych kluczy: `ClockAdded`, `ClockAddError`, `ClockUpdated`, `ClockEditError`, `ClockUpdateError`, `NoMinions`, `ClockCategory`, `ClockCategoryMission`, `ClockCategoryCombat`, `ClockCategoryOther` | Added 10 new i18n keys
+
+### Cleanup | Porządki
+- **Tier 2 console cleanup** — usunięto wszystkie `console.log/warn/error` z plików runtime: `actor-sheet.js`, `actor-sheetv2.js`, `feats-effects.mjs`, `clocks.mjs`, `consequences.mjs`, `init.js`, `roll-mechanics.js`, `metacurrency-app.mjs`, `shared/*` | Removed all console statements from all runtime files; user-facing errors surfaced via `ui.notifications.error()`
+
+### Documentation | Dokumentacja
+- **`FEATS_EFFECTS.md`** — dodano dokumentację 6 brakujących metod (`_applyOrganizationTrainingEffect`, `_removeOrganizationTrainingEffect`, `_applySteamBoosterFeatEffect`, `_removeSteamBoosterFeatEffect`, `_applySupportEffect`, `_removeSupportEffect`), metod pomocniczych (`hasSupportEffect`, `updateSteamPointsForSupportEffects`), 2 nowe sekcje efektów, usunięto sekcję "Debugging", zaktualizowano kompatybilność na v13+/v0.9.0+ | Added 8 missing methods, 2 new effect sections, removed stale Debugging section
+- **`ARCHITECTURE.md`** — dodano katalog `src/models/` z opisem 4 plików TypeDataModel, zaktualizowano listę plików `src/scripts/`, zaktualizowano Version Roadmap | Added `src/models/` directory, updated scripts list and version roadmap
+- **`INSTALL.md`** — zaktualizowano wersję Foundry z 13.348 na 13.351, wersję systemu z v0.9.0+ na v0.9.26+ | Updated Foundry version and system version references
+
 ## [0.9.26] - 2026-03-09
 
 ### Fixed | Naprawiono

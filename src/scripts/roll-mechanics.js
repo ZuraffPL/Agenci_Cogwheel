@@ -904,21 +904,11 @@ async function executeRollWithData(actor, data, isReroll = false) {
   const mappedPosition = positionMap[position];
   const mappedResultType = resultTypeMap[resultType];
   
-  console.log('[Consequences Debug] Mapping:', { 
-    originalPosition: position, 
-    mappedPosition,
-    originalResultType: resultType,
-    mappedResultType
-  });
-  
   if (mappedResultType && mappedPosition) {
     // Try to get consequences from global object
     if (game.cogwheelSyndicate?.consequences?.getConsequencesMessage) {
-      console.log('[Consequences Debug] Using global consequences object');
       consequencesMessage = game.cogwheelSyndicate.consequences.getConsequencesMessage(mappedPosition, mappedResultType);
-      console.log('[Consequences Debug] Generated Message:', consequencesMessage);
     } else {
-      console.warn('[Consequences Debug] Consequences system not available in game.cogwheelSyndicate');
       // Fallback: create message manually
       const consequencesTable = {
         'controlled': { 'successWithCost': 1, 'failureWithConsequence': 2, 'criticalFailure': 3 },
@@ -934,7 +924,6 @@ async function executeRollWithData(actor, data, isReroll = false) {
           <i class="fas fa-exclamation-triangle"></i>
           <span class="consequence-count">${count}</span> ${word}${trauma}
         </div>`;
-        console.log('[Consequences Debug] Fallback message created:', consequencesMessage);
       }
     }
   }

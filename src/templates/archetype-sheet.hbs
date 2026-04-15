@@ -1,22 +1,22 @@
 <form class="{{cssClass}}" autocomplete="off">
   <header class="sheet-header flexrow">
     <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" alt="{{item.name}}" />
-    <h1 class="centered"><input name="name" type="text" value="{{item.name}}" placeholder="Nazwa Archetypu" /></h1>
+    <h1 class="centered"><input name="name" type="text" value="{{item.name}}" placeholder="{{localize 'COGSYNDICATE.Archetype'}}" /></h1>
   </header>
 
   <section class="sheet-body">
     <div class="form-fields">
       <div class="form-group">
-        <label>Stal</label>
-        <input type="number" name="system.attributes.machine" value="{{system.attributes.machine}}" min="1" max="6" />
+        <label>{{localize systemFields.attributes.fields.machine.label}}</label>
+        {{formInput systemFields.attributes.fields.machine value=system.attributes.machine name="system.attributes.machine"}}
       </div>
       <div class="form-group">
-        <label>Maszyna</label>
-        <input type="number" name="system.attributes.engineering" value="{{system.attributes.engineering}}" min="1" max="6" />
+        <label>{{localize systemFields.attributes.fields.engineering.label}}</label>
+        {{formInput systemFields.attributes.fields.engineering value=system.attributes.engineering name="system.attributes.engineering"}}
       </div>
       <div class="form-group">
-        <label>Intryga</label>
-        <input type="number" name="system.attributes.intrigue" value="{{system.attributes.intrigue}}" min="1" max="6" />
+        <label>{{localize systemFields.attributes.fields.intrigue.label}}</label>
+        {{formInput systemFields.attributes.fields.intrigue value=system.attributes.intrigue name="system.attributes.intrigue"}}
       </div>
     </div>
   </section>

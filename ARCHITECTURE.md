@@ -200,17 +200,31 @@ async _onAddEquipment(event) {
 
 ### Core System Files
 ```
-src/scripts/
-├── actor-sheet.js              # Agent V1 implementation
-├── actor-sheetv2.js            # Agent V2 implementation
-├── init.js                     # System initialization
-└── shared/                     # Shared function modules
-    ├── actor-gear-functions.js
-    ├── actor-stress-functions.js
-    ├── actor-equipment-functions.js
-    ├── EXAMPLES.js             # Gear/Stress examples
-    ├── EQUIPMENT-EXAMPLES.js   # Equipment examples
-    └── README.md               # Shared functions documentation
+src/
+├── scripts/
+│   ├── actor-sheet.js              # Agent V1 implementation
+│   ├── actor-sheetv2.js            # Agent V2 implementation
+│   ├── init.js                     # System initialization
+│   ├── roll-mechanics.js           # Roll system and consequences
+│   ├── hq-sheet.js                 # Headquarters sheet
+│   ├── nemesis-sheet.js            # Nemesis sheet
+│   ├── feats-effects.mjs           # Feat effects system
+│   ├── clocks.mjs                  # Clock management system
+│   ├── consequences.mjs            # Consequences system
+│   ├── handlebars.mjs              # Handlebars helpers registration
+│   ├── utiliti.mjs                 # Utility functions
+│   └── shared/                     # Shared function modules
+│       ├── actor-gear-functions.js
+│       ├── actor-stress-functions.js
+│       ├── actor-equipment-functions.js
+│       ├── EXAMPLES.js             # Gear/Stress examples
+│       ├── EQUIPMENT-EXAMPLES.js   # Equipment examples
+│       └── README.md               # Shared functions documentation
+└── models/
+    ├── agent-data.mjs              # TypeDataModel for agent actors
+    ├── hq-data.mjs                 # TypeDataModel for HQ actors
+    ├── nemesis-data.mjs            # TypeDataModel for nemesis actors
+    └── item-data.mjs               # TypeDataModel for items
 ```
 
 ### Documentation Files
@@ -338,10 +352,8 @@ Horizontal Flexbox:
 4. **ActorFeatFunctions**: Enhanced feat effect system integration
 
 ### Version Roadmap
-- **v0.7.8**: Trauma function deduplication
-- **v0.7.9**: Resource management consolidation
-- **v0.8.0**: Complete shared function ecosystem
-- **v0.8.1**: Advanced customization features
+- **v0.9.26** (current): Complete UI enhancement system, shared functions architecture, ApplicationV2
+- **Upcoming**: ActorTraumaFunctions, ActorResourceFunctions, ActorRollFunctions
 
 ### Architecture Goals
 - **Zero Duplication**: Every function implemented exactly once

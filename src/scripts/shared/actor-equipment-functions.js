@@ -368,7 +368,6 @@ export class ActorEquipmentFunctions {
   }
 
   static async _defaultOnError(error, actor, sheet, config) {
-    console.error('Equipment operation error:', error);
     ui.notifications.error(
       game.i18n.format("COGSYNDICATE.EquipmentOperationError", { 
         error: error.message 
