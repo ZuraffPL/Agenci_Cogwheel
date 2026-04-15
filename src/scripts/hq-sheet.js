@@ -240,7 +240,7 @@ class CogwheelHQSheet extends foundry.applications.api.HandlebarsApplicationMixi
 
 // Rejestracja arkusza
 foundry.documents.collections.Actors.registerSheet("cogwheel-syndicate", CogwheelHQSheet, {
-  types: ["HQ"],
+  types: ["HQ", "hq"],
   makeDefault: true,
   label: "Cogwheel HQ Sheet"
 });

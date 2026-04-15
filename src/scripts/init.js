@@ -17,6 +17,7 @@ Hooks.once("init", () => {
   CONFIG.Actor.dataModels = {
     agent:   AgentData,
     agentv2: AgentData,
+    hq:      HQData,
     HQ:      HQData,
     nemesis: NemesisData,
   };
@@ -30,6 +31,7 @@ Hooks.once("init", () => {
   CONFIG.Actor.typeLabels = {
     agent: "Agent",
     agentv2: "Agent v2",
+    hq: "HQ",
     HQ: "HQ",
     nemesis: "Nemesis"
   };

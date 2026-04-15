@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": ["agent", "agentv2", "HQ", "nemesis"]
+    "types": ["agent", "agentv2", "hq", "HQ", "nemesis"]
   },
   "Item": {
     "types": ["archetype", "feat", "equipment"]
