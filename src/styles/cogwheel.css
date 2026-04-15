@@ -950,6 +950,13 @@
   color: #e8d5a3;
 }
 
+/* Wymuś dziedziczenie koloru — Foundry może ustawiać czarny na p/strong */
+.roll-message p,
+.roll-message strong,
+.roll-message span:not([style]) {
+  color: inherit;
+}
+
 /* Header — pasek z avatarem i nazwą agenta */
 .roll-message .chat-header {
   background: linear-gradient(90deg, #3d2206 0%, #5c3710 50%, #3d2206 100%);

@@ -126,9 +126,8 @@ async function upgradeSuccessLevel(actor, currentResult, testedAttribute, positi
         <img src="${actor.img}" alt="${actor.name}" class="chat-avatar" />
         <h3>${game.i18n.format("COGSYNDICATE.Agent", { agentName: actor.name })}</h3>
       </div>
-      <hr>
-      <p><strong style='color: black;'>${upgradeMessage}</strong></p>
-      <p><span style='color: orange; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.SpentSteamPoints")}</span></p>
+      <div class="roll-section roll-result-row">${upgradeMessage}</div>
+      <div class="roll-section roll-extra" style='color:#f5b942;font-weight:bold'>${game.i18n.localize("COGSYNDICATE.SpentSteamPoints")}</div>
       ${newConsequenceButton}
     </div>
   `;
@@ -669,9 +668,8 @@ async function rerollTest(actor, rollDataKey) {
         <img src="${actor.img}" alt="${actor.name}" class="chat-avatar" />
         <h3>${game.i18n.format("COGSYNDICATE.Agent", { agentName: actor.name })}</h3>
       </div>
-      <hr>
-      <p><strong style='color: black;'>${rerollMessage}</strong></p>
-      <p><span style='color: orange; font-weight: bold'>${game.i18n.localize("COGSYNDICATE.SpentSteamPointsReroll")}</span></p>
+      <div class="roll-section roll-result-row">${rerollMessage}</div>
+      <div class="roll-section roll-extra" style='color:#f5b942;font-weight:bold'>${game.i18n.localize("COGSYNDICATE.SpentSteamPointsReroll")}</div>
     </div>
   `;
 
