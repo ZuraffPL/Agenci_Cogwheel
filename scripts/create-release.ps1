@@ -20,7 +20,7 @@ param(
 
 Write-Host "🚀 Release Creator - Cogwheel Syndicate v$Version" -ForegroundColor Cyan
 Write-Host "===================================================" -ForegroundColor Cyan
-Write-Host "ℹ️  Tag i GitHub Release tworzone automatycznie przez GitHub Actions po push." -ForegroundColor Cyan
+Write-Host "ℹ️  Skrypt tworzy tag lokalnie i pushuje go. GitHub Actions triggeruje się na push tagu." -ForegroundColor Cyan
 
 # Aktualizuj wersję w system.json
 Write-Host "🔄 Aktualizacja wersji w system.json..." -ForegroundColor Yellow
@@ -77,16 +77,26 @@ if ($Fixes) { $CommitMessage += "`n`n🐛 Fixes:`n$Fixes" }
 git commit -m $CommitMessage
 
 Write-Host "✅ Commit dla v$Version gotowy!" -ForegroundColor Green
-Write-Host "ℹ️  Tag i GitHub Release zostaną utworzone automatycznie przez GitHub Actions po push." -ForegroundColor Cyan
+
+# Utwórz annotated tag
+Write-Host "🏷️  Tworzenie tagu v$Version..." -ForegroundColor Yellow
+$TagAnnotation = "Release v$Version`n`n✨ New Features:`n$Features"
+if ($Changes) { $TagAnnotation += "`n`n🔄 Changes:`n$Changes" }
+if ($Fixes)   { $TagAnnotation += "`n`n🐛 Fixes:`n$Fixes" }
+git tag -a "v$Version" -m $TagAnnotation
+Write-Host "✅ Tag v$Version utworzony lokalnie." -ForegroundColor Green
 
 # Push
 if ($AutoPush) {
-    Write-Host "🚀 Pushing do remote..." -ForegroundColor Yellow
+    Write-Host "🚀 Pushing commits do remote..." -ForegroundColor Yellow
     git push origin main
-    Write-Host "✅ Wypchnięto na GitHub! GitHub Actions utworzy Release automatycznie." -ForegroundColor Green
+    Write-Host "🏷️  Pushing tag v$Version (uruchomi GitHub Actions)..." -ForegroundColor Yellow
+    git push origin "v$Version"
+    Write-Host "✅ Gotowe! GitHub Actions utworzy Release dla tagu v$Version." -ForegroundColor Green
 } else {
-    Write-Host "📤 Aby wypchnąć i uruchomić GitHub Actions, uruchom:" -ForegroundColor Yellow
+    Write-Host "📤 Aby wypchnąć i uruchomić GitHub Actions:" -ForegroundColor Yellow
     Write-Host "   git push origin main" -ForegroundColor White
+    Write-Host "   git push origin v$Version" -ForegroundColor White
 }
 
 Write-Host "===================================================" -ForegroundColor Cyan

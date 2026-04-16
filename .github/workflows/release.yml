@@ -2,8 +2,7 @@ name: Create Release
 
 on:
   push:
-    branches: [ main ]
-    paths: [ 'system.json' ]
+    tags: [ 'v*' ]
 
 permissions:
   contents: write
@@ -24,23 +23,12 @@ jobs:
     - name: Extract version
       id: get_version
       run: |
-        echo "VERSION=$(node -p "require('./system.json').version")" >> $GITHUB_OUTPUT
+        TAG_VERSION="${{ github.ref_name }}"
+        echo "VERSION=${TAG_VERSION#v}" >> $GITHUB_OUTPUT
         echo "TITLE=$(node -p "require('./system.json').title")" >> $GITHUB_OUTPUT
-
-    - name: Check if tag exists
-      id: check_tag
-      run: |
-        if git rev-parse "v${{ steps.get_version.outputs.VERSION }}" >/dev/null 2>&1; then
-          echo "TAG_EXISTS=true" >> $GITHUB_OUTPUT
-          echo "Tag v${{ steps.get_version.outputs.VERSION }} already exists, skipping release"
-        else
-          echo "TAG_EXISTS=false" >> $GITHUB_OUTPUT
-          echo "Creating new release for v${{ steps.get_version.outputs.VERSION }}"
-        fi
 
     - name: Get Changelog Entry
       id: changelog
-      if: steps.check_tag.outputs.TAG_EXISTS == 'false'
       run: |
         # Extract changelog entry for current version
         VERSION="${{ steps.get_version.outputs.VERSION }}"
@@ -75,7 +63,6 @@ jobs:
 
 
     - name: Create zip file
-      if: steps.check_tag.outputs.TAG_EXISTS == 'false'
       run: |
         # Create a zip file with the system files (runtime only, exclude dev files)
         zip -r cogwheel-syndicate.zip . \
@@ -96,10 +83,9 @@ jobs:
         cp cogwheel-syndicate.zip cogwheel-syndicate-${{ steps.get_version.outputs.VERSION }}.zip
 
     - name: Create Release
-      if: steps.check_tag.outputs.TAG_EXISTS == 'false'
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: v${{ steps.get_version.outputs.VERSION }}
+        tag_name: ${{ github.ref_name }}
         name: v${{ steps.get_version.outputs.VERSION }} - ${{ steps.get_version.outputs.TITLE }}
         body: |
           # ${{ steps.get_version.outputs.TITLE }} v${{ steps.get_version.outputs.VERSION }}
