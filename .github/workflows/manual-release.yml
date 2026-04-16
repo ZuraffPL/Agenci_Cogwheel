@@ -86,9 +86,20 @@ jobs:
     - name: Create zip file
       if: steps.check_tag.outputs.TAG_EXISTS == 'false'
       run: |
-        # Create a zip file with the system files
+        # Create a zip file with the system files (runtime only, exclude dev files)
         zip -r cogwheel-syndicate.zip . \
-          -x "*.git*" "node_modules/*" "*.github*" "*.gitignore" "README.md" "INSTALL.md" "LICENSE"
+          -x "*.git*" \
+          -x "node_modules/*" \
+          -x ".github/*" \
+          -x ".gitignore" \
+          -x "README.md" \
+          -x "INSTALL.md" \
+          -x "CHANGELOG.md" \
+          -x "CLAUDE.md" \
+          -x "ARCHITECTURE.md" \
+          -x "FEATS_EFFECTS.md" \
+          -x "scripts/*" \
+          -x "*.zip"
         
         # Also create a versioned zip
         cp cogwheel-syndicate.zip cogwheel-syndicate-${{ steps.get_version.outputs.VERSION }}.zip

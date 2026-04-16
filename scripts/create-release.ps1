@@ -20,21 +20,7 @@ param(
 
 Write-Host "🚀 Release Creator - Cogwheel Syndicate v$Version" -ForegroundColor Cyan
 Write-Host "===================================================" -ForegroundColor Cyan
-
-# Sprawdź czy tag już istnieje
-$ExistingTag = git tag -l "v$Version"
-if ($ExistingTag) {
-    Write-Host "⚠️  Tag v$Version już istnieje!" -ForegroundColor Yellow
-    $Confirm = Read-Host "Czy chcesz go usunąć i utworzyć ponownie? (y/N)"
-    if ($Confirm -eq 'y' -or $Confirm -eq 'Y') {
-        git tag -d "v$Version"
-        git push origin ":refs/tags/v$Version"
-        Write-Host "🗑️  Stary tag usunięty" -ForegroundColor Yellow
-    } else {
-        Write-Host "❌ Anulowano tworzenie release" -ForegroundColor Red
-        exit 1
-    }
-}
+Write-Host "ℹ️  Tag i GitHub Release tworzone automatycznie przez GitHub Actions po push." -ForegroundColor Cyan
 
 # Aktualizuj wersję w system.json
 Write-Host "🔄 Aktualizacja wersji w system.json..." -ForegroundColor Yellow
@@ -84,32 +70,24 @@ Set-Content $ReadmePath $ReadmeContent -Encoding UTF8
 # Commit changes
 Write-Host "💾 Tworzenie commit dla release v$Version..." -ForegroundColor Yellow
 git add .
-$CommitMessage = "🚀 Release v$Version`n`n✨ New Features:`n$Features"
+$CommitMessage = "release: Version $Version`n`n✨ New Features:`n$Features"
 if ($Changes) { $CommitMessage += "`n`n🔄 Changes:`n$Changes" }
 if ($Fixes) { $CommitMessage += "`n`n🐛 Fixes:`n$Fixes" }
 
 git commit -m $CommitMessage
 
-# Twórz tag z release notes
-Write-Host "🏷️  Tworzenie tag v$Version..." -ForegroundColor Yellow
-$TagMessage = "Release v$Version`n`n✨ New Features:`n$Features"
-if ($Changes) { $TagMessage += "`n`n🔄 Changes:`n$Changes" }
-if ($Fixes) { $TagMessage += "`n`n🐛 Fixes:`n$Fixes" }
+Write-Host "✅ Commit dla v$Version gotowy!" -ForegroundColor Green
+Write-Host "ℹ️  Tag i GitHub Release zostaną utworzone automatycznie przez GitHub Actions po push." -ForegroundColor Cyan
 
-git tag -a "v$Version" -m $TagMessage
-
-Write-Host "✅ Release v$Version utworzony lokalnie!" -ForegroundColor Green
-
-# Opcjonalny push
+# Push
 if ($AutoPush) {
     Write-Host "🚀 Pushing do remote..." -ForegroundColor Yellow
     git push origin main
-    git push origin "v$Version"
-    Write-Host "✅ Release wypchnięty na GitHub!" -ForegroundColor Green
+    Write-Host "✅ Wypchnięto na GitHub! GitHub Actions utworzy Release automatycznie." -ForegroundColor Green
 } else {
-    Write-Host "📤 Aby wypchnąć release na GitHub, uruchom:" -ForegroundColor Yellow
-    Write-Host "   git push origin main && git push origin v$Version" -ForegroundColor White
+    Write-Host "📤 Aby wypchnąć i uruchomić GitHub Actions, uruchom:" -ForegroundColor Yellow
+    Write-Host "   git push origin main" -ForegroundColor White
 }
 
 Write-Host "===================================================" -ForegroundColor Cyan
-Write-Host "🎉 Release v$Version gotowy!" -ForegroundColor Green
+Write-Host "🎉 Release v$Version gotowy do wdrożenia!" -ForegroundColor Green
