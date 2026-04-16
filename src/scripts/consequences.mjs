@@ -7,6 +7,7 @@
 window.cogwheelSyndicate = window.cogwheelSyndicate || {};
 window.cogwheelSyndicate.consequenceButtonTimers = window.cogwheelSyndicate.consequenceButtonTimers || {};
 window.cogwheelSyndicate.activeConsequenceButtons = window.cogwheelSyndicate.activeConsequenceButtons || {};
+window.cogwheelSyndicate.devilConsequenceButtonTimers = window.cogwheelSyndicate.devilConsequenceButtonTimers || {};
 
 /**
  * Position types for tests
@@ -677,7 +678,6 @@ export async function showConsequencesSelectionDialog(actor, consequenceCount, m
         }
       ],
       rejectClose: false,
-      modal: true,
       render: (event, dialog) => {
         // Store dialog reference
         currentDialog = dialog;
@@ -718,6 +718,389 @@ export async function showConsequencesSelectionDialog(actor, consequenceCount, m
       // Disable the button
       button.disabled = true;
       button.textContent = game.i18n.localize('COGWHEEL.Consequences.AlreadySelected');
+    }
+  } catch (error) {
+    // silently ignore dialog error
+  }
+}
+
+// =========================================
+// DIABELSKIE KONSEKWENCJE (Devil's Bargain)
+// =========================================
+
+/**
+ * Devil consequence count table — position-independent, depends only on result type
+ */
+const DEVIL_CONSEQUENCE_COUNT = {
+  'SuccessWithCost': 1,
+  'FailureWithConsequence': 2,
+  'AutoCriticalFailure': 3
+};
+
+/**
+ * Calculate devil consequence count based on result type
+ * @param {string} resultType - SuccessWithCost | FailureWithConsequence | AutoCriticalFailure
+ * @returns {number}
+ */
+export function calculateDevilConsequenceCount(resultType) {
+  return DEVIL_CONSEQUENCE_COUNT[resultType] || 0;
+}
+
+/**
+ * Disable an old devil consequence button and clear its timer
+ * @param {string} buttonId
+ */
+export function disableOldDevilConsequenceButton(buttonId) {
+  const button = document.getElementById(buttonId);
+  if (button && button.classList.contains('select-devil-consequences-btn')) {
+    button.disabled = true;
+    button.classList.add('select-devil-consequences-btn-outdated');
+    button.innerHTML = `<i class="fas fa-skull-crossbones" style="margin-right:6px;"></i>${game.i18n.localize('COGWHEEL.DevilConsequences.SelectButton')} (${game.i18n.localize('COGWHEEL.DevilConsequences.Outdated')})`;
+    const timer = window.cogwheelSyndicate.devilConsequenceButtonTimers[buttonId];
+    if (timer) {
+      clearTimeout(timer);
+      delete window.cogwheelSyndicate.devilConsequenceButtonTimers[buttonId];
+    }
+  }
+}
+
+/**
+ * Create devil consequence button HTML with 240s expiry timer
+ * @param {Actor} actor
+ * @param {number} devilCount
+ * @param {string|null} oldButtonId - ID of previous button to disable
+ * @returns {{ html: string, buttonId: string }}
+ */
+export function createDevilConsequenceButton(actor, devilCount, oldButtonId = null) {
+  const timestamp = Date.now();
+  const buttonId = `select-devil-consequences-${timestamp}-${Math.random().toString(36).substr(2, 9)}`;
+
+  if (oldButtonId) {
+    disableOldDevilConsequenceButton(oldButtonId);
+  }
+
+  // Word form for Polish grammar
+  let word;
+  if (devilCount === 1) {
+    word = game.i18n.localize('COGWHEEL.DevilConsequences.Singular');
+  } else if (devilCount <= 4) {
+    word = game.i18n.localize('COGWHEEL.DevilConsequences.Genitive');
+  } else {
+    word = game.i18n.localize('COGWHEEL.DevilConsequences.Plural');
+  }
+
+  const timer = setTimeout(() => {
+    const btn = document.getElementById(buttonId);
+    if (btn && !btn.disabled) {
+      btn.disabled = true;
+      btn.classList.add('select-devil-consequences-btn-expired');
+      btn.innerHTML = `<i class="fas fa-skull-crossbones" style="margin-right:6px;"></i>${game.i18n.localize('COGWHEEL.DevilConsequences.SelectButton')} (${game.i18n.localize('COGWHEEL.DevilConsequences.Expired')})`;
+    }
+    delete window.cogwheelSyndicate.devilConsequenceButtonTimers[buttonId];
+  }, 240000);
+
+  window.cogwheelSyndicate.devilConsequenceButtonTimers[buttonId] = timer;
+
+  return {
+    html: `<div class="devil-consequences-message">
+      <i class="fas fa-skull-crossbones"></i>
+      <div class="devil-consequence-text"><span class="devil-consequence-count">${devilCount}</span>&nbsp;${word}</div>
+    </div>
+    <button class="select-devil-consequences-btn"
+            id="${buttonId}"
+            data-actor-id="${actor.id}"
+            data-devil-consequence-count="${devilCount}"
+            data-message-id="">
+      <i class="fas fa-skull-crossbones" style="margin-right:6px;"></i>${game.i18n.localize('COGWHEEL.DevilConsequences.SelectButton')}
+    </button>`,
+    buttonId: buttonId
+  };
+}
+
+/**
+ * Show devil consequences selection dialog
+ * @param {Actor} actor
+ * @param {number} devilConsequenceCount - How many devil consequences to select
+ * @param {string} messageId - Chat message ID
+ * @param {HTMLButtonElement} button - The clicked button
+ */
+export async function showDevilConsequencesSelectionDialog(actor, devilConsequenceCount, messageId, button) {
+  const isGM = game.user.isGM;
+
+  // Two groups of devil consequence types from the Czarci Targ table
+  const oneShotTypes = [
+    game.i18n.localize('COGWHEEL.DevilConsequences.OneShotType1'),
+    game.i18n.localize('COGWHEEL.DevilConsequences.OneShotType2'),
+    game.i18n.localize('COGWHEEL.DevilConsequences.OneShotType3'),
+    game.i18n.localize('COGWHEEL.DevilConsequences.OneShotType4'),
+    game.i18n.localize('COGWHEEL.DevilConsequences.OneShotType5'),
+    game.i18n.localize('COGWHEEL.DevilConsequences.OneShotType6'),
+    game.i18n.localize('COGWHEEL.DevilConsequences.OneShotType7'),
+    game.i18n.localize('COGWHEEL.DevilConsequences.OneShotType8')
+  ];
+  const campaignTypes = [
+    game.i18n.localize('COGWHEEL.DevilConsequences.CampaignType1'),
+    game.i18n.localize('COGWHEEL.DevilConsequences.CampaignType2'),
+    game.i18n.localize('COGWHEEL.DevilConsequences.CampaignType3'),
+    game.i18n.localize('COGWHEEL.DevilConsequences.CampaignType4'),
+    game.i18n.localize('COGWHEEL.DevilConsequences.CampaignType5'),
+    game.i18n.localize('COGWHEEL.DevilConsequences.CampaignType6'),
+    game.i18n.localize('COGWHEEL.DevilConsequences.CampaignType7'),
+    game.i18n.localize('COGWHEEL.DevilConsequences.CampaignType8')
+  ];
+
+  // Selection state: counts[0..7] = one-shot, counts[8..15] = campaign
+  const counts = new Array(16).fill(0);
+
+  // Helper — wczytaj aktualny stan aktywnych konsekwencji
+  const getActive = () => {
+    try {
+      const saved = game.settings.get("cogwheel-syndicate", "activeDevilConsequences");
+      if (Array.isArray(saved) && saved.length === 16) return [...saved];
+    } catch (_) { /* fallback */ }
+    return new Array(16).fill(true);
+  };
+
+  const renderRows = (types, groupOffset, activeArr) => types.map((type, i) => {
+    const idx = groupOffset + i;
+    const active = activeArr[idx];
+    const inactiveStyle = active ? '' : 'opacity:0.45;';
+    const labelStyle = active ? '' : 'text-decoration:line-through;color:#999;';
+    const toggleBtn = isGM ? `
+      <button type="button"
+        class="devil-toggle-btn ${active ? 'active' : 'inactive'}"
+        data-index="${idx}"
+        title="${game.i18n.localize(active ? 'COGWHEEL.DevilConsequences.ToggleTooltipDisable' : 'COGWHEEL.DevilConsequences.ToggleTooltipEnable')}">
+        <i class="fas ${active ? 'fa-check' : 'fa-times'}"></i>
+      </button>` : '';
+    return `<div class="devil-consequence-row" data-index="${idx}" style="${inactiveStyle}">
+      ${toggleBtn}
+      <button type="button" class="devil-counter-btn minus" data-index="${idx}" ${active ? '' : 'disabled'}>−</button>
+      <span class="devil-counter-value" data-index="${idx}">0</span>
+      <button type="button" class="devil-counter-btn plus" data-index="${idx}" ${active ? '' : 'disabled'}>+</button>
+      <span class="devil-consequence-label" style="${labelStyle}">${type}</span>
+    </div>`;
+  }).join('');
+
+  const generateContent = (activeArr) => {
+    const gmInfoBox = isGM ? `
+      <div class="devil-gm-info-box">
+        <i class="fas fa-crown"></i>
+        ${game.i18n.localize('COGWHEEL.DevilConsequences.GMOnly')}
+        — ${game.i18n.localize('COGWHEEL.DevilConsequences.GMInfo')}
+      </div>` : '';
+    return `
+    <form class="devil-consequences-dialog-form">
+      ${gmInfoBox}
+      <p class="devil-dialog-header">
+        <i class="fas fa-skull-crossbones"></i>
+        ${game.i18n.format('COGWHEEL.DevilConsequences.SelectCount', { count: devilConsequenceCount })}
+      </p>
+      <p class="devil-dialog-note">${game.i18n.localize('COGWHEEL.DevilConsequences.CanRepeat')}</p>
+      <div class="devil-types-container">
+        <div class="devil-group-header">
+          <i class="fas fa-skull-crossbones"></i>
+          ${game.i18n.localize('COGWHEEL.DevilConsequences.OneShot')}
+        </div>
+        ${renderRows(oneShotTypes, 0, activeArr)}
+        <div class="devil-group-header" style="margin-top:10px;">
+          <i class="fas fa-skull-crossbones"></i>
+          ${game.i18n.localize('COGWHEEL.DevilConsequences.Campaign')}
+        </div>
+        ${renderRows(campaignTypes, 8, activeArr)}
+      </div>
+      <p id="devil-selection-counter" class="devil-counter-total">
+        ${game.i18n.localize('COGSYNDICATE.Selected')}: 0 / ${devilConsequenceCount}
+      </p>
+    </form>
+  `;
+  };
+
+  // Przebuduj wiersze dialogu bez zamykania (odświeżanie po toggle GM)
+  const refreshDevilDialog = (dialogInst) => {
+    const form = dialogInst.element?.querySelector('form');
+    if (!form) return;
+    const activeArr = getActive();
+    const container = form.querySelector('.devil-types-container');
+    if (!container) return;
+
+    // Odśwież istniejące wiersze — nie przebudowuj całego kontenera (nie czyścimy inputów/liczników)
+    container.querySelectorAll('.devil-consequence-row').forEach(row => {
+      const idx = parseInt(row.dataset.index);
+      const active = activeArr[idx];
+      row.style.opacity = active ? '' : '0.45';
+      const label = row.querySelector('.devil-consequence-label');
+      if (label) {
+        label.style.textDecoration = active ? '' : 'line-through';
+        label.style.color = active ? '' : '#999';
+      }
+      const minusBtn = row.querySelector('.devil-counter-btn.minus');
+      const plusBtn = row.querySelector('.devil-counter-btn.plus');
+      if (minusBtn) minusBtn.disabled = !active;
+      if (plusBtn) plusBtn.disabled = !active;
+
+      // Jeśli wyłączono typ — wyzeruj jego licznik
+      if (!active && counts[idx] > 0) {
+        counts[idx] = 0;
+        const valEl = row.querySelector(`.devil-counter-value[data-index="${idx}"]`);
+        if (valEl) valEl.textContent = '0';
+      }
+
+      const toggleBtn = row.querySelector('.devil-toggle-btn');
+      if (toggleBtn) {
+        toggleBtn.className = `devil-toggle-btn ${active ? 'active' : 'inactive'}`;
+        toggleBtn.title = game.i18n.localize(active ? 'COGWHEEL.DevilConsequences.ToggleTooltipDisable' : 'COGWHEEL.DevilConsequences.ToggleTooltipEnable');
+        const icon = toggleBtn.querySelector('i');
+        if (icon) {
+          icon.className = `fas ${active ? 'fa-check' : 'fa-times'}`;
+        }
+      }
+    });
+
+    // Zaktualizuj licznik zaznaczenia
+    const total = counts.reduce((a, b) => a + b, 0);
+    const counterEl = form.querySelector('#devil-selection-counter');
+    if (counterEl) {
+      counterEl.textContent = `${game.i18n.localize('COGSYNDICATE.Selected')}: ${total} / ${devilConsequenceCount}`;
+      counterEl.classList.toggle('devil-counter-done', total === devilConsequenceCount);
+    }
+  };
+
+  const attachListeners = (dialog) => {
+    const form = dialog.element.querySelector('form');
+    if (!form) return;
+
+    const updateTotal = () => {
+      const total = counts.reduce((a, b) => a + b, 0);
+      const el = form.querySelector('#devil-selection-counter');
+      if (el) {
+        el.textContent = `${game.i18n.localize('COGSYNDICATE.Selected')}: ${total} / ${devilConsequenceCount}`;
+        el.classList.toggle('devil-counter-done', total === devilConsequenceCount);
+      }
+    };
+
+    // Przyciski +/− licznika
+    form.querySelectorAll('.devil-counter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.disabled) return;
+        const idx = parseInt(btn.dataset.index);
+        const activeArr = getActive();
+        if (!activeArr[idx]) return; // Zablokowane przez GM
+        const total = counts.reduce((a, b) => a + b, 0);
+        if (btn.classList.contains('plus')) {
+          if (total < devilConsequenceCount) {
+            counts[idx]++;
+            const valEl = form.querySelector(`.devil-counter-value[data-index="${idx}"]`);
+            if (valEl) valEl.textContent = counts[idx];
+          }
+        } else {
+          if (counts[idx] > 0) {
+            counts[idx]--;
+            const valEl = form.querySelector(`.devil-counter-value[data-index="${idx}"]`);
+            if (valEl) valEl.textContent = counts[idx];
+          }
+        }
+        updateTotal();
+      });
+    });
+
+    // Przyciski toggle GM
+    if (isGM) {
+      form.querySelectorAll('.devil-toggle-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const idx = parseInt(btn.dataset.index);
+          const activeArr = getActive();
+          activeArr[idx] = !activeArr[idx];
+          await game.settings.set("cogwheel-syndicate", "activeDevilConsequences", activeArr);
+          game.socket.emit("system.cogwheel-syndicate", {
+            type: "updateActiveDevilConsequences",
+            activeDevilConsequences: activeArr
+          });
+          Hooks.call("cogwheelSyndicateActiveDevilConsequencesUpdated");
+        });
+      });
+    }
+
+    // Hook do odświeżania dialogu gdy GM zmieni ustawienia
+    const hookId = Hooks.on("cogwheelSyndicateActiveDevilConsequencesUpdated", () => {
+      refreshDevilDialog(dialog);
+    });
+
+    // Sprzątanie hooka po zamknięciu dialogu
+    const origClose = dialog.close?.bind(dialog);
+    if (origClose) {
+      dialog.close = (...args) => {
+        Hooks.off("cogwheelSyndicateActiveDevilConsequencesUpdated", hookId);
+        return origClose(...args);
+      };
+    }
+  };
+
+  try {
+    const result = await foundry.applications.api.DialogV2.wait({
+      window: {
+        title: game.i18n.localize('COGWHEEL.DevilConsequences.DialogTitle'),
+        icon: "fas fa-skull-crossbones",
+        classes: ["cogwheel-devil-consequence-dialog"]
+      },
+      content: generateContent(getActive()),
+      buttons: [
+        {
+          action: "cancel",
+          label: game.i18n.localize("COGSYNDICATE.Cancel"),
+          icon: "fas fa-times",
+          default: false
+        },
+        {
+          action: "confirm",
+          label: game.i18n.localize("COGSYNDICATE.Confirm"),
+          icon: "fas fa-check",
+          default: true,
+          callback: (event, btnEl, dialog) => {
+            const total = counts.reduce((a, b) => a + b, 0);
+            if (total !== devilConsequenceCount) {
+              ui.notifications.warn(
+                game.i18n.format('COGWHEEL.DevilConsequences.MustSelect', { count: devilConsequenceCount })
+              );
+              return false;
+            }
+            const selected = [];
+            counts.forEach((cnt, idx) => {
+              if (cnt > 0) {
+                const name = idx < 8 ? oneShotTypes[idx] : campaignTypes[idx - 8];
+                selected.push({ name, count: cnt });
+              }
+            });
+            return selected;
+          }
+        }
+      ],
+      rejectClose: false,
+      render: (event, dialog) => attachListeners(dialog)
+    });
+
+    if (result && Array.isArray(result) && result.length > 0) {
+      const listHtml = result.map(item =>
+        item.count > 1 ? `<li>${item.name} ×${item.count}</li>` : `<li>${item.name}</li>`
+      ).join('');
+
+      await ChatMessage.create({
+        content: `
+          <div class="selected-devil-consequences-message">
+            <p>
+              <i class="fas fa-skull-crossbones" style="margin-right:6px;color:#8b0000;"></i>
+              ${game.i18n.format('COGWHEEL.DevilConsequences.SelectedMessage', {
+                agentName: `<span class="agent-name" style="color:#3498db;font-weight:bold;">${actor.name}</span>`
+              })}
+            </p>
+            <ul>${listHtml}</ul>
+          </div>
+        `,
+        speaker: { actor: actor.id }
+      });
+
+      button.disabled = true;
+      button.innerHTML = `<i class="fas fa-skull-crossbones" style="margin-right:6px;"></i>${game.i18n.localize('COGWHEEL.DevilConsequences.AlreadySelected')}`;
     }
   } catch (error) {
     // silently ignore dialog error

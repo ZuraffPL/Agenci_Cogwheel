@@ -3,7 +3,7 @@ import { registerHandlebarsHelpers } from "./handlebars.mjs";
 import { openDoomClocks, DoomClocksDialog } from "./clocks.mjs"; // Import funkcji otwierającej zegary i klasy dialogu
 import { MetaCurrencyApp } from "../apps/metacurrency-app.mjs";
 import { FeatsEffects } from "./feats-effects.mjs"; // Import systemu efektów atutów
-import { getConsequencesMessage, showConsequencesSelectionDialog, POSITIONS, RESULT_TYPES } from "./consequences.mjs"; // Import systemu konsekwencji
+import { getConsequencesMessage, showConsequencesSelectionDialog, showDevilConsequencesSelectionDialog, POSITIONS, RESULT_TYPES } from "./consequences.mjs"; // Import systemu konsekwencji
 import { AgentData } from "../models/agent-data.mjs";
 import { HQData } from "../models/hq-data.mjs";
 import { NemesisData } from "../models/nemesis-data.mjs";
@@ -51,6 +51,7 @@ Hooks.once("init", () => {
   game.cogwheelSyndicate.consequences = {
     getConsequencesMessage,
     showConsequencesSelectionDialog,
+    showDevilConsequencesSelectionDialog,
     POSITIONS,
     RESULT_TYPES
   };
@@ -91,6 +92,20 @@ Hooks.once("init", () => {
     default: [true, true, true, true, true, true, true, true, true, true], // Domyślnie wszystkie aktywne (10 konsekwencji)
     onChange: () => {
       Hooks.call("cogwheelSyndicateActiveConsequencesUpdated"); // Hook dla synchronizacji konsekwencji
+    }
+  });
+
+  // Rejestracja ustawienia dla aktywnych diabelskich konsekwencji (GM toggle system)
+  // 16 wartości: 0..7 = one-shot, 8..15 = campaign
+  game.settings.register("cogwheel-syndicate", "activeDevilConsequences", {
+    name: "Active Devil Consequences",
+    hint: "Stores which devil consequence types are currently active (GM can toggle)",
+    scope: "world",
+    config: false,
+    type: Array,
+    default: new Array(16).fill(true),
+    onChange: () => {
+      Hooks.call("cogwheelSyndicateActiveDevilConsequencesUpdated");
     }
   });
 
@@ -282,6 +297,103 @@ Hooks.on("cogwheelSyndicateMetaCurrenciesUpdated", () => {
   }
 });
 
+/**
+ * Reaktywuje wygasłe przyciski konsekwencji na bieżącym kliencie.
+ * Używane zarówno przez GM (context menu) jak i przez socket (dla graczy).
+ * @param {Array<{id: string, type: 'standard'|'devil'}>} buttonIds
+ */
+function _reactivateConsequenceButtons(buttonIds) {
+  if (!window.cogwheelSyndicate) return;
+  buttonIds.forEach(({ id, type }) => {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+
+    if (type === 'standard') {
+      // Wyczyść stary timer
+      const oldTimer = window.cogwheelSyndicate.consequenceButtonTimers?.[id];
+      if (oldTimer) {
+        clearTimeout(oldTimer);
+        delete window.cogwheelSyndicate.consequenceButtonTimers[id];
+      }
+      btn.disabled = false;
+      btn.classList.remove('select-consequences-btn-expired', 'select-consequences-btn-outdated');
+      btn.textContent = game.i18n.localize('COGWHEEL.Consequences.SelectButton');
+      // Nowy timer 240s
+      const timer = setTimeout(() => {
+        const b = document.getElementById(id);
+        if (b && !b.disabled) {
+          b.disabled = true;
+          b.classList.add('select-consequences-btn-expired');
+          b.textContent = `${game.i18n.localize('COGWHEEL.Consequences.SelectButton')} (${game.i18n.localize('COGWHEEL.Consequences.Expired')})`;
+        }
+        if (window.cogwheelSyndicate?.consequenceButtonTimers) {
+          delete window.cogwheelSyndicate.consequenceButtonTimers[id];
+        }
+      }, 240000);
+      window.cogwheelSyndicate.consequenceButtonTimers[id] = timer;
+
+    } else if (type === 'devil') {
+      const oldTimer = window.cogwheelSyndicate.devilConsequenceButtonTimers?.[id];
+      if (oldTimer) {
+        clearTimeout(oldTimer);
+        delete window.cogwheelSyndicate.devilConsequenceButtonTimers[id];
+      }
+      btn.disabled = false;
+      btn.classList.remove('select-devil-consequences-btn-expired', 'select-devil-consequences-btn-outdated');
+      btn.innerHTML = `<i class="fas fa-skull-crossbones" style="margin-right:6px;"></i>${game.i18n.localize('COGWHEEL.DevilConsequences.SelectButton')}`;
+      // Nowy timer 240s
+      const timer = setTimeout(() => {
+        const b = document.getElementById(id);
+        if (b && !b.disabled) {
+          b.disabled = true;
+          b.classList.add('select-devil-consequences-btn-expired');
+          b.innerHTML = `<i class="fas fa-skull-crossbones" style="margin-right:6px;"></i>${game.i18n.localize('COGWHEEL.DevilConsequences.SelectButton')} (${game.i18n.localize('COGWHEEL.DevilConsequences.Expired')})`;
+        }
+        if (window.cogwheelSyndicate?.devilConsequenceButtonTimers) {
+          delete window.cogwheelSyndicate.devilConsequenceButtonTimers[id];
+        }
+      }, 240000);
+      window.cogwheelSyndicate.devilConsequenceButtonTimers[id] = timer;
+    }
+  });
+}
+
+// PPM na wiadomości czatu — GM może reaktywować wygasłe przyciski konsekwencji
+Hooks.on("getChatMessageContextOptions", (html, options) => {
+  options.push({
+    name: game.i18n.localize("COGWHEEL.Consequences.ReactivateButtons"),
+    icon: '<i class="fas fa-redo"></i>',
+    condition: (li) => {
+      if (!game.user.isGM) return false;
+      const el = li instanceof HTMLElement ? li : li[0];
+      return !!(
+        el.querySelector('.select-consequences-btn-expired') ||
+        el.querySelector('.select-devil-consequences-btn-expired')
+      );
+    },
+    callback: (li) => {
+      const el = li instanceof HTMLElement ? li : li[0];
+      const buttonIds = [];
+      el.querySelectorAll('.select-consequences-btn-expired').forEach(btn => {
+        if (btn.id) buttonIds.push({ id: btn.id, type: 'standard' });
+      });
+      el.querySelectorAll('.select-devil-consequences-btn-expired').forEach(btn => {
+        if (btn.id) buttonIds.push({ id: btn.id, type: 'devil' });
+      });
+      if (buttonIds.length === 0) return;
+
+      // Reaktywuj u GM
+      _reactivateConsequenceButtons(buttonIds);
+      // Reaktywuj u wszystkich graczy przez socket
+      game.socket.emit("system.cogwheel-syndicate", {
+        type: "reactivateConsequenceButtons",
+        buttonIds
+      });
+      ui.notifications.info(game.i18n.localize("COGWHEEL.Consequences.ReactivateSuccess"));
+    }
+  });
+});
+
 // Synchronizacja przez socket (usuwamy synchronizację zegarów)
 Hooks.once("setup", () => {
   game.socket.on("system.cogwheel-syndicate", async (data) => {
@@ -295,10 +407,19 @@ Hooks.once("setup", () => {
     } else if (data.type === "updateActiveConsequences") {
       // Synchronizacja aktywnych konsekwencji (GM toggle)
       await game.settings.set("cogwheel-syndicate", "activeConsequences", data.activeConsequences);
+    } else if (data.type === "updateActiveDevilConsequences") {
+      // Synchronizacja aktywnych diabelskich konsekwencji (GM toggle)
+      await game.settings.set("cogwheel-syndicate", "activeDevilConsequences", data.activeDevilConsequences);
+    } else if (data.type === "reactivateConsequenceButtons") {
+      // Reaktywacja wygasłych przycisków konsekwencji (tylko gracze, nie GM)
+      if (!game.user.isGM) {
+        _reactivateConsequenceButtons(data.buttonIds);
+      }
     }
     // Usunięto obsługę "updateClocks", bo game.settings automatycznie synchronizuje dane
   });
 });
+
 
 /**
  * Rejestracja kolorów kości specjalnych dla Dice So Nice.

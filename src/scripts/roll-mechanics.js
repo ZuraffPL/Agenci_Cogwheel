@@ -7,7 +7,7 @@ window.cogwheelSyndicate.rollData = window.cogwheelSyndicate.rollData || {};
 
 // Import FeatsEffects directly
 import { FeatsEffects } from './feats-effects.mjs';
-import { calculateConsequenceCount, createConsequenceButton } from './consequences.mjs';
+import { calculateConsequenceCount, createConsequenceButton, calculateDevilConsequenceCount, createDevilConsequenceButton } from './consequences.mjs';
 
 // Funkcja sprawdzająca czy użytkownik ma uprawnienia do kliknięcia przycisku czatu
 function canUserInteractWithButton(authorUserId) {
@@ -53,7 +53,7 @@ function disableAllUpgradeButtonsForActor(actorId) {
 }
 
 // Funkcja pomocnicza do podnoszenia poziomu sukcesu
-async function upgradeSuccessLevel(actor, currentResult, testedAttribute, position, oldConsequenceButtonId) {
+async function upgradeSuccessLevel(actor, currentResult, testedAttribute, position, oldConsequenceButtonId, oldDevilConsequenceButtonId = null, useDevilDie = false) {
   const currentSteamPoints = game.cogwheelSyndicate.steamPoints || 0;
   
   if (currentSteamPoints < 2) {
@@ -120,6 +120,19 @@ async function upgradeSuccessLevel(actor, currentResult, testedAttribute, positi
     newConsequenceButton = buttonData.html;
   }
 
+  // Obsługa diabelskich konsekwencji po podniesieniu sukcesu
+  let newDevilConsequenceButton = "";
+  if (useDevilDie) {
+    const newDevilCount = calculateDevilConsequenceCount(newResult);
+    if (newDevilCount > 0) {
+      const devilBtnData = createDevilConsequenceButton(actor, newDevilCount, oldDevilConsequenceButtonId);
+      newDevilConsequenceButton = devilBtnData.html;
+    } else if (oldDevilConsequenceButtonId) {
+      // Pełny sukces — dezaktywuj stary przycisk diabelskich konsekwencji
+      import('./consequences.mjs').then(m => m.disableOldDevilConsequenceButton(oldDevilConsequenceButtonId));
+    }
+  }
+
   const upgradeContent = `
     <div class="roll-message">
       <div class="chat-header">
@@ -129,6 +142,7 @@ async function upgradeSuccessLevel(actor, currentResult, testedAttribute, positi
       <div class="roll-section roll-result-row">${upgradeMessage}</div>
       <div class="roll-section roll-extra" style='color:#f5b942;font-weight:bold'>${game.i18n.localize("COGSYNDICATE.SpentSteamPoints")}</div>
       ${newConsequenceButton}
+      ${newDevilConsequenceButton ? `<div class="roll-section">${newDevilConsequenceButton}</div>` : ""}
     </div>
   `;
 
@@ -450,7 +464,17 @@ export async function performAttributeRoll(actor, attribute) {
               }
             }
 
-            // Apply Steam Booster effect if applicable
+            // GENERATE DEVIL CONSEQUENCES MESSAGE (only when Czarci Targ kość was used)
+            let devilConsequencesMessage = "";
+            if (useDevilDie) {
+              const devilCount = calculateDevilConsequenceCount(resultType);
+              if (devilCount > 0) {
+                const devilBtnData = createDevilConsequenceButton(actor, devilCount);
+                devilConsequencesMessage = devilBtnData.html;
+                // Store devil button ID for upgrade button
+                window.cogwheelSyndicate._lastDevilConsequenceBtnId = devilBtnData.buttonId;
+              }
+            }
             let steamBoosterMessage = "";
             if (steamPoints > 0) {
               const steamBoosterResult = FeatsEffects.applySteamBoosterEffect(actor, steamPoints);
@@ -513,6 +537,10 @@ export async function performAttributeRoll(actor, attribute) {
               // Znajdź ID przycisku konsekwencji z tego samego rzutu (jeśli istnieje)
               const consequenceBtnMatch = consequencesMessage.match(/id="(select-consequences-[^"]+)"/);
               const consequenceBtnId = consequenceBtnMatch ? consequenceBtnMatch[1] : "";
+
+              // Znajdź ID przycisku diabelskich konsekwencji
+              const devilConsequenceBtnMatch = devilConsequencesMessage.match(/id="(select-devil-consequences-[^"]+)"/);
+              const devilConsequenceBtnId = devilConsequenceBtnMatch ? devilConsequenceBtnMatch[1] : "";
               
               upgradeButton = `
                 <button class="success-upgrade-button" id="${buttonId}" 
@@ -521,6 +549,8 @@ export async function performAttributeRoll(actor, attribute) {
                         data-tested-attribute="${attribute}"
                         data-position="${position}"
                         data-consequence-button-id="${consequenceBtnId}"
+                        data-devil-consequence-button-id="${devilConsequenceBtnId}"
+                        data-use-devil-die="${useDevilDie}"
                         data-user-id="${game.user.id}">
                   ${game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton")}
                 </button>
@@ -555,6 +585,7 @@ export async function performAttributeRoll(actor, attribute) {
                 <div class="roll-section roll-skill">${game.i18n.localize("COGSYNDICATE.RolledOn").replace('{attrLabel}', `<span style='color:#7eb8f7;font-weight:bold'>${attrLabel}</span>`).replace('{total}', `<span style='color:#f5b942;font-weight:bold'>${total}</span>`)}</div>
                 <div class="roll-section roll-result-row">${result}</div>
                 ${consequencesMessage ? `<div class="roll-section">${consequencesMessage}</div>` : ""}
+                ${devilConsequencesMessage ? `<div class="roll-section">${devilConsequencesMessage}</div>` : ""}
                 ${useStressDie ? `<div class="roll-section roll-extra">${game.i18n.format("COGSYNDICATE.StressDieUsed", { agentName: actor.name })}</div>` : ""}
                 ${useSteamDie ? `<div class="roll-section roll-extra">${steamDialogMessage}</div>` : ""}
                 ${useDevilDie ? `<div class="roll-section roll-extra">${devilDialogMessage}</div>` : ""}
@@ -921,6 +952,17 @@ async function executeRollWithData(actor, data, isReroll = false) {
     }
   }
 
+  // GENERATE DEVIL CONSEQUENCES MESSAGE (only when Czarci Targ kość was used)
+  let devilConsequencesMessageReroll = "";
+  if (useDevilDie) {
+    const devilCount = calculateDevilConsequenceCount(resultType);
+    if (devilCount > 0) {
+      const devilBtnData = createDevilConsequenceButton(actor, devilCount);
+      devilConsequencesMessageReroll = devilBtnData.html;
+      window.cogwheelSyndicate._lastDevilConsequenceBtnIdReroll = devilBtnData.buttonId;
+    }
+  }
+
   // Apply Steam Booster effect if applicable
   let steamBoosterMessage = "";
   if (steamPoints > 0) {
@@ -992,6 +1034,10 @@ async function executeRollWithData(actor, data, isReroll = false) {
               data-actor-id="${actor.id}" 
               data-result-type="${resultType}"
               data-tested-attribute="${attribute}"
+              data-position="${position}"
+              data-consequence-button-id=""
+              data-devil-consequence-button-id="${useDevilDie ? (window.cogwheelSyndicate._lastDevilConsequenceBtnIdReroll || '') : ''}"
+              data-use-devil-die="${useDevilDie}"
               data-user-id="${game.user.id}">
         ${game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton")}
       </button>
@@ -1028,6 +1074,7 @@ async function executeRollWithData(actor, data, isReroll = false) {
       <div class="roll-section roll-skill">${game.i18n.localize("COGSYNDICATE.RolledOn").replace('{attrLabel}', `<span style='color:#7eb8f7;font-weight:bold'>${attrLabel}</span>`).replace('{total}', `<span style='color:#f5b942;font-weight:bold'>${total}</span>`)}</div>
       <div class="roll-section roll-result-row">${result}</div>
       ${consequencesMessage ? `<div class="roll-section">${consequencesMessage}</div>` : ""}
+      ${devilConsequencesMessageReroll ? `<div class="roll-section">${devilConsequencesMessageReroll}</div>` : ""}
       ${useStressDie ? `<div class="roll-section roll-extra">${stressDieMessage}</div>` : ""}
       ${useSteamDie ? `<div class="roll-section roll-extra">${steamDialogMessage}</div>` : ""}
       ${useDevilDie ? `<div class="roll-section roll-extra">${devilDialogMessage}</div>` : ""}
@@ -1135,6 +1182,8 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
     const testedAttribute = this.dataset.testedAttribute;
     const position = this.dataset.position;
     const consequenceButtonId = this.dataset.consequenceButtonId;
+    const devilConsequenceButtonId = this.dataset.devilConsequenceButtonId || "";
+    const useDevilDieData = this.dataset.useDevilDie === "true";
     const authorUserId = this.dataset.userId;
     
     // Sprawdzenie uprawnień użytkownika
@@ -1158,14 +1207,15 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
         buttonId !== currentButtonData.buttonId || 
         currentButtonData.timestamp !== lastRollTimestamp) {
       ui.notifications.warn("Ten przycisk jest nieaktualny. Można podnieść poziom sukcesu tylko dla ostatniego rzutu z możliwością podniesienia.");
-      button.prop('disabled', true);
-      button.removeClass('success-upgrade-button').addClass('success-upgrade-button-outdated');
-      button.text(game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton") + " (Przestarzałe)");
+      button.disabled = true;
+      button.classList.remove('success-upgrade-button');
+      button.classList.add('success-upgrade-button-outdated');
+      button.textContent = game.i18n.localize("COGSYNDICATE.UpgradeSuccessButton") + " (Przestarzałe)";
       return;
     }
     
     // Wywołanie funkcji podnoszenia sukcesu z informacją o testowanym atrybucie, pozycji i przycisku konsekwencji
-    await upgradeSuccessLevel(actor, resultType, testedAttribute, position, consequenceButtonId);
+    await upgradeSuccessLevel(actor, resultType, testedAttribute, position, consequenceButtonId, devilConsequenceButtonId, useDevilDieData);
     
     // Wyłączenie przycisku po użyciu i usunięcie z rejestru aktualnych przycisków
     this.disabled = true;
@@ -1263,6 +1313,68 @@ Hooks.on("renderChatMessageHTML", (message, html, data) => {
         messageId, 
         this,
         position
+      );
+    });
+  });
+
+  // Inicjalizacja timerów dla przycisków diabelskich konsekwencji (240 sekund)
+  html.querySelectorAll('.select-devil-consequences-btn').forEach(function(button) {
+    const buttonId = button.getAttribute('id');
+    const messageTimestamp = message.timestamp || Date.now();
+    const timeElapsed = Date.now() - messageTimestamp;
+    const timeRemaining = 240000 - timeElapsed;
+
+    if (window.cogwheelSyndicate.devilConsequenceButtonTimers[buttonId]) return;
+
+    if (timeRemaining <= 0) {
+      button.disabled = true;
+      button.classList.add('select-devil-consequences-btn-expired');
+      button.innerHTML = `<i class="fas fa-skull-crossbones" style="margin-right:6px;"></i>${game.i18n.localize('COGWHEEL.DevilConsequences.SelectButton')} (${game.i18n.localize('COGWHEEL.DevilConsequences.Expired')})`;
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      const btn = document.getElementById(buttonId);
+      if (btn && !btn.disabled) {
+        btn.disabled = true;
+        btn.classList.add('select-devil-consequences-btn-expired');
+        btn.innerHTML = `<i class="fas fa-skull-crossbones" style="margin-right:6px;"></i>${game.i18n.localize('COGWHEEL.DevilConsequences.SelectButton')} (${game.i18n.localize('COGWHEEL.DevilConsequences.Expired')})`;
+      }
+      delete window.cogwheelSyndicate.devilConsequenceButtonTimers[buttonId];
+    }, timeRemaining);
+
+    window.cogwheelSyndicate.devilConsequenceButtonTimers[buttonId] = timer;
+    // Store message ID
+    button.dataset.messageId = message.id;
+  });
+
+  // Obsługa kliknięcia przycisków diabelskich konsekwencji
+  html.querySelectorAll('.select-devil-consequences-btn').forEach(function(button) {
+    button.dataset.messageId = message.id;
+
+    button.addEventListener('click', async function(event) {
+      event.preventDefault();
+
+      if (this.disabled) {
+        ui.notifications.info(game.i18n.localize('COGWHEEL.DevilConsequences.AlreadySelected'));
+        return;
+      }
+
+      const actorId = this.dataset.actorId;
+      const devilConsequenceCount = parseInt(this.dataset.devilConsequenceCount);
+      const messageId = this.dataset.messageId;
+
+      const actor = game.actors.get(actorId);
+      if (!actor) {
+        ui.notifications.error("Actor nie został znaleziony");
+        return;
+      }
+
+      await game.cogwheelSyndicate.consequences.showDevilConsequencesSelectionDialog(
+        actor,
+        devilConsequenceCount,
+        messageId,
+        this
       );
     });
   });

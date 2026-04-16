@@ -543,3 +543,292 @@ body.theme-light .consequence-label[style*="opacity: 0.4"] {
   color: var(--color-text-dark-secondary, #666) !important;
 }
 
+/* =========================================
+   DIABELSKIE KONSEKWENCJE (Devil's Bargain)
+   ========================================= */
+
+/* Komunikat o liczbie diabelskich konsekwencji w czacie */
+.devil-consequences-message {
+  background: linear-gradient(135deg,
+    rgba(60, 0, 0, 0.80) 0%,
+    rgba(100, 10, 10, 0.90) 50%,
+    rgba(60, 0, 0, 0.80) 100%
+  );
+  border: 2px solid #8b0000;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin: 8px 0;
+  font-family: 'Modesto Condensed', 'Palatino Linotype', serif;
+  font-size: 1.15em;
+  font-weight: 600;
+  color: #ffcccc;
+  text-shadow: 0 0 6px rgba(180, 0, 0, 0.8), 1px 1px 3px rgba(0,0,0,0.8);
+  box-shadow:
+    0 2px 10px rgba(139, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 100, 100, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.3;
+}
+
+.devil-consequences-message .fa-skull-crossbones {
+  color: #cc2200;
+  font-size: 1.2em;
+  text-shadow: 0 0 6px rgba(200, 30, 0, 0.8);
+}
+
+.devil-consequence-text {
+  display: inline;
+}
+
+.devil-consequence-count {
+  color: #ffaaaa;
+  font-weight: bold;
+  font-size: 1.15em;
+  text-shadow: 0 0 8px rgba(255,50,50,0.9), 1px 1px 3px rgba(0,0,0,0.9);
+}
+
+/* Przycisk wyboru diabelskich konsekwencji w czacie */
+.select-devil-consequences-btn {
+  background: linear-gradient(135deg, #3d0000 0%, #6b0000 50%, #3d0000 100%);
+  border: 2px solid #8b0000;
+  border-radius: 6px;
+  color: #ff8080;
+  cursor: pointer;
+  display: block;
+  font-family: 'Palatino Linotype', serif;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.3px;
+  line-height: 1.3;
+  margin: 6px 0 4px 0;
+  padding: 7px 10px;
+  text-shadow: 0 0 6px rgba(180, 0, 0, 0.6);
+  transition: all 0.25s ease;
+  white-space: normal;
+  word-break: break-word;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow:
+    0 2px 8px rgba(139, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 100, 100, 0.08);
+}
+
+.select-devil-consequences-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5c0000 0%, #990000 50%, #5c0000 100%);
+  border-color: #cc2200;
+  color: #ffaaaa;
+  box-shadow:
+    0 4px 14px rgba(180, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 120, 120, 0.15);
+  transform: translateY(-1px);
+}
+
+.select-devil-consequences-btn:disabled,
+.select-devil-consequences-btn-expired,
+.select-devil-consequences-btn-outdated {
+  background: linear-gradient(135deg, #1a0000 0%, #2d0000 100%) !important;
+  border-color: #3d0000 !important;
+  color: #7a4040 !important;
+  cursor: not-allowed !important;
+  opacity: 0.55;
+  text-shadow: none;
+  transform: none !important;
+}
+
+/* Dialog diabelskich konsekwencji — tekst dostosowany do jasnego tła Foundry */
+.cogwheel-devil-consequence-dialog .window-content {
+  border-top: 2px solid #8b0000;
+}
+
+.devil-consequences-dialog-form {
+  font-family: 'Palatino Linotype', serif;
+  color: #2d0000;
+}
+
+.devil-dialog-header {
+  color: #8b0000;
+  font-weight: bold;
+  font-size: 1.05em;
+  margin-bottom: 6px;
+}
+
+.devil-dialog-note {
+  color: #6b2a2a;
+  font-size: 11px;
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.devil-types-container {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 4px 2px;
+}
+
+.devil-group-header {
+  color: #8b0000;
+  font-weight: bold;
+  font-size: 0.92em;
+  border-bottom: 2px solid #8b0000;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+
+.devil-consequence-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0;
+  padding: 3px 4px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.devil-consequence-row:hover {
+  background: rgba(139, 0, 0, 0.08);
+}
+
+.devil-counter-btn {
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
+  border: 1px solid #8b0000;
+  background: linear-gradient(135deg, #6b0000, #a00000);
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.devil-counter-btn:hover {
+  background: linear-gradient(135deg, #900000, #c00000);
+  border-color: #c00000;
+}
+
+.devil-counter-btn:disabled {
+  background: linear-gradient(135deg, #3a3a3a, #555);
+  border-color: #666;
+  color: #999;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Przycisk toggle GM dla diabelskich konsekwencji */
+.devil-toggle-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #8b0000;
+  cursor: pointer;
+  font-size: 11px;
+  line-height: 1;
+  padding: 0;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 4px;
+}
+
+.devil-toggle-btn.active {
+  background: #1a7a1a;
+  border-color: #2a9a2a;
+  color: #aaffaa;
+}
+
+.devil-toggle-btn.active:hover {
+  background: #217a21;
+  border-color: #3cb33c;
+}
+
+.devil-toggle-btn.inactive {
+  background: #555;
+  border-color: #888;
+  color: #ccc;
+}
+
+.devil-toggle-btn.inactive:hover {
+  background: #666;
+  border-color: #aaa;
+}
+
+/* Informacja GM w dialogu diabelskich konsekwencji */
+.devil-gm-info-box {
+  background: linear-gradient(135deg,
+    rgba(80, 60, 0, 0.12) 0%,
+    rgba(120, 90, 0, 0.15) 100%
+  );
+  border: 1px solid #b8860b;
+  border-radius: 6px;
+  padding: 6px 10px;
+  margin-bottom: 10px;
+  color: #6b4a00;
+  font-size: 0.85em;
+  font-style: italic;
+}
+
+.devil-gm-info-box i {
+  color: #b8860b;
+  margin-right: 5px;
+}
+
+.devil-counter-value {
+  min-width: 22px;
+  text-align: center;
+  font-weight: bold;
+  color: #8b0000;
+  font-size: 1.05em;
+  flex-shrink: 0;
+}
+
+.devil-consequence-label {
+  color: #2d0000;
+  flex: 1;
+  font-size: 0.95em;
+}
+
+.devil-counter-total {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #8b0000;
+  font-size: 0.95em;
+}
+
+.devil-counter-total.devil-counter-done {
+  color: #2d7a2d;
+}
+
+/* Wiadomość czatu z wybranymi diabelskimi konsekwencjami */
+.selected-devil-consequences-message {
+  background: linear-gradient(135deg,
+    rgba(60, 0, 0, 0.85) 0%,
+    rgba(90, 10, 10, 0.90) 50%,
+    rgba(60, 0, 0, 0.85) 100%
+  );
+  border: 2px solid #8b0000;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin: 6px 0;
+  color: #ffcccc;
+  font-family: 'Palatino Linotype', serif;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+}
+
+.selected-devil-consequences-message ul {
+  margin: 6px 0 0 16px;
+  padding: 0;
+  color: #ffdddd;
+}
+
+.selected-devil-consequences-message li {
+  margin: 3px 0;
+  font-size: 0.95em;
+}
+

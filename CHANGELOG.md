@@ -11,7 +11,28 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
-## [0.9.96] - 2026-04-15
+## [0.9.97] - 2026-04-16
+
+### Added | Dodano
+- **System Diabelskich Konsekwencji Czarciego Targu** — pełna implementacja mechaniki "Devil's Bargain": przycisk w wiadomości czatu, okno wyboru z dwoma grupami (jednorazowe/kampania), liczniki +/− z możliwością powtórzeń, timer 240s | Full Devil's Bargain consequence system: chat button, selection dialog with two groups (one-shot/campaign), +/− counters with repeats, 240s timer
+- **GM toggle dla Diabelskich Konsekwencji** — MG może aktywować/dezaktywować poszczególne typy diabelskich konsekwencji w czasie rzeczywistym; zmiany synchronizowane przez socket do wszystkich graczy | GM can enable/disable individual devil consequence types in real time, synced via socket
+- **Reaktywacja wygasłych przycisków (PPM)** — MG może kliknąć PPM na wiadomości czatu z wygasłymi przyciskami konsekwencji i reaktywować je z nowym oknem 240s; akcja rozgłaszana do wszystkich graczy przez socket | GM context menu option to reactivate expired consequence buttons with new 240s window, broadcast to all players
+- **Nowe ustawienie świata `activeDevilConsequences`** — tablica 16 wartości bool (0–7: jednorazowe, 8–15: kampania), domyślnie wszystkie aktywne | New world setting storing active state of 16 devil consequence types
+- **Wiadomości czatu z wybranymi Diabelskimi Konsekwencjami** — ciemno-czerwony styl z listą wybranych pozycji po zatwierdzeniu przez gracza | Dark red styled chat message with chosen devil consequences list
+
+### Changed | Zmieniono
+- **Dialogi konsekwencji i diabelskich konsekwencji nie są już modalne** — oba okna można otworzyć jednocześnie | Consequence dialogs are no longer modal — both can be open at the same time
+- **Steampunk roll messages** — wiadomości o rzutach otrzymały steampunkową stylizację czatu
+- **Timer 240s dla przycisków konsekwencji** — inicjalizowany przy renderowaniu wiadomości czatu z uwzględnieniem upływu czasu od wysłania | 240s timer accounts for time elapsed since message was sent
+
+### Fixed | Naprawiono
+- **`button.prop is not a function`** — usunięto wywołania jQuery (`.prop()`, `.addClass()`, `.removeClass()`, `.text()`) na natywnych elementach DOM w `roll-mechanics.js` | Replaced jQuery methods with native DOM API on upgrade button outdated check
+- **Wygląd wiadomości czatu** — usunięto czarny tekst z wiadomości rzutów, podwyższeń i przerzutów (`0d4d30a`) | Removed black text from roll/upgrade/reroll chat messages
+- **Rejestracja typu aktora `hq`** (małe litery) obok `HQ` — zapobieganie błędom przy tworzeniu aktorów przez Foundry | Registered lowercase `hq` actor type alias alongside `HQ`
+- **`.gitignore`** — dodano `*.zip`, usunięto przestarzałe wpisy `packs` | Added `*.zip`, removed stale packs entries
+- **Overflow tekstu przycisku "Wybierz Diabelskie Konsekwencje"** — zmniejszono `font-size` do 12px, ustawiono `white-space: normal` i `word-break: break-word` | Fixed button text overflow in devil consequences chat button
+
+
 
 ### Removed | Usunięto
 - **Usunięto katalog `packs/`** — cały katalog z artefaktami LevelDB/NeDB; archetypy są typem Item i nie wymagają kompendium | Removed `packs/` directory — archetypes are Items, no compendium needed
