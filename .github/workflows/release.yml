@@ -106,8 +106,8 @@ jobs:
           Download the `cogwheel-syndicate.zip` file and extract it to your Foundry VTT systems folder.
           
           ## Compatibility
-          - Foundry VTT v12+
-          - Verified with Foundry VTT v12.331
+          - Foundry VTT v13+
+          - Verified with Foundry VTT v13.351
         files: |
           cogwheel-syndicate.zip
           cogwheel-syndicate-${{ steps.get_version.outputs.VERSION }}.zip
