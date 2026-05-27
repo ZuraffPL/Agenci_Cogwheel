@@ -71,12 +71,46 @@ class CogwheelFeatSheet extends foundry.applications.api.HandlebarsApplicationMi
       fp.render(true);
     });
 
-    // Synchronizuj archetype.name przy zmianie wybranego archetypu
-    this.element.querySelector('select[name="system.archetype.id"]')?.addEventListener('change', async (event) => {
-      const archetypeId = event.currentTarget.value;
+    this._setupDescriptionAutoGrow();
+
+  }
+
+  _setupDescriptionAutoGrow() {
+    const textarea = this.element.querySelector('textarea[name="system.effect"]');
+    if (!textarea) return;
+
+    const minHeight = 140;
+    const maxTextareaHeight = Math.floor(window.innerHeight * 0.55);
+
+    const resize = () => {
+      textarea.style.height = "auto";
+      const target = Math.max(minHeight, Math.min(textarea.scrollHeight, maxTextareaHeight));
+      textarea.style.height = `${target}px`;
+      textarea.style.overflowY = textarea.scrollHeight > maxTextareaHeight ? "auto" : "hidden";
+
+      const body = this.element.querySelector('.sheet-body');
+      if (!body) return;
+
+      const appPadding = 170;
+      const maxWindowHeight = Math.floor(window.innerHeight * 0.9);
+      const desiredHeight = Math.min(maxWindowHeight, Math.ceil(body.scrollHeight + appPadding));
+      this.setPosition({ height: desiredHeight });
+    };
+
+    resize();
+    textarea.addEventListener("input", resize);
+  }
+
+  // Uzupełniamy archetype.name przed walidacją (w _processFormData, nie _processSubmitData)
+  // submitData jest tu już zagnieżdżonym obiektem (po expandObject), więc używamy setProperty
+  _processFormData(event, form, formData) {
+    const data = super._processFormData(event, form, formData);
+    const archetypeId = foundry.utils.getProperty(data, "system.archetype.id");
+    if (archetypeId !== undefined) {
       const archetype = archetypeId ? game.items.get(archetypeId) : null;
-      await this.item.update({ "system.archetype.name": archetype?.name ?? "" });
-    });
+      foundry.utils.setProperty(data, "system.archetype.name", archetype?.name ?? "");
+    }
+    return data;
   }
 }
 

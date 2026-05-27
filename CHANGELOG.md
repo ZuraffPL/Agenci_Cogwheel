@@ -11,6 +11,27 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [1.0.0] - 2026-05-27
+
+### Added | Dodano
+- **Wizualne boxy wyników kości w wiadomościach czatu** — wyniki rzutów d12 wyświetlane są teraz jako kolorowe okrągłe znaczniki bezpośrednio w wierszu `Rzut: Xd12`, zastępując plain-text `(die1+die2+...)` | Dice roll results in chat messages now shown as coloured round badges instead of plain text `(die1+die2+...)`
+- **Rozróżnienie kolorystyczne typów kości** — każdy typ kości ma własny kolor i efekt świetlny: miedziana (kości bazowe), żółta (Kość Stresu), niebieska (Kość Pary), czarna z czerwonym tekstem (Kość Czarciego Targu) | Each die type has its own colour and glow: copper (base dice), yellow (Stress Die), blue (Steam Die), black with red (Devil's Bargain Die)
+- **Tooltip na kościach specjalnych** — najechanie kursorem na box Kości Stresu, Pary lub Czarciego Targu wyświetla jej nazwę w tooltipie | Hovering over a Stress/Steam/Devil die badge shows its name as a browser tooltip
+- **`buildDiceBoxes()` — funkcja pomocnicza w `roll-mechanics.js`** — buduje HTML z okrągłymi znacznikami dla obu miejsc generowania `chatContent` (rzut normalny i `executeRollWithData`) | New helper function building round die badges, used in both chat message generation paths
+- **Arkusz Atutu (feat-sheet) — naprawa zapisu danych** — archetype i opis zapisują się poprawnie; override `_processFormData` dodaje `archetype.name` przed walidacją | Feat sheet now saves archetype and description correctly via `_processFormData` override
+- **Auto-rosnący textarea opisu na arkuszu Atutu** — `_setupDescriptionAutoGrow()` dynamicznie dopasowuje wysokość pola do treści | Auto-growing description textarea in feat sheet
+
+### Changed | Zmieniono
+- **Dialog konsekwencji — brak wewnętrznego scrolla** — lista typów konsekwencji wyświetla się w całości, okno dialogowe dopasowuje rozmiar do zawartości | Consequence selection dialog shows full list without internal scroll; dialog resizes to content
+- **Dialog konsekwencji — steampunkowy motyw** — ciemne tło gradientowe, miedziane obramowania, złota kolorystyka zamiast domyślnego stylu Foundry | Consequence dialog styled with steampunk dark theme overriding Foundry defaults
+- **Styl boxów kości** — finalna implementacja: okrągłe (`border-radius: 50%`), `display: grid; place-items: center` dla precyzyjnego centrowania cyfr, `box-shadow` glow zamiast `clip-path` | Final die badge style: circles with grid centering, coloured border and glow
+
+### Fixed | Naprawiono
+- **Arkusz Atutu — archetype nie zapisywał się** — błąd w pipeline formularzy Foundry V13: `validate()` uruchamiało się przed `_processSubmitData`, powodując ciche odrzucenie danych | Feat archetype save silently failed due to V13 form pipeline validation running before data injection — fixed via `_processFormData` override
+- **Arkusz Atutu — opis nie zapisywał się** — zagnieżdżony `<form>` w szablonie `ItemSheetV2` powodował błąd renderowania; szablon używa teraz `<div>` jako root elementu | Feat description save failed due to nested `<form>` in `ItemSheetV2` template — fixed by using `<div>` root
+- **Boxy kości — kolor tekstu nadpisywany przez Foundry** — Foundry CSS nadpisywało kolory w `.roll-details`; naprawione przez `color: ... !important` na każdym wariancie boxa | Die badge text colour overridden by Foundry CSS — fixed with `!important`
+- **Boxy kości — przesunięcie cyfry w prawo** — dziedziczony `letter-spacing` z Foundry przesuwał wyśrodkowaną cyfrę; naprawione przez `letter-spacing: 0 !important; text-indent: 0 !important` | Digit shifted right due to inherited letter-spacing — fixed with explicit reset
+
 ## [0.9.97] - 2026-04-16
 
 ### Added | Dodano

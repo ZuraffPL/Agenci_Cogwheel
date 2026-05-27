@@ -70,6 +70,12 @@
   resize: vertical;
 }
 
+.cogwheel.sheet.item.feat textarea[name="system.effect"] {
+  min-height: 140px;
+  resize: none;
+  overflow-y: hidden;
+}
+
 .cogwheel.sheet.item.feat .form-group select:focus,
 .cogwheel.sheet.item.feat .form-group textarea:focus {
   border-color: #007acc;

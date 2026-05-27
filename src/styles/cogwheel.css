@@ -1,3 +1,61 @@
+/* ─── Dice boxes — okrągłe boxy wyników kości d12 w roll-details ─── */
+.die-boxes {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px;
+  vertical-align: middle;
+  margin: 0 3px;
+}
+
+.die-box {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-family: Arial, 'Helvetica Neue', sans-serif;
+  font-weight: 900;
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: 0 !important;
+  text-indent: 0 !important;
+  flex-shrink: 0;
+}
+
+/* Kość główna — miedziana, steampunkowa */
+.die-box--normal {
+  background: linear-gradient(160deg, #f0a030 0%, #8b3c0a 100%);
+  color: #160600 !important;
+  border: 2px solid #ffd080;
+  box-shadow: 0 0 5px rgba(230, 150, 20, 0.8), inset 0 1px 3px rgba(255, 220, 120, 0.4);
+}
+
+/* Kość Stresu — żółta z czarnym wynikiem */
+.die-box--stress {
+  background: linear-gradient(160deg, #ffee50 0%, #c88800 100%);
+  color: #140f00 !important;
+  border: 2px solid #fff3a0;
+  box-shadow: 0 0 5px rgba(255, 220, 0, 0.85), inset 0 1px 3px rgba(255, 255, 180, 0.4);
+}
+
+/* Kość Pary — niebieska z czarnym wynikiem */
+.die-box--steam {
+  background: linear-gradient(160deg, #60d0ff 0%, #0048b8 100%);
+  color: #000a14 !important;
+  border: 2px solid #a0e8ff;
+  box-shadow: 0 0 5px rgba(50, 180, 255, 0.85), inset 0 1px 3px rgba(200, 245, 255, 0.4);
+}
+
+/* Kość Czarci Targ — czarna z czerwonym wynikiem */
+.die-box--devil {
+  background: linear-gradient(160deg, #550000 0%, #090000 100%);
+  color: #ff4040 !important;
+  border: 2px solid #cc0000;
+  box-shadow: 0 0 5px rgba(220, 20, 20, 0.9), inset 0 1px 3px rgba(180, 0, 0, 0.3);
+  text-shadow: 0 0 4px rgba(255, 60, 60, 0.8);
+}
+
  .cogwheel.sheet.actor {
   font-family: Arial, sans-serif;
   background: linear-gradient(135deg, #3d2817 0%, #4a321d 35%, #2c1810 100%); /* Steampunk węglowe tło */

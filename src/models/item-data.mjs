@@ -31,17 +31,17 @@ export class FeatData extends foundry.abstract.TypeDataModel {
       type: new fields.StringField({
         required: true,
         initial: "initial",
-        choices: {
-          initial:     "COGSYNDICATE.FeatInitial",
-          development: "COGSYNDICATE.FeatAdvanced",
-        },
+        choices: () => ({
+          initial:     game.i18n.localize("COGSYNDICATE.FeatInitial"),
+          development: game.i18n.localize("COGSYNDICATE.FeatAdvanced"),
+        }),
         label: "COGSYNDICATE.FeatType",
       }),
       effect: new fields.HTMLField({ required: true, initial: "",
                 label: "COGSYNDICATE.FeatEffect" }),
       archetype: new fields.SchemaField({
         id:   new fields.StringField({ required: false, nullable: true, initial: null }),
-        name: new fields.StringField({ required: true, initial: "" }),
+        name: new fields.StringField({ required: false, initial: "" }),
       }),
     };
   }

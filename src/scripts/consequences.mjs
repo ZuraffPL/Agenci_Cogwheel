@@ -359,7 +359,7 @@ export async function showConsequencesSelectionDialog(actor, consequenceCount, m
       const isActive = activeConsequences[index];
       
       return `
-      <div class="consequence-row" data-index="${index}" style="margin: 8px 0; display: flex; align-items: center; gap: 8px; ${!isActive ? 'opacity: 0.5;' : ''}">
+      <div class="consequence-row" data-index="${index}" data-deactivated="${!isActive}" style="${!isActive ? 'opacity: 0.5;' : ''}">
         ${isGM ? `
           <button type="button" class="consequence-toggle-btn ${isActive ? 'active' : 'inactive'}" data-index="${index}" 
             title="${game.i18n.localize('COGWHEEL.Consequences.ToggleTooltip')}"
@@ -367,7 +367,7 @@ export async function showConsequencesSelectionDialog(actor, consequenceCount, m
             <i class="fas ${isActive ? 'fa-check' : 'fa-times'}" style="color: white; font-size: 14px;"></i>
           </button>
         ` : ''}
-        <label style="display: flex; align-items: center; ${isActive ? 'cursor: pointer;' : 'cursor: not-allowed;'} flex: 1;">
+        <label class="consequence-row-label" style="${isActive ? 'cursor: pointer;' : 'cursor: not-allowed;'}">
           <input type="checkbox" name="consequence" value="${index}" class="consequence-checkbox" 
             style="margin-right: 8px;" ${!isActive ? 'disabled' : ''}>
           <span class="consequence-label" style="${!isActive ? 'opacity: 0.4; text-decoration: line-through;' : ''}">${type}</span>
@@ -377,29 +377,29 @@ export async function showConsequencesSelectionDialog(actor, consequenceCount, m
     }).join('');
 
     return `
-      <form>
-        <div style="font-family: 'Palatino Linotype', serif;">
+      <form class="consequences-dialog-form">
+        <div class="consequences-dialog-content">
           ${isGM ? `
-            <div class="gm-info-box" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); border: 2px solid #d4af37; border-radius: 6px; padding: 10px; margin-bottom: 12px;">
-              <p style="margin: 0; color: #d4af37; font-weight: bold; font-size: 13px;">
-                <i class="fas fa-crown" style="margin-right: 6px;"></i>
+            <div class="gm-info-box">
+              <p class="gm-info-title">
+                <i class="fas fa-crown"></i>
                 ${game.i18n.localize('COGWHEEL.Consequences.GMOnly')}
               </p>
-              <p style="margin: 6px 0 0 0; color: #ecf0f1; font-size: 12px;">
+              <p class="gm-info-text">
                 ${game.i18n.localize('COGWHEEL.Consequences.GMInfo')}
               </p>
             </div>
           ` : ''}
-          <p style="margin-bottom: 12px; font-weight: bold; color: #d4af37;">
+          <p class="consequences-dialog-title">
             ${game.i18n.format('COGWHEEL.Consequences.SelectUpTo', { count: currentConsequenceCount })}
           </p>
-          <div style="max-height: 400px; overflow-y: auto; padding: 5px;">
+          <div class="consequence-types-container">
             ${checkboxesHtml}
           </div>
-          <p id="selection-counter" style="margin-top: 10px; font-weight: bold; color: #3498db;">
+          <p id="selection-counter" class="consequences-selection-counter">
             ${game.i18n.localize('COGSYNDICATE.Selected')}: 0 / ${currentConsequenceCount}
           </p>
-          <div style="margin-top: 12px; text-align: center;">
+          <div class="consequences-actions">
             <button type="button" id="reject-consequence-btn" class="reject-consequence-btn" ${currentConsequenceCount <= 1 ? 'disabled' : ''}>
               <i class="fas fa-heart-broken" style="margin-right: 6px;"></i>
               ${game.i18n.localize('COGWHEEL.Consequences.RejectButton')}
@@ -412,6 +412,16 @@ export async function showConsequencesSelectionDialog(actor, consequenceCount, m
 
   // Store dialog reference for refresh
   let currentDialog = null;
+
+  const resizeDialogToContent = (dialog) => {
+    if (!dialog?.element) return;
+    const contentEl = dialog.element.querySelector('.window-content');
+    if (!contentEl) return;
+    const maxHeight = Math.floor(window.innerHeight * 0.92);
+    const chromePadding = 90;
+    const desiredHeight = Math.min(maxHeight, Math.ceil(contentEl.scrollHeight + chromePadding));
+    dialog.setPosition({ height: desiredHeight });
+  };
 
   // Function to refresh dialog content (only updates consequence rows, preserves dialog structure)
   const refreshDialog = () => {
@@ -467,7 +477,11 @@ export async function showConsequencesSelectionDialog(actor, consequenceCount, m
       if (labelElement) {
         labelElement.style.cursor = isActive ? 'pointer' : 'not-allowed';
       }
+
+      row.dataset.deactivated = String(!isActive);
     });
+
+    resizeDialogToContent(currentDialog);
   };
 
   // Function to attach event listeners
@@ -611,7 +625,7 @@ export async function showConsequencesSelectionDialog(actor, consequenceCount, m
             }
             
             // Update instruction text
-            const instructionText = form.querySelector('p[style*="color: #d4af37"]');
+            const instructionText = form.querySelector('.consequences-dialog-title');
             if (instructionText) {
               instructionText.textContent = game.i18n.format('COGWHEEL.Consequences.SelectUpTo', { count: currentConsequenceCount });
             }
@@ -646,6 +660,7 @@ export async function showConsequencesSelectionDialog(actor, consequenceCount, m
         classes: ["cogwheel-consequence-dialog"]
       },
       content: generateContent(),
+      position: { width: 700 },
       buttons: [
         {
           action: "cancel",
@@ -684,6 +699,8 @@ export async function showConsequencesSelectionDialog(actor, consequenceCount, m
         
         // Attach event listeners
         attachEventListeners(dialog);
+
+        requestAnimationFrame(() => resizeDialogToContent(dialog));
       },
       close: () => {
         // Clean up hook when dialog closes

@@ -50,6 +50,7 @@
   "COGSYNDICATE.spendSP.stressReduced": "Agent {agentName} spent {amount} Steam Points to reduce {resourceName} by {resourceAmount} points",
   "COGSYNDICATE.metacurrency.resetStressUses": "Reset stress reduction uses",
   "COGSYNDICATE.ArchetypeDrop": "Drag archetype here",
+  "COGSYNDICATE.ArchetypeSelectDefault": "— Select archetype —",
   "COGSYNDICATE.Archetype": "Archetype",
   "COGSYNDICATE.RemoveArchetype": "Remove archetype",
   "COGSYNDICATE.MainAttributes": "Main Attributes",
@@ -507,5 +508,14 @@
   "COGWHEEL.DevilConsequences.CampaignType8": "Narrative complication (new clock)",
 
   "pdfjs-editor-highlight-button": "Highlighter",
-  "pdfjs-editor-highlight-button-label": "Highlight text with color"
+  "pdfjs-editor-highlight-button-label": "Highlight text with color",
+
+  "TYPES.Item.archetype": "Archetype",
+  "TYPES.Item.feat": "Feat",
+  "TYPES.Item.equipment": "Equipment",
+  "TYPES.Actor.agent": "Agent",
+  "TYPES.Actor.agentv2": "Agent V2",
+  "TYPES.Actor.hq": "Headquarters",
+  "TYPES.Actor.HQ": "Headquarters",
+  "TYPES.Actor.nemesis": "Nemesis"
 }

@@ -50,6 +50,7 @@
   "COGSYNDICATE.spendSP.stressReduced": "Agent {agentName} wydał {amount} Punktów Pary żeby zmniejszyć {resourceName} o {resourceAmount} punktów",
   "COGSYNDICATE.metacurrency.resetStressUses": "Resetuj użycia redukcji stresu",
   "COGSYNDICATE.ArchetypeDrop": "Przeciągnij archetyp tutaj",
+  "COGSYNDICATE.ArchetypeSelectDefault": "— Wybierz archetyp —",
   "COGSYNDICATE.Archetype": "Archetyp",
   "COGSYNDICATE.RemoveArchetype": "Usuń archetyp",
   "COGSYNDICATE.MainAttributes": "Atrybuty Główne",
@@ -509,5 +510,14 @@
   "COGWHEEL.DevilConsequences.CampaignType8": "Komplikacja fabularna (nowy zegar)",
 
   "pdfjs-editor-highlight-button": "Zakreślacz",
-  "pdfjs-editor-highlight-button-label": "Zaznacz tekst kolorem"
+  "pdfjs-editor-highlight-button-label": "Zaznacz tekst kolorem",
+
+  "TYPES.Item.archetype": "Archetyp",
+  "TYPES.Item.feat": "Atut",
+  "TYPES.Item.equipment": "Ekwipunek",
+  "TYPES.Actor.agent": "Agent",
+  "TYPES.Actor.agentv2": "Agent V2",
+  "TYPES.Actor.hq": "Kwatera Główna",
+  "TYPES.Actor.HQ": "Kwatera Główna",
+  "TYPES.Actor.nemesis": "Nemezis"
 }

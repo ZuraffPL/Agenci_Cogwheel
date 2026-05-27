@@ -2,7 +2,7 @@
 
 System Foundry VTT dla **Agenci Cogwheel** — fabularnej gry o tajnych agentach walczących z zagrożeniami ery rewolucji przemysłowej.
 
-[![Wersja systemu](https://img.shields.io/badge/system-v0.9.97-c0813a?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDJhMTAgMTAgMCAxIDAgMCAyMEExMCAxMCAwIDAgMCAxMiAyem0wIDE4YTggOCAwIDEgMSAwLTE2IDggOCAwIDAgMSAwIDE2em0wLTEyYTQgNCAwIDEgMCAwIDggNCA0IDAgMCAwIDAtOHoiLz48L3N2Zz4=)](https://github.com/ZuraffPL/Agenci_Cogwheel/releases/latest)
+[![Wersja systemu](https://img.shields.io/badge/system-v1.0.0-c0813a?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDJhMTAgMTAgMCAxIDAgMCAyMEExMCAxMCAwIDAgMCAxMiAyem0wIDE4YTggOCAwIDEgMSAwLTE2IDggOCAwIDAgMSAwIDE2em0wLTEyYTQgNCAwIDEgMCAwIDggNCA0IDAgMCAwIDAtOHoiLz48L3N2Zz4=)](https://github.com/ZuraffPL/Agenci_Cogwheel/releases/latest)
 [![Foundry VTT](https://img.shields.io/badge/Foundry_VTT-v13.351+-8b0000?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDJMMiA3bDEwIDUgMTAtNS0xMC01ek0yIDE3bDEwIDUgMTAtNVYybC0xMCA1LTEwLTV2MTV6Ii8+PC9zdmc+)](https://foundryvtt.com)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES2022%2B-f7df1e?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Licencja](https://img.shields.io/badge/licencja-CC_BY_4.0-2d7a2d?style=for-the-badge&logo=creativecommons&logoColor=white)](LICENSE)
@@ -34,16 +34,40 @@ System Foundry VTT dla **Agenci Cogwheel** — fabularnej gry o tajnych agentach
 | Komponent | Wersja |
 |-----------|--------|
 | Foundry VTT | v13.351+ |
-| System | v0.9.96 |
+| System | v1.0.0 |
 | Przeglądarka | Nowoczesna (Chrome, Firefox, Edge) |
 
 Wersja dla Foundry v12: branch `foundry-v12-compat` (v0.8.1, brak aktywnego wsparcia).
 
 ---
 
-## Co nowego w v0.9.96
+## Co nowego w v1.0.0
 
-### 🧹 Kompleksowy audyt i porządki kodu
+### 🎲 Wizualne boxy wyników kości
+
+Wyniki rzutów d12 w wiadomościach czatu zastąpiły plain-text `(7+4+7+12)` kolorowymi okrągłymi znacznikami bezpośrednio w wierszu `Rzut: Xd12`:
+
+| Kość | Kolor | Opis |
+|------|-------|------|
+| Bazowe (×2) | 🟠 Miedziana | Główne kości puli |
+| Kość Stresu | 🟡 Żółta | Aktywna gdy gracz płaci Stres |
+| Kość Pary | 🔵 Niebieska | Aktywna gdy gracz płaci 2 PP |
+| Czarci Targ | 🔴 Czarna / czerwony tekst | Aktywna przy Diabelskim Targu |
+
+Najechanie kursorem na kość specjalną wyświetla tooltip z jej nazwą.
+
+### 🗂️ Arkusz Atutu — naprawione zapisywanie
+
+- **Archetype** — zapisuje się poprawnie przez override `_processFormData` (pipeline Foundry V13)
+- **Opis** — textarea z auto-rosnącą wysokością dopasowaną do treści
+- Szablon używa `<div>` jako root (nie `<form>`) — naprawia konflikty z `DocumentSheetV2`
+
+### 💬 Dialog konsekwencji — pełna lista bez scrolla
+
+- Okno dialogowe samo dopasowuje rozmiar do pełnej listy typów konsekwencji
+- Steampunkowy motyw wizualny (ciemne tło, miedziany border, złota typografia)
+
+---
 
 #### Usunięcie zbędnych plików i artefaktów
 - **Usunięto `packs/`** — cały katalog z artefaktami LevelDB/NeDB (archetypy to Itemy, nie kompendium)

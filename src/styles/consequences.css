@@ -504,6 +504,105 @@
   color: var(--color-text-dark-primary, #1a1a1a);
 }
 
+/* ========================================= */
+/* CONSEQUENCE SELECTION DIALOG (STEAMPUNK) */
+/* ========================================= */
+
+.dialog.cogwheel-consequence-dialog .window-content {
+  background: linear-gradient(140deg, #3b2718 0%, #4a321d 55%, #2b1a10 100%) !important;
+  border-top: 2px solid #cd7f32;
+  color: #f2d3aa;
+}
+
+.dialog.cogwheel-consequence-dialog .window-content,
+.dialog.cogwheel-consequence-dialog form,
+.dialog.cogwheel-consequence-dialog .consequence-label {
+  color: #f2d3aa;
+}
+
+.consequences-dialog-form {
+  font-family: 'Palatino Linotype', serif;
+}
+
+.consequences-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.consequences-dialog-title {
+  margin: 0;
+  font-weight: 700;
+  color: #f0be57;
+  font-size: 1.25em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.consequence-types-container {
+  max-height: none;
+  overflow: visible;
+  padding: 2px 0;
+}
+
+.consequence-row {
+  margin: 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid rgba(205, 127, 50, 0.15);
+  background: linear-gradient(135deg, rgba(91, 58, 31, 0.35) 0%, rgba(63, 40, 22, 0.22) 100%);
+}
+
+.consequence-row-label {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.dialog.cogwheel-consequence-dialog .consequence-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #cd7f32;
+}
+
+.consequences-selection-counter {
+  margin: 0;
+  font-weight: 700;
+  color: #5bb3ff;
+}
+
+.consequences-actions {
+  margin-top: 4px;
+  text-align: center;
+}
+
+.gm-info-box {
+  background: linear-gradient(135deg, rgba(27, 46, 67, 0.9) 0%, rgba(36, 58, 79, 0.9) 100%);
+  border: 2px solid #d4af37;
+  border-radius: 6px;
+  padding: 10px;
+  margin: 0;
+}
+
+.gm-info-title {
+  margin: 0;
+  color: #d4af37;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.gm-info-title i {
+  margin-right: 6px;
+}
+
+.gm-info-text {
+  margin: 6px 0 0 0;
+  color: #ecf0f1;
+  font-size: 12px;
+}
+
 /* In dark mode, use light text */
 @media (prefers-color-scheme: dark) {
   .dialog.cogwheel-consequence-dialog .window-content,
@@ -541,6 +640,26 @@ body.theme-light .dialog.cogwheel-consequence-dialog .consequence-label {
 body.theme-light .consequence-row[data-deactivated="true"] .consequence-label,
 body.theme-light .consequence-label[style*="opacity: 0.4"] {
   color: var(--color-text-dark-secondary, #666) !important;
+}
+
+/* Keep steampunk palette regardless of Foundry light/dark body theme */
+body.theme-light .dialog.cogwheel-consequence-dialog .window-content,
+body.theme-dark .dialog.cogwheel-consequence-dialog .window-content {
+  background: linear-gradient(140deg, #3b2718 0%, #4a321d 55%, #2b1a10 100%) !important;
+}
+
+body.theme-light .dialog.cogwheel-consequence-dialog .window-content,
+body.theme-light .dialog.cogwheel-consequence-dialog form,
+body.theme-light .dialog.cogwheel-consequence-dialog .consequence-label,
+body.theme-dark .dialog.cogwheel-consequence-dialog .window-content,
+body.theme-dark .dialog.cogwheel-consequence-dialog form,
+body.theme-dark .dialog.cogwheel-consequence-dialog .consequence-label {
+  color: #f2d3aa !important;
+}
+
+body.theme-light .consequence-row[data-deactivated="true"] .consequence-label,
+body.theme-dark .consequence-row[data-deactivated="true"] .consequence-label {
+  color: rgba(242, 211, 170, 0.48) !important;
 }
 
 /* =========================================

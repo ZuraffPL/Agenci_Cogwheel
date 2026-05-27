@@ -5,33 +5,37 @@
 }
 
 .spend-gear-btn {
-  background-color: #4a6741;
-  border: 1px solid #5a7751;
+  background: linear-gradient(135deg, #5a3a1f 0%, #6b4423 100%);
+  border: 1px solid #cd7f32;
   border-radius: 4px;
-  color: #fff;
+  color: #f4a460;
   cursor: pointer;
   padding: 6px 12px;
   font-size: 12px;
   font-weight: bold;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
   width: auto;
   min-width: 100px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 .spend-gear-btn:hover {
-  background-color: #5a7751;
+  background: linear-gradient(135deg, #6b4423 0%, #8b5e2f 100%);
+  border-color: #e8a040;
+  box-shadow: 0 0 8px rgba(205, 127, 50, 0.4);
 }
 
 .spend-gear-btn:active {
-  background-color: #3a5631;
+  background: linear-gradient(135deg, #3d2817 0%, #5a3a1f 100%);
 }
 
 /* Style dla okna dialogowego wydawania sprzętu - V1 + V2 */
-.spend-gear-dialog,
-.application.spend-gear-dialog .window-content {
+.application.spend-gear-dialog,
+.application.spend-gear-dialog .window-content,
+.application.spend-gear-dialog .dialog-content {
   font-family: Arial, sans-serif;
-  background-color: #2a2a2a;
-  color: #e0e0e0;
+  background: linear-gradient(135deg, #3d2817 0%, #4a321d 60%, #2c1810 100%) !important;
+  color: #f4a460;
 }
 
 /* DialogV2 - zawartość */
@@ -41,16 +45,19 @@
 
 /* DialogV2 - przyciski stopki */
 .application.spend-gear-dialog .form-footer button {
-  background-color: #3a3a3a;
-  border: 1px solid #555;
-  color: #e0e0e0;
+  background: linear-gradient(135deg, #4a321d 0%, #5a3a1f 100%);
+  border: 1px solid #cd7f32;
+  color: #f4a460;
   font-weight: bold;
   border-radius: 4px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+  transition: all 0.2s ease;
 }
 
 .application.spend-gear-dialog .form-footer button:hover {
-  background-color: #4a6741;
-  border-color: #5a7751;
+  background: linear-gradient(135deg, #5a3a1f 0%, #7a5030 100%);
+  border-color: #e8a040;
+  box-shadow: 0 0 8px rgba(205, 127, 50, 0.4);
 }
 
 .spend-gear-content {
@@ -60,30 +67,44 @@
 .spend-gear-content h3 {
   margin: 0 0 15px 0;
   text-align: center;
-  color: #e0e0e0;
+  color: #cd7f32;
   font-size: 1.2em;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6), 0 0 8px rgba(205, 127, 50, 0.3);
+  border-bottom: 1px solid rgba(205, 127, 50, 0.4);
+  padding-bottom: 10px;
 }
 
 .gear-options {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 15px;
 }
 
 .gear-option {
   display: flex !important;
   align-items: center !important;
-  padding: 8px;
-  border: 1px solid #555;
-  border-radius: 4px;
-  background-color: #3a3a3a;
-  transition: background-color 0.2s ease;
+  padding: 10px 12px;
+  border: 1px solid rgba(205, 127, 50, 0.35);
+  border-radius: 6px;
+  background: linear-gradient(135deg, #3a2510 0%, #2c1c0c 100%);
+  transition: all 0.2s ease;
   position: relative;
+  cursor: pointer;
 }
 
 .gear-option:hover {
-  background-color: #444;
+  background: linear-gradient(135deg, #4a3018 0%, #3a2010 100%);
+  border-color: #cd7f32;
+  box-shadow: inset 0 1px 3px rgba(205, 127, 50, 0.15), 0 0 6px rgba(205, 127, 50, 0.25);
+}
+
+/* Zaznaczona opcja - podświetlenie miedzią */
+.gear-option:has(input[type="radio"]:checked) {
+  background: linear-gradient(135deg, #5a3a1a 0%, #4a2d12 100%);
+  border-color: #cd7f32;
+  box-shadow: inset 0 1px 4px rgba(205, 127, 50, 0.2), 0 0 10px rgba(205, 127, 50, 0.35);
 }
 
 .gear-option input[type="radio"] {
@@ -95,27 +116,29 @@
   min-height: 16px !important;
   opacity: 1 !important;
   visibility: visible !important;
-  margin-right: 10px !important;
+  margin-right: 12px !important;
   margin-left: 0 !important;
   flex-shrink: 0 !important;
-  accent-color: #4a6741;
+  accent-color: #cd7f32;
   cursor: pointer;
 }
 
 .gear-option label {
   flex: 1 !important;
   cursor: pointer;
-  color: #e0e0e0;
+  color: #c8956c;
   font-size: 14px;
   position: static !important;
   padding: 0 !important;
   margin: 0 !important;
   line-height: 1.4;
+  transition: color 0.2s ease;
 }
 
-.gear-option input[type="radio"]:checked + label {
+.gear-option:has(input[type="radio"]:checked) label {
   font-weight: bold;
-  color: #fff;
+  color: #f4a460;
+  text-shadow: 0 0 6px rgba(205, 127, 50, 0.4);
 }
 
 .error-message {
@@ -124,7 +147,8 @@
   margin-top: 10px;
   padding: 5px;
   border-radius: 3px;
-  background-color: #4a2222;
-  border: 1px solid #aa4444;
+  background: linear-gradient(135deg, #4a1010 0%, #3a0808 100%);
+  border: 1px solid #8b2222;
+  color: #f47070;
   text-align: center;
 }

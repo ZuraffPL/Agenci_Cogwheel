@@ -9,6 +9,23 @@ window.cogwheelSyndicate.rollData = window.cogwheelSyndicate.rollData || {};
 import { FeatsEffects } from './feats-effects.mjs';
 import { calculateConsequenceCount, createConsequenceButton, calculateDevilConsequenceCount, createDevilConsequenceButton } from './consequences.mjs';
 
+// Buduje HTML z okrągłymi boxami reprezentującymi wyniki kości d12
+// die1, die2 — kości główne (miedziane), stressDie/steamDie/devilDie — opcjonalne
+function buildDiceBoxes(die1, die2, stressDie, steamDie, devilDie) {
+  const box = (value, cls, title = "") =>
+    `<span class="die-box die-box--${cls}"${title ? ` title="${title}"` : ""}>${value}</span>`;
+
+  const parts = [
+    box(die1, 'normal'),
+    box(die2, 'normal'),
+  ];
+  if (stressDie !== null) parts.push(box(stressDie, 'stress', game.i18n.localize("COGSYNDICATE.StressDieLabel")));
+  if (steamDie  !== null) parts.push(box(steamDie,  'steam',  game.i18n.localize("COGSYNDICATE.SteamDieLabel")));
+  if (devilDie  !== null) parts.push(box(devilDie,  'devil',  game.i18n.localize("COGSYNDICATE.DevilDieLabel")));
+
+  return `<span class="die-boxes">${parts.join('')}</span>`;
+}
+
 // Funkcja sprawdzająca czy użytkownik ma uprawnienia do kliknięcia przycisku czatu
 function canUserInteractWithButton(authorUserId) {
   const currentUser = game.user;
@@ -594,7 +611,7 @@ export async function performAttributeRoll(actor, attribute) {
                 ${nemesisPoints > 0 ? `<div class="roll-section roll-extra" style='color:#c084fc;font-weight:bold'>${game.i18n.format("COGSYNDICATE.AddedNemesisPoint", { amount: nemesisPoints })}</div>` : ""}
                 ${steamPoints > 0 ? `<div class="roll-section roll-extra" style='color:#f59e0b;font-weight:bold'>${game.i18n.format("COGSYNDICATE.AddedSteamPoint", { amount: steamPoints })}</div>` : ""}
                 ${steamBoosterMessage ? `<div class="roll-section roll-extra">${steamBoosterMessage}</div>` : ""}
-                <div class="roll-details">${game.i18n.localize("COGSYNDICATE.Roll")}: ${diceCount}d12 (${die1}+${die2}${useStressDie ? `+${stressDie}` : ""}${useSteamDie ? `+${steamDie}` : ""}${useDevilDie ? `+${devilDie}` : ""}) + ${effectiveAttrValue} (${attrLabel})${traumaModifier !== 0 ? ` ${traumaModifier} (${game.i18n.localize("COGSYNDICATE.Trauma")})` : ""} + ${positionModifier} (${game.i18n.localize("COGSYNDICATE.Position")})${rollModifier !== 0 ? ` ${rollModifier > 0 ? '+' : ''}${rollModifier} (${game.i18n.localize("COGSYNDICATE.RollModifier")})` : ""}</div>
+                <div class="roll-details">${game.i18n.localize("COGSYNDICATE.Roll")}: ${diceCount}d12 ${buildDiceBoxes(die1, die2, useStressDie ? stressDie : null, useSteamDie ? steamDie : null, useDevilDie ? devilDie : null)} + ${effectiveAttrValue} (${attrLabel})${traumaModifier !== 0 ? ` ${traumaModifier} (${game.i18n.localize("COGSYNDICATE.Trauma")})` : ""} + ${positionModifier} (${game.i18n.localize("COGSYNDICATE.Position")})${rollModifier !== 0 ? ` ${rollModifier > 0 ? '+' : ''}${rollModifier} (${game.i18n.localize("COGSYNDICATE.RollModifier")})` : ""}</div>
                 <div class="roll-section" style='padding-top:6px;padding-bottom:6px'>${upgradeButton}${rerollButton}</div>
               </div>
             `;
@@ -1083,7 +1100,7 @@ async function executeRollWithData(actor, data, isReroll = false) {
       ${nemesisPoints > 0 ? `<div class="roll-section roll-extra" style='color:#c084fc;font-weight:bold'>${game.i18n.format("COGSYNDICATE.AddedNemesisPoint", { amount: nemesisPoints })}</div>` : ""}
       ${steamPoints > 0 ? `<div class="roll-section roll-extra" style='color:#f59e0b;font-weight:bold'>${game.i18n.format("COGSYNDICATE.AddedSteamPoint", { amount: steamPoints })}</div>` : ""}
       ${steamBoosterMessage ? `<div class="roll-section roll-extra">${steamBoosterMessage}</div>` : ""}
-      <div class="roll-details">${game.i18n.localize("COGSYNDICATE.Roll")}: ${diceCount}d12 (${die1}+${die2}${useStressDie ? `+${stressDie}` : ""}${useSteamDie ? `+${steamDie}` : ""}${useDevilDie ? `+${devilDie}` : ""}) + ${effectiveAttrValue} (${attrLabel})${traumaModifier !== 0 ? ` ${traumaModifier} (${game.i18n.localize("COGSYNDICATE.Trauma")})` : ""} + ${positionModifier} (${game.i18n.localize("COGSYNDICATE.Position")})${rollModifier !== 0 ? ` ${rollModifier > 0 ? '+' : ''}${rollModifier} (${game.i18n.localize("COGSYNDICATE.RollModifier")})` : ""}</div>
+      <div class="roll-details">${game.i18n.localize("COGSYNDICATE.Roll")}: ${diceCount}d12 ${buildDiceBoxes(die1, die2, useStressDie ? stressDie : null, useSteamDie ? steamDie : null, useDevilDie ? devilDie : null)} + ${effectiveAttrValue} (${attrLabel})${traumaModifier !== 0 ? ` ${traumaModifier} (${game.i18n.localize("COGSYNDICATE.Trauma")})` : ""} + ${positionModifier} (${game.i18n.localize("COGSYNDICATE.Position")})${rollModifier !== 0 ? ` ${rollModifier > 0 ? '+' : ''}${rollModifier} (${game.i18n.localize("COGSYNDICATE.RollModifier")})` : ""}</div>
       <div class="roll-section" style='padding-top:6px;padding-bottom:6px'>${upgradeButton}${rerollButton}</div>
     </div>
   `;
