@@ -4,6 +4,12 @@
 
 Cogwheel Syndicate system uses a **modular shared function architecture** that eliminates code duplication while maintaining flexibility for different actor sheet versions and future extensibility.
 
+> ⚠️ **Important / Ważna uwaga**: Since **v1.0.1**, the system targets **Foundry VTT v14** only (`compatibility.minimum`/`maximum` = `"14"`, `verified` = `"14.367"`). Support for Foundry v13 and earlier has been dropped. | Od wersji **1.0.1** system wspiera wyłącznie **Foundry VTT v14** — wsparcie dla v13 i starszych zostało zakończone.
+
+## Document Types Registration (since v1.0.1)
+
+Document type declarations (`Actor`: `agent`, `agentv2`, `hq`, `HQ`, `nemesis`; `Item`: `archetype`, `feat`, `equipment`) are defined in the `documentTypes` field of `system.json`, **not** in `template.json` (removed — it was deprecated and scheduled for removal in Foundry v16). `TypeDataModel` classes are still registered separately via `CONFIG.Actor.dataModels` / `CONFIG.Item.dataModels` in `src/scripts/init.js`.
+
 ## Core Principles
 
 ### 1. **Code Deduplication**

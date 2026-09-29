@@ -225,66 +225,52 @@ Hooks.on("renderSidebarTab", (app, html) => {
 });
 
 // Dodaj kontrolki do paska narzędzi po lewej stronie
+// Foundry v14: SceneControl#tools i SceneControls#controls to Record<string, T> (obiekty kluczowane nazwą), nie tablice.
 Hooks.on("getSceneControlButtons", (controls) => {
-  
-  // W Foundry v13 controls to object, nie array
-  // Znajdź lub utwórz grupę Cogwheel bezpośrednio w object
+
   if (!controls.cogwheel) {
     controls.cogwheel = {
       name: "cogwheel",
       title: "Cogwheel Syndicate",
       icon: "fas fa-cog",
-      layer: "controls",
-      tools: [],
+      order: Object.keys(controls).length,
+      tools: {},
       visible: true
     };
   }
-  
+
   const cogwheelControls = controls.cogwheel;
-  
-  // Sprawdź czy narzędzia już nie zostały dodane (żeby uniknąć duplikatów)
-  const clockToolExists = cogwheelControls.tools.some(t => t.name === "doom-clocks");
-  const metaToolExists = cogwheelControls.tools.some(t => t.name === "meta-currency");
-  
-  if (!clockToolExists) {
-    // Dodaj narzędzie zegarów postępu
-    cogwheelControls.tools.push({
+  if (!cogwheelControls.tools) cogwheelControls.tools = {};
+
+  if (!cogwheelControls.tools["doom-clocks"]) {
+    cogwheelControls.tools["doom-clocks"] = {
       name: "doom-clocks",
+      order: 0,
       title: game.i18n.localize("COGSYNDICATE.DoomClocksTitle"),
       icon: "fas fa-clock",
       button: true,
-      visible: true
-    });
+      visible: true,
+      onChange: (event, active) => {
+        if (!active) return;
+        try { openDoomClocks(); } catch (err) { ui.notifications.error(err.message ?? String(err)); }
+      }
+    };
   }
-  
-  if (!metaToolExists) {
-    // Dodaj narzędzie metawalut
-    cogwheelControls.tools.push({
-      name: "meta-currency", 
+
+  if (!cogwheelControls.tools["meta-currency"]) {
+    cogwheelControls.tools["meta-currency"] = {
+      name: "meta-currency",
+      order: 1,
       title: game.i18n.localize("COGSYNDICATE.metacurrency.title"),
       icon: "fas fa-coins",
       button: true,
-      visible: true
-    });
+      visible: true,
+      onChange: (event, active) => {
+        if (!active) return;
+        try { MetaCurrencyApp.showApp(); } catch (err) { ui.notifications.error(err.message ?? String(err)); }
+      }
+    };
   }
-  
-  // Dla object controls nie potrzebujemy zwracać niczego
-  // Foundry automatycznie użyje zmodyfikowanego object
-});
-
-// Hook do obsługi kliknięć w scene controls
-Hooks.on("renderSceneControls", (controls, html, data) => {
-  // html może być HTMLElement (Foundry v13) lub jQuery — obsługujemy oba
-  const root = html instanceof HTMLElement ? html : html[0];
-  if (!root) return;
-
-  root.querySelector('[data-tool="doom-clocks"]')?.addEventListener('click', () => {
-    try { openDoomClocks(); } catch (err) { ui.notifications.error(err.message ?? String(err)); }
-  });
-
-  root.querySelector('[data-tool="meta-currency"]')?.addEventListener('click', () => {
-    try { MetaCurrencyApp.showApp(); } catch (err) { ui.notifications.error(err.message ?? String(err)); }
-  });
 });
 
 // Hook do odświeżania metawalut

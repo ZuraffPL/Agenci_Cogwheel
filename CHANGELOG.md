@@ -11,6 +11,21 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [1.0.2] - 2026-09-29
+
+### Fixed | Naprawiono
+- **Kontrolki paska narzędzi (zegary postępu / metawaluty) — błąd `Cannot read properties of undefined (reading 'button')`** — w Foundry VTT v14 `SceneControl#tools` i `SceneControls#controls` to `Record<string, T>` (obiekty kluczowane nazwą), a nie tablice; hook `getSceneControlButtons` w `init.js` budował `tools` jako tablicę (`.push()`, `.some()`), co powodowało błąd w rdzeniu silnika (`#onChangeTool`) po kliknięciu przycisku | Toolbar controls (doom clocks / meta-currency) threw `Cannot read properties of undefined (reading 'button')` on click — Foundry v14 changed `SceneControl#tools` and `SceneControls#controls` from arrays to `Record<string, T>` objects; the `getSceneControlButtons` hook was still building `tools` as an array
+- **Obsługa kliknięć narzędzi paska bocznego** — zastąpiono ręczny listener na `renderSceneControls` natywnym callbackiem `onChange` zdefiniowanym na każdym narzędziu (`SceneControlTool`), zgodnie z publicznym API v14 | Toolbar tool clicks now handled via the native `onChange` callback on each `SceneControlTool`, per the v14 public API, replacing the manual `renderSceneControls` click listener
+
+## [1.0.1] - 2026-09-09
+
+> ⚠️ **WAŻNA UWAGA / IMPORTANT NOTE**: Od tej wersji system wymaga **Foundry VTT v14** — wsparcie dla v13 i starszych zostało zakończone. | Starting with this version, the system requires **Foundry VTT v14** — support for v13 and earlier has been dropped.
+
+### Changed | Zmieniono
+- **Migracja `template.json` → `documentTypes` w `system.json`** — deklaracje typów dokumentów `Actor` (`agent`, `agentv2`, `hq`, `HQ`, `nemesis`) i `Item` (`archetype`, `feat`, `equipment`) przeniesione z przestarzałego `template.json` do pola `documentTypes` w `system.json`, zgodnie z wymaganiami Foundry VTT v14+; modele danych (`TypeDataModel`) nadal rejestrowane przez `CONFIG.Actor.dataModels` / `CONFIG.Item.dataModels` w `init.js` | Document type declarations for `Actor` and `Item` moved from the deprecated `template.json` to the `documentTypes` field in `system.json`, per Foundry VTT v14+ requirements; `TypeDataModel` registration remains in `init.js` via `CONFIG.Actor.dataModels` / `CONFIG.Item.dataModels`
+- **Usunięto plik `template.json`** — niepotrzebny po migracji na `documentTypes`, usuwa ostrzeżenie deprecjacji "System template.json is deprecated" | Removed `template.json` file — no longer needed after migrating to `documentTypes`, resolves the "System template.json is deprecated" warning
+- **Wymagania kompatybilności** — `compatibility.minimum` i `compatibility.maximum` podniesione do `"14"`, `compatibility.verified` ustawione na `"14.367"` | Compatibility requirements bumped: `minimum`/`maximum` raised to `"14"`, `verified` set to `"14.367"`
+
 ## [1.0.0] - 2026-05-27
 
 ### Added | Dodano

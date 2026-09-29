@@ -2,11 +2,25 @@
   "id": "cogwheel-syndicate",
   "title": "Agenci Cogwheel",
   "description": "Gra o tajnych agentach, którzy walczą z zagrożeniami ery rewolucji przemysłowej",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "compatibility": {
-    "minimum": "13",
-    "verified": "13.351",
+    "minimum": "14",
+    "verified": "14.367",
     "maximum": "14"
+  },
+  "documentTypes": {
+    "Actor": {
+      "agent": {},
+      "agentv2": {},
+      "hq": {},
+      "HQ": {},
+      "nemesis": {}
+    },
+    "Item": {
+      "archetype": {},
+      "feat": {},
+      "equipment": {}
+    }
   },
   "scripts": [],
   "esmodules": [
