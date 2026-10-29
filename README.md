@@ -2,7 +2,7 @@
 
 System Foundry VTT dla **Agenci Cogwheel** — fabularnej gry o tajnych agentach walczących z zagrożeniami ery rewolucji przemysłowej.
 
-[![Wersja systemu](https://img.shields.io/badge/system-v1.0.2-c0813a?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDJhMTAgMTAgMCAxIDAgMCAyMEExMCAxMCAwIDAgMCAxMiAyem0wIDE4YTggOCAwIDEgMSAwLTE2IDggOCAwIDAgMSAwIDE2em0wLTEyYTQgNCAwIDEgMCAwIDggNCA0IDAgMCAwIDAtOHoiLz48L3N2Zz4=)](https://github.com/ZuraffPL/Agenci_Cogwheel/releases/latest)
+[![Wersja systemu](https://img.shields.io/badge/system-v1.0.4-c0813a?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDJhMTAgMTAgMCAxIDAgMCAyMEExMCAxMCAwIDAgMCAxMiAyem0wIDE4YTggOCAwIDEgMSAwLTE2IDggOCAwIDAgMSAwIDE2em0wLTEyYTQgNCAwIDEgMCAwIDggNCA0IDAgMCAwIDAtOHoiLz48L3N2Zz4=)](https://github.com/ZuraffPL/Agenci_Cogwheel/releases/latest)
 [![Foundry VTT](https://img.shields.io/badge/Foundry_VTT-v14.367+-8b0000?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTEyIDJMMiA3bDEwIDUgMTAtNS0xMC01ek0yIDE3bDEwIDUgMTAtNVYybC0xMCA1LTEwLTV2MTV6Ii8+PC9zdmc+)](https://foundryvtt.com)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES2022%2B-f7df1e?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Licencja](https://img.shields.io/badge/licencja-CC_BY_4.0-2d7a2d?style=for-the-badge&logo=creativecommons&logoColor=white)](LICENSE)
@@ -34,7 +34,7 @@ System Foundry VTT dla **Agenci Cogwheel** — fabularnej gry o tajnych agentach
 | Komponent | Wersja |
 |-----------|--------|
 | Foundry VTT | v14.367+ |
-| System | v1.0.2 |
+| System | v1.0.4 |
 | Przeglądarka | Nowoczesna (Chrome, Firefox, Edge) |
 
 Wersja dla Foundry v12: branch `foundry-v12-compat` (v0.8.1, brak aktywnego wsparcia).
@@ -42,6 +42,12 @@ Wersja dla Foundry v12: branch `foundry-v12-compat` (v0.8.1, brak aktywnego wspa
 > ⚠️ **Ważna uwaga**: od wersji **1.0.1** system nie obsługuje już Foundry VTT starszego niż **v14**. Deklaracje typów dokumentów (`Actor`/`Item`) zostały przeniesione z przestarzałego `template.json` do `documentTypes` w `system.json`, zgodnie z wymaganiami Foundry v14+. Jeśli korzystasz z Foundry v13 lub starszego, pozostań przy wersji systemu **1.0.0** lub starszej.
 
 ---
+
+## Co nowego w v1.0.4
+
+### 🎨 Nowa stylistyka „Brass Dossier”
+
+Karty **Agenta v2**, **Agenta v1**, **Kwatery Głównej (HQ)** i **Nemezis** oraz okno **Zegarów Postępu** (wraz z dialogami dodawania/edycji i archiwum) otrzymały steampunkową oprawę: ciemna zieleń, antyczny mosiądz, rycina mechanizmów w nagłówku i nity w narożnikach paneli. Karta Agenta v1 zachowuje brązową paletę. Zmiany dotyczą wyłącznie CSS — bez zmian w szablonach, kodzie i modelach danych. Jeśli używasz samodzielnego modułu `cogwheel-brass-dossier`, wyłącz go lub usuń.
 
 ## Co nowego w v1.0.2
 

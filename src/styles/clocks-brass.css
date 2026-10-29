@@ -1,0 +1,307 @@
+/* Brass Dossier — Zegary Postępu: okno główne oraz dialogi dodawania, edycji i archiwum.
+ * Wyłącznie warstwa wizualna; paleta i ozdoby jak w agent-v2-brass.css.
+ * Dialogi dodawania/edycji/archiwum dostają część stylów inline z clocks.mjs (_applySteampunkStyles),
+ * dlatego odpowiadające im reguły używają !important.
+ * Musi być ładowany po clocks.css.
+ */
+
+.cogwheel:is(.doom-clocks, .add-clock-dialog, .edit-clock-dialog, .clock-archive-dialog) {
+  --bd-ink: #f1e6cf;
+  --bd-muted: #bdb49e;
+  --bd-brass: #b58c4e;
+  --bd-gold: #e3c78d;
+  --bd-edge: #71552d;
+  --bd-night: #101914;
+  --bd-paper: #eee4ce;
+  --bd-gear: #78c9b6;
+  --bd-trauma: #c4a1e8;
+  --bd-stress: #f19c91;
+  --bd-sky: #8ab9dc;
+  --bd-sec: var(--bd-brass);
+  --bd-frame: inset 0 0 0 2px #090f0c, inset 0 0 0 3px #b58c4e55, 0 3px 7px #0006;
+  --bd-metal: linear-gradient(120deg, #6a4a25, #d8b975 23%, #84612e 48%, #e5c98a 72%, #6a4a25);
+  --bd-screws:
+    radial-gradient(circle at 9px 9px, #f0dba6 0 1px, #8e682f 1.5px 3px, #080d0a 3.5px 4px, transparent 4.5px),
+    radial-gradient(circle at calc(100% - 9px) 9px, #f0dba6 0 1px, #8e682f 1.5px 3px, #080d0a 3.5px 4px, transparent 4.5px),
+    radial-gradient(circle at 9px calc(100% - 9px), #f0dba6 0 1px, #8e682f 1.5px 3px, #080d0a 3.5px 4px, transparent 4.5px),
+    radial-gradient(circle at calc(100% - 9px) calc(100% - 9px), #f0dba6 0 1px, #8e682f 1.5px 3px, #080d0a 3.5px 4px, transparent 4.5px);
+  --bd-btn: linear-gradient(#66502f, #302719);
+  --bd-btn-hover: linear-gradient(#80673c, #493821);
+}
+
+/* ===== Ramka okien ===== */
+.cogwheel:is(.doom-clocks, .add-clock-dialog, .edit-clock-dialog, .clock-archive-dialog) {
+  color: var(--bd-ink) !important;
+  background: linear-gradient(115deg, #1d2a21, var(--bd-night) 55%, #1c281f) !important;
+  border: 2px solid var(--bd-brass) !important;
+  border-radius: 10px !important;
+  box-shadow: inset 0 0 0 2px #090e0b, 0 10px 38px #0008 !important;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.cogwheel:is(.doom-clocks, .add-clock-dialog, .edit-clock-dialog, .clock-archive-dialog) .window-header {
+  background: linear-gradient(#263026, #111812) !important;
+  color: var(--bd-ink) !important;
+  border-bottom: 1px solid var(--bd-brass) !important;
+  box-shadow: inset 0 -3px 0 #080d0a;
+  text-shadow: none !important;
+}
+
+.cogwheel:is(.doom-clocks, .add-clock-dialog, .edit-clock-dialog, .clock-archive-dialog) .window-title {
+  color: var(--bd-ink) !important;
+  font-family: Georgia, serif;
+  font-weight: 400 !important;
+  text-shadow: none !important;
+}
+
+.cogwheel:is(.doom-clocks, .add-clock-dialog, .edit-clock-dialog, .clock-archive-dialog) .window-content {
+  background: transparent !important;
+  color: var(--bd-ink) !important;
+}
+
+/* ===== Okno główne ===== */
+.cogwheel.doom-clocks .doom-clocks-content {
+  background: var(--bd-screws), linear-gradient(135deg, #233126, #111c16);
+  border: 1px solid var(--bd-brass);
+  border-radius: 8px;
+  box-shadow: var(--bd-frame);
+  color: var(--bd-ink);
+  padding: 18px;
+}
+.cogwheel.doom-clocks .doom-clocks-content::before {
+  background: none;
+}
+
+.cogwheel.doom-clocks :is(.steampunk-clock-btn, .steampunk-archive-btn) {
+  color: var(--bd-ink) !important;
+  background: var(--bd-btn);
+  border: 1px solid var(--bd-brass);
+  box-shadow: inset 0 1px 0 #f3d99c66, 0 2px 3px #0005;
+  text-shadow: 0 1px 1px #000 !important;
+}
+.cogwheel.doom-clocks :is(.steampunk-clock-btn, .steampunk-archive-btn):hover {
+  color: #fff2ce !important;
+  background: var(--bd-btn-hover);
+  border-color: var(--bd-gold);
+  transform: none;
+  box-shadow: inset 0 1px 0 #f3d99c66, 0 2px 3px #0005;
+}
+
+.cogwheel.doom-clocks .clocks-tabs {
+  border-bottom: 1px solid var(--bd-brass);
+  gap: 4px;
+}
+.cogwheel.doom-clocks .tab-btn {
+  color: var(--bd-ink) !important;
+  background: linear-gradient(#263026, #111b14);
+  border: 1px solid #82623b77;
+  border-radius: 3px;
+  font-family: Georgia, serif;
+  font-weight: 400 !important;
+  text-shadow: none !important;
+  box-shadow: none;
+}
+.cogwheel.doom-clocks .tab-btn:hover {
+  color: var(--bd-gold) !important;
+  background: #34412e;
+  transform: none;
+  box-shadow: none;
+}
+.cogwheel.doom-clocks .tab-btn.active,
+.cogwheel.doom-clocks .tab-btn.active:hover {
+  color: #251c0d !important;
+  background: linear-gradient(125deg, #b98e4c, #efdaa5 45%, #bf9757);
+  border-color: var(--bd-gold);
+  box-shadow: inset 0 0 0 1px #77592e;
+  transform: none;
+}
+
+.cogwheel.doom-clocks .clocks-list { scrollbar-width: thin; scrollbar-color: var(--bd-edge) var(--bd-night); }
+.cogwheel.doom-clocks .clocks-list::-webkit-scrollbar-track {
+  background: var(--bd-night);
+  border-color: #303c2d;
+}
+.cogwheel.doom-clocks .clocks-list::-webkit-scrollbar-thumb,
+.cogwheel.doom-clocks .clocks-list::-webkit-scrollbar-thumb:hover {
+  background: var(--bd-metal);
+  border-color: var(--bd-edge);
+}
+
+/* Kolory kolejnych zegarów zostają jako akcent na lewej krawędzi */
+.cogwheel.doom-clocks .clock-item:nth-child(8n+1) { --bd-sec: var(--bd-gold); }
+.cogwheel.doom-clocks .clock-item:nth-child(8n+2) { --bd-sec: var(--bd-trauma); }
+.cogwheel.doom-clocks .clock-item:nth-child(8n+3) { --bd-sec: var(--bd-gear); }
+.cogwheel.doom-clocks .clock-item:nth-child(8n+4) { --bd-sec: var(--bd-stress); }
+.cogwheel.doom-clocks .clock-item:nth-child(8n+5) { --bd-sec: var(--bd-sky); }
+.cogwheel.doom-clocks .clock-item:nth-child(8n+6) { --bd-sec: var(--bd-brass); }
+.cogwheel.doom-clocks .clock-item:nth-child(8n+7) { --bd-sec: #a9c97c; }
+.cogwheel.doom-clocks .clock-item:nth-child(8n+8) { --bd-sec: #d9a45b; }
+
+.cogwheel.doom-clocks .clock-item,
+.cogwheel.doom-clocks .clock-item:nth-child(n) {
+  background: linear-gradient(135deg, #29382b, #122018);
+  border: 1px solid var(--bd-edge);
+  border-left: 4px solid var(--bd-sec);
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 1px #080f0b, 0 2px 3px #0004;
+}
+.cogwheel.doom-clocks .clock-item:hover,
+.cogwheel.doom-clocks .clock-item:nth-child(n):hover {
+  border-color: var(--bd-gold);
+  border-left-color: var(--bd-sec);
+  transform: none;
+  box-shadow: inset 0 0 0 1px #080f0b, 0 2px 3px #0004;
+}
+.cogwheel.doom-clocks .clock-item .clock-name,
+.cogwheel.doom-clocks .clock-item:nth-child(n) .clock-name {
+  color: var(--bd-ink) !important;
+  font-family: Georgia, serif;
+  text-shadow: none;
+}
+.cogwheel.doom-clocks .clock-item .clock-progress,
+.cogwheel.doom-clocks .clock-item:nth-child(n) .clock-progress {
+  color: var(--bd-gold) !important;
+  text-shadow: none;
+}
+.cogwheel.doom-clocks .clock-item .clock-description {
+  color: var(--bd-muted) !important;
+  text-shadow: none;
+}
+.cogwheel.doom-clocks .no-clocks-placeholder {
+  color: var(--bd-muted) !important;
+  background: #0c1712;
+  border: 1px dashed #a27d43;
+  text-shadow: none;
+}
+
+.cogwheel.doom-clocks .clock-actions .small-btn {
+  color: var(--bd-ink);
+  background: var(--bd-btn);
+  border: 1px solid var(--bd-brass);
+  box-shadow: inset 0 1px 0 #f3d99c66, 0 2px 3px #0005;
+  text-shadow: 0 1px 1px #000;
+  transform: none;
+}
+.cogwheel.doom-clocks .clock-actions .small-btn:hover {
+  color: #fff2ce;
+  background: var(--bd-btn-hover);
+  border-color: var(--bd-gold);
+  transform: none;
+}
+
+/* Tarcza zegara: mosiężna obręcz, wypełnienie w wybranym kolorze zegara */
+.cogwheel:is(.doom-clocks, .clock-archive-dialog) .clock-svg circle { stroke: var(--bd-edge); }
+.cogwheel:is(.doom-clocks, .clock-archive-dialog) .clock-svg path { stroke: var(--bd-night); }
+
+/* ===== Dialogi dodawania i edycji ===== */
+.cogwheel:is(.add-clock-dialog, .edit-clock-dialog) .window-content {
+  padding: 16px !important;
+}
+.cogwheel:is(.add-clock-dialog, .edit-clock-dialog) .clock-form-group label {
+  color: var(--bd-gold) !important;
+  font-family: Georgia, serif;
+  letter-spacing: .04em;
+  text-shadow: none !important;
+}
+.cogwheel:is(.add-clock-dialog, .edit-clock-dialog) .clock-form-group :is(input[type="text"], textarea, select) {
+  color: #2d281f !important;
+  background: linear-gradient(#f8f0df, var(--bd-paper)) !important;
+  border: 1px solid var(--bd-brass) !important;
+  border-radius: 4px !important;
+  box-shadow: inset 0 1px 4px #3e2c2533, 0 1px 2px #0006 !important;
+}
+.cogwheel:is(.add-clock-dialog, .edit-clock-dialog) .clock-form-group :is(input, textarea)::placeholder {
+  color: #716450 !important;
+}
+.cogwheel:is(.add-clock-dialog, .edit-clock-dialog) .clock-form-group :is(input[type="text"], textarea, select):focus {
+  border-color: var(--bd-gold) !important;
+  box-shadow: 0 0 0 2px #78c9b655 !important;
+}
+.cogwheel:is(.add-clock-dialog, .edit-clock-dialog) .clock-color-palette input[type="radio"] {
+  border-color: #090f0c !important;
+  box-shadow: 0 0 0 1px var(--bd-edge) !important;
+}
+.cogwheel:is(.add-clock-dialog, .edit-clock-dialog) .clock-color-palette input[type="radio"]:hover {
+  border-color: var(--bd-gold) !important;
+  box-shadow: 0 0 0 1px var(--bd-brass) !important;
+}
+.cogwheel:is(.add-clock-dialog, .edit-clock-dialog) .clock-color-palette input[type="radio"]:checked {
+  border-color: var(--bd-gold) !important;
+  box-shadow: 0 0 0 3px #090f0c, 0 0 0 5px var(--bd-brass) !important;
+}
+
+/* ===== Przyciski stopki wszystkich dialogów zegarów ===== */
+.cogwheel:is(.add-clock-dialog, .edit-clock-dialog, .clock-archive-dialog) .dialog-buttons {
+  background: #0d1510 !important;
+  border-top: 1px solid var(--bd-brass) !important;
+}
+.cogwheel:is(.add-clock-dialog, .edit-clock-dialog, .clock-archive-dialog) .dialog-buttons button {
+  color: var(--bd-ink) !important;
+  background: var(--bd-btn) !important;
+  border: 1px solid var(--bd-brass) !important;
+  border-radius: 4px !important;
+  box-shadow: inset 0 1px 0 #f3d99c66, 0 2px 3px #0005 !important;
+  text-shadow: 0 1px 1px #000 !important;
+}
+.cogwheel:is(.add-clock-dialog, .edit-clock-dialog, .clock-archive-dialog) .dialog-buttons button:hover {
+  color: #fff2ce !important;
+  background: var(--bd-btn-hover) !important;
+  border-color: var(--bd-gold) !important;
+  transform: none !important;
+  box-shadow: inset 0 1px 0 #f3d99c66, 0 2px 3px #0005 !important;
+}
+
+/* ===== Archiwum ===== */
+.cogwheel.clock-archive-dialog :is(.window-content, .dialog-content) {
+  background: transparent !important;
+  color: var(--bd-ink) !important;
+}
+.cogwheel.clock-archive-dialog .window-content::before { background: none; }
+.cogwheel.clock-archive-dialog .archived-clock-item {
+  background: linear-gradient(135deg, #29382b, #122018) !important;
+  border: 1px solid var(--bd-edge) !important;
+  border-left: 4px solid var(--bd-brass) !important;
+  border-radius: 5px !important;
+  box-shadow: inset 0 0 0 1px #080f0b, 0 2px 3px #0004 !important;
+}
+.cogwheel.clock-archive-dialog .archived-clock-item:hover {
+  border-color: var(--bd-gold) !important;
+  border-left-color: var(--bd-brass) !important;
+  transform: none !important;
+  box-shadow: inset 0 0 0 1px #080f0b, 0 2px 3px #0004 !important;
+}
+.cogwheel.clock-archive-dialog .clock-name {
+  color: var(--bd-ink) !important;
+  font-family: Georgia, serif;
+  text-shadow: none !important;
+}
+.cogwheel.clock-archive-dialog :is(.clock-progress, .clock-archived-date) {
+  color: var(--bd-gold) !important;
+  text-shadow: none !important;
+}
+.cogwheel.clock-archive-dialog .clock-description {
+  color: var(--bd-muted) !important;
+  text-shadow: none !important;
+}
+.cogwheel.clock-archive-dialog .empty-archive { color: var(--bd-muted) !important; }
+.cogwheel.clock-archive-dialog .empty-archive i { color: var(--bd-brass) !important; }
+.cogwheel.clock-archive-dialog .restore-clock {
+  background: linear-gradient(#2f5646, #173226) !important;
+  border: 1px solid var(--bd-gear) !important;
+  color: #d9f5ec !important;
+  text-shadow: 0 1px 1px #000 !important;
+  box-shadow: inset 0 1px 0 #78c9b655, 0 2px 3px #0005 !important;
+}
+.cogwheel.clock-archive-dialog .restore-clock:hover {
+  background: linear-gradient(#3b6d58, #1f4030) !important;
+  border-color: var(--bd-gold) !important;
+  color: #fff !important;
+}
+.cogwheel.clock-archive-dialog .delete-archived-clock {
+  border-color: #be8a5f !important;
+  text-shadow: 0 1px 1px #000 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cogwheel:is(.doom-clocks, .add-clock-dialog, .edit-clock-dialog, .clock-archive-dialog) * { transition: none !important; }
+}

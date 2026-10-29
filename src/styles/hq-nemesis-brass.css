@@ -1,0 +1,278 @@
+/* Brass Dossier — karty HQ i Nemezis (zielono-mosiężna paleta jak w agent-v2-brass.css).
+ * Wyłącznie warstwa wizualna: bez zmian danych, zdarzeń i przełączania zakładek.
+ * Selektory ograniczone do okien HQ i Nemezis. Musi być ładowany po hq.css, nemesis.css i cogwheel.css.
+ */
+
+.cogwheel.sheet.actor:is(.hq, .nemesis) {
+  --bd-ink: #f1e6cf;
+  --bd-muted: #bdb49e;
+  --bd-brass: #b58c4e;
+  --bd-gold: #e3c78d;
+  --bd-edge: #71552d;
+  --bd-night: #101914;
+  --bd-paper: #eee4ce;
+  --bd-gear: #78c9b6;
+  --bd-trauma: #c4a1e8;
+  --bd-stress: #f19c91;
+  --bd-sky: #8ab9dc;
+  --bd-sec: var(--bd-brass);
+  --bd-frame: inset 0 0 0 2px #090f0c, inset 0 0 0 3px #b58c4e55, 0 3px 7px #0006;
+  --bd-metal: linear-gradient(120deg, #6a4a25, #d8b975 23%, #84612e 48%, #e5c98a 72%, #6a4a25);
+  --bd-screws:
+    radial-gradient(circle at 9px 9px, #f0dba6 0 1px, #8e682f 1.5px 3px, #080d0a 3.5px 4px, transparent 4.5px),
+    radial-gradient(circle at calc(100% - 9px) 9px, #f0dba6 0 1px, #8e682f 1.5px 3px, #080d0a 3.5px 4px, transparent 4.5px),
+    radial-gradient(circle at 9px calc(100% - 9px), #f0dba6 0 1px, #8e682f 1.5px 3px, #080d0a 3.5px 4px, transparent 4.5px),
+    radial-gradient(circle at calc(100% - 9px) calc(100% - 9px), #f0dba6 0 1px, #8e682f 1.5px 3px, #080d0a 3.5px 4px, transparent 4.5px);
+  color: var(--bd-ink);
+  background: linear-gradient(115deg, #1d2a21, var(--bd-night) 55%, #1c281f);
+  border: 2px solid var(--bd-brass);
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 2px #090e0b, 0 10px 38px #0008;
+  font-family: "Segoe UI", Arial, sans-serif;
+  scrollbar-color: var(--bd-edge) var(--bd-night);
+}
+
+.cogwheel.sheet.actor:is(.hq, .nemesis) .window-header {
+  background: linear-gradient(#263026, #111812);
+  color: var(--bd-ink);
+  border-bottom: 1px solid var(--bd-brass);
+  box-shadow: inset 0 -3px 0 #080d0a;
+}
+
+.cogwheel.sheet.actor:is(.hq, .nemesis) .window-title {
+  color: var(--bd-ink);
+  font-family: Georgia, serif;
+}
+
+.cogwheel.sheet.actor:is(.hq, .nemesis) .window-content {
+  background: transparent;
+  color: var(--bd-ink);
+  padding: 14px;
+}
+
+.cogwheel.sheet.actor:is(.hq, .nemesis) .sheet-header {
+  background-image: url("../assets/clockwork-engraving.svg"), linear-gradient(135deg, #28372b, #111c16 70%);
+  background-size: 100% 100%, cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid var(--bd-brass);
+  border-radius: 8px;
+  box-shadow: var(--bd-frame);
+  padding: 18px 14px 14px;
+  margin-bottom: 12px;
+}
+
+.cogwheel.sheet.actor:is(.hq, .nemesis) .profile-img {
+  width: 100px;
+  height: 100px;
+  border: 3px solid var(--bd-gold);
+  box-shadow: 0 0 0 3px #0b120e, 0 0 0 5px var(--bd-brass), 0 4px 14px #0009;
+  background: var(--bd-night);
+  margin-bottom: 15px;
+}
+
+.cogwheel.sheet.actor:is(.hq, .nemesis) .sheet-header h1 {
+  width: min(72%, 360px);
+  border: 0;
+  text-shadow: none;
+  line-height: 1.2;
+}
+
+.cogwheel.sheet.actor:is(.hq, .nemesis) .sheet-header h1 input[name="name"] {
+  width: 100%;
+  min-width: 0;
+  height: 38px;
+  color: var(--bd-gold);
+  background: linear-gradient(#263026, #101711);
+  border: 1px solid var(--bd-brass);
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 2px #090f0c, inset 0 0 0 3px #b58c4e55, 0 3px 5px #0007;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 19px;
+  font-weight: 700;
+  text-align: center;
+  text-shadow: 0 1px 1px #000;
+}
+
+.cogwheel.sheet.actor:is(.hq, .nemesis) .sheet-body {
+  background: transparent;
+  padding: 0 2px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bd-edge) var(--bd-night);
+}
+.cogwheel.sheet.actor:is(.hq, .nemesis) .sheet-body::-webkit-scrollbar-track {
+  background: var(--bd-night);
+  border-color: #303c2d;
+}
+.cogwheel.sheet.actor:is(.hq, .nemesis) .sheet-body::-webkit-scrollbar-thumb {
+  background: var(--bd-metal);
+  border-color: var(--bd-edge);
+  box-shadow: none;
+}
+
+.cogwheel.sheet.actor:is(.hq, .nemesis) .sheet-tabs.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  background: #0d1510;
+  padding: 5px;
+  margin: 0 0 12px;
+  border: 1px solid var(--bd-brass);
+  border-radius: 6px;
+  box-shadow: var(--bd-frame);
+}
+.cogwheel.sheet.actor:is(.hq, .nemesis) .sheet-tabs.tabs .item {
+  flex: 1 1 auto;
+  padding: 9px 7px;
+  margin: 0;
+  line-height: 1.2;
+  color: var(--bd-ink);
+  background: linear-gradient(#263026, #111b14);
+  border: 1px solid #82623b77;
+  border-radius: 3px;
+  text-shadow: none;
+  font-family: Georgia, serif;
+  font-size: 16px;
+  text-align: center;
+  transition: background-color .15s, color .15s;
+}
+.cogwheel.sheet.actor:is(.hq, .nemesis) .sheet-tabs.tabs .item:hover {
+  color: var(--bd-gold);
+  background: #34412e;
+  transform: none;
+}
+.cogwheel.sheet.actor:is(.hq, .nemesis) .sheet-tabs.tabs .item.active {
+  color: #251c0d;
+  background: linear-gradient(125deg, #b98e4c, #efdaa5 45%, #bf9757);
+  border-color: var(--bd-gold);
+  box-shadow: inset 0 0 0 1px #77592e;
+  text-shadow: none;
+}
+
+.cogwheel.sheet.actor:is(.hq, .nemesis) :is(h2, h3) {
+  color: var(--bd-gold);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  text-shadow: 0 1px 1px #000;
+  border-color: var(--bd-edge);
+}
+.cogwheel.sheet.actor:is(.hq, .nemesis) h3.centered { margin: 4px 0 12px; }
+
+/* Główne panele sekcji — ramka z śrubkami jak w karcie agenta */
+.cogwheel.sheet.actor:is(.hq, .nemesis) :is(
+  .primary-locations-section, .additional-locations-section, .expansion-projects-section,
+  .nemesis-info-section, .nemesis-clocks-section, .minions-section, .notes-section
+) {
+  background: var(--bd-screws), linear-gradient(135deg, #233126, #111c16);
+  border: 1px solid var(--bd-brass);
+  border-radius: 8px;
+  box-shadow: var(--bd-frame);
+  color: var(--bd-ink);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  transform: none;
+  transition: none;
+}
+.cogwheel.sheet.actor:is(.hq, .nemesis) .notes-section::before {
+  background: none;
+  pointer-events: none;
+}
+
+/* Panele zagnieżdżone */
+.cogwheel.sheet.actor:is(.hq, .nemesis) :is(.section-item, .location-item, .project-item, .nemesis-clock-item, .minion-item),
+.cogwheel.sheet.actor.hq .section-item:is(.infirmary, .crew-quarters, .training-halls, .workshop) {
+  background: linear-gradient(135deg, #29382b, #122018);
+  border: 1px solid var(--bd-edge);
+  border-left: 3px solid var(--bd-sec);
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 1px #080f0b, 0 2px 3px #0004;
+  color: var(--bd-ink);
+  text-shadow: none;
+}
+.cogwheel.sheet.actor.hq .section-item.infirmary { --bd-sec: var(--bd-gear); }
+.cogwheel.sheet.actor.hq .section-item.crew-quarters { --bd-sec: var(--bd-sky); }
+.cogwheel.sheet.actor.hq .section-item.training-halls { --bd-sec: var(--bd-gold); }
+.cogwheel.sheet.actor.hq .section-item.workshop { --bd-sec: var(--bd-trauma); }
+.cogwheel.sheet.actor.nemesis :is(.nemesis-clock-item, .minion-item) { --bd-sec: var(--bd-trauma); }
+
+.cogwheel.sheet.actor:is(.hq, .nemesis) hr.section-separator {
+  border: 0;
+  border-top: 1px solid var(--bd-edge);
+  margin: 12px 0;
+}
+
+.cogwheel.sheet.actor:is(.hq, .nemesis) :is(.section-header, .location-header, .project-header, .minion-header) {
+  border-bottom: 1px dashed var(--bd-edge);
+  color: var(--bd-ink);
+}
+.cogwheel.sheet.actor:is(.hq, .nemesis) :is(.section-name, .location-name, .project-name, .minion-name, .clock-name, .level-label, .level-value, .section-checkbox label) {
+  color: var(--bd-ink);
+  text-shadow: none;
+}
+.cogwheel.sheet.actor:is(.hq, .nemesis) :is(.location-description, .project-description, .minion-description) { color: var(--bd-muted); }
+.cogwheel.sheet.actor:is(.hq, .nemesis) :is(.location-effect, .project-effect) { color: var(--bd-sky); }
+.cogwheel.sheet.actor.hq .level-description.active {
+  color: var(--bd-gold);
+  font-weight: 700;
+}
+.cogwheel.sheet.actor.hq .section-item.is-destroyed :is(.section-name, .level-label, .level-value, .level-description.active) {
+  color: var(--bd-muted);
+}
+
+.cogwheel.sheet.actor.nemesis :is(.clock-progress, .minion-role) { color: var(--bd-trauma); text-shadow: none; }
+.cogwheel.sheet.actor.nemesis :is(.form-group label, .clock-goal-form label) {
+  color: var(--bd-gold);
+  text-shadow: none;
+}
+.cogwheel.sheet.actor.nemesis .minions-count-display {
+  color: var(--bd-gold);
+  background: #0c1712;
+  border: 1px solid var(--bd-edge);
+  box-shadow: inset 0 2px 4px #0008;
+}
+
+/* Zegar celu Nemezis: obręcz mosiężna, wypełnienie w kolorze akcentu */
+.cogwheel.sheet.actor.nemesis .nemesis-clock-svg circle { stroke: var(--bd-edge); }
+.cogwheel.sheet.actor.nemesis .nemesis-clock-svg path { fill: var(--bd-trauma); stroke: var(--bd-night); }
+
+.cogwheel.sheet.actor:is(.hq, .nemesis) :is(input[type="text"], input[type="number"], select, textarea) {
+  color: #2d281f;
+  background: linear-gradient(#f8f0df, var(--bd-paper));
+  border: 1px solid var(--bd-brass);
+  border-radius: 4px;
+  box-shadow: inset 0 1px 4px #3e2c2533, 0 1px 2px #0006;
+  text-shadow: none;
+}
+
+.cogwheel.sheet.actor:is(.hq, .nemesis) :is(button, .steampunk-btn) {
+  color: var(--bd-ink);
+  background: linear-gradient(#66502f, #302719);
+  border: 1px solid var(--bd-brass);
+  box-shadow: inset 0 1px 0 #f3d99c66, 0 2px 3px #0005;
+  text-shadow: 0 1px 1px #000;
+}
+.cogwheel.sheet.actor:is(.hq, .nemesis) :is(button, .steampunk-btn):hover {
+  color: #fff2ce;
+  background: linear-gradient(#80673c, #493821);
+  border-color: var(--bd-gold);
+  transform: none;
+}
+.cogwheel.sheet.actor:is(.hq, .nemesis) :is(button, input, select, textarea):disabled,
+.cogwheel.sheet.actor.hq .level-btn:disabled {
+  opacity: .55;
+  color: var(--bd-muted);
+  background: linear-gradient(#3a3a2f, #1f1f18);
+  cursor: not-allowed;
+}
+
+.cogwheel.sheet.actor:is(.hq, .nemesis) :is(input, select, textarea, button, a):focus-visible {
+  outline: 2px solid var(--bd-gear);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cogwheel.sheet.actor:is(.hq, .nemesis) :is(.sheet-tabs .item, button, input, textarea) { transition: none !important; }
+}

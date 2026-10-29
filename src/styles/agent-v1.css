@@ -1,0 +1,992 @@
+/* Karta Agenta v1 — style specyficzne dla okna Agent v1.
+ *
+ * Część 1: reguły wyjęte z cogwheel.css (dotyczą wyłącznie klas używanych na karcie agenta v1).
+ * Część 2: warstwa "Brass Dossier" w brązowej palecie (te same ozdoby co agent-v2-brass.css).
+ *
+ * Wspólne reguły okien actor/item (ramka okna, nagłówek, zakładki, pasek przewijania, notatki)
+ * zostają w cogwheel.css — korzystają z nich również HQ, Nemesis i arkusze itemów.
+ * Plik musi być ładowany PO cogwheel.css.
+ */
+
+/* ===================== CZĘŚĆ 1: BAZA KARTY V1 ===================== */
+
+/* Archetype Section Styles */
+.cogwheel:not(.agentv2) .archetype-section {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #4a321d 100%);
+  border: 2px solid #b8860b;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(184, 134, 11, 0.3), inset 0 1px 0 rgba(205, 127, 50, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cogwheel:not(.agentv2) .archetype-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at 20% 30%, rgba(205, 127, 50, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(139, 69, 19, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.cogwheel:not(.agentv2) .archetype-section:hover {
+  box-shadow: 0 6px 12px rgba(184, 134, 11, 0.4), inset 0 1px 0 rgba(205, 127, 50, 0.6);
+  transform: translateY(-1px);
+  border-color: #cd7f32;
+}
+
+.cogwheel:not(.agentv2) .archetype-section h3 {
+  color: #cd7f32;
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6), 0 0 8px rgba(205, 127, 50, 0.3);
+  position: relative;
+  z-index: 1;
+}
+
+.cogwheel:not(.agentv2) .archetype-drop {
+  display: grid;
+  grid-template-columns: 1fr 2fr 60px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #3a3a3a 100%);
+  border: 2px dashed #8b4513;
+  border-radius: 8px;
+  min-height: 48px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cogwheel:not(.agentv2) .archetype-drop::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(205, 127, 50, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.cogwheel:not(.agentv2) .archetype-drop:hover::before {
+  left: 100%;
+}
+
+.cogwheel:not(.agentv2) .archetype-drop:hover {
+  border-color: #cd7f32;
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #4a321d 100%);
+  box-shadow: inset 0 2px 4px rgba(205, 127, 50, 0.2);
+}
+
+.cogwheel:not(.agentv2) .archetype-drop[data-type="archetype"] {
+  cursor: pointer;
+}
+
+.cogwheel:not(.agentv2) .archetype-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: #cd7f32;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.cogwheel:not(.agentv2) .archetype-info-left {
+  justify-self: start;
+}
+
+.cogwheel:not(.agentv2) .archetype-info-center {
+  justify-self: center;
+}
+
+.cogwheel:not(.agentv2) .archetype-info-right {
+  justify-self: end;
+}
+
+.cogwheel:not(.agentv2) .archetype-attributes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+
+.cogwheel:not(.agentv2) .archetype-attributes-header {
+  font-size: 11px;
+  color: #daa520;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.cogwheel:not(.agentv2) .archetype-attributes-values {
+  font-size: 12px;
+  color: #f4a460;
+  font-weight: 500;
+  line-height: 1.2;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.cogwheel:not(.agentv2) .archetype-attribute {
+  font-size: 12px;
+  color: #495057;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.cogwheel:not(.agentv2) .archetype-drop span:not(.archetype-name) {
+  color: #daa520;
+  font-style: italic;
+  font-size: 14px;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.cogwheel:not(.agentv2) .remove-archetype {
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  padding: 0;
+  margin-left: 12px;
+  line-height: 1;
+  text-align: center;
+  background: linear-gradient(135deg, #8b0000 0%, #660000 100%);
+  color: #ffcccb;
+  border: 2px solid #a0522d;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(139, 0, 0, 0.4), inset 0 1px 0 rgba(205, 127, 50, 0.2);
+}
+
+.cogwheel:not(.agentv2) .remove-archetype:hover {
+  background: linear-gradient(135deg, #a0522d 0%, #8b4513 100%);
+  border-color: #cd7f32;
+  color: #fff;
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(139, 0, 0, 0.5), inset 0 1px 0 rgba(205, 127, 50, 0.4);
+}
+
+.cogwheel:not(.agentv2) .remove-archetype:active {
+  transform: scale(0.95);
+}
+
+.cogwheel:not(.agentv2) .remove-archetype i {
+  font-size: 10px;
+}
+
+.cogwheel:not(.agentv2) .main-attributes,
+.cogwheel:not(.agentv2) .agent-resources,
+.cogwheel:not(.agentv2) .feats-section,
+.cogwheel:not(.agentv2) .traumas-section {
+  margin-bottom: 20px;
+}
+
+/* Feats Section - Steampunk styling like archetype */
+.cogwheel:not(.agentv2) .feats-section {
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #4a321d 100%);
+  border: 2px solid #b8860b;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 10px 0;
+  box-shadow: 0 4px 8px rgba(184, 134, 11, 0.3), inset 0 1px 0 rgba(205, 127, 50, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cogwheel:not(.agentv2) .feats-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at 20% 30%, rgba(205, 127, 50, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(139, 69, 19, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.cogwheel:not(.agentv2) .feats-section:hover {
+  box-shadow: 0 6px 12px rgba(184, 134, 11, 0.4), inset 0 1px 0 rgba(205, 127, 50, 0.6);
+  transform: translateY(-1px);
+  border-color: #cd7f32;
+}
+
+.cogwheel:not(.agentv2) .feats-drop {
+  border: 2px solid #cd7f32;
+  padding: 15px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.3) 0%, rgba(58, 58, 58, 0.2) 100%);
+  min-height: 60px;
+  color: #f4a460;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.cogwheel:not(.agentv2) .feat-item {
+  margin: 10px 0;
+  padding: 12px;
+  border: 2px solid #b8860b;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #4a321d 100%);
+  color: #f4a460;
+  box-shadow: 0 4px 8px rgba(184, 134, 11, 0.3), inset 0 1px 0 rgba(205, 127, 50, 0.4);
+  transition: all 0.3s ease;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.cogwheel:not(.agentv2) .feat-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at 20% 30%, rgba(205, 127, 50, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(139, 69, 19, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.cogwheel:not(.agentv2) .feat-item:hover {
+  box-shadow: 0 6px 12px rgba(184, 134, 11, 0.4), inset 0 1px 0 rgba(205, 127, 50, 0.6);
+  border-color: #cd7f32;
+  transform: translateY(-1px);
+}
+
+/* Style dla nazw atutów i ich zawartości */
+.cogwheel:not(.agentv2) .feat-item .feat-name, .cogwheel:not(.agentv2) .feat-item h3, .cogwheel:not(.agentv2) .feat-item h4 {
+  color: #f4a460 !important; /* Piaskowy kolor dla nazw atutów */
+  font-weight: bold !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+}
+
+.cogwheel:not(.agentv2) .feat-item .feat-description {
+  background-color: rgba(32, 178, 170, 0.1) !important; /* Seledynowe tło */
+  border: 2px solid #20b2aa !important; /* Seledynowe obramowanie */
+  border-radius: 8px !important;
+  margin-top: 8px !important;
+  padding: 8px 12px !important;
+}
+
+.cogwheel:not(.agentv2) .feat-item .feat-description strong {
+  color: #20b2aa !important; /* Seledynowy kolor dla etykiety "Opis:" */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+.cogwheel:not(.agentv2) .feat-item .feat-narrative {
+  background-color: rgba(138, 43, 226, 0.1) !important; /* Fioletowe tło */
+  border: 2px solid #8a2be2 !important; /* Fioletowe obramowanie */
+  border-radius: 8px !important;
+  margin-top: 8px !important;
+  padding: 8px 12px !important;
+}
+
+.cogwheel:not(.agentv2) .feat-item .feat-narrative strong {
+  color: #8a2be2 !important; /* Fioletowy kolor dla etykiety "Efekt narracyjny:" */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+.cogwheel:not(.agentv2) .attributes-container,
+.cogwheel:not(.agentv2) .resources-container {
+  display: flex;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 50%, #4a321d 100%);
+  border: 2px solid #b8860b;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 10px 0;
+  box-shadow: 0 4px 8px rgba(184, 134, 11, 0.3), inset 0 1px 0 rgba(205, 127, 50, 0.4);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.cogwheel:not(.agentv2) .attributes-container::before,
+.cogwheel:not(.agentv2) .resources-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse at 20% 30%, rgba(205, 127, 50, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(139, 69, 19, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.cogwheel:not(.agentv2) .attributes-container:hover,
+.cogwheel:not(.agentv2) .resources-container:hover {
+  box-shadow: 0 6px 12px rgba(184, 134, 11, 0.4), inset 0 1px 0 rgba(205, 127, 50, 0.6);
+  transform: translateY(-1px);
+  border-color: #cd7f32;
+}
+
+.cogwheel:not(.agentv2) .attribute,
+.cogwheel:not(.agentv2) .resource {
+  flex: 1;
+  margin: 0 5px;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.3) 0%, rgba(58, 58, 58, 0.2) 100%);
+  border: 1px solid rgba(205, 127, 50, 0.3);
+  border-radius: 8px;
+  padding: 10px;
+  color: #f4a460;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.cogwheel:not(.agentv2) .attribute-content,
+.cogwheel:not(.agentv2) .resource-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.cogwheel:not(.agentv2) .attribute-content input, .cogwheel:not(.agentv2) .resource-content input {
+  width: 50px;
+  margin-right: 5px;
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 100%);
+  border: 2px solid #cd7f32;
+  border-radius: 6px;
+  color: #f4a460;
+  text-align: center;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 2px rgba(205, 127, 50, 0.2);
+}
+
+/* Styl dla wartości bazowej */
+.cogwheel.sheet.actor:not(.agentv2) .attribute-content input.base-value {
+  width: 30px !important;
+  height: 20px !important;
+  font-size: 0.8em !important;
+  color: #8b4513 !important; /* Ciemna miedź */
+  border: 2px solid #cd7f32 !important;
+  background: linear-gradient(135deg, #c0c0c0 0%, #d3d3d3 100%) !important; /* Jasna stal */
+  border-radius: 4px !important;
+  text-shadow: none !important;
+  font-weight: bold !important;
+}
+
+/* Styl dla wartości efektywnej */
+.cogwheel.sheet.actor:not(.agentv2) .attribute-content input.effective-value {
+  width: 70px !important;
+  height: 40px !important;
+  font-size: 1.4em !important;
+  font-weight: bold !important;
+  color: #8b4513 !important; /* Ciemna miedź */
+  border: 3px solid #cd7f32 !important;
+  background: linear-gradient(135deg, #c0c0c0 0%, #d3d3d3 100%) !important; /* Jasna stal */
+  box-shadow: 0 0 8px rgba(205, 127, 50, 0.4) !important;
+  border-radius: 6px !important;
+  text-shadow: none !important;
+  cursor: default !important;
+}
+
+/* Styl dla wartości zasobów - kolorowe tła i obwódki */
+.cogwheel.sheet.actor:not(.agentv2) .resource-content input.gear-value {
+  background-color: #eaffea !important;
+  border: 2px solid #2ecc40 !important;
+  color: #217a2c !important;
+  font-weight: bold !important;
+}
+.cogwheel.sheet.actor:not(.agentv2) .resource-content input.trauma-value {
+  background-color: #f3eaff !important;
+  border: 2px solid #a259e6 !important;
+  color: #6b21a8 !important;
+  font-weight: bold !important;
+}
+.cogwheel.sheet.actor:not(.agentv2) .resource-content input.stress-value {
+  background-color: #ffeaea !important;
+  border: 2px solid #e62e2e !important;
+  color: #a82121 !important;
+  font-weight: bold !important;
+}
+
+/* Style dla listy wyboru podstawy sprzętu - jaśniejszy kolor tekstu (v2 ma własną kopię w agent-v2.css) */
+.cogwheel:not(.agentv2) .gear-basis-select, .cogwheel:not(.agentv2) select[name*="gear.basis"] {
+  background: linear-gradient(135deg, #2c1810 0%, #3d2817 100%) !important;
+  border: 2px solid #cd7f32 !important;
+  border-radius: 6px !important;
+  color: #f4a460 !important; /* Piaskowy kolor dla lepszej widoczności */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+  font-weight: bold !important;
+  padding: 4px 8px !important;
+}
+
+.cogwheel:not(.agentv2) .gear-basis-select option, .cogwheel:not(.agentv2) select[name*="gear.basis"] option {
+  background-color: #2c1810 !important;
+  color: #f4a460 !important; /* Piaskowy kolor dla opcji */
+  font-weight: bold !important;
+}
+
+.cogwheel:not(.agentv2) .gear-basis-select option:checked, .cogwheel:not(.agentv2) select[name*="gear.basis"] option:checked {
+  background-color: #cd7f32 !important; /* Miedziane tło dla wybranej opcji */
+  color: #2c1810 !important; /* Ciemny tekst na jasnym tle */
+}
+
+/* Specyficzne style dla przycisków rzutu w zakładce Core - v1 */
+.cogwheel:not(.agentv2) .roll-btn,
+.cogwheel:not(.agentv2) .roll-attribute {
+  width: 30px !important;
+  height: 30px !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+  line-height: 30px !important;
+  text-align: center !important;
+  background: linear-gradient(135deg, #b8860b 0%, #cd7f32 50%, #daa520 100%) !important; /* Jasna miedź */
+  border: 3px solid #8b4513 !important; /* Ciemna miedź */
+  border-radius: 8px !important;
+  color: #2c1810 !important; /* Ciemny tekst */
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 
+    0 3px 6px rgba(205, 127, 50, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3) !important;
+  transition: all 0.3s ease !important;
+  transform: scale(1.1) !important; /* Większy rozmiar */
+}
+
+.cogwheel:not(.agentv2) .roll-btn:hover,
+.cogwheel:not(.agentv2) .roll-attribute:hover {
+  background: linear-gradient(135deg, #daa520 0%, #ffd700 50%, #ffed4e 100%) !important; /* Jasne złoto */
+  border-color: #b8860b !important;
+  transform: scale(1.2) translateY(-2px) !important;
+  box-shadow: 
+    0 6px 12px rgba(205, 127, 50, 0.7),
+    inset 0 2px 6px rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Archetype image styles */
+.cogwheel:not(.agentv2) .archetype-img {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  border: 2px solid #6f42c1;
+  border-radius: 6px;
+  object-fit: cover;
+  box-shadow: 0 2px 4px rgba(111, 66, 193, 0.2);
+  transition: all 0.3s ease;
+}
+
+.cogwheel:not(.agentv2) .archetype-img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(111, 66, 193, 0.3);
+}
+
+/* Enhanced Font Sizes for Attribute and Resource Labels - Agent v1 */
+.cogwheel.sheet.actor:not(.agentv2) .attribute label, 
+.cogwheel.sheet.actor:not(.agentv2) .resource label {
+  font-size: 16px !important;
+  font-weight: bold !important;
+  color: #f4a460 !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+  margin-bottom: 6px !important;
+  display: block !important;
+}
+
+/* Icon styling in resource labels - Agent v1 */
+.cogwheel.sheet.actor:not(.agentv2) .resource label i {
+  margin-right: 6px !important;
+  color: #cd7f32 !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Specific styling for stress icon - Agent v1 */
+.cogwheel.sheet.actor:not(.agentv2) .resource.stress label i {
+  color: #ff6b6b !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Specific styling for trauma icon - Agent v1 */
+.cogwheel.sheet.actor:not(.agentv2) .resource.trauma label i {
+  color: #9b59b6 !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* ===== DAMAGE SYSTEM STYLING - AGENT V1 ===== */
+
+/* Damage section styling */
+.cogwheel:not(.agentv2) .damage-section {
+  margin-top: 8px;
+  padding: 6px 0;
+  border-top: 1px solid rgba(139, 69, 19, 0.3);
+}
+
+/* Damage label styling with red color and text shadow */
+.cogwheel:not(.agentv2) .damage-label {
+  font-size: 12px !important;
+  font-weight: bold !important;
+  color: #ff4444 !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+  margin-bottom: 4px !important;
+  display: block !important;
+  text-align: center;
+}
+
+/* ===== DAMAGE SECTION - KARTA AGENTA V1 ===== */
+.cogwheel:not(.agentv2) .damage-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 6px;
+}
+
+.cogwheel:not(.agentv2) .damage-radio-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 0 1px;
+  flex-shrink: 0;
+}
+
+.cogwheel:not(.agentv2) .damage-radio-item input[type="radio"] {
+  appearance: auto;
+  -webkit-appearance: auto;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: #d4a843;
+  margin: 0;
+}
+
+.cogwheel:not(.agentv2) .damage-radio-item label {
+  margin-top: 2px;
+  font-size: 11px;
+  text-align: center;
+  color: #ff4444;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+  font-weight: bold;
+}
+
+.cogwheel:not(.agentv2) .damage-radio-item input[type="radio"]:checked + label {
+  color: #ff6666;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+/* ===================== CZĘŚĆ 2: BRASS DOSSIER — PALETA BRĄZOWA ===================== */
+/* Wyłącznie warstwa wizualna. Bez zmiany danych, zdarzeń i ukrytych zakładek.
+ * Struktura i ozdoby identyczne jak w agent-v2-brass.css; różni się tylko paleta.
+ * !important używane wyłącznie do pokonania zastanych reguł !important.
+ */
+
+.cogwheel.sheet.actor.agentv1 {
+  --bd-ink: #f6e4cc;
+  --bd-muted: #c9a888;
+  --bd-brass: #cd7f32;
+  --bd-gold: #f0aa66;
+  --bd-edge: #8b5a2b;
+  --bd-night: #20120a;
+  --bd-panel: #3a2616;
+  --bd-paper: #eee4ce;
+  --bd-gear: #78c9b6;
+  --bd-trauma: #c4a1e8;
+  --bd-stress: #f19c91;
+  --bd-accent: var(--bd-gold);
+  --bd-frame: inset 0 0 0 2px #0f0804, inset 0 0 0 3px #cd7f3255, 0 3px 7px #0006;
+  --bd-metal: linear-gradient(120deg, #6b3a14, #e0a060 23%, #8b4a1c 48%, #eeb878 72%, #6b3a14);
+  --bd-screws:
+    radial-gradient(circle at 9px 9px, #f6d3a2 0 1px, #a8642a 1.5px 3px, #0c0603 3.5px 4px, transparent 4.5px),
+    radial-gradient(circle at calc(100% - 9px) 9px, #f6d3a2 0 1px, #a8642a 1.5px 3px, #0c0603 3.5px 4px, transparent 4.5px),
+    radial-gradient(circle at 9px calc(100% - 9px), #f6d3a2 0 1px, #a8642a 1.5px 3px, #0c0603 3.5px 4px, transparent 4.5px),
+    radial-gradient(circle at calc(100% - 9px) calc(100% - 9px), #f6d3a2 0 1px, #a8642a 1.5px 3px, #0c0603 3.5px 4px, transparent 4.5px);
+  color: var(--bd-ink);
+  background: linear-gradient(115deg, #3a2616, var(--bd-night) 55%, #35210f);
+  border: 2px solid var(--bd-brass);
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 2px #0f0804, 0 10px 38px #0008;
+  font-family: "Segoe UI", Arial, sans-serif;
+  min-width: min(640px, calc(100vw - 24px));
+  max-width: calc(100vw - 24px);
+  container-type: inline-size;
+  scrollbar-color: var(--bd-edge) var(--bd-night);
+}
+
+.cogwheel.sheet.actor.agentv1 .window-header {
+  background: linear-gradient(#4b3320, #22150c);
+  color: var(--bd-ink);
+  border-bottom: 1px solid var(--bd-brass);
+  box-shadow: inset 0 -3px 0 #0f0804;
+}
+
+.cogwheel.sheet.actor.agentv1 .window-title {
+  color: var(--bd-ink);
+  font-family: Georgia, serif;
+}
+
+.cogwheel.sheet.actor.agentv1 .window-content {
+  background: transparent;
+  color: var(--bd-ink);
+  padding: 14px;
+}
+
+.cogwheel.sheet.actor.agentv1 .sheet-header {
+  background-image: url("../assets/clockwork-engraving.svg"), linear-gradient(135deg, #523722, #24150b 70%);
+  background-size: 100% 100%, cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid var(--bd-brass);
+  border-radius: 8px;
+  box-shadow: var(--bd-frame);
+  padding: 18px 14px 14px;
+  margin-bottom: 12px;
+}
+
+.cogwheel.sheet.actor.agentv1 .profile-img {
+  width: 100px;
+  height: 100px;
+  border: 3px solid var(--bd-gold);
+  box-shadow: 0 0 0 3px #150b05, 0 0 0 5px var(--bd-brass), 0 4px 14px #0009;
+  background: var(--bd-night);
+  margin-bottom: 15px;
+}
+
+.cogwheel.sheet.actor.agentv1 .sheet-header h1 {
+  width: min(72%, 360px);
+  border: 0;
+  text-shadow: none;
+  line-height: 1.2;
+}
+
+.cogwheel.sheet.actor.agentv1 .sheet-header h1 input[name="name"] {
+  width: 100%;
+  min-width: 0;
+  height: 38px;
+  color: var(--bd-gold);
+  background: linear-gradient(#4b3320, #1f130b);
+  border: 1px solid var(--bd-brass);
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 2px #0f0804, inset 0 0 0 3px #cd7f3255, 0 3px 5px #0007;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 19px;
+  text-shadow: 0 1px 1px #000;
+}
+
+.cogwheel.sheet.actor.agentv1 .sheet-body {
+  background: transparent;
+  padding: 0 2px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bd-edge) var(--bd-night);
+}
+
+.cogwheel.sheet.actor.agentv1 .sheet-body::-webkit-scrollbar-track {
+  background: var(--bd-night);
+  border-color: #4d3320;
+}
+.cogwheel.sheet.actor.agentv1 .sheet-body::-webkit-scrollbar-thumb {
+  background: var(--bd-metal);
+  border-color: var(--bd-edge);
+  box-shadow: none;
+}
+
+.cogwheel.sheet.actor.agentv1 .sheet-tabs.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  background: #1b0f07;
+  padding: 5px;
+  margin: 0 0 12px;
+  border: 1px solid var(--bd-brass);
+  border-radius: 6px;
+  box-shadow: var(--bd-frame);
+}
+
+.cogwheel.sheet.actor.agentv1 .sheet-tabs.tabs .item {
+  flex: 1 1 auto;
+  padding: 9px 7px;
+  margin: 0;
+  line-height: 1.2;
+  color: var(--bd-ink);
+  background: linear-gradient(#4b3320, #27170c);
+  border: 1px solid #cd7f3277;
+  border-radius: 3px;
+  text-shadow: none;
+  font-family: Georgia, serif;
+  font-size: 16px;
+  text-align: center;
+  transition: background-color .15s, color .15s;
+}
+.cogwheel.sheet.actor.agentv1 .sheet-tabs.tabs .item:hover {
+  color: var(--bd-gold);
+  background: #5c3d24;
+  transform: none;
+}
+.cogwheel.sheet.actor.agentv1 .sheet-tabs.tabs .item.active {
+  color: #251409;
+  background: linear-gradient(125deg, #c07a35, #f0c48c 45%, #c98a47);
+  border-color: var(--bd-gold);
+  box-shadow: inset 0 0 0 1px #7a4a1c;
+  text-shadow: none;
+}
+
+.cogwheel.sheet.actor.agentv1 :is(h2, h3) {
+  color: var(--bd-gold);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  text-shadow: 0 1px 1px #000;
+  border-color: var(--bd-edge);
+}
+.cogwheel.sheet.actor.agentv1 h3.centered {
+  margin: 14px 0 10px;
+}
+
+.cogwheel.sheet.actor.agentv1 :is(.archetype-section, .attributes-container, .resources-container, .feats-section, .notes-section) {
+  background: var(--bd-screws), linear-gradient(135deg, #4a321d, #24150b);
+  border: 1px solid var(--bd-brass);
+  border-radius: 8px;
+  box-shadow: var(--bd-frame);
+  color: var(--bd-ink);
+  transform: none;
+  transition: none;
+}
+.cogwheel.sheet.actor.agentv1 :is(.archetype-section, .feats-section, .notes-section) {
+  padding: 14px 16px;
+}
+.cogwheel.sheet.actor.agentv1 :is(.archetype-section, .attributes-container, .resources-container, .feats-section, .notes-section)::before {
+  background: none;
+  pointer-events: none;
+}
+.cogwheel.sheet.actor.agentv1 :is(.attributes-container, .resources-container) {
+  gap: 8px;
+  padding: 12px;
+}
+.cogwheel.sheet.actor.agentv1 :is(.attribute, .resource) {
+  background: var(--bd-screws), linear-gradient(135deg, #5a3d2677, #1a0f08aa);
+  border: 1px solid var(--bd-edge);
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 2px #0f0804;
+  color: var(--bd-ink);
+  text-shadow: none;
+  margin: 0;
+  padding: 12px 9px;
+  min-width: 0;
+}
+.cogwheel.sheet.actor.agentv1 .main-attributes .attribute { margin-bottom: 0; }
+
+.cogwheel.sheet.actor.agentv1 :is(.attribute, .resource) label {
+  color: var(--bd-ink) !important;
+  text-shadow: none !important;
+}
+.cogwheel.sheet.actor.agentv1 :is(.attribute, .resource) > label {
+  font-family: Georgia, serif;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  margin-bottom: 12px !important;
+}
+
+.cogwheel.sheet.actor.agentv1 :is(input[type="text"], input[type="number"], select, textarea) {
+  color: #2d281f;
+  background: linear-gradient(#f8f0df, var(--bd-paper));
+  border: 1px solid var(--bd-brass);
+  border-radius: 4px;
+  box-shadow: inset 0 1px 4px #3e2c2533, 0 1px 2px #0006;
+  text-shadow: none;
+  font-variant-numeric: tabular-nums;
+}
+/* Te pola i przyciski rzutów mają już reguły !important w systemie. */
+.cogwheel.sheet.actor.agentv1 .attribute-content input:is(.base-value, .effective-value) {
+  color: #30271a !important;
+  background: linear-gradient(#faf3e4, #e6d9bf) !important;
+  border-color: var(--bd-brass) !important;
+  box-shadow: inset 0 1px 4px #3e2c2533, 0 2px 3px #0006 !important;
+  text-shadow: none !important;
+}
+.cogwheel.sheet.actor.agentv1 .attribute-content input.effective-value { font-family: Georgia, serif; }
+
+.cogwheel.sheet.actor.agentv1 :is(button, .steampunk-btn) {
+  color: var(--bd-ink);
+  background: linear-gradient(#7a4a24, #33200f);
+  border-color: var(--bd-brass);
+  box-shadow: inset 0 1px 0 #f6c88a66, 0 2px 3px #0005;
+  text-shadow: 0 1px 1px #000;
+}
+.cogwheel.sheet.actor.agentv1 :is(button, .steampunk-btn):hover {
+  color: #fff2ce;
+  background: linear-gradient(#94592b, #4f2f17);
+  border-color: var(--bd-gold);
+  transform: none;
+}
+.cogwheel.sheet.actor.agentv1 :is(.roll-btn, .roll-attribute) {
+  color: #241408 !important;
+  background: linear-gradient(130deg, #c9812f, #f2c58a 45%, #b8742c) !important;
+  border-color: var(--bd-edge) !important;
+  text-shadow: none !important;
+  box-shadow: inset 0 0 0 1px var(--bd-gold), 0 2px 3px #0006 !important;
+  transform: none !important;
+}
+.cogwheel.sheet.actor.agentv1 :is(.roll-btn, .roll-attribute):hover {
+  background: linear-gradient(#f7d09a, #d9954a) !important;
+}
+.cogwheel.sheet.actor.agentv1 .remove-archetype {
+  background: linear-gradient(#8a3d38, #481f1c);
+  color: #f6e5d2;
+  border-color: #be8a5f;
+}
+
+.cogwheel.sheet.actor.agentv1 .archetype-drop {
+  background: #1c1109;
+  border: 1px dashed #b8793a;
+  box-shadow: inset 0 1px 5px #0006;
+  border-radius: 5px;
+}
+.cogwheel.sheet.actor.agentv1 .archetype-drop::before { background: none; pointer-events: none; }
+.cogwheel.sheet.actor.agentv1 .archetype-drop:hover {
+  background: #3d2817;
+  border-color: var(--bd-gold);
+  transform: none;
+}
+.cogwheel.sheet.actor.agentv1 .archetype-name { color: var(--bd-ink); text-shadow: none; }
+.cogwheel.sheet.actor.agentv1 .archetype-attributes-header { color: var(--bd-gold); text-shadow: none; }
+.cogwheel.sheet.actor.agentv1 .archetype-attributes-values { color: var(--bd-muted); text-shadow: none; }
+
+.cogwheel.sheet.actor.agentv1 .damage-section { border-color: var(--bd-edge); }
+.cogwheel.sheet.actor.agentv1 .damage-section .damage-label {
+  color: var(--bd-muted) !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  letter-spacing: .07em;
+  text-shadow: none !important;
+}
+.cogwheel.sheet.actor.agentv1 .damage-radio-group { gap: 4px; flex-wrap: wrap; }
+.cogwheel.sheet.actor.agentv1 .damage-radio-item input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #8a6a4a;
+  border-radius: 50%;
+  background: linear-gradient(#3f2d1f, #1f140c);
+  box-shadow: inset 0 1px 3px #0009, 0 1px 1px #0008;
+}
+.cogwheel.sheet.actor.agentv1 .damage-radio-item input[type="radio"]:checked {
+  background: radial-gradient(circle, #4a2c12 0 3px, transparent 4px), linear-gradient(#f2c58a, #b8742c);
+  border-color: var(--bd-gold);
+  box-shadow: 0 0 0 1px #6b3c18;
+}
+.cogwheel.sheet.actor.agentv1 .damage-radio-item label {
+  font-size: 12px !important;
+  margin-bottom: 2px !important;
+  color: var(--bd-muted) !important;
+}
+.cogwheel.sheet.actor.agentv1 .damage-radio-item input:checked + label { color: var(--bd-gold) !important; }
+
+.cogwheel.sheet.actor.agentv1 .resource.gear { --bd-accent: var(--bd-gear); }
+.cogwheel.sheet.actor.agentv1 .resource.trauma { --bd-accent: var(--bd-trauma); }
+.cogwheel.sheet.actor.agentv1 .resource.stress { --bd-accent: var(--bd-stress); }
+.cogwheel.sheet.actor.agentv1 .resource:is(.gear, .trauma, .stress) > label i {
+  color: var(--bd-accent) !important;
+  text-shadow: none !important;
+}
+.cogwheel.sheet.actor.agentv1 .resource-content input,
+.cogwheel.sheet.actor.agentv1 .resource-content input:is(.gear-value, .trauma-value, .stress-value) {
+  color: var(--bd-accent) !important;
+  border-color: var(--bd-accent) !important;
+  background: #1a0f08 !important;
+  text-shadow: none;
+  box-shadow: inset 0 2px 4px #0008;
+}
+.cogwheel.sheet.actor.agentv1 .resource-content span { color: var(--bd-muted); }
+.cogwheel.sheet.actor.agentv1 .gear-basis-select {
+  background: #2a1a0e !important;
+  color: var(--bd-ink) !important;
+  border-color: var(--bd-brass) !important;
+  text-shadow: none !important;
+  width: 100%;
+}
+.cogwheel.sheet.actor.agentv1 .gear-basis-select option {
+  color: var(--bd-ink) !important;
+  background-color: var(--bd-night) !important;
+}
+.cogwheel.sheet.actor.agentv1 .gear-basis-select option:checked {
+  color: #251409 !important;
+  background-color: var(--bd-gold) !important;
+}
+
+/* Pozostałe pięć zakładek — zachowujemy ich rozwijanie i stany. */
+.cogwheel.sheet.actor.agentv1 :is(.feats-drop, .feat-item, .feat-item-alt, .equipment-item, .trauma-item) {
+  color: var(--bd-ink);
+  background: linear-gradient(135deg, #4a321d, #241509);
+  border-color: var(--bd-edge);
+  box-shadow: inset 0 0 0 1px #0f0804, 0 2px 3px #0004;
+  text-shadow: none;
+}
+.cogwheel.sheet.actor.agentv1 :is(.feat-name, .feat-col-name) {
+  color: var(--bd-ink) !important;
+  text-shadow: none !important;
+}
+.cogwheel.sheet.actor.agentv1 :is(.feat-type, .feat-archetype, .equipment-points, .equipment-points-label, .trauma-level) {
+  color: var(--bd-gold);
+  text-shadow: none;
+}
+.cogwheel.sheet.actor.agentv1 .equipment-points { background: #2a1a0e; border-color: var(--bd-edge); box-shadow: none; }
+.cogwheel.sheet.actor.agentv1 .equipment-points-value { color: var(--bd-gear); text-shadow: none; }
+.cogwheel.sheet.actor.agentv1 .equipment-points-max { color: var(--bd-muted); }
+.cogwheel.sheet.actor.agentv1 :is(.feat-description, .feat-narrative) {
+  color: var(--bd-ink) !important;
+  background: #1f2a22 !important;
+  border-color: #4e8776 !important;
+}
+.cogwheel.sheet.actor.agentv1 .feat-description strong { color: var(--bd-gear) !important; text-shadow: none !important; }
+.cogwheel.sheet.actor.agentv1 .feat-narrative { background: #261f30 !important; border-color: #86679e !important; }
+.cogwheel.sheet.actor.agentv1 .feat-narrative strong { color: var(--bd-trauma) !important; text-shadow: none !important; }
+.cogwheel.sheet.actor.agentv1 .trauma-item { border-left: 3px solid var(--bd-trauma); }
+.cogwheel.sheet.actor.agentv1 .trauma-item.trauma-type-physical { border-left-color: var(--bd-stress); }
+.cogwheel.sheet.actor.agentv1 .trauma-item.trauma-type-psychological { border-left-color: #8ab9dc; }
+.cogwheel.sheet.actor.agentv1 .trauma-item::before { background: none; pointer-events: none; }
+.cogwheel.sheet.actor.agentv1 .equipment-item[data-equipment-type="weapon"] { border-left: 3px solid var(--bd-stress); }
+.cogwheel.sheet.actor.agentv1 .equipment-item[data-equipment-type="armor"] { border-left: 3px solid #8ab9dc; }
+.cogwheel.sheet.actor.agentv1 .equipment-item[data-equipment-type="tool"] { border-left: 3px solid var(--bd-brass); }
+.cogwheel.sheet.actor.agentv1 .equipment-item[data-equipment-type="gadget"] { border-left: 3px solid var(--bd-gear); }
+.cogwheel.sheet.actor.agentv1 .equipment-item[data-equipment-type="other"] { border-left: 3px solid var(--bd-trauma); }
+.cogwheel.sheet.actor.agentv1 :is(.no-feats-message, .archetype-drop p) { color: var(--bd-muted); }
+.cogwheel.sheet.actor.agentv1 .notes-textarea {
+  background: linear-gradient(#f4ecd9, #e8dcc1);
+  color: #30291f;
+  text-shadow: none;
+  border-color: var(--bd-brass);
+  line-height: 1.6;
+}
+.cogwheel.sheet.actor.agentv1 .notes-textarea::placeholder { color: #716450; opacity: 1; }
+
+.cogwheel.sheet.actor.agentv1 :is(input, select, textarea, button, a):focus-visible {
+  outline: 2px solid var(--bd-gear);
+  outline-offset: 3px;
+}
+.cogwheel.sheet.actor.agentv1 :is(input, select, textarea, button):disabled { opacity: .55; }
+
+/* Szerokość okna, nie szerokość monitora — działa również w pop-out. */
+@container (max-width: 690px) {
+  .cogwheel.sheet.actor.agentv1 :is(.attributes-container, .resources-container) { flex-wrap: wrap; }
+  .cogwheel.sheet.actor.agentv1 :is(.attribute, .resource) { flex: 1 1 180px; }
+  .cogwheel.sheet.actor.agentv1 .sheet-tabs.tabs .item { font-size: 14px; padding: 8px 5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cogwheel.sheet.actor.agentv1 :is(.sheet-tabs .item, button, input, textarea) { transition: none !important; }
+}

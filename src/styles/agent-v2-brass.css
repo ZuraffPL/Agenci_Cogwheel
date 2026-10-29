@@ -1,0 +1,399 @@
+/* Brass Dossier — stylistyka karty Agent v2 (warstwa nakładana na agent-v2.css).
+ * Wyłącznie warstwa wizualna. Bez zmiany danych, zdarzeń i ukrytych zakładek.
+ * Wszystkie selektory ograniczone do okna Agent v2.
+ * Musi być ładowany po agent-v2.css i cogwheel.css (ostatni w system.json).
+ * !important używane wyłącznie do pokonania zastanych reguł !important.
+ */
+
+.cogwheel.sheet.actor.agentv2 {
+  --bd-ink: #f1e6cf;
+  --bd-muted: #bdb49e;
+  --bd-brass: #b58c4e;
+  --bd-gold: #e3c78d;
+  --bd-edge: #71552d;
+  --bd-night: #101914;
+  --bd-panel: #1b2921;
+  --bd-paper: #eee4ce;
+  --bd-gear: #78c9b6;
+  --bd-trauma: #c4a1e8;
+  --bd-stress: #f19c91;
+  --bd-accent: var(--bd-gold);
+  --bd-frame: inset 0 0 0 2px #090f0c, inset 0 0 0 3px #b58c4e55, 0 3px 7px #0006;
+  --bd-metal: linear-gradient(120deg, #6a4a25, #d8b975 23%, #84612e 48%, #e5c98a 72%, #6a4a25);
+  --bd-screws:
+    radial-gradient(circle at 9px 9px, #f0dba6 0 1px, #8e682f 1.5px 3px, #080d0a 3.5px 4px, transparent 4.5px),
+    radial-gradient(circle at calc(100% - 9px) 9px, #f0dba6 0 1px, #8e682f 1.5px 3px, #080d0a 3.5px 4px, transparent 4.5px),
+    radial-gradient(circle at 9px calc(100% - 9px), #f0dba6 0 1px, #8e682f 1.5px 3px, #080d0a 3.5px 4px, transparent 4.5px),
+    radial-gradient(circle at calc(100% - 9px) calc(100% - 9px), #f0dba6 0 1px, #8e682f 1.5px 3px, #080d0a 3.5px 4px, transparent 4.5px);
+  color: var(--bd-ink);
+  background: linear-gradient(115deg, #1d2a21, var(--bd-night) 55%, #1c281f);
+  border: 2px solid var(--bd-brass);
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 2px #090e0b, 0 10px 38px #0008;
+  font-family: "Segoe UI", Arial, sans-serif;
+  min-width: min(640px, calc(100vw - 24px));
+  max-width: calc(100vw - 24px);
+  container-type: inline-size;
+  scrollbar-color: var(--bd-edge) var(--bd-night);
+}
+
+.cogwheel.sheet.actor.agentv2 .window-header {
+  background: linear-gradient(#263026, #111812);
+  color: var(--bd-ink);
+  border-bottom: 1px solid var(--bd-brass);
+  box-shadow: inset 0 -3px 0 #080d0a;
+}
+
+.cogwheel.sheet.actor.agentv2 .window-title {
+  color: var(--bd-ink);
+  font-family: Georgia, serif;
+}
+
+.cogwheel.sheet.actor.agentv2 .window-content {
+  background: transparent;
+  color: var(--bd-ink);
+  padding: 14px;
+}
+
+.cogwheel.sheet.actor.agentv2 .sheet-header {
+  background-image: url("../assets/clockwork-engraving.svg"), linear-gradient(135deg, #28372b, #111c16 70%);
+  background-size: 100% 100%, cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 1px solid var(--bd-brass);
+  border-radius: 8px;
+  box-shadow: var(--bd-frame);
+  padding: 18px 14px 14px;
+  margin-bottom: 12px;
+}
+
+.cogwheel.sheet.actor.agentv2 .profile-img {
+  width: 100px;
+  height: 100px;
+  border: 3px solid var(--bd-gold);
+  box-shadow: 0 0 0 3px #0b120e, 0 0 0 5px var(--bd-brass), 0 4px 14px #0009;
+  background: var(--bd-night);
+  margin-bottom: 15px;
+}
+
+.cogwheel.sheet.actor.agentv2 .sheet-header h1 {
+  width: min(72%, 360px);
+  border: 0;
+  text-shadow: none;
+  line-height: 1.2;
+}
+
+.cogwheel.sheet.actor.agentv2 .sheet-header h1 input[name="name"] {
+  width: 100%;
+  min-width: 0;
+  height: 38px;
+  color: var(--bd-gold);
+  background: linear-gradient(#263026, #101711);
+  border: 1px solid var(--bd-brass);
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 2px #090f0c, inset 0 0 0 3px #b58c4e55, 0 3px 5px #0007;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 19px;
+  text-shadow: 0 1px 1px #000;
+}
+
+.cogwheel.sheet.actor.agentv2 .sheet-body {
+  background: transparent;
+  padding: 0 2px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bd-edge) var(--bd-night);
+}
+
+.cogwheel.sheet.actor.agentv2 .sheet-body::-webkit-scrollbar-track {
+  background: var(--bd-night);
+  border-color: #303c2d;
+}
+.cogwheel.sheet.actor.agentv2 .sheet-body::-webkit-scrollbar-thumb {
+  background: var(--bd-metal);
+  border-color: var(--bd-edge);
+  box-shadow: none;
+}
+
+.cogwheel.sheet.actor.agentv2 .sheet-tabs.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  background: #0d1510;
+  padding: 5px;
+  margin: 0 0 12px;
+  border: 1px solid var(--bd-brass);
+  border-radius: 6px;
+  box-shadow: var(--bd-frame);
+}
+
+.cogwheel.sheet.actor.agentv2 .sheet-tabs.tabs .item {
+  flex: 1 1 auto;
+  padding: 9px 7px;
+  margin: 0;
+  line-height: 1.2;
+  color: var(--bd-ink);
+  background: linear-gradient(#263026, #111b14);
+  border: 1px solid #82623b77;
+  border-radius: 3px;
+  text-shadow: none;
+  font-family: Georgia, serif;
+  font-size: 16px;
+  text-align: center;
+  transition: background-color .15s, color .15s;
+}
+.cogwheel.sheet.actor.agentv2 .sheet-tabs.tabs .item:hover {
+  color: var(--bd-gold);
+  background: #34412e;
+  transform: none;
+}
+.cogwheel.sheet.actor.agentv2 .sheet-tabs.tabs .item.active {
+  color: #251c0d;
+  background: linear-gradient(125deg, #b98e4c, #efdaa5 45%, #bf9757);
+  border-color: var(--bd-gold);
+  box-shadow: inset 0 0 0 1px #77592e;
+  text-shadow: none;
+}
+
+.cogwheel.sheet.actor.agentv2 :is(h2, h3) {
+  color: var(--bd-gold);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 17px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  text-shadow: 0 1px 1px #000;
+  border-color: var(--bd-edge);
+}
+.cogwheel.sheet.actor.agentv2 h3.centered {
+  margin: 14px 0 10px;
+}
+
+.cogwheel.sheet.actor.agentv2 :is(.archetype-section, .attributes-container, .resources-container, .feats-section, .notes-section) {
+  background: var(--bd-screws), linear-gradient(135deg, #233126, #111c16);
+  border: 1px solid var(--bd-brass);
+  border-radius: 8px;
+  box-shadow: var(--bd-frame);
+  color: var(--bd-ink);
+  transform: none;
+  transition: none;
+}
+.cogwheel.sheet.actor.agentv2 :is(.archetype-section, .feats-section, .notes-section) {
+  padding: 14px 16px;
+}
+.cogwheel.sheet.actor.agentv2 :is(.archetype-section, .attributes-container, .resources-container, .feats-section, .notes-section)::before {
+  background: none;
+  pointer-events: none;
+}
+.cogwheel.sheet.actor.agentv2 :is(.attributes-container, .resources-container) {
+  gap: 8px;
+  padding: 12px;
+}
+.cogwheel.sheet.actor.agentv2 :is(.attribute, .resource) {
+  background: var(--bd-screws), linear-gradient(135deg, #26352a77, #0d1611aa);
+  border: 1px solid var(--bd-edge);
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 2px #0a120e;
+  color: var(--bd-ink);
+  text-shadow: none;
+  margin: 0;
+  padding: 12px 9px;
+  min-width: 0;
+}
+.cogwheel.sheet.actor.agentv2 .main-attributes .attribute { margin-bottom: 0; }
+
+.cogwheel.sheet.actor.agentv2 :is(.attribute, .resource) label {
+  color: var(--bd-ink) !important;
+  text-shadow: none !important;
+}
+.cogwheel.sheet.actor.agentv2 :is(.attribute, .resource) > label {
+  font-family: Georgia, serif;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  margin-bottom: 12px !important;
+}
+
+.cogwheel.sheet.actor.agentv2 :is(input[type="text"], input[type="number"], select, textarea) {
+  color: #2d281f;
+  background: linear-gradient(#f8f0df, var(--bd-paper));
+  border: 1px solid var(--bd-brass);
+  border-radius: 4px;
+  box-shadow: inset 0 1px 4px #3e2c2533, 0 1px 2px #0006;
+  text-shadow: none;
+  font-variant-numeric: tabular-nums;
+}
+/* Te pola i przyciski rzutów mają już reguły !important w systemie. */
+.cogwheel.sheet.actor.agentv2 .attribute-content input:is(.base-value, .effective-value) {
+  color: #30271a !important;
+  background: linear-gradient(#faf3e4, #e6d9bf) !important;
+  border-color: var(--bd-brass) !important;
+  box-shadow: inset 0 1px 4px #3e2c2533, 0 2px 3px #0006 !important;
+  text-shadow: none !important;
+}
+.cogwheel.sheet.actor.agentv2 .attribute-content input.effective-value { font-family: Georgia, serif; }
+
+.cogwheel.sheet.actor.agentv2 :is(button, .steampunk-btn) {
+  color: var(--bd-ink);
+  background: linear-gradient(#66502f, #302719);
+  border-color: var(--bd-brass);
+  box-shadow: inset 0 1px 0 #f3d99c66, 0 2px 3px #0005;
+  text-shadow: 0 1px 1px #000;
+}
+.cogwheel.sheet.actor.agentv2 :is(button, .steampunk-btn):hover {
+  color: #fff2ce;
+  background: linear-gradient(#80673c, #493821);
+  border-color: var(--bd-gold);
+  transform: none;
+}
+.cogwheel.sheet.actor.agentv2 :is(.roll-btn, .roll-attribute) {
+  color: #241b0b !important;
+  background: linear-gradient(130deg, #b88b44, #ecd09a 45%, #b58c4e) !important;
+  border-color: var(--bd-edge) !important;
+  text-shadow: none !important;
+  box-shadow: inset 0 0 0 1px var(--bd-gold), 0 2px 3px #0006 !important;
+  transform: none !important;
+}
+.cogwheel.sheet.actor.agentv2 :is(.roll-btn, .roll-attribute):hover {
+  background: linear-gradient(#f3dfae, #cfaa65) !important;
+}
+.cogwheel.sheet.actor.agentv2 .remove-archetype {
+  background: linear-gradient(#8a3d38, #481f1c);
+  color: #f6e5d2;
+  border-color: #be8a5f;
+}
+
+.cogwheel.sheet.actor.agentv2 .archetype-drop {
+  background: #101b15;
+  border: 1px dashed #a27d43;
+  box-shadow: inset 0 1px 5px #0006;
+  border-radius: 5px;
+}
+.cogwheel.sheet.actor.agentv2 .archetype-drop::before { background: none; pointer-events: none; }
+.cogwheel.sheet.actor.agentv2 .archetype-drop:hover {
+  background: #243326;
+  border-color: var(--bd-gold);
+  transform: none;
+}
+.cogwheel.sheet.actor.agentv2 .archetype-name { color: var(--bd-ink); text-shadow: none; }
+.cogwheel.sheet.actor.agentv2 .archetype-attributes-header { color: var(--bd-gold); text-shadow: none; }
+.cogwheel.sheet.actor.agentv2 .archetype-attributes-values { color: var(--bd-muted); text-shadow: none; }
+
+.cogwheel.sheet.actor.agentv2 .damage-section { border-color: var(--bd-edge); }
+.cogwheel.sheet.actor.agentv2 .damage-section .damage-label {
+  color: var(--bd-muted) !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  letter-spacing: .07em;
+  text-shadow: none !important;
+}
+.cogwheel.sheet.actor.agentv2 .damage-radio-group { gap: 4px; flex-wrap: wrap; }
+.cogwheel.sheet.actor.agentv2 .damage-radio-item input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #7c7b6b;
+  border-radius: 50%;
+  background: linear-gradient(#333a33, #171f19);
+  box-shadow: inset 0 1px 3px #0009, 0 1px 1px #0008;
+}
+.cogwheel.sheet.actor.agentv2 .damage-radio-item input[type="radio"]:checked {
+  background: radial-gradient(circle, #44341c 0 3px, transparent 4px), linear-gradient(#f1dca8, #be934f);
+  border-color: var(--bd-gold);
+  box-shadow: 0 0 0 1px #624a24;
+}
+.cogwheel.sheet.actor.agentv2 .damage-radio-item label {
+  font-size: 12px !important;
+  margin-bottom: 2px !important;
+  color: var(--bd-muted) !important;
+}
+.cogwheel.sheet.actor.agentv2 .damage-radio-item input:checked + label { color: var(--bd-gold) !important; }
+
+.cogwheel.sheet.actor.agentv2 .resource.gear { --bd-accent: var(--bd-gear); }
+.cogwheel.sheet.actor.agentv2 .resource.trauma { --bd-accent: var(--bd-trauma); }
+.cogwheel.sheet.actor.agentv2 .resource.stress { --bd-accent: var(--bd-stress); }
+.cogwheel.sheet.actor.agentv2 .resource > label i { color: var(--bd-accent) !important; text-shadow: none !important; }
+.cogwheel.sheet.actor.agentv2 .resource-content input {
+  color: var(--bd-accent) !important;
+  border-color: var(--bd-accent) !important;
+  background: #0c1712 !important;
+  text-shadow: none;
+  box-shadow: inset 0 2px 4px #0008;
+}
+.cogwheel.sheet.actor.agentv2 .resource-content span { color: var(--bd-muted); }
+.cogwheel.sheet.actor.agentv2 .gear-basis-select {
+  background: #122018 !important;
+  color: var(--bd-ink) !important;
+  border-color: var(--bd-brass) !important;
+  text-shadow: none !important;
+  width: 100%;
+}
+.cogwheel.sheet.actor.agentv2 .gear-basis-select option {
+  color: var(--bd-ink) !important;
+  background-color: var(--bd-night) !important;
+}
+.cogwheel.sheet.actor.agentv2 .gear-basis-select option:checked {
+  color: #251c0d !important;
+  background-color: var(--bd-gold) !important;
+}
+
+/* Pozostałe pięć zakładek — zachowujemy ich rozwijanie i stany. */
+.cogwheel.sheet.actor.agentv2 :is(.feats-drop, .feat-item, .feat-item-alt, .equipment-item, .trauma-item) {
+  color: var(--bd-ink);
+  background: linear-gradient(135deg, #29382b, #122018);
+  border-color: var(--bd-edge);
+  box-shadow: inset 0 0 0 1px #080f0b, 0 2px 3px #0004;
+  text-shadow: none;
+}
+.cogwheel.sheet.actor.agentv2 :is(.feat-name, .feat-col-name) {
+  color: var(--bd-ink) !important;
+  text-shadow: none !important;
+}
+.cogwheel.sheet.actor.agentv2 :is(.feat-type, .feat-archetype, .equipment-points, .equipment-points-label, .trauma-level) {
+  color: var(--bd-gold);
+  text-shadow: none;
+}
+.cogwheel.sheet.actor.agentv2 .equipment-points { background: #142219; border-color: var(--bd-edge); box-shadow: none; }
+.cogwheel.sheet.actor.agentv2 .equipment-points-value { color: var(--bd-gear); text-shadow: none; }
+.cogwheel.sheet.actor.agentv2 .equipment-points-max { color: var(--bd-muted); }
+.cogwheel.sheet.actor.agentv2 :is(.feat-description, .feat-narrative) {
+  color: var(--bd-ink) !important;
+  background: #15251e !important;
+  border-color: #4e8776 !important;
+}
+.cogwheel.sheet.actor.agentv2 .feat-description strong { color: var(--bd-gear) !important; text-shadow: none !important; }
+.cogwheel.sheet.actor.agentv2 .feat-narrative { background: #261f30 !important; border-color: #86679e !important; }
+.cogwheel.sheet.actor.agentv2 .feat-narrative strong { color: var(--bd-trauma) !important; text-shadow: none !important; }
+.cogwheel.sheet.actor.agentv2 .trauma-item { border-left: 3px solid var(--bd-trauma); }
+.cogwheel.sheet.actor.agentv2 .trauma-item.trauma-type-physical { border-left-color: var(--bd-stress); }
+.cogwheel.sheet.actor.agentv2 .trauma-item.trauma-type-psychological { border-left-color: #8ab9dc; }
+.cogwheel.sheet.actor.agentv2 .trauma-item::before { background: none; pointer-events: none; }
+.cogwheel.sheet.actor.agentv2 .equipment-item[data-equipment-type="weapon"] { border-left: 3px solid var(--bd-stress); }
+.cogwheel.sheet.actor.agentv2 .equipment-item[data-equipment-type="armor"] { border-left: 3px solid #8ab9dc; }
+.cogwheel.sheet.actor.agentv2 .equipment-item[data-equipment-type="tool"] { border-left: 3px solid var(--bd-brass); }
+.cogwheel.sheet.actor.agentv2 .equipment-item[data-equipment-type="gadget"] { border-left: 3px solid var(--bd-gear); }
+.cogwheel.sheet.actor.agentv2 .equipment-item[data-equipment-type="other"] { border-left: 3px solid var(--bd-trauma); }
+.cogwheel.sheet.actor.agentv2 :is(.no-feats-message, .archetype-drop p) { color: var(--bd-muted); }
+.cogwheel.sheet.actor.agentv2 .notes-textarea {
+  background: linear-gradient(#f4ecd9, #e8dcc1);
+  color: #30291f;
+  text-shadow: none;
+  border-color: var(--bd-brass);
+  line-height: 1.6;
+}
+.cogwheel.sheet.actor.agentv2 .notes-textarea::placeholder { color: #716450; opacity: 1; }
+
+.cogwheel.sheet.actor.agentv2 :is(input, select, textarea, button, a):focus-visible {
+  outline: 2px solid var(--bd-gear);
+  outline-offset: 3px;
+}
+.cogwheel.sheet.actor.agentv2 :is(input, select, textarea, button):disabled { opacity: .55; }
+
+/* Szerokość okna, nie szerokość monitora — działa również w pop-out. */
+@container (max-width: 690px) {
+  .cogwheel.sheet.actor.agentv2 :is(.attributes-container, .resources-container) { flex-wrap: wrap; }
+  .cogwheel.sheet.actor.agentv2 :is(.attribute, .resource) { flex: 1 1 180px; }
+  .cogwheel.sheet.actor.agentv2 .sheet-tabs.tabs .item { font-size: 14px; padding: 8px 5px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cogwheel.sheet.actor.agentv2 :is(.sheet-tabs .item, button, input, textarea) { transition: none !important; }
+}

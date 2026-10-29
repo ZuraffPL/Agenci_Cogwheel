@@ -246,6 +246,7 @@ src/
 src/styles/
 ├── cogwheel.css               # Main V1 actor sheet styling
 ├── agent-v2.css               # V2 actor sheet styling
+├── agent-v2-brass.css         # V2 "Brass Dossier" visual layer (loaded last; uses src/assets/clockwork-engraving.svg)
 ├── feats-effects.css          # Dedicated feat effects styling (v0.7.7+)
 ├── hq.css                     # Headquarters styling
 ├── nemesis.css                # Nemesis sheet styling

@@ -6,7 +6,7 @@ import { ActorEquipmentFunctions } from './shared/actor-equipment-functions.js';
 // Karta Agenta V1 - zmigrowana do ApplicationV2 (HandlebarsApplicationMixin + ActorSheetV2)
 class CogwheelActorSheet extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.sheets.ActorSheetV2) {
   static DEFAULT_OPTIONS = {
-    classes: ["cogwheel", "sheet", "actor"],
+    classes: ["cogwheel", "sheet", "actor", "agentv1"],
     position: { width: 750 },
     window: { resizable: true },
     form: { submitOnChange: true },

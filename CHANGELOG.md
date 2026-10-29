@@ -11,6 +11,13 @@ projekt przestrzega [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased] | [Nieopublikowane]
 
+## [1.0.4] - 2026-10-29
+
+### Changed | Zmieniono
+- **Nowa stylistyka karty Agent v2 („Brass Dossier”)** — steampunkowa oprawa (ciemna zieleń, antyczny mosiądz, rycina mechanizmów w nagłówku, nity w narożnikach paneli, jasne pola atrybutów) zintegrowana z systemem jako `src/styles/agent-v2-brass.css` (ładowany ostatni) i `src/assets/clockwork-engraving.svg`; wyłącznie CSS, bez zmian w HBS, JS i modelach danych | New steampunk look for the Agent v2 sheet ("Brass Dossier") integrated into the system as a CSS-only layer (`src/styles/agent-v2-brass.css`, loaded last) plus a local SVG ornament; no changes to HBS, JS or data models. The standalone `cogwheel-brass-dossier` module must be disabled/removed
+- **Karta Agent v1: osobny arkusz `agent-v1.css` i styl Brass w brązowej palecie** — style karty v1 wyjęte z `cogwheel.css` (wspólna baza okien actor/item zostaje); ozdoby jak w v2 (ramki, nity, rycina w nagłówku, zakładki), kolorystyka pozostaje brązowa; nowa klasa okna `agentv1` | Agent v1 sheet styles extracted from `cogwheel.css` into `agent-v1.css`, with the Brass ornaments in the original brown palette (new `agentv1` window class)
+- **Styl Brass dla kart HQ i Nemezis oraz Zegarów Postępu** — nowe warstwy tylko-CSS `src/styles/hq-nemesis-brass.css` i `src/styles/clocks-brass.css` (okno zegarów, dialogi dodawania/edycji i archiwum; nadpisują style inline z `clocks.mjs`) | Brass look applied to the HQ and Nemesis sheets and to the Doom Clocks window and dialogs (CSS-only layers)
+
 ## [1.0.2] - 2026-09-29
 
 ### Fixed | Naprawiono
